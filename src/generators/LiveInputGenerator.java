@@ -88,13 +88,6 @@ public class LiveInputGenerator extends LiveInput implements Generator,Runnable 
 		// TODO Auto-generated method stub
 		GeneratorFactory.unpatch(this);
 	}
-
-	@Override
-	public void stop() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	
 	public void noteOffAfterDuration(int duration) {
 		this.duration = duration;
@@ -115,6 +108,12 @@ public class LiveInputGenerator extends LiveInput implements Generator,Runnable 
 	@Override
 	public Generator cloneInADifferentPitch(int newPitch) {
 		return new LiveInputGenerator(GeneratorFactory.getInput(), newPitch, this.velocity);
+	}
+	
+	public void close() {
+		super.close();
+		this.vocode = null;
+		this.mod = null;
 	}
 
 }

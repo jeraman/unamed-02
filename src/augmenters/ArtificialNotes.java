@@ -61,6 +61,10 @@ public class ArtificialNotes {
 			n.noteOff();
 	}
 	
-	
+	public void close() {
+		for (AugmentedNote n: artificialNotes)
+			n.close();
+		artificialNotes = null;
+	}
 
 }

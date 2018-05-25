@@ -87,4 +87,11 @@ public class AugmentedNote extends BasicNote {
 	public Generator getGenerator() {
 		return generator;
 	}
+	
+	public void close() {
+		this.generator.close();
+		this.artificialNotes.close();
+		this.artificialNotes = null;
+		this.generator = null;
+	}
 }

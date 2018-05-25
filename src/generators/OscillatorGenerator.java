@@ -67,18 +67,6 @@ public class OscillatorGenerator extends Oscil implements Generator,Runnable {
 		GeneratorFactory.unpatch(this);
 	}
 
-	@Override
-	public void stop() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void close() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void noteOffAfterDuration(int duration) {
 		this.duration = duration;
 		System.out.println("waiting! " + duration);
@@ -100,5 +88,11 @@ public class OscillatorGenerator extends Oscil implements Generator,Runnable {
 	public Generator cloneInADifferentPitch(int newPitch) {
 		float newFreq = MusicTheory.freqFromMIDI(newPitch);
 		return new OscillatorGenerator(newFreq, this.amplitude, this.wf);
+	}
+
+	@Override
+	public void close() {
+		// TODO Auto-generated method stub
+		this.wf = null;
 	}
 }

@@ -22,7 +22,6 @@ public class AugmentedNoteMemory {
 	}
 
 	public void put(int channel, int note, int velocity, Generator g) {
-//		this.put(channel, note, velocity, new ArtificialNotes(), g);
 		AugmentedNote newNote =new AugmentedNote(channel, note, velocity, g);
 		this.put(newNote);
 	}
@@ -32,13 +31,9 @@ public class AugmentedNoteMemory {
 		memory.add(aug);
 	}
 
-//	public void put(int channel, int note, int velocity, ArtificialNotes artificialNotes, Generator g) {
-//		controlsNumberOfConcurrentNotes();
-//		memory.add(new AugmentedNote(channel, note, velocity, artificialNotes, g));
-//	}
-
 	public AugmentedNote remove(int note) {
 		int noteIndex = getElementIndex(note);
+		AugmentedNote result = null;
 
 		if (noteIndex < 0) {
 			System.out.println("adding: " + note +  " to the removal line");
@@ -51,7 +46,10 @@ public class AugmentedNoteMemory {
 			return null;
 		}
 
-		return memory.remove(noteIndex);
+		else 
+			result = memory.remove(noteIndex);
+		
+		return result;
 	}
 	
 	public void update() {
@@ -65,8 +63,8 @@ public class AugmentedNoteMemory {
 	
 	private AugmentedNote removeAndNoteOff(int note) {
 		AugmentedNote n = this.remove(note);
-		//GeneratorFactory.noteOff(n.getGenerator());
 		n.noteOff();
+		n.close();
 		System.out.println("removing and killing note " + note);
 		return n;
 	}

@@ -2,12 +2,13 @@ package generators;
 
 import ddf.minim.AudioOutput;
 import ddf.minim.Minim;
+import ddf.minim.spi.AudioRecordingStream;
 import ddf.minim.spi.AudioStream;
 
 
 public class GeneratorFactory {
-	static Minim minim;
-	static AudioOutput out;
+	public static Minim minim;
+	public static AudioOutput out;
 	
 	public static void setup (Minim minim, AudioOutput out) {
 		GeneratorFactory.minim = minim;
@@ -16,14 +17,28 @@ public class GeneratorFactory {
 
 	////////////////////////////
 	//AudioFile factory
-	public static Generator noteOnAudioFileGen(String filename, int pitch, int velocity) {
-		Generator gen = new AudioFileGenerator(filename, pitch, velocity);
+	public static Generator noteOnAudioFileGen(AudioRecordingStream fileStream, int pitch, int velocity) {
+		Generator gen = new AudioFileGenerator(fileStream, pitch, velocity);
 		return gen;
 		//return GeneratorFactory.patch(gen);
 	}
  
-	public static Generator temporaryAudioFileGen(String filename, int pitch, int velocity, int duration) {
-		Generator gen = noteOnAudioFileGen(filename, pitch, velocity);
+	public static Generator temporaryAudioFileGen(AudioRecordingStream fileStream, int pitch, int velocity, int duration) {
+		Generator gen = noteOnAudioFileGen(fileStream, pitch, velocity);
+		gen.noteOffAfterDuration(duration);
+		return gen;
+	}
+
+	////////////////////////////
+	//SampleFile factory
+	public static Generator noteOnSampleFileGen(String fileStream, int pitch, int velocity) {
+		Generator gen = new SamplerFileGenerator(fileStream, pitch, velocity);
+		return gen;
+		//return GeneratorFactory.patch(gen);
+	}
+	
+	public static Generator temporarySampleFileGen(String fileStream, int pitch, int velocity, int duration) {
+		Generator gen = noteOnSampleFileGen(fileStream, pitch, velocity);
 		gen.noteOffAfterDuration(duration);
 		return gen;
 	}
@@ -101,6 +116,13 @@ public class GeneratorFactory {
             out.bufferSize(), 
             out.sampleRate(), 
             out.getFormat().getSampleSizeInBits());
+	}
+
+	public static void close() {
+		out.close();
+		minim.stop();
+		out = null;
+		minim = null;
 	}
 
 }

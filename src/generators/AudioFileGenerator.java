@@ -3,8 +3,10 @@ package generators;
 import ddf.minim.AudioOutput;
 import ddf.minim.Minim;
 import ddf.minim.UGen;
+import ddf.minim.spi.AudioRecordingStream;
 import ddf.minim.ugens.FilePlayer;
 import ddf.minim.ugens.Gain;
+import ddf.minim.ugens.Sampler;
 import ddf.minim.ugens.TickRate;
 import util.Util;
 
@@ -14,32 +16,34 @@ public class AudioFileGenerator extends FilePlayer implements Generator,Runnable
 	TickRate   rateControl;
 	Gain       gain;
 	
-	String 	   filename;
+	AudioRecordingStream fileStream;
+	
+	//String 	   filename;
 	int 	   pitch;
 	int 	   volume;
 	int 	   duration;
 	boolean    shouldLoop;
 	
-	public AudioFileGenerator(String filename) {
-		this(filename, Integer.MAX_VALUE);
+	public AudioFileGenerator(AudioRecordingStream fileStream) {
+		this(fileStream, Integer.MAX_VALUE);
 	}
 
-	public AudioFileGenerator(String filename, int duration) {
-		this(filename, basePitch, 127, duration, true);
+	public AudioFileGenerator(AudioRecordingStream fileStream, int duration) {
+		this(fileStream, basePitch, 127, duration, true);
 	}
 	
-	public AudioFileGenerator(String filename, int pitch, int volume) {
-		this(filename, pitch, volume, Integer.MAX_VALUE, true);
+	public AudioFileGenerator(AudioRecordingStream fileStream, int pitch, int volume) {
+		this(fileStream, pitch, volume, Integer.MAX_VALUE, true);
 	}
 
-	public AudioFileGenerator(String filename, int pitch, int volume, int duration) {
-		this(filename, pitch, volume, duration, true);
+	public AudioFileGenerator(AudioRecordingStream fileStream, int pitch, int volume, int duration) {
+		this(fileStream, pitch, volume, duration, true);
 	}
 	
-	public AudioFileGenerator(String filename, int pitch, int volume, int duration, boolean shouldLoop) {
-		super(GeneratorFactory.minim.loadFileStream(filename));
-
-		this.filename = filename;
+	public AudioFileGenerator(AudioRecordingStream fileStream, int pitch, int volume, int duration, boolean shouldLoop) {
+		super(fileStream);
+		this.fileStream = fileStream;
+		//this.filename = filename;
 		this.pitch	 = pitch;
 		this.volume  = volume;
 		this.shouldLoop  = shouldLoop;
@@ -58,18 +62,24 @@ public class AudioFileGenerator extends FilePlayer implements Generator,Runnable
 		super.patch(rateControl).patch(gain).patch(out);
 	}
 	
+	public void close() {
+		super.close();
+		//super.buffer = null;
+		gain = null;
+		rateControl = null;
+		fileStream = null;
+	}
+	
 	public void unpatchEffect (UGen nextGen) {
 		gain.unpatch(nextGen);
 		rateControl.unpatch(gain);
 		super.unpatch(rateControl);
-		super.close();
 	}
 	
 	public void unpatchOutput (AudioOutput out) {
 		gain.unpatch(out);
 		rateControl.unpatch(gain);
 		super.unpatch(rateControl);
-		super.close();
 	}
 
 	@Override
@@ -81,7 +91,6 @@ public class AudioFileGenerator extends FilePlayer implements Generator,Runnable
 	@Override
 	public void noteOff() {
 		this.stop();
-		this.close();
 		GeneratorFactory.unpatch(this);
 	}
 	
@@ -125,7 +134,6 @@ public class AudioFileGenerator extends FilePlayer implements Generator,Runnable
 
 	public void stop() {
 		super.pause();
-		super.rewind();
 	}
 	
 	public void noteOffAfterDuration(int duration) {
@@ -147,7 +155,7 @@ public class AudioFileGenerator extends FilePlayer implements Generator,Runnable
 
 	@Override
 	public Generator cloneInADifferentPitch(int newPitch) {
-		AudioFileGenerator result = new AudioFileGenerator(this.filename, newPitch, this.volume, this.duration, this.shouldLoop);
+		AudioFileGenerator result = new AudioFileGenerator(this.fileStream, newPitch, this.volume, this.duration, this.shouldLoop);
 		return result;
 	}
 }

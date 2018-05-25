@@ -17,11 +17,9 @@ public interface Generator {
 	public void noteOn();
 	
 	public void noteOff();
-		
-	public void stop();
 	
 	public void close();
-	
+		
 	public Generator cloneInADifferentPitch(int newPitch); 
 	
 	public void noteOffAfterDuration(int duration);
