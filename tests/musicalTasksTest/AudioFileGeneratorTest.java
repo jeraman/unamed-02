@@ -33,7 +33,7 @@ public class AudioFileGeneratorTest extends PApplet {
 	AudioFileGenerator audio;
 	
 	public void mousePressed() {
-		audio = new AudioFileGenerator(minim, "123go.mp3");
+		audio = new AudioFileGenerator("123go.mp3");
 		audio.patchOutput(out);
 		audio.play();
 	}

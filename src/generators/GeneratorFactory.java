@@ -1,12 +1,8 @@
-package musicalTasksTest;
+package generators;
 
 import ddf.minim.AudioOutput;
 import ddf.minim.Minim;
 import ddf.minim.spi.AudioStream;
-import generators.AudioFileGenerator;
-import generators.FMGenerator;
-import generators.LiveInputGenerator;
-import generators.OscillatorGenerator;
 
 
 public class GeneratorFactory {
@@ -21,10 +17,9 @@ public class GeneratorFactory {
 	////////////////////////////
 	//AudioFile factory
 	public static Generator noteOnAudioFileGen(String filename, int pitch, int velocity) {
-		Generator gen = new AudioFileGenerator(minim, filename, pitch, velocity);
-		gen.patchOutput(out);
-		gen.noteOn();
+		Generator gen = new AudioFileGenerator(filename, pitch, velocity);
 		return gen;
+		//return GeneratorFactory.patch(gen);
 	}
  
 	public static Generator temporaryAudioFileGen(String filename, int pitch, int velocity, int duration) {
@@ -33,13 +28,13 @@ public class GeneratorFactory {
 		return gen;
 	}
 	
+	
 	////////////////////////////
 	//Oscillator Factory
 	public static Generator noteOnOscillatorGen(int pitch, int velocity) {
 		Generator gen = new OscillatorGenerator(pitch, velocity, true);
-		gen.patchOutput(out);
-		gen.noteOn();
 		return gen;
+//		return GeneratorFactory.patch(gen);
 	}
 	
 	public static Generator temporaryOscillatorGen(int pitch, int velocity, int duration) {
@@ -53,9 +48,8 @@ public class GeneratorFactory {
 	//FM factory
 	public static Generator noteOnFMGen(int pitch, int velocity) {
 		Generator gen = new FMGenerator(pitch, velocity);
-		gen.patchOutput(out);
-		gen.noteOn();
 		return gen;
+//		return GeneratorFactory.patch(gen);
 	}
 	
 	public static Generator temporaryFMGen(int pitch, int velocity, int duration) {
@@ -67,14 +61,9 @@ public class GeneratorFactory {
 	////////////////////////////
 	//Live Input factory
 	public static Generator noteOnLiveInpuGen(int pitch, int velocity) {
-		AudioStream inputStream = minim.getInputStream( Minim.MONO, 
-                out.bufferSize(), 
-                out.sampleRate(), 
-                out.getFormat().getSampleSizeInBits());
-		Generator gen = new LiveInputGenerator(inputStream, pitch, velocity);
-		gen.patchOutput(out);
-		gen.noteOn();
+		Generator gen = new LiveInputGenerator(getInput(), pitch, velocity);
 		return gen;
+//		return GeneratorFactory.patch(gen);
 	}
 	
 	public static Generator temporaryLiveInpuGen(int pitch, int velocity, int duration) {
@@ -84,13 +73,8 @@ public class GeneratorFactory {
 	}
 	
 	public static Generator noteOnLiveInpuGen() {
-		AudioStream inputStream = minim.getInputStream( Minim.MONO, 
-                out.bufferSize(), 
-                out.sampleRate(), 
-                out.getFormat().getSampleSizeInBits());
-		Generator gen = new LiveInputGenerator(inputStream);
-		gen.patchOutput(out);
-		gen.noteOn();
+		Generator gen = new LiveInputGenerator(getInput());
+//		return GeneratorFactory.patch(gen);
 		return gen;
 	}
 	
@@ -102,10 +86,21 @@ public class GeneratorFactory {
 	
 	////////////////////////////
 	//general note off for all generators
-	public static Generator noteOffGen(Generator gen) {
-		gen.noteOff();
+	public static Generator unpatch(Generator gen) {
 		gen.unpatchOutput(out);
 		return gen;
+	}
+	
+	public static Generator patch(Generator gen) {
+		gen.patchOutput(out);
+		return gen;
+	}
+	
+	public static AudioStream getInput() {
+		return minim.getInputStream( Minim.MONO, 
+            out.bufferSize(), 
+            out.sampleRate(), 
+            out.getFormat().getSampleSizeInBits());
 	}
 
 }

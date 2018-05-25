@@ -1,20 +1,21 @@
-package generators;
+package augmenters;
 
+import augmenters.ArtificialNotes;
 import augmenters.AugmentedNote;
 import augmenters.AugmentedNoteMemory;
 import ddf.minim.AudioOutput;
 import ddf.minim.Minim;
-import generators.AudioFileGenerator;
-import generators.OscillatorGenerator;
+import generators.Generator;
+import generators.GeneratorFactory;
 import processing.core.PApplet;
 import util.MidiIO;
 
-public class MidiDrivenGenerator extends PApplet {
+public class AugmenterTest extends PApplet{
 	MidiIO midi;
 	AugmentedNoteMemory memory;
 	
 	public static void main(String[] args) {
-		PApplet.main("generators.MidiDrivenGenerator");
+		PApplet.main("augmenters.AugmenterTest");
 	}
 
 	public void settings() {
@@ -46,28 +47,28 @@ public class MidiDrivenGenerator extends PApplet {
 	}
 	
 	public void mousePressed() {
-		println("memory.size() " + memory.size());
-		println("memory: " + memory.getNoteArray());
-		println("removalLive " + memory.getToBeDeletedArray());
-		
 		//Generator gen = GeneratorFactory.temporaryFMGen(60, 127, 1500);
-		Generator gen = GeneratorFactory.temporaryAudioFileGen("123go.mp3", 60, 127, 1500);
+		//Generator gen = GeneratorFactory.temporaryAudioFileGen("123go.mp3", 60, 127, 1500);
 		//Generator gen = GeneratorFactory.temporaryOscillatorGen(60, 127, 500);
 		//Generator gen = GeneratorFactory.temporaryLiveInpuGen(1500);
 	}
 
 	public void noteOn(int channel, int pitch, int velocity) {
-		//Generator gen = GeneratorFactory.noteOnFMGen(pitch, velocity);
 		Generator gen = GeneratorFactory.noteOnAudioFileGen("123go.mp3", pitch, velocity);
+		//Generator gen = GeneratorFactory.noteOnFMGen(pitch, velocity);
 		//Generator gen = GeneratorFactory.noteOnOscillatorGen(pitch, velocity);
 		//Generator gen = GeneratorFactory.noteOnLiveInpuGen(pitch, velocity);
-		memory.put(channel, pitch, velocity, gen);
+
+		AugmentedNote newNote = new AugmentedNote(channel, pitch, velocity, gen);
+		newNote.addArtificialChord("min");
+		//newNote.addArtificialInterval("5");
+		newNote.noteOn();
+		memory.put(newNote);
 	}
 
 	public void noteOff(int channel, int pitch, int velocity) {
 		AugmentedNote n = memory.remove(pitch);
 		if (n == null) return;
-		GeneratorFactory.unpatch(n.getGenerator());
+		n.noteOff();
 	}
-
 }

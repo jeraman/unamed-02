@@ -1,16 +1,19 @@
-package musicalTasksTest;
+package augmenters;
 
 import java.util.ArrayList;
 import org.jfugue.theory.Chord;
 
-public class StoredNoteMemory {
-	private ArrayList<StoredNote> memory;
+import generators.Generator;
+import generators.GeneratorFactory;
+
+public class AugmentedNoteMemory {
+	private ArrayList<AugmentedNote> memory;
 	private ArrayList<Integer> removalLine;
+	
 	private static final int CONCURRENT_NOTES_LIMIT = 5;
 
-	public StoredNoteMemory() {
-		// memory = new CopyOnWriteArrayList<StoredNote>();
-		memory = new ArrayList<StoredNote>();
+	public AugmentedNoteMemory() {
+		memory = new ArrayList<AugmentedNote>();
 		removalLine = new ArrayList<Integer>();
 	}
 	
@@ -19,15 +22,22 @@ public class StoredNoteMemory {
 	}
 
 	public void put(int channel, int note, int velocity, Generator g) {
-		this.put(channel, note, velocity, new ArrayList<Integer>(), g);
+//		this.put(channel, note, velocity, new ArtificialNotes(), g);
+		AugmentedNote newNote =new AugmentedNote(channel, note, velocity, g);
+		this.put(newNote);
 	}
-
-	public void put(int channel, int note, int velocity, ArrayList<Integer> artificialNotes, Generator g) {
+	
+	public void put (AugmentedNote aug) {		
 		controlsNumberOfConcurrentNotes();
-		memory.add(new StoredNote(channel, note, velocity, artificialNotes, g));
+		memory.add(aug);
 	}
 
-	public StoredNote remove(int note) {
+//	public void put(int channel, int note, int velocity, ArtificialNotes artificialNotes, Generator g) {
+//		controlsNumberOfConcurrentNotes();
+//		memory.add(new AugmentedNote(channel, note, velocity, artificialNotes, g));
+//	}
+
+	public AugmentedNote remove(int note) {
 		int noteIndex = getElementIndex(note);
 
 		if (noteIndex < 0) {
@@ -50,12 +60,13 @@ public class StoredNoteMemory {
 	
 	public void tryToClearMemory() {
 		for (int note:removalLine) 
-			this.removeAndKillNote(note);
+			this.removeAndNoteOff(note);
 	}
 	
-	private StoredNote removeAndKillNote(int note) {
-		StoredNote n = this.remove(note);
-		GeneratorFactory.noteOffGen(n.getGenerator());
+	private AugmentedNote removeAndNoteOff(int note) {
+		AugmentedNote n = this.remove(note);
+		//GeneratorFactory.noteOff(n.getGenerator());
+		n.noteOff();
 		System.out.println("removing and killing note " + note);
 		return n;
 	}
@@ -76,7 +87,7 @@ public class StoredNoteMemory {
 
 	private void removesOldestNote() {
 		if (size() > 0) {
-			this.removeAndKillNote(memory.get(0).getNote());
+			this.removeAndNoteOff(memory.get(0).getPitch());
 		}
 	}
 
@@ -87,7 +98,7 @@ public class StoredNoteMemory {
 	private int getElementIndex(int wantedNote) {
 		int result = -1;
 		for (int i = 0; i < memory.size(); i++)
-			if (memory.get(i).isNoteEquals(wantedNote))
+			if (memory.get(i).isPitchEquals(wantedNote))
 				result = i;
 		return result;
 	}
@@ -95,7 +106,7 @@ public class StoredNoteMemory {
 	public int[] getNoteArray() {
 		int[] individualNotes = new int[memory.size()];
 		for (int i = 0; i < memory.size(); i++)
-			individualNotes[i] = memory.get(i).getNote();
+			individualNotes[i] = memory.get(i).getPitch();
 		return individualNotes;
 	}
 
@@ -106,14 +117,14 @@ public class StoredNoteMemory {
 		return individualNotes;
 	}
 
-	public StoredNote get(int index) {
+	public AugmentedNote get(int index) {
 		if (index >= 0 && index < memory.size())
 			return memory.get(index);
 		else
 			return null;
 	}
 
-	public StoredNote getStoredNotebyNoteValue(int wantedNote) {
+	public AugmentedNote getStoredNotebyNoteValue(int wantedNote) {
 		int noteIndex = getElementIndex(wantedNote);
 
 		if (noteIndex == -1)
@@ -129,20 +140,19 @@ public class StoredNoteMemory {
 		if (size == 0) // if no notes are being played
 			text = "no notes";
 		else if (size == 1) // if one note
-			text = "note: " + MusicTheory.noteFromMIDI(memory.get(0).getNote());
+			text = "note: " + MusicTheory.noteFromMIDI(memory.get(0).getPitch());
 		else if (size == 2) // if an interval
-			text = "interval: " + MusicTheory.identifyingIntervalFromMIDI(memory.get(0).getNote(), memory.get(1).getNote());
+			text = "interval: " + MusicTheory.identifyIntervalFromMIDI(memory.get(0).getPitch(), memory.get(1).getPitch());
 		else { // if a chord
 			int[] notes = this.getNoteArray();
-			Chord c = MusicTheory.identifyingChordFromMIDI(notes);
+			Chord c = MusicTheory.identifyChordFromMIDI(notes);
 
 			if (c != null)
 				text = "chord: " + c;
 			else
-				text = "intervals: " + MusicTheory.identifyingIntervalFromMIDI(notes);
+				text = "intervals: " + MusicTheory.identifyIntervalFromMIDI(notes);
 		}
-
+		
 		return text;
-
 	}
 }

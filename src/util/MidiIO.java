@@ -1,4 +1,4 @@
-package musicalTasksTest;
+package util;
 
 import processing.core.PApplet;
 import themidibus.MidiBus;

@@ -1,4 +1,4 @@
-package musicalTasksTest;
+package generators;
 
 import ddf.minim.AudioOutput;
 import ddf.minim.UGen;
@@ -21,6 +21,8 @@ public interface Generator {
 	public void stop();
 	
 	public void close();
+	
+	public Generator cloneInADifferentPitch(int newPitch); 
 	
 	public void noteOffAfterDuration(int duration);
 	

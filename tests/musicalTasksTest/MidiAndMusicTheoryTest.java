@@ -2,19 +2,19 @@ package musicalTasksTest;
 
 import processing.core.PApplet;
 import themidibus.MidiBus;
+import util.MidiIO;
+import augmenters.AugmentedNoteMemory;
+import augmenters.MusicTheory;
 import ddf.minim.*;
 import generators.AudioFileGenerator;
-import musicalTasksTest.Generator;
-import musicalTasksTest.MidiIO;
-import musicalTasksTest.MusicTheory;
-import musicalTasksTest.StoredNoteMemory;
+import generators.Generator;
 
 public class MidiAndMusicTheoryTest extends PApplet {
 
 	Minim minim; // my minim variable
 	AudioOutput out;
 	MidiIO midi;
-	StoredNoteMemory memory;
+	AugmentedNoteMemory memory;
 	
 	public static void main(String[] args) {
 		PApplet.main("main.MidiAndMusicTheoryTest");
@@ -27,7 +27,7 @@ public class MidiAndMusicTheoryTest extends PApplet {
 	public void setup() {
 		background(0);
 		setupAudio();
-		memory = new StoredNoteMemory();
+		memory = new AugmentedNoteMemory();
 	}
 
 	public void setupAudio() {

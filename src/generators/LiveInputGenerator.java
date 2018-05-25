@@ -1,22 +1,23 @@
 package generators;
 
+import augmenters.MusicTheory;
 import ddf.minim.AudioOutput;
+import ddf.minim.Minim;
 import ddf.minim.UGen;
 import ddf.minim.spi.AudioStream;
 import ddf.minim.ugens.LiveInput;
 import ddf.minim.ugens.Oscil;
 import ddf.minim.ugens.Vocoder;
 import ddf.minim.ugens.Waves;
-import musicalTasksTest.Generator;
-import musicalTasksTest.GeneratorFactory;
-import musicalTasksTest.Util;
-import musicalTasksTest.MusicTheory;
+import util.Util;
 
 public class LiveInputGenerator extends LiveInput implements Generator,Runnable {
 	
 	private Vocoder vocode;
 	private Oscil mod;
 	private int duration;
+	private int pitch;
+	private int velocity;
 	private boolean hasVocode;
 	
 	
@@ -31,7 +32,8 @@ public class LiveInputGenerator extends LiveInput implements Generator,Runnable 
 	public LiveInputGenerator(AudioStream inputStream, boolean hasVocode, int pitch, int velocity) {
 		super(inputStream);
 		this.hasVocode = hasVocode;
-		
+		this.pitch = pitch;
+		this.velocity = velocity;
 		if (hasVocode) {
 			vocode = new Vocoder(1024, 8);
 			this.patch(vocode.modulator);
@@ -78,13 +80,13 @@ public class LiveInputGenerator extends LiveInput implements Generator,Runnable 
 	@Override
 	public void noteOn() {
 		// TODO Auto-generated method stub
-		
+		GeneratorFactory.patch(this);
 	}
 
 	@Override
 	public void noteOff() {
 		// TODO Auto-generated method stub
-		
+		GeneratorFactory.unpatch(this);
 	}
 
 	@Override
@@ -107,7 +109,12 @@ public class LiveInputGenerator extends LiveInput implements Generator,Runnable 
 		Util.delay(this.duration);
 		//stop playing!
 		System.out.println("stop playing!");
-		GeneratorFactory.noteOffGen(this);
+		this.noteOff();
+	}
+
+	@Override
+	public Generator cloneInADifferentPitch(int newPitch) {
+		return new LiveInputGenerator(GeneratorFactory.getInput(), newPitch, this.velocity);
 	}
 
 }

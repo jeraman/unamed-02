@@ -6,42 +6,48 @@ import ddf.minim.UGen;
 import ddf.minim.ugens.FilePlayer;
 import ddf.minim.ugens.Gain;
 import ddf.minim.ugens.TickRate;
-import musicalTasksTest.Generator;
-import musicalTasksTest.GeneratorFactory;
-import musicalTasksTest.Util;
+import util.Util;
 
 public class AudioFileGenerator extends FilePlayer implements Generator,Runnable {
 	static final int basePitch	 = 52;
 	
 	TickRate   rateControl;
 	Gain       gain;
-	boolean    shouldLoop;
+	
+	String 	   filename;
+	int 	   pitch;
+	int 	   volume;
 	int 	   duration;
+	boolean    shouldLoop;
 	
-	public AudioFileGenerator(Minim minim, String filename) {
-		this(minim, filename, Integer.MAX_VALUE);
+	public AudioFileGenerator(String filename) {
+		this(filename, Integer.MAX_VALUE);
 	}
 
-	public AudioFileGenerator(Minim minim, String filename, int duration) {
-		this(minim, filename, 60, 127, duration, true);
+	public AudioFileGenerator(String filename, int duration) {
+		this(filename, basePitch, 127, duration, true);
 	}
 	
-	public AudioFileGenerator(Minim minim, String filename, int pitch, int volume) {
-		this(minim, filename, pitch, volume, Integer.MAX_VALUE, true);
+	public AudioFileGenerator(String filename, int pitch, int volume) {
+		this(filename, pitch, volume, Integer.MAX_VALUE, true);
 	}
 
-	public AudioFileGenerator(Minim minim, String filename, int pitch, int volume, int duration) {
-		this(minim, filename, pitch, volume, duration, true);
+	public AudioFileGenerator(String filename, int pitch, int volume, int duration) {
+		this(filename, pitch, volume, duration, true);
 	}
 	
-	public AudioFileGenerator(Minim minim, String filename, int pitch, int volume, int duration, boolean shouldLoop) {
-		super(minim.loadFileStream(filename));
+	public AudioFileGenerator(String filename, int pitch, int volume, int duration, boolean shouldLoop) {
+		super(GeneratorFactory.minim.loadFileStream(filename));
 
+		this.filename = filename;
+		this.pitch	 = pitch;
+		this.volume  = volume;
+		this.shouldLoop  = shouldLoop;
+		this.duration    = duration;
+		
 		float pR = calculateRelativePitch(pitch);
 		this.rateControl = new TickRate(pR);
 	    this.gain        = new Gain(Util.mapFromMidiToDecibels(volume));
-	    this.shouldLoop  = shouldLoop;
-	    this.duration    = duration;
 	}
 	
 	public UGen patchEffect (UGen nextGen) {
@@ -68,6 +74,7 @@ public class AudioFileGenerator extends FilePlayer implements Generator,Runnable
 
 	@Override
 	public void noteOn() {
+		GeneratorFactory.patch(this);
 	    this.play();
 	}
 	
@@ -75,11 +82,17 @@ public class AudioFileGenerator extends FilePlayer implements Generator,Runnable
 	public void noteOff() {
 		this.stop();
 		this.close();
+		GeneratorFactory.unpatch(this);
 	}
 	
 	private float calculateRelativePitch(int pitchOffset) {
 		float difPit = ((AudioFileGenerator.basePitch - pitchOffset) % 24) * -1;
 		return (1.f + (difPit) * (1.f / 12.f));
+	}
+	
+	public void setPitch(int pitch) {
+		float pr = calculateRelativePitch(pitch);
+		this.setPlaybackRate(pr);
 	}
 	
 	public void setPlaybackRate(float pr) {
@@ -128,6 +141,13 @@ public class AudioFileGenerator extends FilePlayer implements Generator,Runnable
 		Util.delay(this.duration);
 		//stop playing!
 		System.out.println("stop playing!");
-		GeneratorFactory.noteOffGen(this);
+		//GeneratorFactory.unpatch(this);
+		this.noteOff();
+	}
+
+	@Override
+	public Generator cloneInADifferentPitch(int newPitch) {
+		AudioFileGenerator result = new AudioFileGenerator(this.filename, newPitch, this.volume, this.duration, this.shouldLoop);
+		return result;
 	}
 }

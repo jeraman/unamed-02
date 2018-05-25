@@ -1,18 +1,20 @@
 package generators;
 
+import augmenters.MusicTheory;
 import ddf.minim.AudioOutput;
 import ddf.minim.UGen;
 import ddf.minim.ugens.Oscil;
 import ddf.minim.ugens.Waveform;
 import ddf.minim.ugens.Waves;
-import musicalTasksTest.Generator;
-import musicalTasksTest.GeneratorFactory;
-import musicalTasksTest.MusicTheory;
-import musicalTasksTest.Util;
+import util.Util;
 
 public class OscillatorGenerator extends Oscil implements Generator,Runnable {
 
 	int duration;
+	
+	float frequency;
+	float amplitude;
+	private Waveform wf;
 	
 	public OscillatorGenerator(int pitch, int velocity, boolean usesMidiValue) {
 		this(pitch, velocity, Waves.SINE, usesMidiValue);
@@ -20,8 +22,9 @@ public class OscillatorGenerator extends Oscil implements Generator,Runnable {
 	
 	public OscillatorGenerator(int pitch, int velocity, Waveform wf,  boolean usesMidiValue) {
 		super((float)MusicTheory.freqFromMIDI(pitch), Util.mapFromMidiToAmplitude(velocity), wf);
-		System.out.println(Util.mapFromMidiToAmplitude(velocity));
-		System.out.println((float)MusicTheory.freqFromMIDI(pitch));
+		this.frequency = (float)MusicTheory.freqFromMIDI(pitch);
+		this.amplitude  = Util.mapFromMidiToAmplitude(velocity);
+		this.wf = wf;
 	}
 	
 	public OscillatorGenerator(float frequencyInHertz, float amplitude) {
@@ -55,12 +58,13 @@ public class OscillatorGenerator extends Oscil implements Generator,Runnable {
 	@Override
 	public void noteOn() {
 		// TODO Auto-generated method stub
+		GeneratorFactory.patch(this);
 	}
 
 	@Override
 	public void noteOff() {
 		// TODO Auto-generated method stub
-		
+		GeneratorFactory.unpatch(this);
 	}
 
 	@Override
@@ -88,6 +92,13 @@ public class OscillatorGenerator extends Oscil implements Generator,Runnable {
 		Util.delay(this.duration);
 		//stop playing!
 		System.out.println("stop playing!");
-		GeneratorFactory.noteOffGen(this);
+		//GeneratorFactory.unpatch(this);
+		this.noteOff();
+	}
+
+	@Override
+	public Generator cloneInADifferentPitch(int newPitch) {
+		float newFreq = MusicTheory.freqFromMIDI(newPitch);
+		return new OscillatorGenerator(newFreq, this.amplitude, this.wf);
 	}
 }

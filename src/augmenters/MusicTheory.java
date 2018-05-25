@@ -1,6 +1,7 @@
-package musicalTasksTest;
+package augmenters;
 
 import org.jfugue.theory.*;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -19,57 +20,26 @@ public class MusicTheory {
 		return (new Note(note)).getValue();
 	}
 
-	public static double freqFromMIDI(int note) {
-		return Note.getFrequencyForNote(note);
+	public static float freqFromMIDI(int note) {
+		return (float)Note.getFrequencyForNote(note);
 	}
 
-	public static double freqFromNote(String note) {
-		return Note.getFrequencyForNote(note);
-	}
-
-	// details on: http://www.jfugue.org/doc/org/jfugue/theory/Chord.html
-	public static Chord generatingChordFromMIDI(int rootMIDI, String chordType) {
-		String note = noteFromMIDI(rootMIDI);
-
-		System.out.println("The chord to be generated is:");
-		String resultingChord = note + chordType;
-		System.out.println(resultingChord);
-
-		Chord chord = new Chord(resultingChord);
-		Note[] notes = chord.getNotes();
-
-		System.out.println("Notes from this chord are:");
-		for (Note n : notes)
-			System.out.print(n + " ");
-
-		System.out.println();
-
-		return chord;
-	}
-
-	public static Chord generatingRandomChordFromMIDI(int rootMIDI) {
-		String[] names = Chord.getChordNames();
-
-		System.out.println("All possible chord types are:");
-		System.out.println(names);
-
-		Random rand = new Random();
-		int randomIndex = rand.nextInt(names.length);
-		return generatingChordFromMIDI(rootMIDI, names[randomIndex]);
+	public static float freqFromNote(String note) {
+		return (float) Note.getFrequencyForNote(note);
 	}
 
 	// details on: http://www.jfugue.org/doc/org/jfugue/theory/Chord.html
-	public static Chord identifyingChordFromMIDI(int[] individualNotes) {
+	public static Chord identifyChordFromMIDI(int[] individualNotes) {
 		String[] formatedNotes = new String[individualNotes.length];
 
 		for (int i = 0; i < individualNotes.length; i++)
 			formatedNotes[i] = noteFromMIDI(individualNotes[i]);
 
-		return identifyingChordFromMIDI(formatedNotes);
+		return identifyChordFromMIDI(formatedNotes);
 	}
 
 	// details on: http://www.jfugue.org/doc/org/jfugue/theory/Chord.html
-	public static Chord identifyingChordFromMIDI(String[] individualNotes) {
+	private static Chord identifyChordFromMIDI(String[] individualNotes) {
 
 		System.out.println("Incoming notes are: ");
 		System.out.println(individualNotes);
@@ -87,35 +57,34 @@ public class MusicTheory {
 		return result;
 	}
 
-	// see details on:
-	// http://www.jfugue.org/doc/org/jfugue/theory/Intervals.html
-	public static Intervals identifyingIntervalFromMIDI(int midiNote1, int midiNote2) {
+	// see details on: http://www.jfugue.org/doc/org/jfugue/theory/Intervals.html
+	public static Intervals identifyIntervalFromMIDI(int midiNote1, int midiNote2) {
 		String[] notes = new String[2];
 		notes[0] = noteFromMIDI(midiNote1);
 		notes[1] = noteFromMIDI(midiNote2);
 
-		return identifyingIntervalFromMIDI(notes);
+		return identifyIntervalFromMIDI(notes);
 	}
 
-	public static Intervals identifyingIntervalFromMIDI(int[] notes) {
+	public static Intervals identifyIntervalFromMIDI(int[] notes) {
 		Note[] formatedNotes = new Note[notes.length];
 
 		for (int i = 0; i < notes.length; i++)
 			formatedNotes[i] = new Note(notes[i]);
 
-		return identifyingIntervalFromMIDI(formatedNotes);
+		return identifyIntervalFromMIDI(formatedNotes);
 	}
 
-	public static Intervals identifyingIntervalFromMIDI(String[] notes) {
+	private static Intervals identifyIntervalFromMIDI(String[] notes) {
 		Note[] formatedNotes = new Note[notes.length];
 
 		for (int i = 0; i < notes.length; i++)
 			formatedNotes[i] = new Note(notes[i]);
 
-		return identifyingIntervalFromMIDI(formatedNotes);
+		return identifyIntervalFromMIDI(formatedNotes);
 	}
 
-	public static Intervals identifyingIntervalFromMIDI(Note[] notes) {
+	private static Intervals identifyIntervalFromMIDI(Note[] notes) {
 		System.out.println("Incoming notes are: ");
 		System.out.println(notes);
 
@@ -124,16 +93,57 @@ public class MusicTheory {
 
 		return Intervals.createIntervalsFromNotes(notes);
 	}
+	
+	protected static Note[] generateInterval(int pitch, String intervalType) {
+		Intervals i = new Intervals("1 " + intervalType);
+		i.setRoot(new Note(pitch));
+		List<Note> notes = i.getNotes();
+		Note[] result = new Note[notes.size()];
+		result = notes.toArray(result);
+		return result;
+	}
+	
+
+	// details on: http://www.jfugue.org/doc/org/jfugue/theory/Chord.html
+	protected static Chord generateChordFromMIDI(int rootMIDI, String chordType) {
+		String note = MusicTheory.noteFromMIDI(rootMIDI);
+
+		System.out.println("The chord to be generated is:");
+		String resultingChord = note + chordType;
+		System.out.println(resultingChord);
+
+		Chord chord = new Chord(resultingChord);
+		Note[] notes = chord.getNotes();
+
+		System.out.println("Notes from this chord are:");
+		for (Note n : notes)
+			System.out.print(n + " ");
+
+		System.out.println();
+
+		return chord;
+	}
+
+	protected static Chord generateRandomChordFromMIDI(int rootMIDI) {
+		String[] names = Chord.getChordNames();
+
+		System.out.println("All possible chord types are:");
+		System.out.println(names);
+
+		Random rand = new Random();
+		int randomIndex = rand.nextInt(names.length);
+		return generateChordFromMIDI(rootMIDI, names[randomIndex]);
+	}
 
 	// details on: http://www.jfugue.org/doc/index.html?org/jfugue/theory/ChordProgression.html
-	public static ChordProgression generatingChordProgression(int rootMIDI, String chordProgression) {
+	protected static ChordProgression generateChordProgression(int rootMIDI, String chordProgression) {
 		// important: letter case represents if the chord if major or minor. for
 		// example:
 		// all major
 		// String chordProgression = "I IV V";
 		// two majors (I and V) and two minors (vi and ii)
 		// String chordProgression = "I vi ii V";
-		// it' possbile to add some modifiers such as 7th chords (7), or
+		// it' possible to add some modifiers such as 7th chords (7), or
 		// diminished (d)
 		// String chordProgression = "I vi ii V7 VIId";
 
@@ -154,5 +164,4 @@ public class MusicTheory {
 
 		return cp;
 	}
-
 }

@@ -1,28 +1,43 @@
 package generators;
 
+import augmenters.MusicTheory;
 import ddf.minim.AudioOutput;
 import ddf.minim.UGen;
 import ddf.minim.ugens.Oscil;
 import ddf.minim.ugens.Waveform;
 import ddf.minim.ugens.Waves;
-import musicalTasksTest.Generator;
-import musicalTasksTest.GeneratorFactory;
-import musicalTasksTest.MusicTheory;
-import musicalTasksTest.Util;
+import util.Util;
 
 public class FMGenerator extends Oscil implements Generator,Runnable{
 
 	private Oscil fm;
+	
 	private int	  duration;
+	
+	private float carrierFreq;
+	private float carrierAmp;
+	private Waveform carrierWave;
+	private float modFreq;
+	private float modAmp;
+	private Waveform modWave;
+	
 	
 	public FMGenerator (int pitch, int velocity) {
 		this((float)MusicTheory.freqFromMIDI(pitch), Util.mapFromMidiToAmplitude(velocity), Waves.SINE,
-				200.f, 50.f, Waves.SINE);
+				200.f, 50.f, Waves.QUARTERPULSE);
 	}
 	
 	public FMGenerator (float carrierFreq, float carrierAmp, Waveform carrierWave,
 						float modFreq, float modAmp, Waveform modWave) {
 		super(carrierFreq, carrierAmp, carrierWave);
+		
+		this.carrierFreq = carrierFreq;
+		this.carrierAmp  = carrierAmp;
+		this.carrierWave = carrierWave;
+		this.modFreq	 = modFreq;
+		this.modAmp		 = modAmp;
+		this.modWave 	 = modWave;
+		
 		fm  = new Oscil( modFreq, modAmp, modWave );
 		fm.offset.setLastValue(carrierFreq);
 		fm.patch(this.frequency);
@@ -64,13 +79,13 @@ public class FMGenerator extends Oscil implements Generator,Runnable{
 	@Override
 	public void noteOn() {
 		// TODO Auto-generated method stub
-		
+		GeneratorFactory.patch(this);
 	}
 
 	@Override
 	public void noteOff() {
 		// TODO Auto-generated method stub
-		
+		GeneratorFactory.unpatch(this);
 	}
 
 	@Override
@@ -98,7 +113,14 @@ public class FMGenerator extends Oscil implements Generator,Runnable{
 		Util.delay(this.duration);
 		//stop playing!
 		System.out.println("stop playing!");
-		GeneratorFactory.noteOffGen(this);
+		//GeneratorFactory.unpatch(this);
+		this.noteOff();
+	}
+
+	@Override
+	public Generator cloneInADifferentPitch(int newPitch) {
+		float newFreq = MusicTheory.freqFromMIDI(newPitch);
+		return new FMGenerator(newFreq, carrierAmp, carrierWave, modFreq, modAmp, modWave);
 	}
 
 }
