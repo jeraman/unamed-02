@@ -23,7 +23,7 @@ public class ArtificialNotes {
 	}
 	
 	protected void addArtificialNote (AugmentedNote baseline, int newNotePitch) {
-		if (!alreadyContainsAPitch(newNotePitch)) {
+		if (newPitchMeetsInsertionCriteria(baseline, newNotePitch)) {
 			AugmentedNote newNote = baseline.cloneInADifferentPitch(newNotePitch);
 			artificialNotes.add(newNote);
 		}
@@ -49,6 +49,14 @@ public class ArtificialNotes {
 	
 	public void addArtificialChord (AugmentedNote baseline, String chordType) {
 		this.addArtificialChord(baseline, baseline.getPitch(), chordType);
+	}
+	
+	private boolean newPitchMeetsInsertionCriteria(AugmentedNote baseline, int newNotePitch) {
+		return (!alreadyContainsAPitch(newNotePitch) && !isArtificialNoteEqualsAugmentedParent(baseline, newNotePitch));
+	}
+	
+	private boolean isArtificialNoteEqualsAugmentedParent(AugmentedNote baseline, int newNotePitch) {
+		return baseline.isPitchEquals(newNotePitch);
 	}
 
 	public void noteOn() {

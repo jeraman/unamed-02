@@ -17,21 +17,21 @@ public class AugmentedNoteMemory {
 		removalLine = new ArrayList<Integer>();
 	}
 	
-	public void put(int channel, int note, int velocity) {
+	public synchronized void put(int channel, int note, int velocity) {
 		this.put(channel, note, velocity, null);
 	}
 
-	public void put(int channel, int note, int velocity, Generator g) {
-		AugmentedNote newNote =new AugmentedNote(channel, note, velocity, g);
+	public synchronized void put(int channel, int note, int velocity, Generator g) {
+		AugmentedNote newNote = new AugmentedNote(channel, note, velocity, g);
 		this.put(newNote);
 	}
 	
-	public void put (AugmentedNote aug) {		
+	public synchronized void put (AugmentedNote aug) {		
 		controlsNumberOfConcurrentNotes();
 		memory.add(aug);
 	}
 
-	public AugmentedNote remove(int note) {
+	public synchronized AugmentedNote remove(int note) {
 		int noteIndex = getElementIndex(note);
 		AugmentedNote result = null;
 
@@ -52,16 +52,16 @@ public class AugmentedNoteMemory {
 		return result;
 	}
 	
-	public void update() {
+	public synchronized void update() {
 		tryToClearMemory();
 	}
 	
-	public void tryToClearMemory() {
+	public synchronized void tryToClearMemory() {
 		for (int note:removalLine) 
 			this.removeAndNoteOff(note);
 	}
 	
-	private AugmentedNote removeAndNoteOff(int note) {
+	private synchronized AugmentedNote removeAndNoteOff(int note) {
 		AugmentedNote n = this.remove(note);
 		n.noteOff();
 		n.close();
@@ -69,31 +69,32 @@ public class AugmentedNoteMemory {
 		return n;
 	}
 	
-	public boolean isQueuedToBeDeleted (int note) {
+	public synchronized boolean isQueuedToBeDeleted (int note) {
 		return removalLine.contains(note);
 	}
 	
+	
 
-	private void controlsNumberOfConcurrentNotes() {
+	private synchronized void controlsNumberOfConcurrentNotes() {
 		if (isBiggerThanNoteLimit())
 			removesOldestNote();
 	}
 
-	private boolean isBiggerThanNoteLimit() {
+	private synchronized boolean isBiggerThanNoteLimit() {
 		return (this.size() > CONCURRENT_NOTES_LIMIT);
 	}
 
-	private void removesOldestNote() {
+	private synchronized void removesOldestNote() {
 		if (size() > 0) {
 			this.removeAndNoteOff(memory.get(0).getPitch());
 		}
 	}
 
-	public int size() {
+	public synchronized int size() {
 		return memory.size();
 	}
 
-	private int getElementIndex(int wantedNote) {
+	private synchronized int getElementIndex(int wantedNote) {
 		int result = -1;
 		for (int i = 0; i < memory.size(); i++)
 			if (memory.get(i).isPitchEquals(wantedNote))
@@ -101,28 +102,28 @@ public class AugmentedNoteMemory {
 		return result;
 	}
 
-	public int[] getNoteArray() {
+	public synchronized int[] getNoteArray() {
 		int[] individualNotes = new int[memory.size()];
 		for (int i = 0; i < memory.size(); i++)
 			individualNotes[i] = memory.get(i).getPitch();
 		return individualNotes;
 	}
 
-	public int[] getToBeDeletedArray() {
+	public synchronized int[] getToBeDeletedArray() {
 		int[] individualNotes = new int[removalLine.size()];
 		for (int i = 0; i < removalLine.size(); i++)
 			individualNotes[i] = removalLine.get(i);
 		return individualNotes;
 	}
 
-	public AugmentedNote get(int index) {
+	public synchronized AugmentedNote get(int index) {
 		if (index >= 0 && index < memory.size())
 			return memory.get(index);
 		else
 			return null;
 	}
 
-	public AugmentedNote getStoredNotebyNoteValue(int wantedNote) {
+	public synchronized AugmentedNote getStoredNotebyNoteValue(int wantedNote) {
 		int noteIndex = getElementIndex(wantedNote);
 
 		if (noteIndex == -1)
@@ -131,7 +132,7 @@ public class AugmentedNoteMemory {
 			return memory.get(noteIndex);
 	}
 
-	public String identifyWhatUserIsPlaying() {
+	public synchronized String identifyWhatUserIsPlaying() {
 		int size = memory.size();
 		String text;
 

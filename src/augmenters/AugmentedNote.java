@@ -41,7 +41,7 @@ public class AugmentedNote extends BasicNote {
 		return artificialNotes;
 	}
 
-	void noteOn() {
+	synchronized void noteOn() {
 		this.artificialNotes.noteOn();
 
 		if (this.generator == null)

@@ -2,16 +2,16 @@ package generators;
 
 import augmenters.MusicTheory;
 import ddf.minim.AudioOutput;
+import ddf.minim.Minim;
 import ddf.minim.UGen;
+import ddf.minim.spi.AudioStream;
 import ddf.minim.ugens.LiveInput;
 import ddf.minim.ugens.Oscil;
 import ddf.minim.ugens.Vocoder;
 import ddf.minim.ugens.Waves;
 import util.Util;
 
-public class LiveInputGenerator extends LiveInput implements Generator,Runnable {
-	
-	//protected AudioStream mInputStream;
+public class LiveInputGeneratorBackup extends LiveInput implements Generator,Runnable {
 	
 	private Vocoder vocode;
 	private Oscil mod;
@@ -21,16 +21,16 @@ public class LiveInputGenerator extends LiveInput implements Generator,Runnable 
 	private boolean hasVocode;
 	
 	
-	public LiveInputGenerator() {
-		this(false, 0, 0);
+	public LiveInputGeneratorBackup(AudioStream inputStream) {
+		this(inputStream, false, 0, 0);
 	}
 	
-	public LiveInputGenerator(int pitch, int velocity) {
-		this(true, pitch, velocity);
+	public LiveInputGeneratorBackup(AudioStream inputStream, int pitch, int velocity) {
+		this(inputStream, true, pitch, velocity);
 	}
 	
-	public LiveInputGenerator(boolean hasVocode, int pitch, int velocity) {
-		super(GeneratorFactory.getInput());
+	public LiveInputGeneratorBackup(AudioStream inputStream, boolean hasVocode, int pitch, int velocity) {
+		super(inputStream);
 		this.hasVocode = hasVocode;
 		this.pitch = pitch;
 		this.velocity = velocity;
@@ -107,7 +107,7 @@ public class LiveInputGenerator extends LiveInput implements Generator,Runnable 
 
 	@Override
 	public Generator cloneInADifferentPitch(int newPitch) {
-		return new LiveInputGenerator(newPitch, this.velocity);
+		return new LiveInputGeneratorBackup(GeneratorFactory.in, newPitch, this.velocity);
 	}
 	
 	public void close() {

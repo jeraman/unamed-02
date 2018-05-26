@@ -9,10 +9,12 @@ import ddf.minim.spi.AudioStream;
 public class GeneratorFactory {
 	public static Minim minim;
 	public static AudioOutput out;
+	public static AudioStream in;
 	
-	public static void setup (Minim minim, AudioOutput out) {
+	public static void setup (Minim minim, AudioOutput out,  AudioStream in) {
 		GeneratorFactory.minim = minim;
 		GeneratorFactory.out = out;
+		GeneratorFactory.in = in;
 	}
 
 	////////////////////////////
@@ -76,7 +78,7 @@ public class GeneratorFactory {
 	////////////////////////////
 	//Live Input factory
 	public static Generator noteOnLiveInpuGen(int pitch, int velocity) {
-		Generator gen = new LiveInputGenerator(getInput(), pitch, velocity);
+		Generator gen = new LiveInputGenerator(pitch, velocity);
 		return gen;
 //		return GeneratorFactory.patch(gen);
 	}
@@ -88,7 +90,7 @@ public class GeneratorFactory {
 	}
 	
 	public static Generator noteOnLiveInpuGen() {
-		Generator gen = new LiveInputGenerator(getInput());
+		Generator gen = new LiveInputGenerator();
 //		return GeneratorFactory.patch(gen);
 		return gen;
 	}
@@ -101,17 +103,17 @@ public class GeneratorFactory {
 	
 	////////////////////////////
 	//general note off for all generators
-	public static Generator unpatch(Generator gen) {
+	public synchronized static Generator unpatch(Generator gen) {
 		gen.unpatchOutput(out);
 		return gen;
 	}
 	
-	public static Generator patch(Generator gen) {
+	public synchronized static Generator patch(Generator gen) {
 		gen.patchOutput(out);
 		return gen;
 	}
 	
-	public static AudioStream getInput() {
+	public synchronized static AudioStream getInput() {
 		return minim.getInputStream( Minim.MONO, 
             out.bufferSize(), 
             out.sampleRate(), 

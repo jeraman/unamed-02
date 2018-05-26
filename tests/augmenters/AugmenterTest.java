@@ -1,18 +1,18 @@
 package augmenters;
 
-import augmenters.ArtificialNotes;
 import augmenters.AugmentedNote;
 import augmenters.AugmentedNoteMemory;
 import ddf.minim.AudioOutput;
 import ddf.minim.Minim;
 import ddf.minim.spi.AudioRecordingStream;
+import ddf.minim.spi.AudioStream;
 import generators.Generator;
 import generators.GeneratorFactory;
 import processing.core.PApplet;
 import util.MidiIO;
 
 public class AugmenterTest extends PApplet{
-	MidiIO midi;
+	//MidiIO midi;
 	AugmentedNoteMemory memory;
 	AudioRecordingStream fileStream;
 	
@@ -38,8 +38,11 @@ public class AugmenterTest extends PApplet{
 	public void setupAudio() {
 		Minim minim = new Minim(this);
 		AudioOutput out = minim.getLineOut(Minim.MONO, 256);
-		GeneratorFactory.setup(minim, out);
+		AudioStream in  = minim.getInputStream(Minim.MONO, out.bufferSize(), out.sampleRate(),
+				out.getFormat().getSampleSizeInBits());
+		GeneratorFactory.setup(minim, out, in);
 		MidiIO.setup(this);
+		
 	}
 	
 	
@@ -50,23 +53,35 @@ public class AugmenterTest extends PApplet{
 	public void draw() {
 		background(0);
 		
+		this.memory.size();
+		
 		//String t = memory.identifyWhatUserIsPlaying();
 		//text(t, width/2, height/2);
 	}
+	
+	//study this:
+	//https://docs.oracle.com/javase/tutorial/essential/concurrency/locksync.html
+	//to solve threading problems you are facing
 	
 	public void mousePressed() {
 		//Generator gen = GeneratorFactory.temporaryFMGen(60, 127, 1500);
 		//Generator gen = GeneratorFactory.temporaryAudioFileGen("123go.mp3", 60, 127, 1500);
 		//Generator gen = GeneratorFactory.temporaryOscillatorGen(60, 127, 500);
 		//Generator gen = GeneratorFactory.temporaryLiveInpuGen(1500);
+		
+		Generator gen = GeneratorFactory.temporaryFMGen(60, 127, 1500);
+		AugmentedNote newNote = new AugmentedNote(0, 60, 127, gen);
+		//newNote.addArtificialChord("min7");
+		//newNote.addArtificialInterval("5");
+		newNote.noteOn();
 	}
 
 	public void noteOn(int channel, int pitch, int velocity) {
-		Generator gen = GeneratorFactory.noteOnSampleFileGen("123go.mp3", pitch, velocity);
+		//Generator gen = GeneratorFactory.noteOnSampleFileGen("123go.mp3", pitch, velocity);
 		//Generator gen = GeneratorFactory.noteOnAudioFileGen(fileStream, pitch, velocity);
 		//Generator gen = GeneratorFactory.noteOnFMGen(pitch, velocity);
 		//Generator gen = GeneratorFactory.noteOnOscillatorGen(pitch, velocity);
-		//Generator gen = GeneratorFactory.noteOnLiveInpuGen(pitch, velocity);
+		Generator gen = GeneratorFactory.noteOnLiveInpuGen(pitch, velocity);
 
 		AugmentedNote newNote = new AugmentedNote(channel, pitch, velocity, gen);
 		newNote.addArtificialChord("min7");

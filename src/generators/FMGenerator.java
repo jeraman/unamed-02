@@ -77,13 +77,13 @@ public class FMGenerator extends Oscil implements Generator,Runnable{
 	}
 
 	@Override
-	public void noteOn() {
+	public synchronized void noteOn() {
 		// TODO Auto-generated method stub
 		GeneratorFactory.patch(this);
 	}
 
 	@Override
-	public void noteOff() {
+	public synchronized void noteOff() {
 		// TODO Auto-generated method stub
 		GeneratorFactory.unpatch(this);
 	}
