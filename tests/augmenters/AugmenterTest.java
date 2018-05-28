@@ -14,7 +14,6 @@ import processing.core.PApplet;
 import util.MidiIO;
 
 public class AugmenterTest extends PApplet{
-	//MidiIO midi;
 	AugmentedNoteMemory memory;
 	AudioRecordingStream fileStream;
 	
@@ -43,17 +42,15 @@ public class AugmenterTest extends PApplet{
 	
 	public void setupAudio() {
 		Minim minim = new Minim(this);
-		AudioOutput out = minim.getLineOut(Minim.MONO, 256);
-		AudioStream in  = minim.getInputStream(Minim.MONO, out.bufferSize(), out.sampleRate(),
-				out.getFormat().getSampleSizeInBits());
-		GeneratorFactory.setup(minim, out, in);
-		
-		this.loadSampledFile("123go.mp3");
-		
+		GeneratorFactory.setup(minim);
+
+		Pair<MultiChannelBuffer, Float> pair = GeneratorFactory.loadMultiChannelBufferFromFile("123go.mp3");
+		buf = pair.getKey();
+		sampleRate = pair.getValue();
+
 		MidiIO.setup(this);
 		
 	}
-	
 	
 	public void stop() {
 		GeneratorFactory.close();
@@ -84,12 +81,6 @@ public class AugmenterTest extends PApplet{
 		newNote.noteOn();
 	}
 	
-	public void loadSampledFile(String filename) {
-		Pair<MultiChannelBuffer, Float> pair = GeneratorFactory.loadMultiChannelBufferFromFile(filename);
-		buf = pair.getKey();
-		sampleRate = pair.getValue();
-	}
-	
 	public void noteOn(int channel, int pitch, int velocity) {
 		//Generator gen = GeneratorFactory.noteOnSampleFileGen(buf, sampleRate, pitch, velocity);
 		//Generator gen = GeneratorFactory.noteOnFMGen(pitch, velocity);
@@ -97,8 +88,8 @@ public class AugmenterTest extends PApplet{
 		Generator gen = GeneratorFactory.noteOnLiveInpuGen(pitch, velocity);
 
 		AugmentedNote newNote = new AugmentedNote(channel, pitch, velocity, gen);
-		newNote.addArtificialChord("min7");
-		newNote.addArtificialInterval(pitch+12, "5");
+		//newNote.addArtificialChord("min7");
+		//newNote.addArtificialInterval(pitch+12, "5");
 		newNote.noteOn();
 		memory.put(newNote);
 	}

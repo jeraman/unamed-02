@@ -3,18 +3,22 @@ package generators;
 import augmenters.MusicTheory;
 import ddf.minim.AudioOutput;
 import ddf.minim.UGen;
+import ddf.minim.ugens.Bypass;
 import ddf.minim.ugens.LiveInput;
+import ddf.minim.ugens.Multiplier;
 import ddf.minim.ugens.Oscil;
+import ddf.minim.ugens.Summer;
 import ddf.minim.ugens.Vocoder;
 import ddf.minim.ugens.Waves;
 import util.Util;
 
-public class LiveInputGenerator extends LiveInput implements Generator,Runnable {
+public class LiveInputGenerator extends Oscil implements Generator,Runnable {
 	
-	//protected AudioStream mInputStream;
+	private static LiveInput micInput;
+	private static Vocoder 	vocode;
+	private static Summer 	synth;
 	
-	private Vocoder vocode;
-	private Oscil mod;
+//	private Oscil mod;
 	private int duration;
 	private int pitch;
 	private int velocity;
@@ -30,18 +34,81 @@ public class LiveInputGenerator extends LiveInput implements Generator,Runnable 
 	}
 	
 	public LiveInputGenerator(boolean hasVocode, int pitch, int velocity) {
-		super(GeneratorFactory.getInput());
+		super((float)MusicTheory.freqFromMIDI(pitch), Util.mapFromMidiToAmplitude(velocity), Waves.SAW);	
+		
+		if (!isClassInitialized())
+			setupClass();
+		
 		this.hasVocode = hasVocode;
 		this.pitch = pitch;
 		this.velocity = velocity;
-		if (hasVocode) {
-			vocode = new Vocoder(1024, 8);
-			this.patch(vocode.modulator);
-			mod = new Oscil((float) MusicTheory.freqFromMIDI(pitch), Util.mapFromMidiToAmplitude(velocity), Waves.SAW);
-		}
+			
+//		if (hasVocode) {
+			//vocode = new Vocoder(1024, 8);
+			//this.patch(vocode.modulator);
+			//mod = new Oscil((float) MusicTheory.freqFromMIDI(pitch), Util.mapFromMidiToAmplitude(velocity), Waves.SAW);
+			
+//		}
+	}
+	
+	public boolean isClassInitialized() {
+		return (LiveInputGenerator.micInput != null);
+	}
+	
+	public static void setupClass() {
+		LiveInputGenerator.micInput = new LiveInput(GeneratorFactory.getInput());
+		LiveInputGenerator.vocode	= new Vocoder(1024, 8);
+		LiveInputGenerator.synth	= new Summer();
+		
+		LiveInputGenerator.micInput.patch(LiveInputGenerator.vocode.modulator);
+		LiveInputGenerator.synth.patch(vocode).patch(GeneratorFactory.out);
+	}
+	
+	public static void closeClass() {
+		LiveInputGenerator.micInput.close();
+		//LiveInputGenerator.synth.unpatch(vocode);
+		LiveInputGenerator.micInput = null;
+		LiveInputGenerator.vocode 	= null;
+		LiveInputGenerator.synth 	= null;
+		vocode.unpatch(GeneratorFactory.out);
+		synth.unpatch(vocode);
+	}
+	
+	//TODO: manage how effect PATCHING is going to work with this new structure
+	@Override
+	public UGen patchEffect(UGen effect) {
+		if (hasVocode)
+			return LiveInputGenerator.synth.patch(effect);
+		else
+			return LiveInputGenerator.micInput.patch(effect);
 	}
 
-	
+	@Override
+	public void patchOutput(AudioOutput out) {
+		if (hasVocode) {
+			this.patch(synth);
+			//synth.patch(vocode).patch(out);
+		} else
+			LiveInputGenerator.micInput.patch(out);
+	}
+
+	//TODO: manage how effect UNPATCHING effect is going to work with this new structure
+	@Override
+	public void unpatchEffect(UGen effect) {
+		if (hasVocode) 
+			LiveInputGenerator.synth.unpatch(effect);
+		else
+			LiveInputGenerator.micInput.unpatch(effect);
+	}
+
+	@Override
+	public void unpatchOutput(AudioOutput out) {
+		if (hasVocode) {
+			this.unpatch(synth);
+		} else
+			LiveInputGenerator.micInput.unpatch(out);
+	}
+	/*
 	@Override
 	public UGen patchEffect(UGen effect) {
 		if (hasVocode)
@@ -75,7 +142,7 @@ public class LiveInputGenerator extends LiveInput implements Generator,Runnable 
 		} else
 			super.unpatch(out);
 	}
-	
+	*/
 
 	@Override
 	public void noteOn() {
@@ -111,9 +178,9 @@ public class LiveInputGenerator extends LiveInput implements Generator,Runnable 
 	}
 	
 	public void close() {
-		super.close();
-		this.vocode = null;
-		this.mod = null;
+		//super.close();
+		//this.vocode = null;
+		//this.mod = null;
 	}
 
 }

@@ -11,7 +11,7 @@ import ddf.minim.ugens.TickRate;
 import javafx.util.Pair;
 import util.Util;
 
-public class SamplerFileGenerator extends PublicSampler implements Generator,Runnable {
+public class SamplerFileGenerator extends ModifiedSampler implements Generator,Runnable {
 	static final int basePitch	 = 52;
 	
 	String 	   filename;

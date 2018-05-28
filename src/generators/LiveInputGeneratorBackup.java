@@ -2,17 +2,20 @@ package generators;
 
 import augmenters.MusicTheory;
 import ddf.minim.AudioOutput;
-import ddf.minim.Minim;
 import ddf.minim.UGen;
-import ddf.minim.spi.AudioStream;
+import ddf.minim.ugens.Bypass;
 import ddf.minim.ugens.LiveInput;
+import ddf.minim.ugens.Multiplier;
 import ddf.minim.ugens.Oscil;
 import ddf.minim.ugens.Vocoder;
 import ddf.minim.ugens.Waves;
 import util.Util;
 
-public class LiveInputGeneratorBackup extends LiveInput implements Generator,Runnable {
+public class LiveInputGeneratorBackup extends ModifiedLiveInput implements Generator,Runnable {
 	
+	//protected AudioStream mInputStream;
+	
+	private Multiplier copiedInput;
 	private Vocoder vocode;
 	private Oscil mod;
 	private int duration;
@@ -21,22 +24,25 @@ public class LiveInputGeneratorBackup extends LiveInput implements Generator,Run
 	private boolean hasVocode;
 	
 	
-	public LiveInputGeneratorBackup(AudioStream inputStream) {
-		this(inputStream, false, 0, 0);
+	public LiveInputGeneratorBackup() {
+		this(false, 0, 0);
 	}
 	
-	public LiveInputGeneratorBackup(AudioStream inputStream, int pitch, int velocity) {
-		this(inputStream, true, pitch, velocity);
+	public LiveInputGeneratorBackup(int pitch, int velocity) {
+		this(true, pitch, velocity);
 	}
 	
-	public LiveInputGeneratorBackup(AudioStream inputStream, boolean hasVocode, int pitch, int velocity) {
-		super(inputStream);
+	public LiveInputGeneratorBackup(boolean hasVocode, int pitch, int velocity) {
+		super(GeneratorFactory.getInput());
+		//this.bypass.activate();
 		this.hasVocode = hasVocode;
 		this.pitch = pitch;
 		this.velocity = velocity;
 		if (hasVocode) {
+			this.copiedInput = new Multiplier(1.f);
+			this.patch(copiedInput);
 			vocode = new Vocoder(1024, 8);
-			this.patch(vocode.modulator);
+			copiedInput.patch(vocode.modulator);
 			mod = new Oscil((float) MusicTheory.freqFromMIDI(pitch), Util.mapFromMidiToAmplitude(velocity), Waves.SAW);
 		}
 	}
@@ -107,7 +113,7 @@ public class LiveInputGeneratorBackup extends LiveInput implements Generator,Run
 
 	@Override
 	public Generator cloneInADifferentPitch(int newPitch) {
-		return new LiveInputGeneratorBackup(GeneratorFactory.in, newPitch, this.velocity);
+		return new LiveInputGeneratorBackup(newPitch, this.velocity);
 	}
 	
 	public void close() {

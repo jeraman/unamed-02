@@ -6,7 +6,7 @@ import ddf.minim.Minim;
 import ddf.minim.MultiChannelBuffer;
 import ddf.minim.UGen;
 
-public class PublicSampler extends UGen
+public class ModifiedSampler extends UGen
 {
 	/**
 	 * The sample number in the source sample 
@@ -73,7 +73,7 @@ public class PublicSampler extends UGen
 	 * 			Minim: the instance of Minim to use for loading the file
 	 *
 	 */
-	public PublicSampler( String filename, int maxVoices, Minim system )
+	public ModifiedSampler( String filename, int maxVoices, Minim system )
 	{
 		triggers = new Trigger[maxVoices];
 		for( int i = 0; i < maxVoices; ++i )
@@ -106,7 +106,7 @@ public class PublicSampler extends UGen
 	 * 
 	 * @related MultiChannelBuffer
 	 */
-	public PublicSampler( MultiChannelBuffer sampleData, float sampleRate, int maxVoices )
+	public ModifiedSampler( MultiChannelBuffer sampleData, float sampleRate, int maxVoices )
 	{
 		triggers = new Trigger[maxVoices];
 		for( int i = 0; i < maxVoices; ++i )

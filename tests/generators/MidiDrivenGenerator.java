@@ -37,10 +37,7 @@ public class MidiDrivenGenerator extends PApplet {
 	
 	public void setupAudio() {
 		Minim minim = new Minim(this);
-		AudioOutput out = minim.getLineOut(Minim.MONO, 256);
-		AudioStream in = minim.getInputStream(Minim.MONO, out.bufferSize(), out.sampleRate(),
-				out.getFormat().getSampleSizeInBits());
-		GeneratorFactory.setup(minim, out, in);
+		GeneratorFactory.setup(minim);
 		MidiIO.setup(this);
 	}
 

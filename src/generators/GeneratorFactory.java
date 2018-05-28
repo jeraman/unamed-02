@@ -13,10 +13,13 @@ public class GeneratorFactory {
 	public static AudioOutput out;
 	public static AudioStream in;
 	
-	public static void setup (Minim minim, AudioOutput out,  AudioStream in) {
+	public static void setup (Minim minim) {
 		GeneratorFactory.minim = minim;
-		GeneratorFactory.out = out;
-		GeneratorFactory.in = in;
+		GeneratorFactory.out = minim.getLineOut(Minim.MONO, 256);
+		GeneratorFactory.in  = minim.getInputStream(Minim.MONO, out.bufferSize(), out.sampleRate(),
+				out.getFormat().getSampleSizeInBits());
+		
+		in.open();
 	}
 
 	////////////////////////////
@@ -122,10 +125,8 @@ public class GeneratorFactory {
 	}
 	
 	public synchronized static AudioStream getInput() {
-		return minim.getInputStream( Minim.MONO, 
-            out.bufferSize(), 
-            out.sampleRate(), 
-            out.getFormat().getSampleSizeInBits());
+//		return minim.getInputStream( Minim.MONO, out.bufferSize(), out.sampleRate(),out.getFormat().getSampleSizeInBits());
+		return in;
 	}
 	
 	public synchronized static Pair<MultiChannelBuffer, Float> loadMultiChannelBufferFromFile(String filename) {
@@ -136,6 +137,7 @@ public class GeneratorFactory {
 
 	public static void close() {
 		out.close();
+		in.close();
 		minim.stop();
 		out = null;
 		minim = null;
