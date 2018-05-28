@@ -4,10 +4,12 @@ import augmenters.AugmentedNote;
 import augmenters.AugmentedNoteMemory;
 import ddf.minim.AudioOutput;
 import ddf.minim.Minim;
+import ddf.minim.MultiChannelBuffer;
 import ddf.minim.spi.AudioRecordingStream;
 import ddf.minim.spi.AudioStream;
 import generators.Generator;
 import generators.GeneratorFactory;
+import javafx.util.Pair;
 import processing.core.PApplet;
 import util.MidiIO;
 
@@ -15,6 +17,10 @@ public class AugmenterTest extends PApplet{
 	//MidiIO midi;
 	AugmentedNoteMemory memory;
 	AudioRecordingStream fileStream;
+	
+	MultiChannelBuffer buf;
+	float sampleRate;
+	
 	
 	public static void main(String[] args) {
 		PApplet.main("augmenters.AugmenterTest");
@@ -41,6 +47,9 @@ public class AugmenterTest extends PApplet{
 		AudioStream in  = minim.getInputStream(Minim.MONO, out.bufferSize(), out.sampleRate(),
 				out.getFormat().getSampleSizeInBits());
 		GeneratorFactory.setup(minim, out, in);
+		
+		this.loadSampledFile("123go.mp3");
+		
 		MidiIO.setup(this);
 		
 	}
@@ -64,7 +73,6 @@ public class AugmenterTest extends PApplet{
 	//to solve threading problems you are facing
 	
 	public void mousePressed() {
-		//Generator gen = GeneratorFactory.temporaryFMGen(60, 127, 1500);
 		//Generator gen = GeneratorFactory.temporaryAudioFileGen("123go.mp3", 60, 127, 1500);
 		//Generator gen = GeneratorFactory.temporaryOscillatorGen(60, 127, 500);
 		//Generator gen = GeneratorFactory.temporaryLiveInpuGen(1500);
@@ -75,17 +83,22 @@ public class AugmenterTest extends PApplet{
 		//newNote.addArtificialInterval("5");
 		newNote.noteOn();
 	}
-
+	
+	public void loadSampledFile(String filename) {
+		Pair<MultiChannelBuffer, Float> pair = GeneratorFactory.loadMultiChannelBufferFromFile(filename);
+		buf = pair.getKey();
+		sampleRate = pair.getValue();
+	}
+	
 	public void noteOn(int channel, int pitch, int velocity) {
-		//Generator gen = GeneratorFactory.noteOnSampleFileGen("123go.mp3", pitch, velocity);
-		//Generator gen = GeneratorFactory.noteOnAudioFileGen(fileStream, pitch, velocity);
+		//Generator gen = GeneratorFactory.noteOnSampleFileGen(buf, sampleRate, pitch, velocity);
 		//Generator gen = GeneratorFactory.noteOnFMGen(pitch, velocity);
 		//Generator gen = GeneratorFactory.noteOnOscillatorGen(pitch, velocity);
 		Generator gen = GeneratorFactory.noteOnLiveInpuGen(pitch, velocity);
 
 		AugmentedNote newNote = new AugmentedNote(channel, pitch, velocity, gen);
 		newNote.addArtificialChord("min7");
-		//newNote.addArtificialInterval("5");
+		newNote.addArtificialInterval(pitch+12, "5");
 		newNote.noteOn();
 		memory.put(newNote);
 	}

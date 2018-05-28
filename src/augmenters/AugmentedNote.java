@@ -72,6 +72,14 @@ public class AugmentedNote extends BasicNote {
 	void addArtificialChord (String chordType) {
 		this.artificialNotes.addArtificialChord(this, chordType);
 	}
+		
+	void addArtificialInterval (int newPitch, String intervalType) {
+		this.artificialNotes.addArtificialInterval(this, newPitch, intervalType);
+	}
+	
+	void addArtificialChord (int newRoot, String chordType) {
+		this.artificialNotes.addArtificialChord(this, newRoot, chordType);
+	}
 	
 	private Generator cloneGenerator(int newNotePitch) {
 		Generator gen = null;

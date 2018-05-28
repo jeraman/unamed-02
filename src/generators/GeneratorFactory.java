@@ -2,8 +2,10 @@ package generators;
 
 import ddf.minim.AudioOutput;
 import ddf.minim.Minim;
+import ddf.minim.MultiChannelBuffer;
 import ddf.minim.spi.AudioRecordingStream;
 import ddf.minim.spi.AudioStream;
+import javafx.util.Pair;
 
 
 public class GeneratorFactory {
@@ -35,6 +37,12 @@ public class GeneratorFactory {
 	//SampleFile factory
 	public static Generator noteOnSampleFileGen(String fileStream, int pitch, int velocity) {
 		Generator gen = new SamplerFileGenerator(fileStream, pitch, velocity);
+		return gen;
+		//return GeneratorFactory.patch(gen);
+	}
+	
+	public static Generator noteOnSampleFileGen(MultiChannelBuffer buf, float samplerate, int pitch, int velocity) {
+		Generator gen = new SamplerFileGenerator(buf, samplerate, pitch, velocity);
 		return gen;
 		//return GeneratorFactory.patch(gen);
 	}
@@ -118,6 +126,12 @@ public class GeneratorFactory {
             out.bufferSize(), 
             out.sampleRate(), 
             out.getFormat().getSampleSizeInBits());
+	}
+	
+	public synchronized static Pair<MultiChannelBuffer, Float> loadMultiChannelBufferFromFile(String filename) {
+		MultiChannelBuffer sampleData = new MultiChannelBuffer(1, 1);
+		float sampleDataSampleRate = GeneratorFactory.minim.loadFileIntoBuffer(filename, sampleData);
+		return new Pair<>(sampleData, sampleDataSampleRate);
 	}
 
 	public static void close() {

@@ -2,20 +2,23 @@ package generators;
 
 import ddf.minim.AudioOutput;
 import ddf.minim.Minim;
+import ddf.minim.MultiChannelBuffer;
 import ddf.minim.UGen;
 import ddf.minim.ugens.FilePlayer;
 import ddf.minim.ugens.Gain;
 import ddf.minim.ugens.Sampler;
 import ddf.minim.ugens.TickRate;
+import javafx.util.Pair;
 import util.Util;
 
-public class SamplerFileGenerator extends Sampler implements Generator,Runnable {
+public class SamplerFileGenerator extends PublicSampler implements Generator,Runnable {
 	static final int basePitch	 = 52;
 	
 	String 	   filename;
 	int 	   pitch;
 	int 	   volume;
 	int 	   duration;
+	
 	
 	public SamplerFileGenerator(String fileStream) {
 		this(fileStream, Integer.MAX_VALUE);
@@ -36,6 +39,24 @@ public class SamplerFileGenerator extends Sampler implements Generator,Runnable 
 	public SamplerFileGenerator(String filename, int pitch, int volume, int duration, boolean shouldLoop) {
 		super(filename, 1, GeneratorFactory.minim);
 		
+		initializeVariables(filename, pitch, volume, duration, shouldLoop);
+	}
+	
+	public SamplerFileGenerator(MultiChannelBuffer sampleData, float sampleRate, int pitch, int volume) {
+		this(sampleData, sampleRate, pitch, volume, Integer.MAX_VALUE, true);
+	}
+
+	public SamplerFileGenerator(MultiChannelBuffer sampleData, float sampleRate, int pitch, int volume, int duration) {
+		this(sampleData, sampleRate, pitch, volume, duration, true);
+	}
+	
+	public SamplerFileGenerator(MultiChannelBuffer sampleData, float sampleRate, int pitch, int volume, int duration, boolean shouldLoop) {
+		super(sampleData, sampleRate, 1);
+		
+		initializeVariables(filename, pitch, volume, duration, shouldLoop);
+	}
+	
+	private void initializeVariables(String filename, int pitch, int volume, int duration, boolean shouldLoop) {
 		this.filename = filename;
 		//this.filename = filename;
 		this.pitch	 = pitch;
@@ -47,42 +68,26 @@ public class SamplerFileGenerator extends Sampler implements Generator,Runnable 
 		float pR = calculateRelativePitch(pitch);
 		this.setPlaybackRate(pR);
 		//this.rateControl = new TickRate(pR);
-	    //this.gain        = new Gain(Util.mapFromMidiToDecibels(volume));
+		//this.gain        = new Gain(Util.mapFromMidiToDecibels(volume));
 		this.setVolume(volume);
 	}
 	
-	
-	
 	public UGen patchEffect (UGen nextGen) {
-		//return super.patch(rateControl).patch(gain).patch(nextGen);
-//		return super.patch(gain).patch(nextGen);
 		return super.patch(nextGen);
 	}
 	
 	public void patchOutput (AudioOutput out) {
-//		super.patch(rateControl).patch(gain).patch(out);
-//		super.patch(gain).patch(out);
 		super.patch(out);
 	}
 	
 	public void close() {
-//		super.close();
-		//gain = null;
-		//rateControl = null;
 	}
 	
 	public void unpatchEffect (UGen nextGen) {
-		//gain.unpatch(nextGen);
-		//rateControl.unpatch(gain);
-//		super.unpatch(rateControl);
 		super.unpatch(nextGen);
 	}
 	
 	public void unpatchOutput (AudioOutput out) {
-//		gain.unpatch(out);
-//		rateControl.unpatch(gain);
-//		super.unpatch(rateControl);
-//		super.unpatch(gain);
 		super.unpatch(out);
 	}
 
@@ -109,13 +114,11 @@ public class SamplerFileGenerator extends Sampler implements Generator,Runnable 
 	}
 	
 	public void setPlaybackRate(float pr) {
-//		rateControl.value.setLastValue(pr);
 		this.rate.setLastValue(pr);
 	}
 
 	public void setVolume(int v) {
 		float newVel = Util.mapFromMidiToAmplitude(v);
-		//gain.setValue(newVel);
 		this.amplitude.setLastValue(newVel);
 	}
 	
@@ -123,25 +126,6 @@ public class SamplerFileGenerator extends Sampler implements Generator,Runnable 
 		this.looping = l;
 	}
 	
-//	public void play() {
-//		if (this.shouldLoop)
-//			playInLoop();
-//		else
-//			playOnce();
-//	}
-//
-//	private void playInLoop() {
-//		this.loop();
-//	}
-//
-//	private void playOnce() {
-//		this.loop(0);
-//	}
-//
-//	public void stop() {
-//		super.pause();
-//	}
-//	
 	public void noteOffAfterDuration(int duration) {
 		this.duration = duration;
 		System.out.println("waiting! " + duration);
@@ -153,15 +137,14 @@ public class SamplerFileGenerator extends Sampler implements Generator,Runnable 
 	public void run() {
 		// TODO Auto-generated method stub
 		Util.delay(this.duration);
-		//stop playing!
 		System.out.println("stop playing!");
-		//GeneratorFactory.unpatch(this);
 		this.noteOff();
 	}
 
 	@Override
 	public Generator cloneInADifferentPitch(int newPitch) {
-		SamplerFileGenerator result = new SamplerFileGenerator(this.filename, newPitch, this.volume, this.duration, this.looping);
+//		SamplerFileGenerator result = new SamplerFileGenerator(this.filename, newPitch, this.volume, this.duration, this.looping);
+		SamplerFileGenerator result = new SamplerFileGenerator(this.getSampleData(), this.getSampleDataSampleRate(), newPitch, this.volume, this.duration, this.looping);
 		return result;
 	}
 }
