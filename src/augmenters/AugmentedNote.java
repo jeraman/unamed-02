@@ -1,5 +1,7 @@
 package augmenters;
 
+import ddf.minim.UGen;
+import effects.Effect;
 import generators.Generator;
 import util.MidiIO;
 
@@ -12,36 +14,56 @@ import util.MidiIO;
 public class AugmentedNote extends BasicNote {
 	private ArtificialNotes artificialNotes;
 	private Generator generator;
+	private Effect effect;
 
-//	public AugmentedNote(int channel, int pitch, int velocity) {
-//		this(channel, pitch, velocity, null, null);
-//	}
-	
 	public AugmentedNote(int channel, int pitch, int velocity) {
 		this(channel, pitch, velocity, null);
 	}
 	
 	public AugmentedNote(int channel, int pitch, int velocity, Generator generator) {
+		this(channel, pitch, velocity, generator, null);
+	}
+	
+	public AugmentedNote(int channel, int pitch, int velocity, Generator generator, Effect effect) {
 		super(channel, pitch, velocity);
 		this.artificialNotes = new ArtificialNotes();
 		this.generator = generator;	
+		this.effect	   = effect;	
 	}
-	
-//	public AugmentedNote(int channel, int pitch, int velocity, ArtificialNotes artificialNote, Generator generator) {
-//		super(channel, pitch, velocity);
-//		this.artificialNotes = artificialNote;
-//		this.generator = generator;
-//	}
 
 	protected boolean isPitchEquals(int wantedPitch) {
 		return (this.isNoteEquals(wantedPitch));
 	}
 
-	ArtificialNotes getArtificialNotes() {
+	protected ArtificialNotes getArtificialNotes() {
 		return artificialNotes;
 	}
-
-	synchronized void noteOn() {
+	
+	
+	public void patchEffects() {
+		if (this.effect == null) 
+			return;
+		
+		this.artificialNotes.patchEffects();
+		
+		if (this.generator != null)
+			this.generator.patchEffect((UGen)effect);
+	}
+	
+	public void unpatchEffects() {
+		if (this.effect == null) 
+			return;
+		
+		this.artificialNotes.unpatchEffects();
+		
+		if (this.generator != null)
+			this.generator.unpatchEffect((UGen)effect);
+	}
+	
+	
+	public void noteOn() {
+		this.patchEffects();
+		
 		this.artificialNotes.noteOn();
 
 		if (this.generator == null)
@@ -51,7 +73,9 @@ public class AugmentedNote extends BasicNote {
 		
 	}
 
-	void noteOff() {
+	public void noteOff() {
+		this.unpatchEffects();
+		
 		this.artificialNotes.noteOff();
 
 		if (this.generator == null)
@@ -61,23 +85,23 @@ public class AugmentedNote extends BasicNote {
 		
 	}
 	
-	void addArtificialNote (int newNotePitch) {
+	public void addArtificialNote (int newNotePitch) {
 		this.artificialNotes.addArtificialNote(this, newNotePitch);
 	}
 	
-	void addArtificialInterval (String intervalType) {
+	public void addArtificialInterval (String intervalType) {
 		this.artificialNotes.addArtificialInterval(this, intervalType);
 	}
 	
-	void addArtificialChord (String chordType) {
+	public void addArtificialChord (String chordType) {
 		this.artificialNotes.addArtificialChord(this, chordType);
 	}
 		
-	void addArtificialInterval (int newPitch, String intervalType) {
+	public void addArtificialInterval (int newPitch, String intervalType) {
 		this.artificialNotes.addArtificialInterval(this, newPitch, intervalType);
 	}
 	
-	void addArtificialChord (int newRoot, String chordType) {
+	public void addArtificialChord (int newRoot, String chordType) {
 		this.artificialNotes.addArtificialChord(this, newRoot, chordType);
 	}
 	
@@ -88,8 +112,15 @@ public class AugmentedNote extends BasicNote {
 		return gen;
 	}
 	
+	private Effect cloneEffect() {
+		if(this.effect==null) 
+			return null;
+		else
+			return this.effect.clone();
+	}
+
 	protected AugmentedNote cloneInADifferentPitch(int newNotePitch) {
-		return new AugmentedNote(this.getChannel(), newNotePitch, this.getVelocity(), cloneGenerator(newNotePitch));
+		return new AugmentedNote(this.getChannel(), newNotePitch, this.getVelocity(), cloneGenerator(newNotePitch), cloneEffect());
 	}
 	
 	public Generator getGenerator() {

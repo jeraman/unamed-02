@@ -3,6 +3,7 @@ package augmenters;
 import java.util.ArrayList;
 import org.jfugue.theory.Chord;
 import org.jfugue.theory.Note;
+import ddf.minim.UGen;
 
 /**
  * This class creates virtual music-theory-enriched MIDI notes (called extensions) to be played along 
@@ -57,6 +58,16 @@ public class ArtificialNotes {
 	
 	private boolean isArtificialNoteEqualsAugmentedParent(AugmentedNote baseline, int newNotePitch) {
 		return baseline.isPitchEquals(newNotePitch);
+	}
+		
+	public void patchEffects() {
+		for (AugmentedNote n: artificialNotes)
+			n.patchEffects();
+	}
+	
+	public void unpatchEffects() {
+		for (AugmentedNote n: artificialNotes)
+			n.unpatchEffects();
 	}
 
 	public void noteOn() {

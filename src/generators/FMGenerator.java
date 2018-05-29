@@ -21,6 +21,8 @@ public class FMGenerator extends Oscil implements Generator,Runnable{
 	private float modAmp;
 	private Waveform modWave;
 	
+	private UGen patched;
+	
 	
 	public FMGenerator (int pitch, int velocity) {
 		this((float)MusicTheory.freqFromMIDI(pitch), Util.mapFromMidiToAmplitude(velocity), Waves.SINE,
@@ -41,31 +43,31 @@ public class FMGenerator extends Oscil implements Generator,Runnable{
 		fm  = new Oscil( modFreq, modAmp, modWave );
 		fm.offset.setLastValue(carrierFreq);
 		fm.patch(this.frequency);
+		
+		this.patched = this;
 	}
 
 	@Override
-	public UGen patchEffect(UGen effect) {
-		return super.patch(effect);
+	public void patchEffect(UGen effect) {
+		patched = patched.patch(effect);
 	}
 
 	@Override
 	public void patchOutput(AudioOutput out) {
-		super.patch(out);
+		patched.patch(out);
 	}
 
 	@Override
 	public void unpatchEffect(UGen effect) {
+		patched.unpatch(effect);
 		super.unpatch(effect);
 	}
 
 	@Override
 	public void unpatchOutput(AudioOutput out) {
+		patched.unpatch(out);
 		super.unpatch(out);
-	}
-	
-	public void setModFrequency(float modulateFrequency) {
-		fm.setFrequency(modulateFrequency);
-	}
+	} 
 
 	public void setModAmplitude(float modulateAmount) {
 		fm.setAmplitude(modulateAmount);

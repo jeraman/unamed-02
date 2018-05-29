@@ -1,105 +1,157 @@
 package generators;
 
+import java.util.ArrayList;
+
 import augmenters.MusicTheory;
 import ddf.minim.AudioOutput;
 import ddf.minim.UGen;
-import ddf.minim.ugens.Bypass;
 import ddf.minim.ugens.LiveInput;
-import ddf.minim.ugens.Multiplier;
 import ddf.minim.ugens.Oscil;
 import ddf.minim.ugens.Summer;
 import ddf.minim.ugens.Vocoder;
 import ddf.minim.ugens.Waves;
 import util.Util;
 
-public class LiveInputGenerator extends Oscil implements Generator,Runnable {
-	
+public class LiveInputGenerator extends Oscil implements Generator, Runnable {
+
 	private static LiveInput micInput;
-	private static Vocoder 	vocode;
-	private static Summer 	synth;
-	
-//	private Oscil mod;
+	private static Vocoder vocode;
+	private static Summer synth;
+
+	private static UGen patched;
+	private static ArrayList<UGen> activeEffects;
+
 	private int duration;
 	private int pitch;
 	private int velocity;
 	private boolean hasVocode;
-	
-	
+
 	public LiveInputGenerator() {
 		this(false, 0, 0);
 	}
-	
+
 	public LiveInputGenerator(int pitch, int velocity) {
 		this(true, pitch, velocity);
 	}
-	
+
 	public LiveInputGenerator(boolean hasVocode, int pitch, int velocity) {
-		super((float)MusicTheory.freqFromMIDI(pitch), Util.mapFromMidiToAmplitude(velocity), Waves.SAW);	
-		
+		super((float) MusicTheory.freqFromMIDI(pitch), Util.mapFromMidiToAmplitude(velocity), Waves.SAW);
+
 		if (!isClassInitialized())
 			setupClass();
-		
+
 		this.hasVocode = hasVocode;
 		this.pitch = pitch;
 		this.velocity = velocity;
-			
-//		if (hasVocode) {
-			//vocode = new Vocoder(1024, 8);
-			//this.patch(vocode.modulator);
-			//mod = new Oscil((float) MusicTheory.freqFromMIDI(pitch), Util.mapFromMidiToAmplitude(velocity), Waves.SAW);
-			
-//		}
+
 	}
-	
+
 	public boolean isClassInitialized() {
 		return (LiveInputGenerator.micInput != null);
 	}
-	
+
 	public static void setupClass() {
 		LiveInputGenerator.micInput = new LiveInput(GeneratorFactory.getInput());
-		LiveInputGenerator.vocode	= new Vocoder(1024, 8);
-		LiveInputGenerator.synth	= new Summer();
-		
+		LiveInputGenerator.vocode = new Vocoder(1024, 8);
+		LiveInputGenerator.synth = new Summer();
+
 		LiveInputGenerator.micInput.patch(LiveInputGenerator.vocode.modulator);
-		LiveInputGenerator.synth.patch(vocode).patch(GeneratorFactory.out);
+		
+		patched = LiveInputGenerator.synth.patch(vocode);
+		patched.patch(GeneratorFactory.out);
+
+		activeEffects = new ArrayList<UGen>();
 	}
-	
+
 	public static void closeClass() {
 		LiveInputGenerator.micInput.close();
-		//LiveInputGenerator.synth.unpatch(vocode);
 		LiveInputGenerator.micInput = null;
-		LiveInputGenerator.vocode 	= null;
-		LiveInputGenerator.synth 	= null;
+		LiveInputGenerator.vocode = null;
+		LiveInputGenerator.synth = null;
+
+		patched.unpatch(GeneratorFactory.out);
 		vocode.unpatch(GeneratorFactory.out);
 		synth.unpatch(vocode);
+
+		activeEffects.clear();
+		activeEffects = null;
 	}
-	
-	//TODO: manage how effect PATCHING is going to work with this new structure
+
+	// add effects methods
+//	private synchronized void addEffectIfIsNew(UGen effect) {
+//		if (isANewEffect(effect))
+//			addEffect(effect);
+//	}
+//	
+//
+//	private synchronized static boolean isANewEffect(UGen effect) {
+//		boolean result = true;
+//		
+//		for (UGen e:activeEffects) 
+//			if (e.getClass().equals(effect.getClass()))
+//				result = false;
+//		
+//		return result;
+//	}
+//
+//	private synchronized static void addEffect(UGen effect) {
+//		// unpatching output
+//		patched.unpatch(GeneratorFactory.out);
+//
+//		System.out.println("there are " + activeEffects.size() + " effects");
+//		// adding effect
+//		activeEffects.add(effect);
+//		patched = LiveInputGenerator.synth.patch(vocode).patch(effect);
+//
+//		// repatching output
+//		patched.patch(GeneratorFactory.out);
+//	}
+//
+//	// remove effects methods
+//	private synchronized void removeEffectIfIsActive(UGen effect) {
+//		if (isEffectActive(effect))
+//			removeEffect(effect);
+//	}
+//
+//	private synchronized static boolean isEffectActive(UGen effect) {
+//		return (!isANewEffect(effect));
+//	}
+//
+//	private static void removeEffect(UGen effect) {
+//		// unpatching output
+//		patched.unpatch(GeneratorFactory.out);
+//		// vocode.unpatch(GeneratorFactory.out);
+//
+//		// removing effect
+//		patched.unpatch(effect);
+//		activeEffects.remove(effect);
+//		
+//		patched = LiveInputGenerator.synth.patch(vocode);
+//
+//		// repatching output
+//		patched.patch(GeneratorFactory.out);
+//	}
+
 	@Override
-	public UGen patchEffect(UGen effect) {
-		if (hasVocode)
-			return LiveInputGenerator.synth.patch(effect);
-		else
-			return LiveInputGenerator.micInput.patch(effect);
+	public void patchEffect(UGen effect) {
+		//addEffectIfIsNew(effect);
+		System.out.println("patchEffect not implemented for class LiveInputGenerator");
+	}
+
+	@Override
+	public void unpatchEffect(UGen effect) {
+		//removeEffectIfIsActive(effect);
+		System.out.println("unpatchEffect not implemented for class LiveInputGenerator");
 	}
 
 	@Override
 	public void patchOutput(AudioOutput out) {
 		if (hasVocode) {
 			this.patch(synth);
-			//synth.patch(vocode).patch(out);
 		} else
 			LiveInputGenerator.micInput.patch(out);
 	}
 
-	//TODO: manage how effect UNPATCHING effect is going to work with this new structure
-	@Override
-	public void unpatchEffect(UGen effect) {
-		if (hasVocode) 
-			LiveInputGenerator.synth.unpatch(effect);
-		else
-			LiveInputGenerator.micInput.unpatch(effect);
-	}
 
 	@Override
 	public void unpatchOutput(AudioOutput out) {
@@ -108,41 +160,43 @@ public class LiveInputGenerator extends Oscil implements Generator,Runnable {
 		} else
 			LiveInputGenerator.micInput.unpatch(out);
 	}
-	/*
-	@Override
-	public UGen patchEffect(UGen effect) {
-		if (hasVocode)
-			return mod.patch(vocode).patch(effect);
-		else
-			return super.patch(effect);
-	}
 
-	@Override
-	public void patchOutput(AudioOutput out) {
-		if (hasVocode)
-			mod.patch(vocode).patch(out);
-		else
-			super.patch(out);
-	}
-
-	@Override
-	public void unpatchEffect(UGen effect) {
-		if (hasVocode) {
-			vocode.unpatch(effect);
-			mod.unpatch(vocode);
-		} else
-			super.unpatch(effect);
-	}
-
-	@Override
-	public void unpatchOutput(AudioOutput out) {
-		if (hasVocode) {
-			vocode.unpatch(out);
-			mod.unpatch(vocode);
-		} else
-			super.unpatch(out);
-	}
-	*/
+	// //TODO: manage how effect PATCHING is going to work with this new
+	// structure
+	// @Override
+	// public void patchEffect(UGen effect) {
+	// if (hasVocode)
+	// LiveInputGenerator.synth.patch(effect);
+	// else
+	// LiveInputGenerator.micInput.patch(effect);
+	// }
+	//
+	//
+	// @Override
+	// public void patchOutput(AudioOutput out) {
+	// if (hasVocode) {
+	// this.patch(synth);
+	// } else
+	// LiveInputGenerator.micInput.patch(out);
+	// }
+	//
+	// //TODO: manage how effect UNPATCHING effect is going to work with this
+	// new structure
+	// @Override
+	// public void unpatchEffect(UGen effect) {
+	// if (hasVocode)
+	// LiveInputGenerator.synth.unpatch(effect);
+	// else
+	// LiveInputGenerator.micInput.unpatch(effect);
+	// }
+	//
+	// @Override
+	// public void unpatchOutput(AudioOutput out) {
+	// if (hasVocode) {
+	// this.unpatch(synth);
+	// } else
+	// LiveInputGenerator.micInput.unpatch(out);
+	// }
 
 	@Override
 	public void noteOn() {
@@ -155,7 +209,7 @@ public class LiveInputGenerator extends Oscil implements Generator,Runnable {
 		// TODO Auto-generated method stub
 		GeneratorFactory.unpatch(this);
 	}
-	
+
 	public void noteOffAfterDuration(int duration) {
 		this.duration = duration;
 		System.out.println("waiting! " + duration);
@@ -165,9 +219,7 @@ public class LiveInputGenerator extends Oscil implements Generator,Runnable {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		Util.delay(this.duration);
-		//stop playing!
 		System.out.println("stop playing!");
 		this.noteOff();
 	}
@@ -176,11 +228,8 @@ public class LiveInputGenerator extends Oscil implements Generator,Runnable {
 	public Generator cloneInADifferentPitch(int newPitch) {
 		return new LiveInputGenerator(newPitch, this.velocity);
 	}
-	
+
 	public void close() {
-		//super.close();
-		//this.vocode = null;
-		//this.mod = null;
 	}
 
 }

@@ -3,6 +3,7 @@ package generators;
 import augmenters.MusicTheory;
 import ddf.minim.AudioOutput;
 import ddf.minim.UGen;
+import ddf.minim.spi.AudioStream;
 import ddf.minim.ugens.Bypass;
 import ddf.minim.ugens.LiveInput;
 import ddf.minim.ugens.Multiplier;
@@ -11,11 +12,13 @@ import ddf.minim.ugens.Vocoder;
 import ddf.minim.ugens.Waves;
 import util.Util;
 
-public class LiveInputGeneratorBackup extends ModifiedLiveInput implements Generator,Runnable {
+
+//TODO: DELETE THIS CLASS! NO LONGER NECESSARY TO THE PROJECT
+
+public class LiveInputGeneratorExtendingLiveInput extends ModifiedLiveInput implements Generator,Runnable {
 	
-	//protected AudioStream mInputStream;
+	//protected static LiveInput mic;
 	
-	private Multiplier copiedInput;
 	private Vocoder vocode;
 	private Oscil mod;
 	private int duration;
@@ -24,36 +27,35 @@ public class LiveInputGeneratorBackup extends ModifiedLiveInput implements Gener
 	private boolean hasVocode;
 	
 	
-	public LiveInputGeneratorBackup() {
+	public LiveInputGeneratorExtendingLiveInput() {
 		this(false, 0, 0);
 	}
 	
-	public LiveInputGeneratorBackup(int pitch, int velocity) {
+	public LiveInputGeneratorExtendingLiveInput(int pitch, int velocity) {
 		this(true, pitch, velocity);
 	}
 	
-	public LiveInputGeneratorBackup(boolean hasVocode, int pitch, int velocity) {
+	public LiveInputGeneratorExtendingLiveInput(boolean hasVocode, int pitch, int velocity) {
 		super(GeneratorFactory.getInput());
-		//this.bypass.activate();
+		
 		this.hasVocode = hasVocode;
 		this.pitch = pitch;
 		this.velocity = velocity;
+		
 		if (hasVocode) {
-			this.copiedInput = new Multiplier(1.f);
-			this.patch(copiedInput);
 			vocode = new Vocoder(1024, 8);
-			copiedInput.patch(vocode.modulator);
+			super.patch(vocode.modulator);
 			mod = new Oscil((float) MusicTheory.freqFromMIDI(pitch), Util.mapFromMidiToAmplitude(velocity), Waves.SAW);
 		}
 	}
 
 	
 	@Override
-	public UGen patchEffect(UGen effect) {
+	public void patchEffect(UGen effect) {
 		if (hasVocode)
-			return mod.patch(vocode).patch(effect);
+			mod.patch(vocode).patch(effect);
 		else
-			return super.patch(effect);
+			super.patch(effect);
 	}
 
 	@Override
@@ -113,7 +115,7 @@ public class LiveInputGeneratorBackup extends ModifiedLiveInput implements Gener
 
 	@Override
 	public Generator cloneInADifferentPitch(int newPitch) {
-		return new LiveInputGeneratorBackup(newPitch, this.velocity);
+		return new LiveInputGeneratorExtendingLiveInput(newPitch, this.velocity);
 	}
 	
 	public void close() {

@@ -16,42 +16,51 @@ public class OscillatorGenerator extends Oscil implements Generator,Runnable {
 	float amplitude;
 	private Waveform wf;
 	
+	
+	private UGen patched;
+	
+	
 	public OscillatorGenerator(int pitch, int velocity, boolean usesMidiValue) {
 		this(pitch, velocity, Waves.SINE, usesMidiValue);
 	}
 	
 	public OscillatorGenerator(int pitch, int velocity, Waveform wf,  boolean usesMidiValue) {
-		super((float)MusicTheory.freqFromMIDI(pitch), Util.mapFromMidiToAmplitude(velocity), wf);
-		this.frequency = (float)MusicTheory.freqFromMIDI(pitch);
-		this.amplitude  = Util.mapFromMidiToAmplitude(velocity);
-		this.wf = wf;
+		this((float)MusicTheory.freqFromMIDI(pitch), Util.mapFromMidiToAmplitude(velocity), wf);
 	}
 	
 	public OscillatorGenerator(float frequencyInHertz, float amplitude) {
-		super(frequencyInHertz, amplitude);
+		this(frequencyInHertz, amplitude, Waves.SINE);
 	}
 	
 	public OscillatorGenerator(float frequencyInHertz, float amplitude, Waveform wf) {
 		super(frequencyInHertz, amplitude, wf);
+		
+		this.frequency = frequencyInHertz;
+		this.amplitude  = amplitude;
+		this.wf = wf;
+		
+		this.patched = this;
 	}
 
 	@Override
-	public UGen patchEffect(UGen effect) {
-		return super.patch(effect);
+	public void patchEffect(UGen effect) {
+		patched = patched.patch(effect);
 	}
 
 	@Override
 	public void patchOutput(AudioOutput out) {
-		super.patch(out);
+		patched.patch(out);
 	}
 
 	@Override
 	public void unpatchEffect(UGen effect) {
+		patched.unpatch(effect);
 		super.unpatch(effect);
 	}
 
 	@Override
 	public void unpatchOutput(AudioOutput out) {
+		patched.unpatch(out);
 		super.unpatch(out);
 	}
 
@@ -94,5 +103,6 @@ public class OscillatorGenerator extends Oscil implements Generator,Runnable {
 	public void close() {
 		// TODO Auto-generated method stub
 		this.wf = null;
+		this.patched = null;
 	}
 }

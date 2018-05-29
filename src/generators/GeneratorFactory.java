@@ -22,19 +22,19 @@ public class GeneratorFactory {
 		in.open();
 	}
 
-	////////////////////////////
-	//AudioFile factory
-	public static Generator noteOnAudioFileGen(AudioRecordingStream fileStream, int pitch, int velocity) {
-		Generator gen = new AudioFileGenerator(fileStream, pitch, velocity);
-		return gen;
-		//return GeneratorFactory.patch(gen);
-	}
- 
-	public static Generator temporaryAudioFileGen(AudioRecordingStream fileStream, int pitch, int velocity, int duration) {
-		Generator gen = noteOnAudioFileGen(fileStream, pitch, velocity);
-		gen.noteOffAfterDuration(duration);
-		return gen;
-	}
+//	////////////////////////////
+//	//AudioFile factory
+//	public static Generator noteOnAudioFileGen(AudioRecordingStream fileStream, int pitch, int velocity) {
+//		Generator gen = new AudioFileGenerator(fileStream, pitch, velocity);
+//		return gen;
+//		//return GeneratorFactory.patch(gen);
+//	}
+// 
+//	public static Generator temporaryAudioFileGen(AudioRecordingStream fileStream, int pitch, int velocity, int duration) {
+//		Generator gen = noteOnAudioFileGen(fileStream, pitch, velocity);
+//		gen.noteOffAfterDuration(duration);
+//		return gen;
+//	}
 
 	////////////////////////////
 	//SampleFile factory
@@ -90,6 +90,8 @@ public class GeneratorFactory {
 	//Live Input factory
 	public static Generator noteOnLiveInpuGen(int pitch, int velocity) {
 		Generator gen = new LiveInputGenerator(pitch, velocity);
+//		Generator gen = new LiveInputGeneratorExtendingLiveInput(pitch, velocity);
+//		Generator gen = new LiveInputGeneratorExtendingOscil(pitch, velocity);
 		return gen;
 //		return GeneratorFactory.patch(gen);
 	}
@@ -125,8 +127,8 @@ public class GeneratorFactory {
 	}
 	
 	public synchronized static AudioStream getInput() {
-//		return minim.getInputStream( Minim.MONO, out.bufferSize(), out.sampleRate(),out.getFormat().getSampleSizeInBits());
-		return in;
+		return minim.getInputStream( Minim.MONO, out.bufferSize(), out.sampleRate(),out.getFormat().getSampleSizeInBits());
+//		return in;
 	}
 	
 	public synchronized static Pair<MultiChannelBuffer, Float> loadMultiChannelBufferFromFile(String filename) {

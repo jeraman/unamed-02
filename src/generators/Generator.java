@@ -6,7 +6,7 @@ import ddf.minim.UGen;
 
 public interface Generator {
 
-	public UGen patchEffect(UGen effect);
+	public void patchEffect(UGen effect);
 	
 	public void patchOutput(AudioOutput out);
 	

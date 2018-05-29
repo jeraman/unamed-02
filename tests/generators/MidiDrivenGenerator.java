@@ -6,7 +6,6 @@ import ddf.minim.AudioOutput;
 import ddf.minim.Minim;
 import ddf.minim.spi.AudioRecordingStream;
 import ddf.minim.spi.AudioStream;
-import generators.AudioFileGenerator;
 import generators.OscillatorGenerator;
 import processing.core.PApplet;
 import util.MidiIO;
@@ -53,17 +52,16 @@ public class MidiDrivenGenerator extends PApplet {
 		println("memory: " + memory.getNoteArray());
 		println("removalLive " + memory.getToBeDeletedArray());
 		
-		//Generator gen = GeneratorFactory.temporaryFMGen(60, 127, 1500);
-		Generator gen = GeneratorFactory.temporaryAudioFileGen(fileStream, 60, 127, 1500);
-		
+		Generator gen = GeneratorFactory.temporaryFMGen(60, 127, 1500);
+		//Generator gen = GeneratorFactory.temporarySampleFileGen("123go.mp3", 60, 127, 1500);
 		//Generator gen = GeneratorFactory.temporaryOscillatorGen(60, 127, 500);
 		//Generator gen = GeneratorFactory.temporaryLiveInpuGen(1500);
 		GeneratorFactory.patch(gen);
 	}
 
 	public void noteOn(int channel, int pitch, int velocity) {
-		//Generator gen = GeneratorFactory.noteOnFMGen(pitch, velocity);
-		Generator gen = GeneratorFactory.noteOnAudioFileGen(fileStream, pitch, velocity);
+		Generator gen = GeneratorFactory.noteOnFMGen(pitch, velocity);
+		//Generator gen = GeneratorFactory.noteOnSampleFileGen("123go.mp3", pitch, velocity);
 		//Generator gen = GeneratorFactory.noteOnOscillatorGen(pitch, velocity);
 		//Generator gen = GeneratorFactory.noteOnLiveInpuGen(pitch, velocity);
 		GeneratorFactory.patch(gen);

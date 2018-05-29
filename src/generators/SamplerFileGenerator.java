@@ -19,6 +19,8 @@ public class SamplerFileGenerator extends ModifiedSampler implements Generator,R
 	int 	   volume;
 	int 	   duration;
 	
+	private UGen patched;
+	
 	
 	public SamplerFileGenerator(String fileStream) {
 		this(fileStream, Integer.MAX_VALUE);
@@ -53,7 +55,7 @@ public class SamplerFileGenerator extends ModifiedSampler implements Generator,R
 	public SamplerFileGenerator(MultiChannelBuffer sampleData, float sampleRate, int pitch, int volume, int duration, boolean shouldLoop) {
 		super(sampleData, sampleRate, 1);
 		
-		initializeVariables(filename, pitch, volume, duration, shouldLoop);
+		initializeVariables("", pitch, volume, duration, shouldLoop);
 	}
 	
 	private void initializeVariables(String filename, int pitch, int volume, int duration, boolean shouldLoop) {
@@ -70,27 +72,33 @@ public class SamplerFileGenerator extends ModifiedSampler implements Generator,R
 		//this.rateControl = new TickRate(pR);
 		//this.gain        = new Gain(Util.mapFromMidiToDecibels(volume));
 		this.setVolume(volume);
+		
+		this.patched = this;
 	}
 	
-	public UGen patchEffect (UGen nextGen) {
-		return super.patch(nextGen);
+	@Override
+	public void patchEffect(UGen effect) {
+		patched = patched.patch(effect);
 	}
-	
-	public void patchOutput (AudioOutput out) {
-		super.patch(out);
+
+	@Override
+	public void patchOutput(AudioOutput out) {
+		patched.patch(out);
 	}
-	
-	public void close() {
+
+	@Override
+	public void unpatchEffect(UGen effect) {
+		patched.unpatch(effect);
+		super.unpatch(effect);
 	}
-	
-	public void unpatchEffect (UGen nextGen) {
-		super.unpatch(nextGen);
-	}
-	
-	public void unpatchOutput (AudioOutput out) {
+
+	@Override
+	public void unpatchOutput(AudioOutput out) {
+		patched.unpatch(out);
 		super.unpatch(out);
 	}
 
+	
 	@Override
 	public void noteOn() {
 		GeneratorFactory.patch(this);
@@ -104,7 +112,7 @@ public class SamplerFileGenerator extends ModifiedSampler implements Generator,R
 	}
 	
 	private float calculateRelativePitch(int pitchOffset) {
-		float difPit = ((AudioFileGenerator.basePitch - pitchOffset) % 24) * -1;
+		float difPit = ((SamplerFileGenerator.basePitch - pitchOffset) % 24) * -1;
 		return (1.f + (difPit) * (1.f / 12.f));
 	}
 	
@@ -146,5 +154,9 @@ public class SamplerFileGenerator extends ModifiedSampler implements Generator,R
 //		SamplerFileGenerator result = new SamplerFileGenerator(this.filename, newPitch, this.volume, this.duration, this.looping);
 		SamplerFileGenerator result = new SamplerFileGenerator(this.getSampleData(), this.getSampleDataSampleRate(), newPitch, this.volume, this.duration, this.looping);
 		return result;
+	}
+	
+	public void close() {
+		this.patched = null;
 	}
 }

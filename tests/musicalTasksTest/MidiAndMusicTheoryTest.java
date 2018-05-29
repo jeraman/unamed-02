@@ -6,7 +6,6 @@ import util.MidiIO;
 import augmenters.AugmentedNoteMemory;
 import augmenters.MusicTheory;
 import ddf.minim.*;
-import generators.AudioFileGenerator;
 import generators.Generator;
 
 public class MidiAndMusicTheoryTest extends PApplet {

@@ -15,7 +15,11 @@ import ddf.minim.spi.AudioStream;
  * @related UGen
  * @related Minim
  *
+ *
+ * 
  */
+
+//TODO: DELETE THIS CLASS! NO LONGER NECESSARY TO THE PROJECT 
 
 public class ModifiedLiveInput extends UGen 
 {
