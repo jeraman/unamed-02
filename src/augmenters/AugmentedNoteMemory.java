@@ -17,12 +17,12 @@ public class AugmentedNoteMemory {
 		removalLine = new ArrayList<Integer>();
 	}
 	
-	public synchronized void put(int channel, int note, int velocity) {
-		this.put(channel, note, velocity, null);
-	}
+//	public synchronized void put(int channel, int note, int velocity) {
+//		this.put(channel, note, velocity);
+//	}
 
-	public synchronized void put(int channel, int note, int velocity, Generator g) {
-		AugmentedNote newNote = new AugmentedNote(channel, note, velocity, g);
+	public synchronized void put(int channel, int note, int velocity) {
+		AugmentedNote newNote = new AugmentedNote(channel, note, velocity);
 		this.put(newNote);
 	}
 	

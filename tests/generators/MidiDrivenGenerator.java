@@ -66,14 +66,14 @@ public class MidiDrivenGenerator extends PApplet {
 		//Generator gen = GeneratorFactory.noteOnLiveInpuGen(pitch, velocity);
 		GeneratorFactory.patch(gen);
 		gen.noteOn();
-		memory.put(channel, pitch, velocity, gen);
+		memory.put(channel, pitch, velocity);
 	}
 
 	public void noteOff(int channel, int pitch, int velocity) {
 		AugmentedNote n = memory.remove(pitch);
 		if (n == null) return;
-		n.getGenerator().noteOff();
-		GeneratorFactory.unpatch(n.getGenerator());
+		n.noteOff();
+		n.close();
 	}
 
 }

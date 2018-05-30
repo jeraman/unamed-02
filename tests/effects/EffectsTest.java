@@ -63,33 +63,34 @@ public class EffectsTest extends PApplet{
 	
 	public void mousePressed() {
 		Generator gen = GeneratorFactory.temporaryFMGen(60, 127, 1500);
-		AugmentedNote newNote = new AugmentedNote(0, 60, 127, gen);
+		AugmentedNote newNote = new AugmentedNote(0, 60, 127);
+		newNote.addGenerator(gen);
 		newNote.noteOn();
 	}
 	
 	public void noteOn(int channel, int pitch, int velocity) {
-		System.out.println("hey");
-		Generator gen = null;
-		gen = GeneratorFactory.noteOnSampleFileGen(buf, sampleRate, pitch, velocity);
-		//gen = GeneratorFactory.noteOnFMGen(pitch, velocity);
-		//gen = GeneratorFactory.noteOnOscillatorGen(pitch, velocity);
-		//gen = GeneratorFactory.noteOnLiveInpuGen(pitch, velocity);
+		Generator gen1 = GeneratorFactory.noteOnSampleFileGen(buf, sampleRate, pitch, velocity);
+		Generator gen2 = GeneratorFactory.noteOnFMGen(pitch, velocity/3);
+		Generator gen3 = GeneratorFactory.noteOnOscillatorGen(pitch, velocity/3);
+		Generator gen4 = GeneratorFactory.noteOnLiveInpuGen(pitch, velocity);
 		
 		Effect fx = null;
 		//fx = new HighPassFilterEffect(5000, sampleRate);
-		fx = new LowPassFilterEffect(200, sampleRate);
+		//fx = new LowPassFilterEffect(200, sampleRate);
 		//fx = new BandPassFilterEffect(1000, 100, sampleRate);
 		//fx = new DelayEffect(0.5f, 0.9f, true, true);
 		//fx = new MoogFilterEffect(200, 500, Type.LP);
-		//fx = new FlangerEffect(1, 0.5f, 1, 0.5f, 0.5f, 0.5f);
+		fx = new FlangerEffect(1, 0.5f, 1, 0.5f, 0.5f, 0.5f);
 		//fx = new BitChrushEffect(3);
 		//fx = new AdrsEffect(1.f, 1.f, 0.5f, 0.5f, 1.f, 0.f, 0.f);
 		
-		System.out.println(MusicTheory.freqFromMIDI(pitch));
-		
-		AugmentedNote newNote = new AugmentedNote(channel, pitch, velocity, gen, fx);
+		AugmentedNote newNote = new AugmentedNote(channel, pitch, velocity);
+		newNote.addGenerator(gen1);
+		newNote.addGenerator(gen2);
+		newNote.addGenerator(gen3);
+		//newNote.addGenerator(gen4);
 		newNote.addArtificialChord("min7");
-		newNote.addArtificialInterval("5");
+		//newNote.addArtificialInterval("5");
 		newNote.noteOn();
 		memory.put(newNote);
 	}
@@ -98,7 +99,6 @@ public class EffectsTest extends PApplet{
 		AugmentedNote n = memory.remove(pitch);
 		if (n == null) return;
 		n.noteOff();
-		if(n.getGenerator()!= null)
-			n.close();
+		n.close();
 	}
 }
