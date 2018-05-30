@@ -41,22 +41,12 @@ public class AugmentedNote extends BasicNote {
 	
 	
 	public void patchEffects() {
-		if (this.effect == null) 
-			return;
-		
-		this.artificialNotes.patchEffects();
-		
-		if (this.generator != null)
+		if (this.effect != null && this.generator != null)
 			this.generator.patchEffect((UGen)effect);
 	}
 	
 	public void unpatchEffects() {
-		if (this.effect == null) 
-			return;
-		
-		this.artificialNotes.unpatchEffects();
-		
-		if (this.generator != null)
+		if (this.effect != null && this.generator != null)
 			this.generator.unpatchEffect((UGen)effect);
 	}
 	
@@ -121,6 +111,7 @@ public class AugmentedNote extends BasicNote {
 
 	protected AugmentedNote cloneInADifferentPitch(int newNotePitch) {
 		return new AugmentedNote(this.getChannel(), newNotePitch, this.getVelocity(), cloneGenerator(newNotePitch), cloneEffect());
+		//return new AugmentedNote(this.getChannel(), newNotePitch, this.getVelocity(), cloneGenerator(newNotePitch));
 	}
 	
 	public Generator getGenerator() {

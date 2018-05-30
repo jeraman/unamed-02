@@ -77,18 +77,18 @@ public class EffectsTest extends PApplet{
 		
 		Effect fx = null;
 		//fx = new HighPassFilterEffect(5000, sampleRate);
-		//fx = new LowPassFilterEffect(200, sampleRate);
+		fx = new LowPassFilterEffect(200, sampleRate);
 		//fx = new BandPassFilterEffect(1000, 100, sampleRate);
 		//fx = new DelayEffect(0.5f, 0.9f, true, true);
 		//fx = new MoogFilterEffect(200, 500, Type.LP);
 		//fx = new FlangerEffect(1, 0.5f, 1, 0.5f, 0.5f, 0.5f);
-		fx = new BitChrushEffect(5);
+		//fx = new BitChrushEffect(3);
 		//fx = new AdrsEffect(1.f, 1.f, 0.5f, 0.5f, 1.f, 0.f, 0.f);
 		
 		System.out.println(MusicTheory.freqFromMIDI(pitch));
 		
 		AugmentedNote newNote = new AugmentedNote(channel, pitch, velocity, gen, fx);
-		//newNote.addArtificialChord("min7");
+		newNote.addArtificialChord("min7");
 		newNote.addArtificialInterval("5");
 		newNote.noteOn();
 		memory.put(newNote);
