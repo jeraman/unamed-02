@@ -25,8 +25,7 @@ public class FMGenerator extends Oscil implements Generator,Runnable{
 	
 	
 	public FMGenerator (int pitch, int velocity) {
-		this((float)MusicTheory.freqFromMIDI(pitch), Util.mapFromMidiToAmplitude(velocity), Waves.SINE,
-				200.f, 50.f, Waves.QUARTERPULSE);
+		this((float)MusicTheory.freqFromMIDI(pitch), Util.mapFromMidiToAmplitude(velocity), Waves.SINE, 30.f, 75.f, Waves.QUARTERPULSE);
 	}
 	
 	public FMGenerator (float carrierFreq, float carrierAmp, Waveform carrierWave,
@@ -39,7 +38,7 @@ public class FMGenerator extends Oscil implements Generator,Runnable{
 		this.modFreq	 = modFreq;
 		this.modAmp		 = modAmp;
 		this.modWave 	 = modWave;
-		
+				
 		fm  = new Oscil( modFreq, modAmp, modWave );
 		fm.offset.setLastValue(carrierFreq);
 		fm.patch(this.frequency);

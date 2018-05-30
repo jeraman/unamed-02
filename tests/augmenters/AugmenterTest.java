@@ -76,7 +76,8 @@ public class AugmenterTest extends PApplet{
 		//Generator gen = GeneratorFactory.temporaryLiveInpuGen(1500);
 		
 		Generator gen = GeneratorFactory.temporaryFMGen(60, 127, 1500);
-		AugmentedNote newNote = new AugmentedNote(0, 60, 127, gen);
+		AugmentedNote newNote = new AugmentedNote(0, 60, 127);
+		newNote.addGenerator(gen);
 		//newNote.addArtificialChord("min7");
 		//newNote.addArtificialInterval("5");
 		newNote.noteOn();
@@ -88,7 +89,8 @@ public class AugmenterTest extends PApplet{
 		//Generator gen = GeneratorFactory.noteOnOscillatorGen(pitch, velocity);
 		//Generator gen = GeneratorFactory.noteOnLiveInpuGen(pitch, velocity);
 
-		AugmentedNote newNote = new AugmentedNote(channel, pitch, velocity, gen);
+		AugmentedNote newNote = new AugmentedNote(channel, pitch, velocity);
+		newNote.addGenerator(gen);
 		newNote.addArtificialChord("min7");
 		newNote.addArtificialInterval(pitch+12, "5");
 		newNote.noteOn();
