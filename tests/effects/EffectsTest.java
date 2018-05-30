@@ -63,6 +63,7 @@ public class EffectsTest extends PApplet{
 	
 	public void mousePressed() {
 		Generator gen = GeneratorFactory.temporaryFMGen(60, 127, 1500);
+		//Generator gen = GeneratorFactory.temporaryOscillatorGen(60, 127, 1500);
 		AugmentedNote newNote = new AugmentedNote(0, 60, 127);
 		newNote.addGenerator(gen);
 		newNote.noteOn();
@@ -70,27 +71,31 @@ public class EffectsTest extends PApplet{
 	
 	public void noteOn(int channel, int pitch, int velocity) {
 		Generator gen1 = GeneratorFactory.noteOnSampleFileGen(buf, sampleRate, pitch, velocity);
-		Generator gen2 = GeneratorFactory.noteOnFMGen(pitch, velocity/3);
+		Generator gen2 = GeneratorFactory.noteOnFMGen(pitch, velocity/5);
 		Generator gen3 = GeneratorFactory.noteOnOscillatorGen(pitch, velocity/3);
-		Generator gen4 = GeneratorFactory.noteOnLiveInpuGen(pitch, velocity);
+		//this gen is chrashing the entire thing!
+		//Generator gen4 = GeneratorFactory.noteOnLiveInpuGen(pitch, velocity);
 		
-		Effect fx = null;
-		//fx = new HighPassFilterEffect(5000, sampleRate);
-		//fx = new LowPassFilterEffect(200, sampleRate);
-		//fx = new BandPassFilterEffect(1000, 100, sampleRate);
-		//fx = new DelayEffect(0.5f, 0.9f, true, true);
-		//fx = new MoogFilterEffect(200, 500, Type.LP);
-		fx = new FlangerEffect(1, 0.5f, 1, 0.5f, 0.5f, 0.5f);
-		//fx = new BitChrushEffect(3);
-		//fx = new AdrsEffect(1.f, 1.f, 0.5f, 0.5f, 1.f, 0.f, 0.f);
+		//Effect fx = null;
+		Effect fx1 = new HighPassFilterEffect(5000, sampleRate);
+		Effect fx2 = new LowPassFilterEffect(200, sampleRate);
+		Effect fx3 = new BandPassFilterEffect(1000, 100, sampleRate);
+		Effect fx4 = new DelayEffect(0.5f, 0.9f, true, true);
+		Effect fx5 = new MoogFilterEffect(200, 500, Type.LP);
+		Effect fx6 = new FlangerEffect(1, 0.5f, 1, 0.5f, 0.5f, 0.5f);
+		Effect fx7 = new BitChrushEffect(3);
+		Effect fx8 = new AdrsEffect(1.f, 1.f, 0.5f, 0.5f, 1.f, 0.f, 0.f);
 		
 		AugmentedNote newNote = new AugmentedNote(channel, pitch, velocity);
 		newNote.addGenerator(gen1);
 		newNote.addGenerator(gen2);
-		newNote.addGenerator(gen3);
+		newNote.addEffect(fx7);
+		newNote.addEffect(fx4);
+		newNote.addEffect(fx6);
+		//newNote.addGenerator(gen3);
 		//newNote.addGenerator(gen4);
 		newNote.addArtificialChord("min7");
-		//newNote.addArtificialInterval("5");
+		newNote.addArtificialInterval("5");
 		newNote.noteOn();
 		memory.put(newNote);
 	}

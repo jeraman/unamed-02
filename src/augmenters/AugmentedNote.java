@@ -17,29 +17,32 @@ import util.MidiIO;
 public class AugmentedNote extends BasicNote {
 	private ArtificialNotes artificialNotes;
 	private ArrayList<Generator> generators;
-	private Effect effect;
+	private ArrayList<Effect> effects;
+	// private Effect effect;
 
 	public AugmentedNote(int channel, int pitch, int velocity) {
 		this(channel, pitch, velocity, new ArrayList<Generator>());
 	}
 
 	public AugmentedNote(int channel, int pitch, int velocity, ArrayList<Generator> generators) {
-		this(channel, pitch, velocity, generators, null);
+		this(channel, pitch, velocity, generators, new ArrayList<Effect>());
 	}
 
-//	public AugmentedNote(int channel, int pitch, int velocity, ArrayList<Generator> generators, Effect effect) {
-//		super(channel, pitch, velocity);
-//		this.artificialNotes = new ArtificialNotes();
-//		this.generators = new ArrayList<Generator>();
-//		this.generators.add(generator);
-//		this.effect = effect;
-//	}
+	// public AugmentedNote(int channel, int pitch, int velocity,
+	// ArrayList<Generator> generators, Effect effect) {
+	// super(channel, pitch, velocity);
+	// this.artificialNotes = new ArtificialNotes();
+	// this.generators = new ArrayList<Generator>();
+	// this.generators.add(generator);
+	// this.effect = effect;
+	// }
 
-	public AugmentedNote(int channel, int pitch, int velocity, ArrayList<Generator> generators, Effect effect) {
+	public AugmentedNote(int channel, int pitch, int velocity, ArrayList<Generator> generators,
+			ArrayList<Effect> effects) {
 		super(channel, pitch, velocity);
 		this.artificialNotes = new ArtificialNotes();
 		this.generators = generators;
-		this.effect = effect;
+		this.effects = effects;
 	}
 
 	protected boolean isPitchEquals(int wantedPitch) {
@@ -54,16 +57,22 @@ public class AugmentedNote extends BasicNote {
 		return (this.generators.size() > 0);
 	}
 
+	public boolean thereIsAEffect() {
+		return (this.effects.size() > 0);
+	}
+
 	public void patchEffects() {
-		if (this.effect != null && this.thereIsAGenerator())
+		if (thereIsAEffect() && thereIsAGenerator())
 			for (Generator g : generators)
-				g.patchEffect((UGen) effect);
+				for (Effect e : effects)
+					g.patchEffect((UGen) e.clone());
 	}
 
 	public void unpatchEffects() {
-		if (this.effect != null && this.thereIsAGenerator())
+		if (thereIsAEffect() && thereIsAGenerator())
 			for (Generator g : generators)
-				g.unpatchEffect((UGen) effect);
+				for (Effect e : effects)
+					g.unpatchEffect((UGen) e);
 	}
 
 	public void noteOn() {
@@ -92,6 +101,24 @@ public class AugmentedNote extends BasicNote {
 
 	}
 	
+	protected AugmentedNote cloneInADifferentPitch(int newNotePitch) {
+		return new AugmentedNote(this.getChannel(), newNotePitch, this.getVelocity(), cloneGenerators(newNotePitch),
+				cloneEffects());
+	}
+
+	public ArrayList<Generator> getGenerators() {
+		return generators;
+	}
+
+	public void close() {
+		for (Generator g : generators)
+			g.close();
+		this.generators.clear();
+		this.generators = null;
+		this.artificialNotes.close();
+		this.artificialNotes = null;
+	}
+
 	/////////////////////////////
 	// augmenters methods
 	/////////////////////////////
@@ -114,45 +141,37 @@ public class AugmentedNote extends BasicNote {
 	public void addArtificialChord(int newRoot, String chordType) {
 		this.artificialNotes.addArtificialChord(this, newRoot, chordType);
 	}
-	
+
 	/////////////////////////////
 	// generators methods
 	/////////////////////////////
 	public void addGenerator(Generator g) {
 		this.generators.add(g);
 	}
-		
+	
 	private ArrayList<Generator> cloneGenerators(int newNotePitch) {
-		ArrayList<Generator>  gens = new ArrayList<Generator>();
+		ArrayList<Generator> gens = new ArrayList<Generator>();
 		
 		if (this.thereIsAGenerator())
 			for (Generator g : generators)
 				gens.add(g.cloneInADifferentPitch(newNotePitch));
 		return gens;
 	}
-
-	private Effect cloneEffect() {
-		if (this.effect == null)
-			return null;
-		else
-			return this.effect.clone();
+	
+	/////////////////////////////
+	// effects methods
+	/////////////////////////////
+	public void addEffect(Effect e) {
+		this.effects.add(e);
 	}
 
-	protected AugmentedNote cloneInADifferentPitch(int newNotePitch) {
-		return new AugmentedNote(this.getChannel(), newNotePitch, this.getVelocity(), cloneGenerators(newNotePitch),
-				cloneEffect());
-	}
+	private ArrayList<Effect> cloneEffects() {
+		ArrayList<Effect> fxs = new ArrayList<Effect>();
+		
+		if (this.thereIsAEffect())
+			for (Effect e : effects)
+				fxs.add(e.clone());
 
-	public ArrayList<Generator> getGenerators() {
-		return generators;
-	}
-
-	public void close() {
-		for (Generator g : generators)
-			g.close();
-		this.generators.clear();
-		this.generators = null;
-		this.artificialNotes.close();
-		this.artificialNotes = null;
+		return fxs;
 	}
 }
