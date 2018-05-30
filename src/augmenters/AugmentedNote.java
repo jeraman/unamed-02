@@ -3,9 +3,11 @@ package augmenters;
 import java.util.ArrayList;
 
 import ddf.minim.UGen;
+import effects.AdsrEffect;
 import effects.Effect;
 import generators.Generator;
 import util.MidiIO;
+import util.Util;
 
 /**
  * Augments BasicNote (MIDI only) with Artificial Notes, Generators and Effects.
@@ -14,11 +16,15 @@ import util.MidiIO;
  *
  */
 
-public class AugmentedNote extends BasicNote {
+public class AugmentedNote extends BasicNote implements Runnable {
 	private ArtificialNotes artificialNotes;
 	private ArrayList<Generator> generators;
 	private ArrayList<Effect> effects;
 	// private Effect effect;
+
+	private boolean containsADSR;
+	private boolean closed;
+	private ArrayList<Effect> clonedFxs;
 
 	public AugmentedNote(int channel, int pitch, int velocity) {
 		this(channel, pitch, velocity, new ArrayList<Generator>());
@@ -43,6 +49,10 @@ public class AugmentedNote extends BasicNote {
 		this.artificialNotes = new ArtificialNotes();
 		this.generators = generators;
 		this.effects = effects;
+
+		this.containsADSR = this.checkIfContainsADSREffect();
+		this.clonedFxs = new ArrayList<Effect>();
+		this.closed = false;
 	}
 
 	protected boolean isPitchEquals(int wantedPitch) {
@@ -64,8 +74,11 @@ public class AugmentedNote extends BasicNote {
 	public void patchEffects() {
 		if (thereIsAEffect() && thereIsAGenerator())
 			for (Generator g : generators)
-				for (Effect e : effects)
-					g.patchEffect((UGen) e.clone());
+				for (Effect e : effects) {
+					Effect clonedFx = e.clone();
+					g.patchEffect((UGen) clonedFx);
+					clonedFxs.add(clonedFx);
+				}
 	}
 
 	public void unpatchEffects() {
@@ -89,8 +102,65 @@ public class AugmentedNote extends BasicNote {
 	}
 
 	public void noteOff() {
-		this.unpatchEffects();
 
+		if (this.containsADSR)
+			noteOffUsingADSR();
+
+		else
+			defaultNoteOff();
+	}
+
+	public void noteOffUsingADSR() {
+		System.out.println("need to note off using ADSR!");
+
+		// for (int i = clonedFxs.size()-1; i > 0; i--) {
+		// Effect e = clonedFxs.get(i);
+		// if (e instanceof AdsrEffect)
+		// ((AdsrEffect) e).noteOff();
+		// clonedFxs.remove(i);
+		// }
+		
+		this.artificialNotes.noteOffUsingADSR();
+		
+		for (Effect e : clonedFxs)
+			if (e instanceof AdsrEffect)
+				((AdsrEffect) e).noteOff();
+
+		// setting a time to note off everything!
+		Runnable r = this;
+		new Thread(r).start();
+	}
+
+	private boolean checkIfContainsADSREffect() {
+		for (Effect e : effects)
+			if (e instanceof AdsrEffect)
+				return true;
+		return false;
+	}
+
+	private int getLongestReleaseTime() {
+		float longestReleaseTime = 0;
+
+		for (Effect e : clonedFxs)
+
+			if (e instanceof AdsrEffect && ((AdsrEffect) e).relTime > longestReleaseTime)
+				longestReleaseTime = ((AdsrEffect) e).relTime;
+
+		return (int) longestReleaseTime * 1000;
+	}
+
+
+	public void run() {
+		int longestReleaseTime = getLongestReleaseTime();
+		Util.delay(longestReleaseTime);
+		System.out.println("ok to fully note off!");
+		this.defaultNoteOff();
+	}
+
+	public synchronized void defaultNoteOff() {
+		if (this.closed) return;
+		
+		this.unpatchEffects();
 		this.artificialNotes.noteOff();
 
 		if (this.thereIsAGenerator())
@@ -99,8 +169,9 @@ public class AugmentedNote extends BasicNote {
 		else
 			MidiIO.outputNoteOff(this.getChannel(), this.getPitch(), this.getVelocity());
 
+		this.close();
 	}
-	
+
 	protected AugmentedNote cloneInADifferentPitch(int newNotePitch) {
 		return new AugmentedNote(this.getChannel(), newNotePitch, this.getVelocity(), cloneGenerators(newNotePitch),
 				cloneEffects());
@@ -111,12 +182,22 @@ public class AugmentedNote extends BasicNote {
 	}
 
 	public void close() {
+		if (this.closed) return; 
+		
 		for (Generator g : generators)
 			g.close();
 		this.generators.clear();
+		this.effects.clear();
+		this.clonedFxs.clear();
+
 		this.generators = null;
+		this.effects = null;
+		this.clonedFxs = null;
+
 		this.artificialNotes.close();
 		this.artificialNotes = null;
+		
+		this.closed = true;
 	}
 
 	/////////////////////////////
@@ -148,26 +229,28 @@ public class AugmentedNote extends BasicNote {
 	public void addGenerator(Generator g) {
 		this.generators.add(g);
 	}
-	
+
 	private ArrayList<Generator> cloneGenerators(int newNotePitch) {
 		ArrayList<Generator> gens = new ArrayList<Generator>();
-		
+
 		if (this.thereIsAGenerator())
 			for (Generator g : generators)
 				gens.add(g.cloneInADifferentPitch(newNotePitch));
 		return gens;
 	}
-	
+
 	/////////////////////////////
 	// effects methods
 	/////////////////////////////
 	public void addEffect(Effect e) {
 		this.effects.add(e);
+		if (e instanceof AdsrEffect)
+			this.containsADSR = true;
 	}
 
 	private ArrayList<Effect> cloneEffects() {
 		ArrayList<Effect> fxs = new ArrayList<Effect>();
-		
+
 		if (this.thereIsAEffect())
 			for (Effect e : effects)
 				fxs.add(e.clone());

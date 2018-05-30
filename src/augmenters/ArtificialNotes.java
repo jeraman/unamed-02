@@ -77,7 +77,12 @@ public class ArtificialNotes {
 
 	public void noteOff() {
 		for (AugmentedNote n: artificialNotes)
-			n.noteOff();
+			n.defaultNoteOff();
+	}
+	
+	public void noteOffUsingADSR() {
+		for (AugmentedNote n: artificialNotes)
+			n.noteOffUsingADSR();
 	}
 	
 	public void close() {
