@@ -78,6 +78,7 @@ public class SamplerFileGenerator extends ModifiedSampler implements Generator,R
 	
 	@Override
 	public void patchEffect(UGen effect) {
+		this.trigger();
 		patched = patched.patch(effect);
 	}
 

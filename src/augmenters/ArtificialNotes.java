@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import org.jfugue.theory.Chord;
 import org.jfugue.theory.Note;
 import ddf.minim.UGen;
+import ddf.minim.ugens.Summer;
 
 /**
  * This class creates virtual music-theory-enriched MIDI notes (called extensions) to be played along 
@@ -89,6 +90,11 @@ public class ArtificialNotes {
 		for (AugmentedNote n: artificialNotes)
 			n.close();
 		artificialNotes = null;
+	}
+
+	public void loadUpAllGenerators(Summer s) {
+		for (AugmentedNote n: artificialNotes)
+			n.loadUpAllGenerators(s);
 	}
 
 }

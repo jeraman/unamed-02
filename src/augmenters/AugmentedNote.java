@@ -3,9 +3,11 @@ package augmenters;
 import java.util.ArrayList;
 
 import ddf.minim.UGen;
+import ddf.minim.ugens.Summer;
 import effects.AdsrEffect;
 import effects.Effect;
 import generators.Generator;
+import generators.GeneratorFactory;
 import util.MidiIO;
 import util.Util;
 
@@ -21,10 +23,12 @@ public class AugmentedNote extends BasicNote implements Runnable {
 	private ArrayList<Generator> generators;
 	private ArrayList<Effect> effects;
 	// private Effect effect;
+	private Summer mixer;
+	private UGen outputChain;
 
 	private boolean containsADSR;
 	private boolean closed;
-	private ArrayList<Effect> clonedFxs;
+	// private ArrayList<Effect> clonedFxs;
 
 	public AugmentedNote(int channel, int pitch, int velocity) {
 		this(channel, pitch, velocity, new ArrayList<Generator>());
@@ -34,15 +38,6 @@ public class AugmentedNote extends BasicNote implements Runnable {
 		this(channel, pitch, velocity, generators, new ArrayList<Effect>());
 	}
 
-	// public AugmentedNote(int channel, int pitch, int velocity,
-	// ArrayList<Generator> generators, Effect effect) {
-	// super(channel, pitch, velocity);
-	// this.artificialNotes = new ArtificialNotes();
-	// this.generators = new ArrayList<Generator>();
-	// this.generators.add(generator);
-	// this.effect = effect;
-	// }
-
 	public AugmentedNote(int channel, int pitch, int velocity, ArrayList<Generator> generators,
 			ArrayList<Effect> effects) {
 		super(channel, pitch, velocity);
@@ -50,8 +45,11 @@ public class AugmentedNote extends BasicNote implements Runnable {
 		this.generators = generators;
 		this.effects = effects;
 
+		this.mixer = new Summer();
+		this.outputChain = this.mixer;
+
 		this.containsADSR = this.checkIfContainsADSREffect();
-		this.clonedFxs = new ArrayList<Effect>();
+		// this.clonedFxs = new ArrayList<Effect>();
 		this.closed = false;
 	}
 
@@ -64,42 +62,98 @@ public class AugmentedNote extends BasicNote implements Runnable {
 	}
 
 	public boolean thereIsAGenerator() {
-		return (this.generators.size() > 0);
+		return (this.generators != null && this.generators.size() > 0);
 	}
 
 	public boolean thereIsAEffect() {
-		return (this.effects.size() > 0);
+		return (this.effects != null || this.effects.size() > 0);
+	}
+
+	public void loadUpAllGenerators(Summer s) {
+		this.artificialNotes.loadUpAllGenerators(s);
+
+		if (thereIsAGenerator())
+			for (Generator g : generators)
+				g.patchEffect(s);
+	}
+
+	private void loadUpAllGenerators() {
+		this.loadUpAllGenerators(this.mixer);
 	}
 
 	public void patchEffects() {
-		if (thereIsAEffect() && thereIsAGenerator())
-			for (Generator g : generators)
-				for (Effect e : effects) {
-					Effect clonedFx = e.clone();
-					g.patchEffect((UGen) clonedFx);
-					clonedFxs.add(clonedFx);
-				}
+		this.loadUpAllGenerators();
+
+		if (thereIsAEffect())
+			for (Effect e : effects) {
+				this.outputChain = this.outputChain.patch((UGen) e);
+				// clonedFxs.add(e);
+			}
+	}
+	
+	public synchronized void unpatchEffects() {
+		if(this.closed)
+			return;
+		
+		synchronized(effects) {
+		if (thereIsAEffect())
+			for (Effect e : effects) {
+				outputChain.unpatch((UGen) e);
+				mixer.unpatch((UGen) e);
+			}
+		}
+
+		synchronized(generators) {
+			if (thereIsAGenerator()) {
+				for (Generator g : generators)
+					g.unpatchEffect(mixer);
+			}
+		}
+
 	}
 
-	public void unpatchEffects() {
-		if (thereIsAEffect() && thereIsAGenerator())
-			for (Generator g : generators)
-				for (Effect e : effects)
-					g.unpatchEffect((UGen) e);
-	}
+	// public void patchEffects() {
+	// if (thereIsAEffect() && thereIsAGenerator())
+	// for (Generator g : generators)
+	// for (Effect e : effects) {
+	// g.patchEffect((UGen) e);
+	// //Effect clonedFx = e.clone();
+	// //g.patchEffect((UGen) clonedFx);
+	// clonedFxs.add(e);
+	// }
+	// }
+
+	// public void unpatchEffects() {
+	// if (thereIsAEffect() && thereIsAGenerator())
+	// for (Generator g : generators)
+	// for (Effect e : effects)
+	// g.unpatchEffect((UGen) e);
+	// }
 
 	public void noteOn() {
 		this.patchEffects();
 
-		this.artificialNotes.noteOn();
-
-		if (this.thereIsAGenerator())
-			for (Generator g : generators)
-				g.noteOn();
-		else
+		if (!this.thereIsAGenerator()) {
+			this.artificialNotes.noteOn();
 			MidiIO.outputNoteOn(this.getChannel(), this.getPitch(), this.getVelocity());
+		} else
+			this.outputChain.patch(GeneratorFactory.out);
 
 	}
+
+	// public void noteOn() {
+	// this.patchEffects();
+	//
+	// this.artificialNotes.noteOn();
+	//
+	// if (this.thereIsAGenerator())
+	// for (Generator g : generators)
+	// g.noteOn();
+	// else
+	// MidiIO.outputNoteOn(this.getChannel(), this.getPitch(),
+	// this.getVelocity());
+	//
+	// }
 
 	public void noteOff() {
 
@@ -113,16 +167,10 @@ public class AugmentedNote extends BasicNote implements Runnable {
 	public void noteOffUsingADSR() {
 		System.out.println("need to note off using ADSR!");
 
-		// for (int i = clonedFxs.size()-1; i > 0; i--) {
-		// Effect e = clonedFxs.get(i);
-		// if (e instanceof AdsrEffect)
-		// ((AdsrEffect) e).noteOff();
-		// clonedFxs.remove(i);
-		// }
-		
 		this.artificialNotes.noteOffUsingADSR();
-		
-		for (Effect e : clonedFxs)
+
+		// for (Effect e : clonedFxs)
+		for (Effect e : effects)
 			if (e instanceof AdsrEffect)
 				((AdsrEffect) e).noteOff();
 
@@ -141,7 +189,8 @@ public class AugmentedNote extends BasicNote implements Runnable {
 	private int getLongestReleaseTime() {
 		float longestReleaseTime = 0;
 
-		for (Effect e : clonedFxs)
+		// for (Effect e : clonedFxs)
+		for (Effect e : effects)
 
 			if (e instanceof AdsrEffect && ((AdsrEffect) e).relTime > longestReleaseTime)
 				longestReleaseTime = ((AdsrEffect) e).relTime;
@@ -149,28 +198,48 @@ public class AugmentedNote extends BasicNote implements Runnable {
 		return (int) longestReleaseTime * 1000;
 	}
 
-
 	public void run() {
 		int longestReleaseTime = getLongestReleaseTime();
 		Util.delay(longestReleaseTime);
-		System.out.println("ok to fully note off!");
+		System.out.println("ok to fully note off: " + this);
 		this.defaultNoteOff();
 	}
 
 	public synchronized void defaultNoteOff() {
-		if (this.closed) return;
-		
-		this.unpatchEffects();
-		this.artificialNotes.noteOff();
+		if (this.closed) 
+			return;
 
-		if (this.thereIsAGenerator())
-			for (Generator g : generators)
-				g.noteOff();
-		else
-			MidiIO.outputNoteOff(this.getChannel(), this.getPitch(), this.getVelocity());
+		System.out.println("defaultNoteOff " + this);
+		this.unpatchEffects();
+
+			if (!this.thereIsAGenerator()) {
+				if (this.artificialNotes != null)
+					this.artificialNotes.noteOff();
+				MidiIO.outputNoteOff(this.getChannel(), this.getPitch(), this.getVelocity());
+			} else {
+				this.outputChain.unpatch(GeneratorFactory.out);
+				this.mixer.unpatch(GeneratorFactory.out);
+			}
 
 		this.close();
+		
+		
 	}
+	// public synchronized void defaultNoteOff() {
+	// if (this.closed) return;
+	//
+	// this.unpatchEffects();
+	// this.artificialNotes.noteOff();
+	//
+	// if (this.thereIsAGenerator())
+	// for (Generator g : generators)
+	// g.noteOff();
+	// else
+	// MidiIO.outputNoteOff(this.getChannel(), this.getPitch(),
+	// this.getVelocity());
+	//
+	// this.close();
+	// }
 
 	protected AugmentedNote cloneInADifferentPitch(int newNotePitch) {
 		return new AugmentedNote(this.getChannel(), newNotePitch, this.getVelocity(), cloneGenerators(newNotePitch),
@@ -182,22 +251,28 @@ public class AugmentedNote extends BasicNote implements Runnable {
 	}
 
 	public void close() {
-		if (this.closed) return; 
-		
-		for (Generator g : generators)
-			g.close();
-		this.generators.clear();
-		this.effects.clear();
-		this.clonedFxs.clear();
+		if (this.closed)
+			return;
 
-		this.generators = null;
-		this.effects = null;
-		this.clonedFxs = null;
-
-		this.artificialNotes.close();
-		this.artificialNotes = null;
-		
 		this.closed = true;
+
+		synchronized (generators) {
+			for (Generator g : generators)
+				g.close();
+			this.generators.clear();
+			this.generators = null;
+		}
+		
+		synchronized (effects) {
+			this.effects.clear();
+			this.effects = null;
+		}
+		
+		synchronized (artificialNotes) {
+			this.artificialNotes.close();
+			this.artificialNotes = null;
+		}
+
 	}
 
 	/////////////////////////////

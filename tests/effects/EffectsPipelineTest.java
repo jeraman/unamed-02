@@ -13,7 +13,7 @@ import javafx.util.Pair;
 import processing.core.PApplet;
 import util.MidiIO;
 
-public class EffectsTest extends PApplet {
+public class EffectsPipelineTest extends PApplet {
 	AugmentedNoteMemory memory;
 	AudioRecordingStream fileStream;
 
@@ -21,7 +21,7 @@ public class EffectsTest extends PApplet {
 	float sampleRate;
 
 	public static void main(String[] args) {
-		PApplet.main("effects.EffectsTest");
+		PApplet.main("effects.EffectsPipelineTest");
 	}
 
 	public void settings() {
@@ -87,15 +87,16 @@ public class EffectsTest extends PApplet {
 		Effect fx8 = new AdsrEffect(1.f, 0.1f, 0.5f, 0.5f, 1.f, 0.f, 0.f);
 
 		AugmentedNote newNote = new AugmentedNote(channel, pitch, velocity);
+		// first the generators
+		// newNote.addGenerator(gen2);
 		newNote.addGenerator(gen1);
-		newNote.addGenerator(gen2);
 		newNote.addGenerator(gen3);
-		// newNote.addEffect(fx4);
-		newNote.addEffect(fx8);
+		// then the effects
 		newNote.addEffect(fx6);
 		newNote.addEffect(fx4);
-		// newNote.addGenerator(gen4);
-		newNote.addArtificialChord("min7");
+		newNote.addEffect(fx8);
+		// finally, the augmenters
+		// newNote.addArtificialChord("min7");
 		newNote.addArtificialInterval("5");
 		newNote.noteOn();
 		memory.put(newNote);
