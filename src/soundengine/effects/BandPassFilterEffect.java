@@ -4,6 +4,7 @@ import ddf.minim.effects.BandPass;
 
 public class BandPassFilterEffect extends BandPass implements Effect {
 
+	@Deprecated
 	public BandPassFilterEffect() {
 		this(0,0,0);
 	}

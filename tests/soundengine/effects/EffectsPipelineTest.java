@@ -89,7 +89,7 @@ public class EffectsPipelineTest extends PApplet {
 		Effect fx2 = new LowPassFilterEffect(200, sampleRate);
 		Effect fx3 = new BandPassFilterEffect(1000, 100, sampleRate);
 		Effect fx4 = new DelayEffect(0.5f, 0.9f, true, true);
-		Effect fx5 = new MoogFilterEffect(200, 500, Type.LP);
+		Effect fx5 = new MoogFilterEffect(200, 500, "LP");
 		Effect fx6 = new FlangerEffect(1, 0.5f, 1, 0.5f, 0.5f, 0.5f);
 		Effect fx7 = new BitChrushEffect(4, sampleRate);
 		Effect fx8 = new AdsrEffect(1.f, 0.1f, 0.5f, 0.5f, 1.f, 0.f, 0.f);

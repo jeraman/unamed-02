@@ -3,9 +3,7 @@ package soundengine.generators;
 import ddf.minim.AudioOutput;
 import ddf.minim.Minim;
 import ddf.minim.MultiChannelBuffer;
-import ddf.minim.spi.AudioRecordingStream;
 import ddf.minim.spi.AudioStream;
-import ddf.minim.ugens.Waveform;
 import javafx.util.Pair;
 import soundengine.SoundEngine;
 
@@ -76,12 +74,25 @@ public class GeneratorFactory {
 	// end of deprecated
 	/////////////////////////////////////////////////
 
-	
-	
 
 	//this class is a singleton
 	private GeneratorFactory(){
-	} 
+	}
+	
+	public static Generator createGenerator(String type, String[] parameters) {
+		Generator gen = null;
+
+		if (type.equalsIgnoreCase("OSCILLATOR"))
+			gen = noteOnOscillatorGen(parameters);
+		if (type.equalsIgnoreCase("FM"))
+			gen = noteOnFMGen(parameters);
+		if (type.equalsIgnoreCase("SAMPLE"))
+			gen = noteOnSampleFileGen(parameters);
+		if (type.equalsIgnoreCase("LIVEINPUT"))
+			gen = noteOnLiveInpuGen(parameters);
+		
+		return gen;
+	}
 	
 	
 	//Oscillator Factory
@@ -199,21 +210,5 @@ public class GeneratorFactory {
 //	return minim.getInputStream( Minim.MONO, out.bufferSize(), out.sampleRate(),out.getFormat().getSampleSizeInBits());
 		return SoundEngine.in;
 	}
-
-	public static Generator createGenerator(String type, String[] parameters) {
-		Generator gen = null;
-
-		if (type.equalsIgnoreCase("OSCILLATOR"))
-			gen = noteOnOscillatorGen(parameters);
-		if (type.equalsIgnoreCase("FM"))
-			gen = noteOnFMGen(parameters);
-		if (type.equalsIgnoreCase("SAMPLE"))
-			gen = noteOnSampleFileGen(parameters);
-		if (type.equalsIgnoreCase("LIVEINPUT"))
-			gen = noteOnLiveInpuGen(parameters);
-		
-		return gen;
-	}
-
 
 }

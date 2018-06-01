@@ -72,31 +72,6 @@ public class SoundEngine implements SoundEngineFacade {
 		this.activeEffects.put(id, fx);
 	}
 
-//	@Override
-//	public void addEffect(String id, String type) {
-//		Effect fx = null;
-//
-//		if (type.equalsIgnoreCase("ADSR"))
-//			fx = new AdsrEffect();
-//		if (type.equalsIgnoreCase("BANDPASS"))
-//			fx = new BandPassFilterEffect();
-//		if (type.equalsIgnoreCase("BITCHRUSH"))
-//			fx = new BitChrushEffect();
-//		if (type.equalsIgnoreCase("DELAY"))
-//			fx = new DelayEffect();
-//		if (type.equalsIgnoreCase("FLANGER"))
-//			fx = new FlangerEffect();
-//		if (type.equalsIgnoreCase("HIGHPASS"))
-//			fx = new HighPassFilterEffect();
-//		if (type.equalsIgnoreCase("LOWPASS"))
-//			fx = new LowPassFilterEffect();
-//		if (type.equalsIgnoreCase("MOOGFILTER"))
-//			fx = new MoogFilterEffect();
-//
-//		System.out.println("inserting " + id + "," + type + " as effect " + fx);
-//		this.activeEffects.put(id, fx);
-//	}
-
 	@Override
 	public void updateEffect(String id, String[] parameters) {
 		// TODO Auto-generated method stub
@@ -106,7 +81,6 @@ public class SoundEngine implements SoundEngineFacade {
 
 	@Override
 	public void removeEffect(String id) {
-		// TODO Auto-generated method stub
 		Effect fx = this.activeEffects.remove(id);
 		System.out.println("removing generator " + fx + " (id: "+  id + ")");
 	}
@@ -183,12 +157,24 @@ public class SoundEngine implements SoundEngineFacade {
 		}
 	}
 	
+	public void attachEffects(AugmentedNote targetNote) {
+		
+		synchronized (activeEffects) {
+			for (Entry<String, Effect> pair : activeEffects.entrySet()) {
+				Effect fx = pair.getValue();
+				// TODO: remember to add the observers
+				Effect cloned = fx.clone();
+				targetNote.addEffect(cloned);
+			}
+		}
+	}
+	
 	@Override
 	public void noteOn(int channel, int pitch, int velocity) {
 		AugmentedNote newNote = new AugmentedNote(channel, pitch, velocity);
 		
 		this.attachGenerators(newNote);
-		//TODO: load up all effects
+		this.attachEffects(newNote);
 		//TODO: load up all augmenters
 		
 		newNote.noteOn();

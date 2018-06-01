@@ -8,7 +8,7 @@ public class DelayEffect extends Delay implements Effect{
 	private boolean feedBackOn;
 	private boolean passAudioOn;
 	
-	
+	@Deprecated
 	public DelayEffect() {
 		this(0,0,true, true);
 	}

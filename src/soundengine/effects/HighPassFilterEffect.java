@@ -4,7 +4,7 @@ import ddf.minim.effects.HighPassSP;
 
 public class HighPassFilterEffect extends HighPassSP implements Effect {
 
-	
+	@Deprecated
 	public HighPassFilterEffect() {
 		this(0,0);
 	}

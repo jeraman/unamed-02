@@ -11,6 +11,7 @@ public class AdsrEffect extends ADSR implements Effect {
 	public float befAmp; 
 	public float aftAmp;
 
+	@Deprecated
 	public AdsrEffect() {
 		this(0, 0, 0, 0, 0, 0, 0);
 	}

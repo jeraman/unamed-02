@@ -8,6 +8,7 @@ public class BitChrushEffect extends BitCrush implements Effect {
 	private int bitResolution;
 	private float sampleRate;
 	
+	@Deprecated
 	public BitChrushEffect() {
 		this(0,0);
 	}

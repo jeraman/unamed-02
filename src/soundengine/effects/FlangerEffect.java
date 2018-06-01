@@ -35,6 +35,7 @@ public class FlangerEffect extends Flanger implements Effect {
 	private float wetAmplitude; 
 	
 	
+	@Deprecated
 	public FlangerEffect() {
 		this(0, 0, 0, 0, 0, 0);
 	}

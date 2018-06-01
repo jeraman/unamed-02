@@ -37,12 +37,21 @@ public class TestingSoundEngine  extends PApplet {
 	public void keyPressed() {
 		println("key pressed: " + key);
 		
+		//generators
 		if (key == '1') 
 			processGen1();
 		if (key == '2') 
 			processGen2();
 		if (key == '3') 
 			processGen3();
+		
+		//effects
+		if (key == 'q') 
+			processFx1();
+		if (key == 'w') 
+			processFx2();
+		if (key == 'e') 
+			processFx3();
 	}
 
 	boolean isGen1Active = false;
@@ -70,6 +79,33 @@ public class TestingSoundEngine  extends PApplet {
 		else
 			eng.removeGenerator("3");
 		isGen3Active = !isGen3Active;
+	}
+	
+	boolean isFx1Active = false;
+	private void processFx1() {
+		if (!isFx1Active)
+			eng.addEffect("1", "HIGHPASS", new String[]{"5000"});
+		else
+			eng.removeEffect("1");
+		isFx1Active = !isFx1Active;
+	}
+	
+	boolean isFx2Active = false;
+	private void processFx2() {
+		if (!isFx2Active)
+			eng.addEffect("2", "FLANGER", new String[]{"1", "0.5", "1", "0.5", "0.5", "0.5"});
+		else
+			eng.removeEffect("2");
+		isFx2Active = !isFx2Active;
+	}
+	
+	boolean isFx3Active = false;
+	private void processFx3() {
+		if (!isFx3Active)
+			eng.addEffect("3", "BITCHRUSH", new String[]{"4"});
+		else
+			eng.removeEffect("3");
+		isFx3Active = !isFx3Active;
 	}
 
 	public void noteOn(int channel, int pitch, int velocity) {
