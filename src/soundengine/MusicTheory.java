@@ -1,4 +1,4 @@
-package soundengine.augmenters;
+package soundengine;
 
 import org.jfugue.theory.*;
 import java.util.List;
@@ -94,7 +94,7 @@ public class MusicTheory {
 		return Intervals.createIntervalsFromNotes(notes);
 	}
 	
-	protected static Note[] generateInterval(int pitch, String intervalType) {
+	public static Note[] generateInterval(int pitch, String intervalType) {
 		Intervals i = new Intervals("1 " + intervalType);
 		i.setRoot(new Note(pitch));
 		List<Note> notes = i.getNotes();
@@ -105,7 +105,7 @@ public class MusicTheory {
 	
 
 	// details on: http://www.jfugue.org/doc/org/jfugue/theory/Chord.html
-	protected static Chord generateChordFromMIDI(int rootMIDI, String chordType) {
+	public static Chord generateChordFromMIDI(int rootMIDI, String chordType) {
 		String note = MusicTheory.noteFromMIDI(rootMIDI);
 
 		System.out.println("The chord to be generated is:");

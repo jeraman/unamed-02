@@ -5,15 +5,15 @@ import ddf.minim.MultiChannelBuffer;
 import ddf.minim.spi.AudioRecordingStream;
 import javafx.util.Pair;
 import processing.core.PApplet;
-import soundengine.augmenters.AugmentedNote;
-import soundengine.augmenters.AugmentedNoteMemory;
+import soundengine.DecoratedNote;
+import soundengine.DecoratedNoteMemory;
 import soundengine.effects.LowPassFilterEffect;
 import soundengine.generators.Generator;
 import soundengine.generators.GeneratorFactory;
 import soundengine.util.MidiIO;
 
 public class UpdatingEffectsTest extends PApplet {
-	AugmentedNoteMemory memory;
+	DecoratedNoteMemory memory;
 	AudioRecordingStream fileStream;
 
 	MultiChannelBuffer buf;
@@ -33,7 +33,7 @@ public class UpdatingEffectsTest extends PApplet {
 	public void setup() {
 		background(0);
 		setupAudio();
-		memory = new AugmentedNoteMemory();
+		memory = new DecoratedNoteMemory();
 		fileStream = GeneratorFactory.minim.loadFileStream("123go.mp3");
 	}
 
@@ -74,7 +74,7 @@ public class UpdatingEffectsTest extends PApplet {
 
 		fx = new LowPassFilterEffect(200, GeneratorFactory.out.sampleRate());
 
-		AugmentedNote newNote = new AugmentedNote(channel, pitch, velocity);
+		DecoratedNote newNote = new DecoratedNote(channel, pitch, velocity);
 		
 		// first the generators
 		newNote.addGenerator(gen);
@@ -89,7 +89,7 @@ public class UpdatingEffectsTest extends PApplet {
 	}
 
 	public void noteOff(int channel, int pitch, int velocity) {
-		AugmentedNote n = memory.remove(pitch);
+		DecoratedNote n = memory.remove(pitch);
 		if (n == null)
 			return;
 		n.noteOff();

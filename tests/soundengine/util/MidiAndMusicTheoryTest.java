@@ -1,8 +1,8 @@
 package soundengine.util;
 
 import processing.core.PApplet;
-import soundengine.augmenters.AugmentedNoteMemory;
-import soundengine.augmenters.MusicTheory;
+import soundengine.DecoratedNoteMemory;
+import soundengine.MusicTheory;
 import soundengine.generators.Generator;
 import soundengine.util.MidiIO;
 import themidibus.MidiBus;
@@ -13,7 +13,7 @@ public class MidiAndMusicTheoryTest extends PApplet {
 	Minim minim; // my minim variable
 	AudioOutput out;
 	MidiIO midi;
-	AugmentedNoteMemory memory;
+	DecoratedNoteMemory memory;
 	
 	public static void main(String[] args) {
 		PApplet.main("soundengine.util.MidiAndMusicTheoryTest");
@@ -26,7 +26,7 @@ public class MidiAndMusicTheoryTest extends PApplet {
 	public void setup() {
 		background(0);
 		setupAudio();
-		memory = new AugmentedNoteMemory();
+		memory = new DecoratedNoteMemory();
 	}
 
 	public void setupAudio() {

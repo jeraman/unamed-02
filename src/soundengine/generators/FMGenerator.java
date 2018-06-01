@@ -5,7 +5,7 @@ import ddf.minim.UGen;
 import ddf.minim.ugens.Oscil;
 import ddf.minim.ugens.Waveform;
 import ddf.minim.ugens.Waves;
-import soundengine.augmenters.MusicTheory;
+import soundengine.MusicTheory;
 import soundengine.util.Util;
 
 public class FMGenerator extends Oscil implements Generator,Runnable{

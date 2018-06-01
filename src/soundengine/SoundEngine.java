@@ -5,8 +5,8 @@ import java.util.Map.Entry;
 import ddf.minim.AudioOutput;
 import ddf.minim.Minim;
 import ddf.minim.spi.AudioStream;
-import soundengine.augmenters.AugmentedNote;
-import soundengine.augmenters.AugmentedNoteMemory;
+import soundengine.augmenters.Augmenter;
+import soundengine.augmenters.AugmenterFactory;
 import soundengine.effects.Effect;
 import soundengine.effects.EffectFactory;
 import soundengine.generators.Generator;
@@ -19,18 +19,20 @@ import soundengine.generators.GeneratorFactory;
  */
 public class SoundEngine implements SoundEngineFacade {
 	
-	private AugmentedNoteMemory memory;
+	private DecoratedNoteMemory memory;
 	private LinkedHashMap<String, Generator> activeGenerators;
 	private LinkedHashMap<String, Effect> activeEffects;
+	private LinkedHashMap<String, Augmenter> activeAugmenters;
 	
 	public static Minim minim;
 	public static AudioOutput out;
 	public static AudioStream in;
 	
 	public SoundEngine(Minim minim) {
-		this.memory 		  = new AugmentedNoteMemory();
+		this.memory 		  = new DecoratedNoteMemory();
 		this.activeGenerators = new LinkedHashMap<String, Generator>();
 		this.activeEffects 	  = new LinkedHashMap<String, Effect>();
+		this.activeAugmenters = new LinkedHashMap<String, Augmenter>();
 		
 		SoundEngine.minim = minim;
 		SoundEngine.out = minim.getLineOut(Minim.MONO, 256);
@@ -76,76 +78,35 @@ public class SoundEngine implements SoundEngineFacade {
 	public void updateEffect(String id, String[] parameters) {
 		// TODO Auto-generated method stub
 		Effect fx = this.activeEffects.get(id);
-		System.out.println("updating generator " + fx + " (id: "+  id + ") with the following parameters: "  + parameters);
+		System.out.println("updating effect " + fx + " (id: "+  id + ") with the following parameters: "  + parameters);
 	}
 
 	@Override
 	public void removeEffect(String id) {
 		Effect fx = this.activeEffects.remove(id);
-		System.out.println("removing generator " + fx + " (id: "+  id + ")");
-	}
-
-	@Override
-	public void addArtificialNote(int newNotePitch) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void addArtificialInterval(String intervalType) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void addArtificialInterval(int newPitch, String intervalType) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void addArtificialChord(String chordType) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void addArtificialChord(int newRoot, String chordType) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void removeArtificialNote(int newNotePitch) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void removeArtificialInterval(String intervalType) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void removeArtificialInterval(int newPitch, String intervalType) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void removeArtificialChord(String chordType) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void removeArtificialChord(int newRoot, String chordType) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("removing effect " + fx + " (id: "+  id + ")");
 	}
 	
-	public void attachGenerators(AugmentedNote targetNote) {
+	@Override
+	public void addAugmenter(String id, String type, String[] parameters) {
+		Augmenter aug = AugmenterFactory.createAugmenter(type, parameters);
+		System.out.println("inserting " + id + ","  + type + " as augmenter " + aug);
+		this.activeAugmenters.put(id, aug);
+	}
+
+	@Override
+	public void updateAugmenter(String id, String[] parameters) {
+		Augmenter aug = this.activeAugmenters.get(id);
+		System.out.println("updating augmenter " + aug + " (id: "+  id + ") with the following parameters: "  + parameters);
+	}
+
+	@Override
+	public void removeAugmenter(String id) {
+		Augmenter aug = this.activeAugmenters.remove(id);
+		System.out.println("removing augmenter " + aug + " (id: "+  id + ")");		
+	}
+	
+	public void attachGenerators(DecoratedNote targetNote) {
 		
 		synchronized (activeGenerators) {
 			for (Entry<String, Generator> pair : activeGenerators.entrySet()) {
@@ -157,7 +118,7 @@ public class SoundEngine implements SoundEngineFacade {
 		}
 	}
 	
-	public void attachEffects(AugmentedNote targetNote) {
+	public void attachEffects(DecoratedNote targetNote) {
 		
 		synchronized (activeEffects) {
 			for (Entry<String, Effect> pair : activeEffects.entrySet()) {
@@ -169,13 +130,25 @@ public class SoundEngine implements SoundEngineFacade {
 		}
 	}
 	
+	public void attachAugmenters(DecoratedNote targetNote) {
+		
+		synchronized (activeAugmenters) {
+			for (Entry<String, Augmenter> pair : activeAugmenters.entrySet()) {
+				Augmenter aug = pair.getValue();
+				targetNote.addAugmenter(aug);
+				// TODO: remember to add the observers
+				System.out.println("add " + aug);
+			}
+		}
+	}
+	
 	@Override
 	public void noteOn(int channel, int pitch, int velocity) {
-		AugmentedNote newNote = new AugmentedNote(channel, pitch, velocity);
+		DecoratedNote newNote = new DecoratedNote(channel, pitch, velocity);
 		
 		this.attachGenerators(newNote);
 		this.attachEffects(newNote);
-		//TODO: load up all augmenters
+		this.attachAugmenters(newNote);
 		
 		newNote.noteOn();
 		memory.put(newNote);
@@ -183,7 +156,7 @@ public class SoundEngine implements SoundEngineFacade {
 
 	@Override
 	public void noteOff(int channel, int pitch, int velocity) {
-		AugmentedNote n = memory.remove(pitch);
+		DecoratedNote n = memory.remove(pitch);
 		if (n == null) return;
 		n.noteOff();
 	}

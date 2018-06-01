@@ -6,9 +6,9 @@ import ddf.minim.spi.AudioRecordingStream;
 import ddf.minim.ugens.MoogFilter.Type;
 import javafx.util.Pair;
 import processing.core.PApplet;
-import soundengine.augmenters.AugmentedNote;
-import soundengine.augmenters.AugmentedNoteMemory;
-import soundengine.augmenters.MusicTheory;
+import soundengine.DecoratedNote;
+import soundengine.DecoratedNoteMemory;
+import soundengine.MusicTheory;
 import soundengine.effects.AdsrEffect;
 import soundengine.effects.BandPassFilterEffect;
 import soundengine.effects.BitChrushEffect;
@@ -23,7 +23,7 @@ import soundengine.generators.GeneratorFactory;
 import soundengine.util.MidiIO;
 
 public class EffectsPipelineTest extends PApplet {
-	AugmentedNoteMemory memory;
+	DecoratedNoteMemory memory;
 	AudioRecordingStream fileStream;
 
 	MultiChannelBuffer buf;
@@ -40,7 +40,7 @@ public class EffectsPipelineTest extends PApplet {
 	public void setup() {
 		background(0);
 		setupAudio();
-		memory = new AugmentedNoteMemory();
+		memory = new DecoratedNoteMemory();
 		fileStream = GeneratorFactory.minim.loadFileStream("123go.mp3");
 	}
 
@@ -72,7 +72,7 @@ public class EffectsPipelineTest extends PApplet {
 		Generator gen = GeneratorFactory.temporaryFMGen(60, 127, 1500);
 		// Generator gen = GeneratorFactory.temporaryOscillatorGen(60, 127,
 		// 1500);
-		AugmentedNote newNote = new AugmentedNote(0, 60, 127);
+		DecoratedNote newNote = new DecoratedNote(0, 60, 127);
 		newNote.addGenerator(gen);
 		newNote.noteOn();
 	}
@@ -94,7 +94,7 @@ public class EffectsPipelineTest extends PApplet {
 		Effect fx7 = new BitChrushEffect(4, sampleRate);
 		Effect fx8 = new AdsrEffect(1.f, 0.1f, 0.5f, 0.5f, 1.f, 0.f, 0.f);
 
-		AugmentedNote newNote = new AugmentedNote(channel, pitch, velocity);
+		DecoratedNote newNote = new DecoratedNote(channel, pitch, velocity);
 		// first the generators
 		// newNote.addGenerator(gen2);
 		newNote.addGenerator(gen1);
@@ -111,7 +111,7 @@ public class EffectsPipelineTest extends PApplet {
 	}
 
 	public void noteOff(int channel, int pitch, int velocity) {
-		AugmentedNote n = memory.remove(pitch);
+		DecoratedNote n = memory.remove(pitch);
 		if (n == null)
 			return;
 		n.noteOff();

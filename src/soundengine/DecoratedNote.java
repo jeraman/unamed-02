@@ -1,10 +1,10 @@
-package soundengine.augmenters;
+package soundengine;
 
 import java.util.ArrayList;
 
 import ddf.minim.UGen;
 import ddf.minim.ugens.Summer;
-import soundengine.SoundEngine;
+import soundengine.augmenters.Augmenter;
 import soundengine.effects.AdsrEffect;
 import soundengine.effects.Effect;
 import soundengine.generators.Generator;
@@ -19,27 +19,25 @@ import soundengine.util.Util;
  *
  */
 
-public class AugmentedNote extends BasicNote implements Runnable {
+public class DecoratedNote extends BasicNote implements Runnable {
 	private ArtificialNotes artificialNotes;
 	private ArrayList<Generator> generators;
 	private ArrayList<Effect> effects;
-	// private Effect effect;
 	private Summer mixer;
 	private UGen outputChain;
 
 	private boolean containsADSR;
 	private boolean closed;
-	// private ArrayList<Effect> clonedFxs;
 
-	public AugmentedNote(int channel, int pitch, int velocity) {
+	public DecoratedNote(int channel, int pitch, int velocity) {
 		this(channel, pitch, velocity, new ArrayList<Generator>());
 	}
 
-	public AugmentedNote(int channel, int pitch, int velocity, ArrayList<Generator> generators) {
+	public DecoratedNote(int channel, int pitch, int velocity, ArrayList<Generator> generators) {
 		this(channel, pitch, velocity, generators, new ArrayList<Effect>());
 	}
 
-	public AugmentedNote(int channel, int pitch, int velocity, ArrayList<Generator> generators,
+	public DecoratedNote(int channel, int pitch, int velocity, ArrayList<Generator> generators,
 			ArrayList<Effect> effects) {
 		super(channel, pitch, velocity);
 		this.artificialNotes = new ArtificialNotes();
@@ -50,7 +48,6 @@ public class AugmentedNote extends BasicNote implements Runnable {
 		this.outputChain = this.mixer;
 
 		this.containsADSR = this.checkIfContainsADSREffect();
-		// this.clonedFxs = new ArrayList<Effect>();
 		this.closed = false;
 	}
 
@@ -86,10 +83,8 @@ public class AugmentedNote extends BasicNote implements Runnable {
 		this.loadUpAllGenerators();
 
 		if (thereIsAEffect())
-			for (Effect e : effects) {
+			for (Effect e : effects) 
 				this.outputChain = this.outputChain.patch((UGen) e);
-				// clonedFxs.add(e);
-			}
 	}
 	
 	public synchronized void unpatchEffects() {
@@ -113,24 +108,6 @@ public class AugmentedNote extends BasicNote implements Runnable {
 
 	}
 
-	// public void patchEffects() {
-	// if (thereIsAEffect() && thereIsAGenerator())
-	// for (Generator g : generators)
-	// for (Effect e : effects) {
-	// g.patchEffect((UGen) e);
-	// //Effect clonedFx = e.clone();
-	// //g.patchEffect((UGen) clonedFx);
-	// clonedFxs.add(e);
-	// }
-	// }
-
-	// public void unpatchEffects() {
-	// if (thereIsAEffect() && thereIsAGenerator())
-	// for (Generator g : generators)
-	// for (Effect e : effects)
-	// g.unpatchEffect((UGen) e);
-	// }
-
 	public void noteOn() {
 		this.patchEffects();
 
@@ -141,20 +118,6 @@ public class AugmentedNote extends BasicNote implements Runnable {
 			this.outputChain.patch(SoundEngine.out);
 
 	}
-
-	// public void noteOn() {
-	// this.patchEffects();
-	//
-	// this.artificialNotes.noteOn();
-	//
-	// if (this.thereIsAGenerator())
-	// for (Generator g : generators)
-	// g.noteOn();
-	// else
-	// MidiIO.outputNoteOn(this.getChannel(), this.getPitch(),
-	// this.getVelocity());
-	//
-	// }
 
 	public void noteOff() {
 
@@ -170,7 +133,6 @@ public class AugmentedNote extends BasicNote implements Runnable {
 
 		this.artificialNotes.noteOffUsingADSR();
 
-		// for (Effect e : clonedFxs)
 		for (Effect e : effects)
 			if (e instanceof AdsrEffect)
 				((AdsrEffect) e).noteOff();
@@ -225,24 +187,9 @@ public class AugmentedNote extends BasicNote implements Runnable {
 		
 		
 	}
-	// public synchronized void defaultNoteOff() {
-	// if (this.closed) return;
-	//
-	// this.unpatchEffects();
-	// this.artificialNotes.noteOff();
-	//
-	// if (this.thereIsAGenerator())
-	// for (Generator g : generators)
-	// g.noteOff();
-	// else
-	// MidiIO.outputNoteOff(this.getChannel(), this.getPitch(),
-	// this.getVelocity());
-	//
-	// this.close();
-	// }
-
-	protected AugmentedNote cloneInADifferentPitch(int newNotePitch) {
-		return new AugmentedNote(this.getChannel(), newNotePitch, this.getVelocity(), this.cloneGenerators(newNotePitch),
+	
+	protected DecoratedNote cloneInADifferentPitch(int newNotePitch) {
+		return new DecoratedNote(this.getChannel(), newNotePitch, this.getVelocity(), this.cloneGenerators(newNotePitch),
 				this.cloneEffects());
 	}
 
@@ -278,24 +225,33 @@ public class AugmentedNote extends BasicNote implements Runnable {
 	/////////////////////////////
 	// augmenters methods
 	/////////////////////////////
+	@Deprecated
 	public void addArtificialNote(int newNotePitch) {
 		this.artificialNotes.addArtificialNote(this, newNotePitch);
 	}
 
+	@Deprecated
 	public void addArtificialInterval(String intervalType) {
 		this.artificialNotes.addArtificialInterval(this, intervalType);
 	}
 
+	@Deprecated
 	public void addArtificialChord(String chordType) {
 		this.artificialNotes.addArtificialChord(this, chordType);
 	}
 
+	@Deprecated
 	public void addArtificialInterval(int newPitch, String intervalType) {
 		this.artificialNotes.addArtificialInterval(this, newPitch, intervalType);
 	}
-
+	
+	@Deprecated
 	public void addArtificialChord(int newRoot, String chordType) {
 		this.artificialNotes.addArtificialChord(this, newRoot, chordType);
+	}
+	
+	public void addAugmenter(Augmenter aug) {
+		this.artificialNotes.addAugmenter(this, aug);
 	}
 
 	/////////////////////////////

@@ -1,4 +1,4 @@
-package soundengine.augmenters;
+package soundengine;
 
 import java.util.ArrayList;
 import org.jfugue.theory.Chord;
@@ -6,14 +6,14 @@ import org.jfugue.theory.Chord;
 import soundengine.generators.Generator;
 import soundengine.generators.GeneratorFactory;
 
-public class AugmentedNoteMemory {
-	private ArrayList<AugmentedNote> memory;
+public class DecoratedNoteMemory {
+	private ArrayList<DecoratedNote> memory;
 	private ArrayList<Integer> removalLine;
 	
 	private static final int CONCURRENT_NOTES_LIMIT = 5;
 
-	public AugmentedNoteMemory() {
-		memory = new ArrayList<AugmentedNote>();
+	public DecoratedNoteMemory() {
+		memory = new ArrayList<DecoratedNote>();
 		removalLine = new ArrayList<Integer>();
 	}
 	
@@ -22,18 +22,18 @@ public class AugmentedNoteMemory {
 //	}
 
 	public synchronized void put(int channel, int note, int velocity) {
-		AugmentedNote newNote = new AugmentedNote(channel, note, velocity);
+		DecoratedNote newNote = new DecoratedNote(channel, note, velocity);
 		this.put(newNote);
 	}
 	
-	public synchronized void put (AugmentedNote aug) {		
+	public synchronized void put (DecoratedNote aug) {		
 		controlsNumberOfConcurrentNotes();
 		memory.add(aug);
 	}
 
-	public synchronized AugmentedNote remove(int note) {
+	public synchronized DecoratedNote remove(int note) {
 		int noteIndex = getElementIndex(note);
-		AugmentedNote result = null;
+		DecoratedNote result = null;
 
 		if (noteIndex < 0) {
 			System.out.println("adding: " + note +  " to the removal line");
@@ -61,8 +61,8 @@ public class AugmentedNoteMemory {
 			this.removeAndNoteOff(note);
 	}
 	
-	private synchronized AugmentedNote removeAndNoteOff(int note) {
-		AugmentedNote n = this.remove(note);
+	private synchronized DecoratedNote removeAndNoteOff(int note) {
+		DecoratedNote n = this.remove(note);
 		n.noteOff();
 		n.close();
 		System.out.println("removing and killing note " + note);
@@ -116,14 +116,14 @@ public class AugmentedNoteMemory {
 		return individualNotes;
 	}
 
-	public synchronized AugmentedNote get(int index) {
+	public synchronized DecoratedNote get(int index) {
 		if (index >= 0 && index < memory.size())
 			return memory.get(index);
 		else
 			return null;
 	}
 
-	public synchronized AugmentedNote getStoredNotebyNoteValue(int wantedNote) {
+	public synchronized DecoratedNote getStoredNotebyNoteValue(int wantedNote) {
 		int noteIndex = getElementIndex(wantedNote);
 
 		if (noteIndex == -1)

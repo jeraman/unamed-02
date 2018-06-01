@@ -5,8 +5,8 @@ import ddf.minim.Minim;
 import ddf.minim.spi.AudioRecordingStream;
 import ddf.minim.spi.AudioStream;
 import processing.core.PApplet;
-import soundengine.augmenters.AugmentedNote;
-import soundengine.augmenters.AugmentedNoteMemory;
+import soundengine.DecoratedNote;
+import soundengine.DecoratedNoteMemory;
 import soundengine.generators.Generator;
 import soundengine.generators.GeneratorFactory;
 import soundengine.generators.OscillatorGenerator;
@@ -14,7 +14,7 @@ import soundengine.util.MidiIO;
 
 public class MidiDrivenGenerator extends PApplet {
 	MidiIO midi;
-	AugmentedNoteMemory memory;
+	DecoratedNoteMemory memory;
 	AudioRecordingStream fileStream;
 	
 	public static void main(String[] args) {
@@ -28,7 +28,7 @@ public class MidiDrivenGenerator extends PApplet {
 	public void setup() {
 		background(0);
 		setupAudio();
-		memory = new AugmentedNoteMemory();
+		memory = new DecoratedNoteMemory();
 		fileStream = GeneratorFactory.minim.loadFileStream("123go.mp3");
 	}
 	
@@ -72,7 +72,7 @@ public class MidiDrivenGenerator extends PApplet {
 	}
 
 	public void noteOff(int channel, int pitch, int velocity) {
-		AugmentedNote n = memory.remove(pitch);
+		DecoratedNote n = memory.remove(pitch);
 		if (n == null) return;
 		n.noteOff();
 		n.close();

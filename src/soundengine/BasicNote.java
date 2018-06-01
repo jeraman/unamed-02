@@ -1,4 +1,4 @@
-package soundengine.augmenters;
+package soundengine;
 
 /**
  * Stores basic MIDI-related information

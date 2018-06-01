@@ -7,15 +7,15 @@ import ddf.minim.spi.AudioRecordingStream;
 import ddf.minim.spi.AudioStream;
 import javafx.util.Pair;
 import processing.core.PApplet;
-import soundengine.augmenters.AugmentedNote;
-import soundengine.augmenters.AugmentedNoteMemory;
+import soundengine.DecoratedNote;
+import soundengine.DecoratedNoteMemory;
 import soundengine.effects.Effect;
 import soundengine.generators.Generator;
 import soundengine.generators.GeneratorFactory;
 import soundengine.util.MidiIO;
 
 public class AugmenterTest extends PApplet{
-	AugmentedNoteMemory memory;
+	DecoratedNoteMemory memory;
 	AudioRecordingStream fileStream;
 	
 	MultiChannelBuffer buf;
@@ -33,7 +33,7 @@ public class AugmenterTest extends PApplet{
 	public void setup() {
 		background(0);
 		setupAudio();
-		memory = new AugmentedNoteMemory();
+		memory = new DecoratedNoteMemory();
 		fileStream = GeneratorFactory.minim.loadFileStream("123go.mp3");
 	}
 	
@@ -76,7 +76,7 @@ public class AugmenterTest extends PApplet{
 		//Generator gen = GeneratorFactory.temporaryLiveInpuGen(1500);
 		
 		Generator gen = GeneratorFactory.temporaryFMGen(60, 127, 1500);
-		AugmentedNote newNote = new AugmentedNote(0, 60, 127);
+		DecoratedNote newNote = new DecoratedNote(0, 60, 127);
 		newNote.addGenerator(gen);
 		//newNote.addArtificialChord("min7");
 		//newNote.addArtificialInterval("5");
@@ -89,7 +89,7 @@ public class AugmenterTest extends PApplet{
 		//Generator gen = GeneratorFactory.noteOnOscillatorGen(pitch, velocity);
 		//Generator gen = GeneratorFactory.noteOnLiveInpuGen(pitch, velocity);
 
-		AugmentedNote newNote = new AugmentedNote(channel, pitch, velocity);
+		DecoratedNote newNote = new DecoratedNote(channel, pitch, velocity);
 		newNote.addGenerator(gen);
 		newNote.addArtificialChord("min7");
 		newNote.addArtificialInterval(pitch+12, "5");
@@ -98,7 +98,7 @@ public class AugmenterTest extends PApplet{
 	}
 
 	public void noteOff(int channel, int pitch, int velocity) {
-		AugmentedNote n = memory.remove(pitch);
+		DecoratedNote n = memory.remove(pitch);
 		if (n == null) return;
 		n.noteOff();
 		n.close();
