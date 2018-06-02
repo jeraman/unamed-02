@@ -67,7 +67,7 @@ public class GeneratorFactory {
 	
 	@Deprecated
 	public static Generator noteOnSampleFileGen(MultiChannelBuffer buf, float samplerate, int pitch, int velocity) {
-		Generator gen = new SamplerFileGenerator(buf, samplerate, pitch, velocity);
+		Generator gen = new SampleFileGenerator(buf, samplerate, pitch, velocity);
 		return gen;
 	}
 	
@@ -94,23 +94,51 @@ public class GeneratorFactory {
 		return gen;
 	}
 	
-	
+	public static void updateGenerator(Generator gen, String[] parameters) {
+		if (gen instanceof OscillatorGenerator)
+			updateOscillatorGen((OscillatorGenerator)gen, parameters);
+		if (gen instanceof FMGenerator)
+			updateFMGen((FMGenerator)gen, parameters);
+		if (gen instanceof SampleFileGenerator)
+			updateFileGen((SampleFileGenerator)gen, parameters);
+		if (gen instanceof LiveInputGenerator)
+			updateLiveInpuGen((LiveInputGenerator)gen, parameters);
+	}
+
 	//Oscillator Factory
-	public static Generator noteOnOscillatorGen(int pitch, int velocity) {
-		Generator gen = new OscillatorGenerator(pitch, velocity, true);
+	public static Generator noteOnOscillatorGen(int pitch, int velocity, String waveform) {
+		Generator gen = new OscillatorGenerator(pitch, velocity, waveform, true);
 		return gen;
 	}
 	
 	public static Generator noteOnOscillatorGen(String[] parameters) {
 		int pitch = Integer.parseInt(parameters[0]);
 		int velocity = Integer.parseInt(parameters[1]);
-		return noteOnOscillatorGen(pitch, velocity);
+		String waveform = parameters[2];
+		return noteOnOscillatorGen(pitch, velocity, waveform);
 	}
 	
-	public static Generator temporaryOscillatorGen(int pitch, int velocity, int duration) {
-		Generator gen = noteOnOscillatorGen(pitch, velocity);
+	public static Generator temporaryOscillatorGen(int pitch, int velocity, String waveform, int duration) {
+		Generator gen = noteOnOscillatorGen(pitch, velocity, waveform);
 		gen.noteOffAfterDuration(duration);
 		return gen;
+	}
+	
+	public static void updateOscillatorGen(OscillatorGenerator gen, String[] parameters) {
+		int pitch = Integer.parseInt(parameters[0]);
+		int velocity = Integer.parseInt(parameters[1]);
+		String waveform = parameters[2];
+		
+		System.out.println("updateOscillatorGen " + gen);
+		System.out.println("pitch " + pitch);
+		System.out.println("velocity " + velocity);
+		System.out.println("waveform " + waveform);
+		
+		gen.setFrequencyFromPitch(pitch);
+		gen.setAmplitudeFromVelocity(velocity);
+		gen.setWaveform(waveform);
+		
+		gen.notifyAllObservers();
 	}
 	
 	
@@ -139,11 +167,24 @@ public class GeneratorFactory {
 		gen.noteOffAfterDuration(duration);
 		return gen;
 	}	
+
+
+	private static void updateFMGen(FMGenerator gen, String[] parameters) {
+		// TODO Auto-generated method stub
+		
+		float carrierFreq = Float.parseFloat(parameters[0]);
+		float carrierAmp = Float.parseFloat(parameters[1]);
+		String carrierWave = parameters[2];
+		
+		float modFreq = Float.parseFloat(parameters[3]);
+		float modAmp = Float.parseFloat(parameters[4]);
+		String modWave = parameters[5];
+	}
 	
 	
 	//SampleFile factory
 	public static Generator noteOnSampleFileGen(String fileStream, int pitch, int velocity, boolean shouldLoop) {
-		Generator gen = new SamplerFileGenerator(fileStream, pitch, velocity, shouldLoop);
+		Generator gen = new SampleFileGenerator(fileStream, pitch, velocity, shouldLoop);
 		return gen;
 	}
 	
@@ -160,6 +201,15 @@ public class GeneratorFactory {
 		Generator gen = noteOnSampleFileGen(filename, pitch, velocity, shouldLoop);
 		gen.noteOffAfterDuration(duration);
 		return gen;
+	}
+
+
+	private static void updateFileGen(SampleFileGenerator gen, String[] parameters) {
+		// TODO Auto-generated method stub
+		String filename = parameters[0];
+		int pitch = Integer.parseInt(parameters[1]);
+		int velocity = Integer.parseInt(parameters[2]);
+		boolean shouldLoop = Boolean.parseBoolean(parameters[3]);
 	}
 	
 	//Live Input factory
@@ -194,6 +244,12 @@ public class GeneratorFactory {
 		return gen;
 	}
 	
+	private static void updateLiveInpuGen(LiveInputGenerator gen, String[] parameters) {
+		// TODO Auto-generated method stub
+		int pitch = Integer.parseInt(parameters[1]);
+		int velocity = Integer.parseInt(parameters[2]);
+	}
+	
 	////////////////////////////
 	//general note off for all generators
 	public synchronized static Generator unpatch(Generator gen) {
@@ -210,5 +266,4 @@ public class GeneratorFactory {
 //	return minim.getInputStream( Minim.MONO, out.bufferSize(), out.sampleRate(),out.getFormat().getSampleSizeInBits());
 		return SoundEngine.in;
 	}
-
 }

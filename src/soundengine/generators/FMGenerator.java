@@ -1,5 +1,8 @@
 package soundengine.generators;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ddf.minim.AudioOutput;
 import ddf.minim.UGen;
 import ddf.minim.ugens.Oscil;
@@ -22,6 +25,8 @@ public class FMGenerator extends Oscil implements Generator,Runnable{
 	private String modWave;
 	
 	private UGen patched;
+	
+	private List<FMGeneratorObserver> observers;
 	
 	//TODO: delete deprecated constructors
 	@Deprecated
@@ -49,6 +54,8 @@ public class FMGenerator extends Oscil implements Generator,Runnable{
 		fm  = new Oscil( this.modFreq, this.modAmp, getWaveformType(this.modWave));
 		fm.offset.setLastValue(carrierFreq);
 		fm.patch(this.frequency);
+		
+		this.observers = new ArrayList<FMGeneratorObserver>();
 		
 		this.patched = this;
 	}
@@ -113,18 +120,39 @@ public class FMGenerator extends Oscil implements Generator,Runnable{
 		//GeneratorFactory.unpatch(this);
 		this.noteOff();
 	}
+	
+	@Override
+	public void attach(GeneratorObserver observer) {
+		this.observers.add((FMGeneratorObserver)observer);
+	}
+
+	@Override
+	public void notifyAllObservers() {
+		for (GeneratorObserver observer : observers)
+			observer.update();
+	}
 
 	@Override
 	public Generator clone(int newPitch) {
 		float newFreq = MusicTheory.freqFromMIDI(newPitch);
-		return new FMGenerator(newFreq, carrierAmp, carrierWave, modFreq, modAmp, modWave);
+		return cloneWithFreqAndAmplitude(newFreq, carrierAmp);
 	}
 
 	@Override
 	public Generator clone(int newPitch, int newVelocity) {
 		float newFreq = MusicTheory.freqFromMIDI(newPitch);
 		float newAmp = Util.mapFromMidiToAmplitude(newVelocity);
-		return new FMGenerator(newFreq, newAmp, carrierWave, modFreq, modAmp, modWave);
+		return cloneWithFreqAndAmplitude(newFreq, newAmp);
+	}
+	
+	private Generator cloneWithFreqAndAmplitude(float newFreq, float newAmp) {
+		FMGenerator clone = new FMGenerator(newFreq, newAmp, carrierWave, modFreq, modAmp, modWave);
+		this.linkForFutureChanges(clone);
+		return clone;
+	}
+	
+	private void linkForFutureChanges (FMGenerator clone) {
+		new FMGeneratorObserver(this, clone);
 	}
 	
 	private static Waveform getWaveformType (String waveName) {
@@ -151,6 +179,8 @@ public class FMGenerator extends Oscil implements Generator,Runnable{
 		this.fm = null;
 		this.carrierWave = null;
 		this.modWave = null;
+		this.observers.clear();
+		this.observers = null;
 	}
 
 }

@@ -17,14 +17,18 @@ public interface Generator {
 	public void noteOn();
 	
 	public void noteOff();
+
+	public void noteOffAfterDuration(int duration);
+	
+	public void attach (GeneratorObserver observer);
+	
+	public void notifyAllObservers();
 	
 	public void close();
 		
 	public Generator clone(int newPitch, int newVelocity); 
 
-	public Generator clone(int newPitch); 
-	
-	public void noteOffAfterDuration(int duration);
+	public Generator clone(int newPitch);	
 	
 //	public void run();
 }

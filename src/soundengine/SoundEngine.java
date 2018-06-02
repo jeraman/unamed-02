@@ -58,6 +58,7 @@ public class SoundEngine implements SoundEngineFacade {
 	public void updateGenerator(String id, String[] parameters) {
 		// TODO Auto-generated method stub
 		Generator gen = this.activeGenerators.get(id);
+		GeneratorFactory.updateGenerator(gen, parameters);
 		System.out.println("updating generator " + gen + " (id: "+  id + ") with the following parameters: "  + parameters);
 	}
 
@@ -107,7 +108,6 @@ public class SoundEngine implements SoundEngineFacade {
 	}
 	
 	public void attachGenerators(DecoratedNote targetNote) {
-		
 		synchronized (activeGenerators) {
 			for (Entry<String, Generator> pair : activeGenerators.entrySet()) {
 				Generator gen = pair.getValue();
@@ -119,7 +119,6 @@ public class SoundEngine implements SoundEngineFacade {
 	}
 	
 	public void attachEffects(DecoratedNote targetNote) {
-		
 		synchronized (activeEffects) {
 			for (Entry<String, Effect> pair : activeEffects.entrySet()) {
 				Effect fx = pair.getValue();
@@ -131,7 +130,6 @@ public class SoundEngine implements SoundEngineFacade {
 	}
 	
 	public void attachAugmenters(DecoratedNote targetNote) {
-		
 		synchronized (activeAugmenters) {
 			for (Entry<String, Augmenter> pair : activeAugmenters.entrySet()) {
 				Augmenter aug = pair.getValue();
@@ -159,6 +157,8 @@ public class SoundEngine implements SoundEngineFacade {
 		DecoratedNote n = memory.remove(pitch);
 		if (n == null) return;
 		n.noteOff();
+		
+		//TODO detach all observers from this note (ie. generatorobservers)
 	}
 
 }

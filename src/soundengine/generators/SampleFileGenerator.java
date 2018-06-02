@@ -1,5 +1,8 @@
 package soundengine.generators;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ddf.minim.AudioOutput;
 import ddf.minim.Minim;
 import ddf.minim.MultiChannelBuffer;
@@ -12,7 +15,7 @@ import javafx.util.Pair;
 import soundengine.SoundEngine;
 import soundengine.util.Util;
 
-public class SamplerFileGenerator extends ModifiedSampler implements Generator,Runnable {
+public class SampleFileGenerator extends ModifiedSampler implements Generator,Runnable {
 	static final int basePitch	 = 52;
 	
 	String 	   filename;
@@ -22,11 +25,13 @@ public class SamplerFileGenerator extends ModifiedSampler implements Generator,R
 	
 	private UGen patched;
 	
+	private List<SampleFileGeneratorObserver> observers;
+	
 //	public SamplerFileGenerator(String fileStream) {
 //		this(fileStream, Integer.MAX_VALUE);
 //	}
 
-	public SamplerFileGenerator(String filename) {
+	public SampleFileGenerator(String filename) {
 		this(filename, basePitch, 127);
 	}
 	
@@ -34,11 +39,11 @@ public class SamplerFileGenerator extends ModifiedSampler implements Generator,R
 //		this(filename, pitch, volume, Integer.MAX_VALUE, true);
 //	}
 
-	public SamplerFileGenerator(String filename, int pitch, int volume) {
+	public SampleFileGenerator(String filename, int pitch, int volume) {
 		this(filename, pitch, volume, true);
 	}
 	
-	public SamplerFileGenerator(String filename, int pitch, int volume, boolean shouldLoop) {
+	public SampleFileGenerator(String filename, int pitch, int volume, boolean shouldLoop) {
 		super(filename, 1, SoundEngine.minim);
 		
 		initializeVariables(filename, pitch, volume, Integer.MIN_VALUE, shouldLoop);
@@ -46,19 +51,19 @@ public class SamplerFileGenerator extends ModifiedSampler implements Generator,R
 	
 	
 	@Deprecated
-	public SamplerFileGenerator() {
+	public SampleFileGenerator() {
 		this(new MultiChannelBuffer(0,0), 0, 0, 0);
 	}
 	
-	protected SamplerFileGenerator(MultiChannelBuffer sampleData, float sampleRate, int pitch, int volume) {
+	protected SampleFileGenerator(MultiChannelBuffer sampleData, float sampleRate, int pitch, int volume) {
 		this(sampleData, sampleRate, pitch, volume, Integer.MAX_VALUE);
 	}
 
-	private SamplerFileGenerator(MultiChannelBuffer sampleData, float sampleRate, int pitch, int volume, int duration) {
+	private SampleFileGenerator(MultiChannelBuffer sampleData, float sampleRate, int pitch, int volume, int duration) {
 		this(sampleData, sampleRate, pitch, volume, duration, true);
 	}
 	
-	private SamplerFileGenerator(MultiChannelBuffer sampleData, float sampleRate, int pitch, int volume, int duration, boolean shouldLoop) {
+	private SampleFileGenerator(MultiChannelBuffer sampleData, float sampleRate, int pitch, int volume, int duration, boolean shouldLoop) {
 		super(sampleData, sampleRate, 1);
 		
 		initializeVariables("", pitch, volume, duration, shouldLoop);
@@ -78,6 +83,8 @@ public class SamplerFileGenerator extends ModifiedSampler implements Generator,R
 		//this.rateControl = new TickRate(pR);
 		//this.gain        = new Gain(Util.mapFromMidiToDecibels(volume));
 		this.setVolume(volume);
+		
+		this.observers = new ArrayList<SampleFileGeneratorObserver>();
 		
 		this.patched = this;
 	}
@@ -119,7 +126,7 @@ public class SamplerFileGenerator extends ModifiedSampler implements Generator,R
 	}
 	
 	private float calculateRelativePitch(int pitchOffset) {
-		float difPit = ((SamplerFileGenerator.basePitch - pitchOffset) % 24) * -1;
+		float difPit = ((SampleFileGenerator.basePitch - pitchOffset) % 24) * -1;
 		return (1.f + (difPit) * (1.f / 12.f));
 	}
 	
@@ -155,22 +162,38 @@ public class SamplerFileGenerator extends ModifiedSampler implements Generator,R
 		System.out.println("stop playing!");
 		this.noteOff();
 	}
+	
+
+	@Override
+	public void attach(GeneratorObserver observer) {
+		this.observers.add((SampleFileGeneratorObserver)observer);
+	}
+
+	@Override
+	public void notifyAllObservers() {
+		for (GeneratorObserver observer : observers)
+			observer.update();
+	}
 
 	@Override
 	public Generator clone(int newPitch) {
-//		SamplerFileGenerator result = new SamplerFileGenerator(this.filename, newPitch, this.volume, this.duration, this.looping);
-		SamplerFileGenerator result = new SamplerFileGenerator(this.getSampleData(), this.getSampleDataSampleRate(), newPitch, this.volume, this.duration, this.looping);
-		return result;
+		return this.clone(newPitch, this.volume);
 	}
 	
 	@Override
 	public Generator clone(int newPitch, int newVelocity) {
-//		SamplerFileGenerator result = new SamplerFileGenerator(this.filename, newPitch, this.volume, this.duration, this.looping);
-		SamplerFileGenerator result = new SamplerFileGenerator(this.getSampleData(), this.getSampleDataSampleRate(), newPitch, newVelocity, this.duration, this.looping);
-		return result;
+		SampleFileGenerator clone = new SampleFileGenerator(this.getSampleData(), this.getSampleDataSampleRate(), newPitch, newVelocity, this.duration, this.looping);
+		this.linkForFutureChanges(clone);
+		return clone;
+	}
+	
+	private void linkForFutureChanges (SampleFileGenerator clone) {
+		new SampleFileGeneratorObserver(this, clone);
 	}
 	
 	public void close() {
 		this.patched = null;
+		this.observers.clear();
+		this.observers = null;
 	}
 }

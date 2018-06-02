@@ -1,5 +1,8 @@
 package soundengine.generators;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ddf.minim.AudioOutput;
 import ddf.minim.UGen;
 import ddf.minim.spi.AudioStream;
@@ -27,6 +30,8 @@ public class LiveInputGeneratorExtendingLiveInput extends ModifiedLiveInput impl
 	private boolean hasVocode;
 	
 	
+	private List<LiveInputGeneratorObserver> observers;
+	
 	public LiveInputGeneratorExtendingLiveInput() {
 		this(false, 0, 0);
 	}
@@ -41,6 +46,8 @@ public class LiveInputGeneratorExtendingLiveInput extends ModifiedLiveInput impl
 		this.hasVocode = hasVocode;
 		this.pitch = pitch;
 		this.velocity = velocity;
+		
+		this.observers = new ArrayList<LiveInputGeneratorObserver>();
 		
 		if (hasVocode) {
 			vocode = new Vocoder(1024, 8);
@@ -112,15 +119,32 @@ public class LiveInputGeneratorExtendingLiveInput extends ModifiedLiveInput impl
 		System.out.println("stop playing!");
 		this.noteOff();
 	}
-
-	@Override
-	public Generator clone(int newPitch) {
-		return new LiveInputGeneratorExtendingLiveInput(newPitch, this.velocity);
-	}
 	
 	@Override
+	public void attach(GeneratorObserver observer) {
+		this.observers.add((LiveInputGeneratorObserver)observer);
+	}
+
+	@Override
+	public void notifyAllObservers() {
+		for (GeneratorObserver observer : observers)
+			observer.update();
+	}
+	
+	
+	@Override
+	public Generator clone(int newPitch) {
+		return this.clone(newPitch, this.velocity);
+	}
+	@Override
 	public Generator clone(int newPitch, int newVelocity) {
-		return new LiveInputGeneratorExtendingLiveInput(newPitch, newVelocity);
+		LiveInputGeneratorExtendingLiveInput clone = new LiveInputGeneratorExtendingLiveInput(newPitch, newVelocity);
+		this.linkForFutureChanges(clone);
+		return clone;
+	}
+	
+	private void linkForFutureChanges (LiveInputGeneratorExtendingLiveInput clone) {
+		new LiveInputGeneratorObserver(this, clone);
 	}
 
 	
@@ -128,6 +152,8 @@ public class LiveInputGeneratorExtendingLiveInput extends ModifiedLiveInput impl
 		super.close();
 		this.vocode = null;
 		this.mod = null;
+		this.observers.clear();
+		this.observers = null;
 	}
 
 }

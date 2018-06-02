@@ -31,6 +31,14 @@ public class TestingSoundEngine extends PApplet {
 	public void draw() {
 		background(0);
 	}
+	
+	public void mousePressed() {
+
+		if (isGen2Active && mouseButton==LEFT)
+			eng.updateGenerator("2", new String[] { "60", "127", "SAW"});
+		if (isGen2Active && mouseButton==RIGHT)
+			eng.updateGenerator("2", new String[] { "60", "127", "SINE"});
+	}
 
 	public void keyPressed() {
 		println("key pressed: " + key);
@@ -73,7 +81,7 @@ public class TestingSoundEngine extends PApplet {
 	boolean isGen2Active = false;
 	private void processGen2() {
 		if (!isGen2Active)
-			eng.addGenerator("2", "OSCILLATOR", new String[] { "60", "127" });
+			eng.addGenerator("2", "OSCILLATOR", new String[] { "60", "127", "SINE"});
 		else
 			eng.removeGenerator("2");
 		isGen2Active = !isGen2Active;
@@ -129,7 +137,7 @@ public class TestingSoundEngine extends PApplet {
 	boolean isAug2Active = false;
 	private void processAug2() {
 		if (!isAug2Active)
-			eng.addAugmenter("2", "INTERVAL", new String[] { "60", "5"});
+			eng.addAugmenter("2", "INTERVAL", new String[] { "12"});
 		else
 			eng.removeAugmenter("2");
 		isAug2Active = !isAug2Active;

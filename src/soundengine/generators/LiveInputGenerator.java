@@ -1,6 +1,7 @@
 package soundengine.generators;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import ddf.minim.AudioOutput;
 import ddf.minim.UGen;
@@ -26,6 +27,8 @@ public class LiveInputGenerator extends Oscil implements Generator, Runnable {
 	private int pitch;
 	private int velocity;
 	private boolean hasVocode;
+	
+	private List<LiveInputGeneratorObserver> observers;
 
 	public LiveInputGenerator() {
 		this(false, 0, 0);
@@ -44,6 +47,8 @@ public class LiveInputGenerator extends Oscil implements Generator, Runnable {
 		this.hasVocode = hasVocode;
 		this.pitch = pitch;
 		this.velocity = velocity;
+		
+		this.observers = new ArrayList<LiveInputGeneratorObserver>();
 
 	}
 
@@ -224,17 +229,36 @@ public class LiveInputGenerator extends Oscil implements Generator, Runnable {
 		System.out.println("stop playing!");
 		this.noteOff();
 	}
+	
+	@Override
+	public void attach(GeneratorObserver observer) {
+		this.observers.add((LiveInputGeneratorObserver)observer);
+	}
+
+	@Override
+	public void notifyAllObservers() {
+		for (GeneratorObserver observer : observers)
+			observer.update();
+	}
 
 	@Override
 	public Generator clone(int newPitch) {
-		return new LiveInputGenerator(newPitch, this.velocity);
+		return this.clone(newPitch, this.velocity);
 	}
 	@Override
 	public Generator clone(int newPitch, int newVelocity) {
-		return new LiveInputGenerator(newPitch, newVelocity);
+		LiveInputGenerator clone = new LiveInputGenerator(newPitch, newVelocity);
+		this.linkForFutureChanges(clone);
+		return clone;
+	}
+	
+	private void linkForFutureChanges (LiveInputGenerator clone) {
+		new LiveInputGeneratorObserver(this, clone);
 	}
 
 	public void close() {
+		this.observers.clear();
+		this.observers = null;
 	}
 
 }
