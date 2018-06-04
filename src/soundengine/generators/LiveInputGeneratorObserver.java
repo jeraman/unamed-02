@@ -4,13 +4,21 @@ public class LiveInputGeneratorObserver extends GeneratorObserver {
 
 	public LiveInputGeneratorObserver(Generator original, Generator updatable) {
 		super(original, updatable);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
+		LiveInputGenerator original = (LiveInputGenerator) this.original;
+		LiveInputGenerator updatable = (LiveInputGenerator) this.updatable;
 		
+		if (original.getPitch() != updatable.getPitch())
+			updatable.setPitch(original.getPitch());
+		
+		if (original.getVelocity() != updatable.getVelocity())
+			updatable.setVelocity(original.getVelocity());
+		
+		if (original.getDuration() != updatable.getDuration())
+			updatable.setDuration(original.getDuration());
 		
 		this.forwardUpdatesToUpdatable();
 	}

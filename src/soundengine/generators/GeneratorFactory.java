@@ -253,8 +253,14 @@ public class GeneratorFactory {
 	
 	private static void updateLiveInpuGen(LiveInputGenerator gen, String[] parameters) {
 		// TODO Auto-generated method stub
-		int pitch = Integer.parseInt(parameters[1]);
-		int velocity = Integer.parseInt(parameters[2]);
+		int pitch = Integer.parseInt(parameters[0]);
+		int velocity = Integer.parseInt(parameters[1]);
+		
+		gen.setPitch(pitch);
+		gen.setVelocity(velocity);
+
+		gen.notifyAllObservers();
+		
 	}
 	
 	////////////////////////////

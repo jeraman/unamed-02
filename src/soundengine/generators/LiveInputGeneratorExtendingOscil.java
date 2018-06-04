@@ -82,6 +82,33 @@ public class LiveInputGeneratorExtendingOscil extends Oscil implements Generator
 		vocode.unpatch(SoundEngine.out);
 		synth.unpatch(vocode);
 	}
+	
+	
+	public int getDuration() {
+		return duration;
+	}
+
+	public void setDuration(int duration) {
+		this.duration = duration;
+	}
+
+	public int getPitch() {
+		return pitch;
+	}
+
+	public void setPitch(int pitch) {
+		this.pitch = pitch;
+		super.setFrequency(MusicTheory.freqFromMIDI(pitch));
+	}
+	
+	public int getVelocity() {
+		return velocity;
+	}
+
+	public void setVelocity(int vel) {
+		this.velocity = vel;
+		super.setAmplitude(Util.mapFromMidiToAmplitude(velocity));
+	}
 
 	// TODO: manage how effect PATCHING is going to work with this new structure
 	@Override

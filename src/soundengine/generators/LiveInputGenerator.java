@@ -138,6 +138,32 @@ public class LiveInputGenerator extends Oscil implements Generator, Runnable {
 //		patched.patch(GeneratorFactory.out);
 //	}
 
+	public int getDuration() {
+		return duration;
+	}
+
+	public void setDuration(int duration) {
+		this.duration = duration;
+	}
+
+	public int getPitch() {
+		return pitch;
+	}
+
+	public void setPitch(int pitch) {
+		this.pitch = pitch;
+		super.setFrequency(MusicTheory.freqFromMIDI(pitch));
+	}
+	
+	public int getVelocity() {
+		return velocity;
+	}
+
+	public void setVelocity(int vel) {
+		this.velocity = vel;
+		super.setAmplitude(Util.mapFromMidiToAmplitude(velocity));
+	}
+	
 	@Override
 	public void patchEffect(UGen effect) {
 		//addEffectIfIsNew(effect);

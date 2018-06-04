@@ -55,6 +55,33 @@ public class LiveInputGeneratorExtendingLiveInput extends ModifiedLiveInput impl
 			mod = new Oscil((float) MusicTheory.freqFromMIDI(pitch), Util.mapFromMidiToAmplitude(velocity), Waves.SAW);
 		}
 	}
+	
+	
+	public int getDuration() {
+		return duration;
+	}
+
+	public void setDuration(int duration) {
+		this.duration = duration;
+	}
+
+	public int getPitch() {
+		return pitch;
+	}
+
+	public void setPitch(int pitch) {
+		this.pitch = pitch;
+		mod.setFrequency(MusicTheory.freqFromMIDI(pitch));
+	}
+	
+	public int getVelocity() {
+		return velocity;
+	}
+
+	public void setVelocity(int vel) {
+		this.velocity = vel;
+		mod.setAmplitude(Util.mapFromMidiToAmplitude(velocity));
+	}
 
 	
 	@Override
