@@ -11,8 +11,7 @@ public class NoteAugmenter extends Augmenter {
 	}
 
 	@Override
-	public Note[] getNotes(int dynamicNote) {
-		this.pitch = dynamicNote;
+	public Note[] getNotes(int uselessRoot) {
 		return new Note[]{new Note(pitch)};
 	}
 

@@ -146,7 +146,7 @@ public class TestingSoundEngine extends PApplet {
 	boolean isAug3Active = false;
 	private void processAug3() {
 		if (!isAug3Active)
-			eng.addAugmenter("3", "CHORD", new String[] {"min7"});
+			eng.addAugmenter("3", "CHORD", new String[] {"min"});
 		else
 			eng.removeAugmenter("3");
 		isAug3Active = !isAug3Active;

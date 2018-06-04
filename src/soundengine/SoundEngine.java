@@ -158,7 +158,7 @@ public class SoundEngine implements SoundEngineFacade {
 		if (n == null) return;
 		n.noteOff();
 		
-		//TODO detach all observers from this note (ie. generatorobservers)
+		//TODO detach all observers from this note (ie. generatorobservers). right now they keep acumulating
 	}
 
 }
