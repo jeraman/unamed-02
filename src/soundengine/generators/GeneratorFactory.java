@@ -44,13 +44,6 @@ public class GeneratorFactory {
 		out = null;
 		minim = null;
 	}
-	
-	@Deprecated
-	public synchronized static Pair<MultiChannelBuffer, Float> loadMultiChannelBufferFromFile(String filename) {
-		MultiChannelBuffer sampleData = new MultiChannelBuffer(1, 1);
-		float sampleDataSampleRate = GeneratorFactory.minim.loadFileIntoBuffer(filename, sampleData);
-		return new Pair<>(sampleData, sampleDataSampleRate);
-	}
 
 	@Deprecated
 	public static Generator noteOnFMGen(int pitch, int velocity) {
@@ -100,7 +93,7 @@ public class GeneratorFactory {
 		if (gen instanceof FMGenerator)
 			updateFMGen((FMGenerator)gen, parameters);
 		if (gen instanceof SampleFileGenerator)
-			updateFileGen((SampleFileGenerator)gen, parameters);
+			updateSampleFileGen((SampleFileGenerator)gen, parameters);
 		if (gen instanceof LiveInputGenerator)
 			updateLiveInpuGen((LiveInputGenerator)gen, parameters);
 	}
@@ -211,12 +204,19 @@ public class GeneratorFactory {
 	}
 
 
-	private static void updateFileGen(SampleFileGenerator gen, String[] parameters) {
+	private static void updateSampleFileGen(SampleFileGenerator gen, String[] parameters) {
 		// TODO Auto-generated method stub
 		String filename = parameters[0];
 		int pitch = Integer.parseInt(parameters[1]);
 		int velocity = Integer.parseInt(parameters[2]);
 		boolean shouldLoop = Boolean.parseBoolean(parameters[3]);
+		
+		gen.setFilename(filename);
+		gen.setPitch(pitch);
+		gen.setVolume(velocity);
+		gen.setLoopStatus(shouldLoop);
+		
+		gen.notifyAllObservers();
 	}
 	
 	//Live Input factory
@@ -272,5 +272,11 @@ public class GeneratorFactory {
 	public synchronized static AudioStream getInput() {
 //	return minim.getInputStream( Minim.MONO, out.bufferSize(), out.sampleRate(),out.getFormat().getSampleSizeInBits());
 		return SoundEngine.in;
+	}
+	
+	public synchronized static Pair<MultiChannelBuffer, Float> loadMultiChannelBufferFromFile(String filename) {
+		MultiChannelBuffer sampleData = new MultiChannelBuffer(1, 1);
+		float sampleDataSampleRate = SoundEngine.minim.loadFileIntoBuffer(filename, sampleData);
+		return new Pair<>(sampleData, sampleDataSampleRate);
 	}
 }

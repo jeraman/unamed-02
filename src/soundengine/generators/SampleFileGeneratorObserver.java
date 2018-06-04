@@ -4,14 +4,26 @@ public class SampleFileGeneratorObserver extends GeneratorObserver {
 
 	public SampleFileGeneratorObserver(Generator original, Generator updatable) {
 		super(original, updatable);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public void update() {
-		// TODO Auto-generated method stub
+	public void update() {		
+		System.out.println("observer " + this + " updating " + updatable +  " based on " + original);
+
+		SampleFileGenerator original = (SampleFileGenerator) this.original;
+		SampleFileGenerator updatable = (SampleFileGenerator) this.updatable;
 		
+		if (!original.getFilename().equalsIgnoreCase(updatable.getFilename()))
+			updatable.setFilename(original.getFilename());
 		
+		if (original.getPitch() != updatable.getPitch())
+			updatable.setPitch(original.getPitch());
+		
+		if (original.getVolume() != updatable.getVolume())
+			updatable.setVolume(original.getVolume());
+
+		if (original.getLoopStatus() != updatable.getLoopStatus())
+			updatable.setLoopStatus(original.getLoopStatus());
 		
 		this.forwardUpdatesToUpdatable();
 	}

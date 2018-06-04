@@ -38,9 +38,19 @@ public class TestingSoundEngine extends PApplet {
 			eng.updateGenerator("2", new String[] { "60", "127", "SAW"});
 		if (isGen2Active && mouseButton==RIGHT)
 			eng.updateGenerator("2", new String[] { "60", "127", "SINE"});
+		
+		if (isGen1Active && mouseButton == LEFT)
+			eng.updateGenerator("1", new String[] { "123go.mp3", "60", "127", "false" });
+		if (isGen1Active && mouseButton == RIGHT)
+			eng.updateGenerator("1", new String[] { "error.mp3", "60", "127", "true" });
 	}
 	
 	public void mouseMoved() {
+		
+		if (isGen1Active) {
+			int a = (int)map( mouseY, 0, height, 256, 0 );
+			eng.updateGenerator("1", new String[] { "123go.mp3", "60", ""+a, "true" });
+		}
 		
 		if (isGen3Active) {
 			//testing mod parameters

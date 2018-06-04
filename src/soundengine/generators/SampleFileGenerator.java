@@ -4,13 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ddf.minim.AudioOutput;
-import ddf.minim.Minim;
 import ddf.minim.MultiChannelBuffer;
 import ddf.minim.UGen;
-import ddf.minim.ugens.FilePlayer;
-import ddf.minim.ugens.Gain;
-import ddf.minim.ugens.Sampler;
-import ddf.minim.ugens.TickRate;
 import javafx.util.Pair;
 import soundengine.SoundEngine;
 import soundengine.util.Util;
@@ -89,6 +84,61 @@ public class SampleFileGenerator extends ModifiedSampler implements Generator,Ru
 		this.patched = this;
 	}
 	
+	
+	public String getFilename() {
+		return this.filename;
+	}
+	
+	
+	public void setFilename(String filename) {
+		//if name hasn't changed, give up1
+		if(this.filename.equalsIgnoreCase(filename))
+			return;
+		
+		//else
+		this.stop();
+		this.filename = filename;
+		Pair<MultiChannelBuffer, Float> pair = GeneratorFactory.loadMultiChannelBufferFromFile(filename);
+		this.setSample(pair.getKey(), pair.getValue());
+		this.trigger();
+	}
+	
+	public int getPitch() {
+		return this.pitch;
+	}
+	
+	public void setPitch(int pitch) {
+		float pr = calculateRelativePitch(pitch);
+		this.setPlaybackRate(pr);
+	}
+
+	private float calculateRelativePitch(int pitchOffset) {
+		float difPit = ((SampleFileGenerator.basePitch - pitchOffset) % 24) * -1;
+		return (1.f + (difPit) * (1.f / 12.f));
+	}
+	
+	public void setPlaybackRate(float pr) {
+		this.rate.setLastValue(pr);
+	}
+
+	public int getVolume() {
+		return this.volume;
+	}
+	
+	public void setVolume(int v) {
+		this.volume = v;
+		float newVel = Util.mapFromMidiToAmplitude(volume);
+		this.amplitude.setLastValue(newVel);
+	}
+	
+	public boolean getLoopStatus() {
+		return this.looping;
+	}
+	
+	public void setLoopStatus(boolean l) {
+		this.looping = l;
+	}
+	
 	@Override
 	public void patchEffect(UGen effect) {
 		this.trigger();
@@ -123,29 +173,6 @@ public class SampleFileGenerator extends ModifiedSampler implements Generator,Ru
 	public void noteOff() {
 		this.stop();
 		GeneratorFactory.unpatch(this);
-	}
-	
-	private float calculateRelativePitch(int pitchOffset) {
-		float difPit = ((SampleFileGenerator.basePitch - pitchOffset) % 24) * -1;
-		return (1.f + (difPit) * (1.f / 12.f));
-	}
-	
-	public void setPitch(int pitch) {
-		float pr = calculateRelativePitch(pitch);
-		this.setPlaybackRate(pr);
-	}
-	
-	public void setPlaybackRate(float pr) {
-		this.rate.setLastValue(pr);
-	}
-
-	public void setVolume(int v) {
-		float newVel = Util.mapFromMidiToAmplitude(v);
-		this.amplitude.setLastValue(newVel);
-	}
-	
-	public void setLoopStatus(boolean l) {
-		this.looping = l;
 	}
 	
 	public void noteOffAfterDuration(int duration) {

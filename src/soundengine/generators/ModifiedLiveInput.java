@@ -21,6 +21,7 @@ import ddf.minim.spi.AudioStream;
 
 //TODO: DELETE THIS CLASS! NO LONGER NECESSARY TO THE PROJECT 
 
+@Deprecated
 public class ModifiedLiveInput extends UGen 
 {
 	private AudioStream mInputStream;
