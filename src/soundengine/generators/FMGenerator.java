@@ -9,7 +9,6 @@ import ddf.minim.ugens.Oscil;
 import ddf.minim.ugens.Waveform;
 import ddf.minim.ugens.Waves;
 import soundengine.MusicTheory;
-import soundengine.Observer;
 import soundengine.util.Util;
 
 public class FMGenerator extends Oscil implements Generator,Runnable {
@@ -228,7 +227,7 @@ public class FMGenerator extends Oscil implements Generator,Runnable {
 		new FMGeneratorObserver(this, clone);
 	}
 	
-	public void unlinkClonedObservers () {
+	public void unlinkOldObservers () {
 		for (int i = observers.size()-1; i >= 0; i--)
 			if (observers.get(i).isClosed())
 				this.observers.remove(i);

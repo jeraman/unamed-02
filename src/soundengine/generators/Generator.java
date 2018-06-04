@@ -24,7 +24,7 @@ public interface Generator {
 	
 	public void notifyAllObservers();
 	
-	public void unlinkClonedObservers();
+	public void unlinkOldObservers();
 	
 	public boolean isClosed();
 

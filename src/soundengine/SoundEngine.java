@@ -56,7 +56,6 @@ public class SoundEngine implements SoundEngineFacade {
 
 	@Override
 	public void updateGenerator(String id, String[] parameters) {
-		// TODO Auto-generated method stub
 		Generator gen = this.activeGenerators.get(id);
 		GeneratorFactory.updateGenerator(gen, parameters);
 		System.out.println("updating generator " + gen + " (id: "+  id + ") with the following parameters: "  + parameters);
@@ -77,8 +76,8 @@ public class SoundEngine implements SoundEngineFacade {
 
 	@Override
 	public void updateEffect(String id, String[] parameters) {
-		// TODO Auto-generated method stub
 		Effect fx = this.activeEffects.get(id);
+		EffectFactory.updateEffect(fx, parameters);
 		System.out.println("updating effect " + fx + " (id: "+  id + ") with the following parameters: "  + parameters);
 	}
 
@@ -111,7 +110,6 @@ public class SoundEngine implements SoundEngineFacade {
 		synchronized (activeGenerators) {
 			for (Entry<String, Generator> pair : activeGenerators.entrySet()) {
 				Generator gen = pair.getValue();
-				// TODO: remember to add the observers
 				Generator cloned = gen.clone(targetNote.getPitch(), targetNote.getVelocity());
 				targetNote.addGenerator(cloned);
 			}
@@ -122,7 +120,6 @@ public class SoundEngine implements SoundEngineFacade {
 		synchronized (activeEffects) {
 			for (Entry<String, Effect> pair : activeEffects.entrySet()) {
 				Effect fx = pair.getValue();
-				// TODO: remember to add the observers
 				Effect cloned = fx.clone();
 				targetNote.addEffect(cloned);
 			}
@@ -134,17 +131,30 @@ public class SoundEngine implements SoundEngineFacade {
 			for (Entry<String, Augmenter> pair : activeAugmenters.entrySet()) {
 				Augmenter aug = pair.getValue();
 				targetNote.addAugmenter(aug);
-				// TODO: remember to add the observers
 				System.out.println("add " + aug);
 			}
 		}
 	}
 	
-	public void cleanClosedObservers() {
+	public void cleanOldObservers() {
+		cleanOldGeneratorObservers();
+		cleanOldEffectObservers();
+	}
+	
+	public void cleanOldGeneratorObservers() {
 		synchronized (activeGenerators) {
 			for (Entry<String, Generator> pair : activeGenerators.entrySet()) {
 				Generator gen = pair.getValue();
-				gen.unlinkClonedObservers();
+				gen.unlinkOldObservers();
+			}
+		}
+	}
+	
+	public void cleanOldEffectObservers() {
+		synchronized (activeEffects) {
+			for (Entry<String, Effect> pair : activeEffects.entrySet()) {
+				Effect fx = pair.getValue();
+				fx.unlinkOldObservers();
 			}
 		}
 	}
@@ -164,11 +174,12 @@ public class SoundEngine implements SoundEngineFacade {
 	@Override
 	public void noteOff(int channel, int pitch, int velocity) {
 		DecoratedNote n = memory.remove(pitch);
-		if (n == null) return;
-		n.noteOff();
 		
-		this.cleanClosedObservers();
-		//TODO detach all observers from this note (ie. generatorobservers). right now they keep acumulating
+		if (n == null) 
+			return;
+		
+		n.noteOff();
+		this.cleanOldObservers();
 	}
 
 }

@@ -33,7 +33,30 @@ public class TestingSoundEngine extends PApplet {
 	}
 	
 	public void mousePressed() {
-
+		//processMousePressedGenUpdates();
+	}
+	
+	public void mouseMoved() {
+		//processMouseMovedGenUpdates();
+		
+		if (isFx1Active) {
+			float cutoff = map( mouseX, 0, width, 60f, 5000f );
+			eng.updateEffect("1", new String[]{cutoff+""});
+		}
+		
+		if (isFx2Active) {
+			float len = map( mouseX, 0, width, 0.01f, 5f );
+			eng.updateEffect("2", new String[]{"1.", ""+len, "1", "0.5", "0.5", "0.5" });
+		}
+		
+		if (isFx3Active) {
+			int res = (int) map( mouseX, 0, width, 0, 8);
+			eng.updateEffect("3", new String[]{res+""});
+		}
+		
+	}
+	
+	public void processMousePressedGenUpdates() {
 		if (isGen2Active && mouseButton==LEFT)
 			eng.updateGenerator("2", new String[] { "60", "127", "SAW"});
 		if (isGen2Active && mouseButton==RIGHT)
@@ -45,8 +68,7 @@ public class TestingSoundEngine extends PApplet {
 			eng.updateGenerator("1", new String[] { "error.mp3", "60", "127", "true" });
 	}
 	
-	public void mouseMoved() {
-		
+	public void processMouseMovedGenUpdates() {
 		if (isGen1Active) {
 			int a = (int)map( mouseY, 0, height, 256, 0 );
 			eng.updateGenerator("1", new String[] { "123go.mp3", "60", ""+a, "true" });
@@ -54,15 +76,14 @@ public class TestingSoundEngine extends PApplet {
 		
 		if (isGen3Active) {
 			//testing mod parameters
-			 float freq1 = map( mouseX, 0, width, 0.1f, 100f );
-			 float amp1 = map( mouseY, 0, height, 220, 1f);
-			 eng.updateGenerator("3", new String[] { "60", "127", "SINE",""+freq1, ""+amp1, "SAW"});
-			//testing carrier parameters
-//			int p = (int)map( mouseX, 0, width, 40, 150 );
-//			int a = (int)map( mouseY, 0, height, 0, 256 );
-//			eng.updateGenerator("3", new String[] { ""+p, ""+a, "SINE", "30", "75.", "SAW"});
+			float freq1 = map( mouseX, 0, width, 0.1f, 100f );
+			float amp1 = map( mouseY, 0, height, 220, 1f);
+			eng.updateGenerator("3", new String[] { "60", "127", "SINE", "" + freq1, "" + amp1, "SAW" });
+			// testing carrier parameters
+			// int p = (int)map( mouseX, 0, width, 40, 150 );
+			// int a = (int)map( mouseY, 0, height, 0, 256 );
+			// eng.updateGenerator("3", new String[] { ""+p, ""+a, "SINE", "30", "75.", "SAW"});
 		}
-		
 	}
 
 	public void keyPressed() {

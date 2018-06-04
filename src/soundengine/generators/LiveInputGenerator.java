@@ -282,7 +282,7 @@ public class LiveInputGenerator extends Oscil implements Generator, Runnable {
 		new LiveInputGeneratorObserver(this, clone);
 	}
 	
-	public void unlinkClonedObservers () {
+	public void unlinkOldObservers () {
 		for (int i = observers.size()-1; i >= 0; i--)
 			if (observers.get(i).isClosed())
 				this.observers.remove(i);
