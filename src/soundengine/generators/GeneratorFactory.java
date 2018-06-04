@@ -170,15 +170,22 @@ public class GeneratorFactory {
 
 
 	private static void updateFMGen(FMGenerator gen, String[] parameters) {
-		// TODO Auto-generated method stub
-		
-		float carrierFreq = Float.parseFloat(parameters[0]);
-		float carrierAmp = Float.parseFloat(parameters[1]);
+		int pitch = Integer.parseInt(parameters[0]);
+		int velocity = Integer.parseInt(parameters[1]);
 		String carrierWave = parameters[2];
 		
 		float modFreq = Float.parseFloat(parameters[3]);
 		float modAmp = Float.parseFloat(parameters[4]);
 		String modWave = parameters[5];
+		
+		gen.setCarrierFreqFromPitch(pitch);
+		gen.setCarrierAmpFromVelocity(velocity);
+		gen.setCarrierWave(carrierWave);
+		gen.setModFreq(modFreq);
+		gen.setModAmp(modAmp);
+		gen.setModWave(modWave);
+		
+		gen.notifyAllObservers();
 	}
 	
 	

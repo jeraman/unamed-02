@@ -12,7 +12,7 @@ import soundengine.MusicTheory;
 import soundengine.Observer;
 import soundengine.util.Util;
 
-public class FMGenerator extends Oscil implements Generator,Runnable{
+public class FMGenerator extends Oscil implements Generator,Runnable {
 
 	private Oscil fm;
 	
@@ -60,6 +60,87 @@ public class FMGenerator extends Oscil implements Generator,Runnable{
 		
 		this.patched = this;
 	}
+	
+	
+	//////////////////////////////////////
+	// get and setters
+	protected int getDuration() {
+		return duration;
+	}
+
+	protected void setDuration(int duration) {
+		this.duration = duration;
+	}
+
+	protected float getCarrierFreq() {
+		return carrierFreq;
+	}
+	
+	protected void setCarrierFreq(float carrierFreq) {
+		this.carrierFreq = carrierFreq;
+		this.fm.offset.setLastValue(carrierFreq);
+	}
+	
+	public void setCarrierFreqFromPitch(int pitch) {
+		this.setCarrierFreq((float)MusicTheory.freqFromMIDI(pitch));
+	}
+
+	protected float getCarrierAmp() {
+		return carrierAmp;
+	}
+
+	protected void setCarrierAmp(float carrierAmp) {
+		this.carrierAmp = carrierAmp;
+		super.setAmplitude(this.carrierAmp);
+	}
+
+	public void setCarrierAmpFromVelocity(int velocity) {
+		this.setCarrierAmp(Util.mapFromMidiToAmplitude(velocity));
+	}
+
+	protected String getCarrierWaveString() {
+		return carrierWave;
+	}
+
+	public Waveform getCarrierWave() {
+		return getWaveformType(this.carrierWave);
+	}
+	
+	protected void setCarrierWave(String carrierWave) {
+		this.carrierWave = carrierWave;
+		super.setWaveform(this.getCarrierWave());
+	}
+
+	protected float getModFreq() {
+		return modFreq;
+	}
+
+	protected void setModFreq(float modFreq) {
+		this.modFreq = modFreq;
+		this.fm.setFrequency(modFreq);
+	}
+
+	protected float getModAmp() {
+		return modAmp;
+	}
+
+	protected void setModAmp(float modAmp) {
+		this.modAmp = modAmp;
+		this.fm.setAmplitude(modAmp);
+	}
+
+	protected String getModWaveString() {
+		return modWave;
+	}
+	
+	protected Waveform getModWave() {
+		return getWaveformType(modWave);
+	}
+
+	protected void setModWave(String modWave) {
+		this.modWave = modWave;
+		this.fm.setWaveform(getModWave());
+	}
 
 	@Override
 	public void patchEffect(UGen effect) {
@@ -82,15 +163,6 @@ public class FMGenerator extends Oscil implements Generator,Runnable{
 		patched.unpatch(out);
 		super.unpatch(out);
 	} 
-
-	public void setModAmplitude(float modulateAmount) {
-		fm.setAmplitude(modulateAmount);
-	}
-
-	public void setCarrierFrequency(float carrierFreq) {
-		// wave.setFrequency( carrierFreq );
-		fm.offset.setLastValue(carrierFreq);
-	}
 
 	@Override
 	public synchronized void noteOn() {
@@ -157,7 +229,7 @@ public class FMGenerator extends Oscil implements Generator,Runnable{
 	}
 	
 	public void unlinkClonedObservers () {
-		for (int i = observers.size(); i >= 0; i--)
+		for (int i = observers.size()-1; i >= 0; i--)
 			if (observers.get(i).isClosed())
 				this.observers.remove(i);
 	}

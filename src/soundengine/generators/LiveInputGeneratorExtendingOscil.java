@@ -188,7 +188,7 @@ public class LiveInputGeneratorExtendingOscil extends Oscil implements Generator
 	}
 	
 	public void unlinkClonedObservers () {
-		for (int i = observers.size(); i >= 0; i--)
+		for (int i = observers.size()-1; i >= 0; i--)
 			if (observers.get(i).isClosed())
 				this.observers.remove(i);
 	}

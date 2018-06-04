@@ -100,7 +100,7 @@ public class OscillatorGenerator extends Oscil implements Generator,Runnable {
 
 	public void setWaveform(String wf) {
 		this.waveform = wf;
-		super.setWaveform(getWaveformType(this.waveform));
+		super.setWaveform(getWaveform());
 	}
 
 	@Override

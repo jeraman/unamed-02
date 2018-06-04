@@ -39,6 +39,21 @@ public class TestingSoundEngine extends PApplet {
 		if (isGen2Active && mouseButton==RIGHT)
 			eng.updateGenerator("2", new String[] { "60", "127", "SINE"});
 	}
+	
+	public void mouseMoved() {
+		
+		if (isGen3Active) {
+			//testing mod parameters
+			 float freq1 = map( mouseX, 0, width, 0.1f, 100f );
+			 float amp1 = map( mouseY, 0, height, 220, 1f);
+			 eng.updateGenerator("3", new String[] { "60", "127", "SINE",""+freq1, ""+amp1, "SAW"});
+			//testing carrier parameters
+//			int p = (int)map( mouseX, 0, width, 40, 150 );
+//			int a = (int)map( mouseY, 0, height, 0, 256 );
+//			eng.updateGenerator("3", new String[] { ""+p, ""+a, "SINE", "30", "75.", "SAW"});
+		}
+		
+	}
 
 	public void keyPressed() {
 		println("key pressed: " + key);
