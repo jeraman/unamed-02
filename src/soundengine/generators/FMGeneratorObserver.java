@@ -17,6 +17,8 @@ public class FMGeneratorObserver extends GeneratorObserver {
 		// float modFreq;
 		// float modAmp;
 		// String modWave;
+		
+		this.forwardUpdatesToUpdatable();
 	}
 
 }

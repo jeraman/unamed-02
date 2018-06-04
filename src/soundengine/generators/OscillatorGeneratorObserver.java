@@ -21,11 +21,14 @@ public class OscillatorGeneratorObserver extends GeneratorObserver {
 			updatable.setDuration(original.getDuration());
 		
 		if (!original.getWaveformString().equals(updatable.getWaveformString()))
-			updatable.setWaveform(original.getWaveform());
+			updatable.setWaveform(original.getWaveformString());
 		
 		System.out.println("Observser " + this +  " in action!");
 		System.out.println("Original " + original);
 		System.out.println("Updatable " + updatable);
+		System.out.println("Forwarding changes to children...");
+		
+		this.forwardUpdatesToUpdatable();
 	}
 
 }

@@ -11,6 +11,8 @@ public class LiveInputGeneratorObserver extends GeneratorObserver {
 	public void update() {
 		// TODO Auto-generated method stub
 		
+		
+		this.forwardUpdatesToUpdatable();
 	}
 
 }

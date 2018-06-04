@@ -13,7 +13,12 @@ public abstract class GeneratorObserver extends Observer {
 		
 		this.original.attach(this);
 	}
-	 public boolean isClosed() {
+	
+	public void forwardUpdatesToUpdatable() {
+		this.updatable.notifyAllObservers();
+	}
+	
+	public boolean isClosed() {
 		if (this.updatable.isClosed())
 			return true;
 		else
