@@ -9,6 +9,7 @@ import ddf.minim.ugens.Oscil;
 import ddf.minim.ugens.Waveform;
 import ddf.minim.ugens.Waves;
 import soundengine.MusicTheory;
+import soundengine.Observer;
 import soundengine.util.Util;
 
 public class FMGenerator extends Oscil implements Generator,Runnable{
@@ -147,13 +148,36 @@ public class FMGenerator extends Oscil implements Generator,Runnable{
 	
 	private Generator cloneWithFreqAndAmplitude(float newFreq, float newAmp) {
 		FMGenerator clone = new FMGenerator(newFreq, newAmp, carrierWave, modFreq, modAmp, modWave);
-		this.linkForFutureChanges(clone);
+		this.linkClonedObserver(clone);
 		return clone;
 	}
 	
-	private void linkForFutureChanges (FMGenerator clone) {
+	private void linkClonedObserver (FMGenerator clone) {
 		new FMGeneratorObserver(this, clone);
 	}
+	
+	public void unlinkClonedObservers () {
+		for (int i = observers.size(); i >= 0; i--)
+			if (observers.get(i).isClosed())
+				this.observers.remove(i);
+	}
+
+	public boolean isClosed() {
+		if (this.observers == null)
+			return true;
+		else 
+			return false;
+	}
+
+	@Override
+	public void close() {
+		this.fm = null;
+		this.carrierWave = null;
+		this.modWave = null;
+		this.observers.clear();
+		this.observers = null;
+	}
+
 	
 	private static Waveform getWaveformType (String waveName) {
 		Waveform result = null;
@@ -173,14 +197,4 @@ public class FMGenerator extends Oscil implements Generator,Runnable{
 		
 		return result;
 	}
-
-	@Override
-	public void close() {
-		this.fm = null;
-		this.carrierWave = null;
-		this.modWave = null;
-		this.observers.clear();
-		this.observers = null;
-	}
-
 }

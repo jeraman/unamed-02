@@ -255,6 +255,19 @@ public class LiveInputGenerator extends Oscil implements Generator, Runnable {
 	private void linkForFutureChanges (LiveInputGenerator clone) {
 		new LiveInputGeneratorObserver(this, clone);
 	}
+	
+	public void unlinkClonedObservers () {
+		for (int i = observers.size(); i >= 0; i--)
+			if (observers.get(i).isClosed())
+				this.observers.remove(i);
+	}
+
+	public boolean isClosed() {
+		if (this.observers == null)
+			return true;
+		else 
+			return false;
+	}
 
 	public void close() {
 		this.observers.clear();

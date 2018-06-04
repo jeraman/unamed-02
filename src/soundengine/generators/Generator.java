@@ -24,6 +24,10 @@ public interface Generator {
 	
 	public void notifyAllObservers();
 	
+	public void unlinkClonedObservers();
+	
+	public boolean isClosed();
+
 	public void close();
 		
 	public Generator clone(int newPitch, int newVelocity); 

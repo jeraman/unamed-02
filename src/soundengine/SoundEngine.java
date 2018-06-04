@@ -140,6 +140,15 @@ public class SoundEngine implements SoundEngineFacade {
 		}
 	}
 	
+	public void cleanClosedObservers() {
+		synchronized (activeGenerators) {
+			for (Entry<String, Generator> pair : activeGenerators.entrySet()) {
+				Generator gen = pair.getValue();
+				gen.unlinkClonedObservers();
+			}
+		}
+	}
+	
 	@Override
 	public void noteOn(int channel, int pitch, int velocity) {
 		DecoratedNote newNote = new DecoratedNote(channel, pitch, velocity);
@@ -158,6 +167,7 @@ public class SoundEngine implements SoundEngineFacade {
 		if (n == null) return;
 		n.noteOff();
 		
+		this.cleanClosedObservers();
 		//TODO detach all observers from this note (ie. generatorobservers). right now they keep acumulating
 	}
 

@@ -195,6 +195,19 @@ public class OscillatorGenerator extends Oscil implements Generator,Runnable {
 	private void linkForFutureChanges (OscillatorGenerator clone) {
 		new OscillatorGeneratorObserver(this, clone);
 	}
+	
+	public void unlinkClonedObservers () {
+		for (int i = observers.size()-1; i >= 0; i--)
+			if (observers.get(i).isClosed())
+				this.observers.remove(i);
+	}
+
+	public boolean isClosed() {
+		if (this.observers == null)
+			return true;
+		else 
+			return false;
+	}
 
 	@Override
 	public void close() {
