@@ -14,6 +14,22 @@ public class IntervalAugmenter extends Augmenter {
 		this.type = type;
 	}
 	
+	protected int getRoot() {
+		return root;
+	}
+
+	protected void setRoot(int root) {
+		this.root = root;
+	}
+
+	protected String getType() {
+		return type;
+	}
+
+	protected void setType(String type) {
+		this.type = type;
+	}
+
 	@Override
 	public Note[] getNotes(int dynamicRoot) {
 		return MusicTheory.generateInterval(root, type);

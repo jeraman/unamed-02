@@ -60,7 +60,7 @@ public class SoundEngine implements SoundEngineFacade {
 	public void updateGenerator(String id, String[] parameters) {
 		Generator gen = this.activeGenerators.get(id);
 		GeneratorFactory.updateGenerator(gen, parameters);
-		System.out.println("updating generator " + gen + " (id: "+  id + ") with the following parameters: "  + parameters);
+		System.out.println("updating generator " + gen + " (id: "+  id + ") with the following parameters: "  + parameters.toString());
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class SoundEngine implements SoundEngineFacade {
 	public void updateEffect(String id, String[] parameters) {
 		Effect fx = this.activeEffects.get(id);
 		EffectFactory.updateEffect(fx, parameters);
-		System.out.println("updating effect " + fx + " (id: "+  id + ") with the following parameters: "  + parameters);
+		System.out.println("updating effect " + fx + " (id: "+  id + ") with the following parameters: "  + parameters.toString());
 	}
 
 	@Override
@@ -99,7 +99,8 @@ public class SoundEngine implements SoundEngineFacade {
 	@Override
 	public void updateAugmenter(String id, String[] parameters) {
 		Augmenter aug = this.activeAugmenters.get(id);
-		System.out.println("updating augmenter " + aug + " (id: "+  id + ") with the following parameters: "  + parameters);
+		AugmenterFactory.updateAugmenter(aug, parameters);
+		System.out.println("updating augmenter " + aug + " (id: "+  id + ") with the following parameters: "  + parameters.toString());
 	}
 
 	@Override
@@ -108,7 +109,7 @@ public class SoundEngine implements SoundEngineFacade {
 		System.out.println("removing augmenter " + aug + " (id: "+  id + ")");		
 	}
 	
-	public void attachGenerators(DecoratedNote targetNote) {
+	private void attachGenerators(DecoratedNote targetNote) {
 		synchronized (activeGenerators) {
 			for (Entry<String, Generator> pair : activeGenerators.entrySet()) {
 				Generator gen = pair.getValue();
@@ -118,7 +119,7 @@ public class SoundEngine implements SoundEngineFacade {
 		}
 	}
 	
-	public void attachEffects(DecoratedNote targetNote) {
+	private void attachEffects(DecoratedNote targetNote) {
 		synchronized (activeEffects) {
 			for (Entry<String, Effect> pair : activeEffects.entrySet()) {
 				Effect fx = pair.getValue();
@@ -128,7 +129,7 @@ public class SoundEngine implements SoundEngineFacade {
 		}
 	}
 	
-	public void attachAugmenters(DecoratedNote targetNote) {
+	private void attachAugmenters(DecoratedNote targetNote) {
 		synchronized (activeAugmenters) {
 			for (Entry<String, Augmenter> pair : activeAugmenters.entrySet()) {
 				Augmenter aug = pair.getValue();
@@ -138,12 +139,12 @@ public class SoundEngine implements SoundEngineFacade {
 		}
 	}
 	
-	public void cleanOldObservers() {
+	private void cleanOldObservers() {
 		cleanOldGeneratorObservers();
 		cleanOldEffectObservers();
 	}
 	
-	public void cleanOldGeneratorObservers() {
+	private void cleanOldGeneratorObservers() {
 		synchronized (activeGenerators) {
 			for (Entry<String, Generator> pair : activeGenerators.entrySet()) {
 				Generator gen = pair.getValue();
@@ -152,7 +153,7 @@ public class SoundEngine implements SoundEngineFacade {
 		}
 	}
 	
-	public void cleanOldEffectObservers() {
+	private void cleanOldEffectObservers() {
 		synchronized (activeEffects) {
 			for (Entry<String, Effect> pair : activeEffects.entrySet()) {
 				Effect fx = pair.getValue();

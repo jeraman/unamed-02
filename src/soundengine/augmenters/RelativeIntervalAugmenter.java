@@ -12,6 +12,14 @@ public class RelativeIntervalAugmenter extends Augmenter {
 		this.type = type;
 	}
 	
+	protected String getType() {
+		return type;
+	}
+
+	protected void setType(String type) {
+		this.type = type;
+	}
+
 	@Override
 	public Note[] getNotes(int dynamicRoot) {
 		return MusicTheory.generateInterval(dynamicRoot, type);

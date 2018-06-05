@@ -12,6 +12,14 @@ public class RelativeChordAugmenter extends Augmenter {
 	public RelativeChordAugmenter(String type) {
 		this.type = type;
 	}
+	
+	protected String getType() {
+		return type;
+	}
+
+	protected void setType(String type) {
+		this.type = type;
+	}
 
 	@Override
 	public Note[] getNotes(int dynamicRoot) {

@@ -12,6 +12,14 @@ public class RelativeNoteAugmenter extends Augmenter {
 	public RelativeNoteAugmenter(int pitch) {
 		this.pitch = pitch;
 	}
+	
+	protected int getPitch() {
+		return pitch;
+	}
+
+	protected void setPitch(int pitch) {
+		this.pitch = pitch;
+	}
 
 	@Override
 	public Note[] getNotes(int dynamicNote) {

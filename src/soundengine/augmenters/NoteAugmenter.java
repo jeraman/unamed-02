@@ -4,9 +4,17 @@ import org.jfugue.theory.Note;
 
 public class NoteAugmenter extends Augmenter {
 
-	int pitch;
+	private int pitch;
 
 	public NoteAugmenter(int pitch) {
+		this.pitch = pitch;
+	}
+	
+	protected int getPitch() {
+		return pitch;
+	}
+
+	protected void setPitch(int pitch) {
 		this.pitch = pitch;
 	}
 
