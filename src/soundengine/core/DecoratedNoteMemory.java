@@ -1,10 +1,11 @@
-package soundengine;
+package soundengine.core;
 
 import java.util.ArrayList;
 import org.jfugue.theory.Chord;
 
 import soundengine.generators.Generator;
 import soundengine.generators.GeneratorFactory;
+import soundengine.util.MusicTheory;
 
 public class DecoratedNoteMemory {
 	private ArrayList<DecoratedNote> memory;

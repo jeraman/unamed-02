@@ -7,6 +7,8 @@ import ddf.minim.Minim;
 import ddf.minim.spi.AudioStream;
 import soundengine.augmenters.Augmenter;
 import soundengine.augmenters.AugmenterFactory;
+import soundengine.core.DecoratedNote;
+import soundengine.core.DecoratedNoteMemory;
 import soundengine.effects.Effect;
 import soundengine.effects.EffectFactory;
 import soundengine.generators.Generator;

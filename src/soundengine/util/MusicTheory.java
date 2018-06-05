@@ -1,4 +1,4 @@
-package soundengine;
+package soundengine.util;
 
 import org.jfugue.theory.*;
 import java.util.List;

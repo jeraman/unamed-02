@@ -1,9 +1,10 @@
-package soundengine;
+package soundengine.core;
 
 import java.util.ArrayList;
 
 import ddf.minim.UGen;
 import ddf.minim.ugens.Summer;
+import soundengine.SoundEngine;
 import soundengine.augmenters.Augmenter;
 import soundengine.effects.AdsrEffect;
 import soundengine.effects.Effect;

@@ -1,4 +1,4 @@
-package soundengine;
+package soundengine.core;
 
 /**
  * Stores basic MIDI-related information

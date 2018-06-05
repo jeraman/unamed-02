@@ -12,7 +12,7 @@ import ddf.minim.ugens.Multiplier;
 import ddf.minim.ugens.Oscil;
 import ddf.minim.ugens.Vocoder;
 import ddf.minim.ugens.Waves;
-import soundengine.MusicTheory;
+import soundengine.util.MusicTheory;
 import soundengine.util.Util;
 
 

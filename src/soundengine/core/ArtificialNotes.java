@@ -1,10 +1,11 @@
-package soundengine;
+package soundengine.core;
 
 import java.util.ArrayList;
 import org.jfugue.theory.Chord;
 import org.jfugue.theory.Note;
 import ddf.minim.ugens.Summer;
 import soundengine.augmenters.Augmenter;
+import soundengine.util.MusicTheory;
 
 /**
  * This class creates virtual music-theory-enriched MIDI notes (called extensions) to be played along 

@@ -1,8 +1,7 @@
 package soundengine.util;
 
 import processing.core.PApplet;
-import soundengine.DecoratedNoteMemory;
-import soundengine.MusicTheory;
+import soundengine.core.DecoratedNoteMemory;
 import soundengine.generators.Generator;
 import soundengine.util.MidiIO;
 import themidibus.MidiBus;

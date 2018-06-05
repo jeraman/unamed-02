@@ -6,9 +6,8 @@ import ddf.minim.spi.AudioRecordingStream;
 import ddf.minim.ugens.MoogFilter.Type;
 import javafx.util.Pair;
 import processing.core.PApplet;
-import soundengine.DecoratedNote;
-import soundengine.DecoratedNoteMemory;
-import soundengine.MusicTheory;
+import soundengine.core.DecoratedNote;
+import soundengine.core.DecoratedNoteMemory;
 import soundengine.effects.AdsrEffect;
 import soundengine.effects.BandPassFilterEffect;
 import soundengine.effects.BitChrushEffect;
@@ -21,6 +20,7 @@ import soundengine.effects.MoogFilterEffect;
 import soundengine.generators.Generator;
 import soundengine.generators.GeneratorFactory;
 import soundengine.util.MidiIO;
+import soundengine.util.MusicTheory;
 
 public class EffectsPipelineTest extends PApplet {
 	DecoratedNoteMemory memory;

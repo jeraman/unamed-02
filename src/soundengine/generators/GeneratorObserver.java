@@ -1,6 +1,6 @@
 package soundengine.generators;
 
-import soundengine.Observer;
+import soundengine.core.Observer;
 
 public abstract class GeneratorObserver extends Observer {
 

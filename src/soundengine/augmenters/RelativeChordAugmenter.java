@@ -3,7 +3,7 @@ package soundengine.augmenters;
 import org.jfugue.theory.Chord;
 import org.jfugue.theory.Note;
 
-import soundengine.MusicTheory;
+import soundengine.util.MusicTheory;
 
 public class RelativeChordAugmenter extends Augmenter {
 

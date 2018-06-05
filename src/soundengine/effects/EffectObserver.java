@@ -1,6 +1,6 @@
 package soundengine.effects;
 
-import soundengine.Observer;
+import soundengine.core.Observer;
 
 public abstract class EffectObserver extends Observer{
 
