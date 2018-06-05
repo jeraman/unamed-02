@@ -38,14 +38,12 @@ public class TestingSoundEngine extends PApplet {
 	public void mousePressed() {
 		// processMousePressedGenUpdates();
 		
-		
 		if (isAug1Active)
 			eng.updateAugmenter("1", new String[] { ((counter % 48) + 45) + "" });
 		if (isAug2Active)
 			eng.updateAugmenter("2", new String[] { ((counter % 12) + 1) + "" });
 		if (isAug3Active) {
 			int temp = counter%4;
-			
 			if (temp==0)
 				eng.updateAugmenter("3", new String[] { "maj" });
 			if (temp==1)

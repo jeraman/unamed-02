@@ -3,6 +3,7 @@ package soundengine.util;
 import processing.core.PApplet;
 import themidibus.MidiBus;
 
+
 public class MidiIO {
 	
 	private static MidiBus myBus;
@@ -10,6 +11,10 @@ public class MidiIO {
 	public static void setup (PApplet p) {
 		MidiBus.list(); 
 		myBus = new MidiBus(p, 2, 1);
+		//myBus = new MidiBus(p, 2, 0);
+		
+		//Util.delay(1000);
+		myBus.sendTimestamps(false);
 	}
 	
 
