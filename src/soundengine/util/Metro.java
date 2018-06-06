@@ -4,10 +4,10 @@ package soundengine.util;
  * Class that counts time in musical terms using BPM, bars, beats, and note
  * values
  * 
- * @author jeronimo
+ * @author jeraman.info
  *
  */
-public class Metro implements Runnable {
+class Metro extends AbstractTimeMeter {
 
 	private int bpm;
 	private int currentBar;
@@ -16,8 +16,6 @@ public class Metro implements Runnable {
 	private int globalBeat;
 	private int globalNoteValue;
 
-	private Thread counter;
-	private boolean alive;
 
 	public Metro() {
 		this(120);
@@ -28,12 +26,12 @@ public class Metro implements Runnable {
 	}
 
 	public Metro(int bpm, int globalBeat, int globalNoteValue) {
+		super();
 		this.bpm = bpm;
 		this.globalBeat = globalBeat;
 		this.globalNoteValue = globalNoteValue;
 		this.currentBar = 0;
 		this.currentBeat = 0;
-		this.alive = false;
 	}
 
 	public int getBpm() {
@@ -85,13 +83,7 @@ public class Metro implements Runnable {
 	}
 
 	public void stop() {
-		alive = false;
-		try {
-			counter.join(0);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		super.stop();
 	}
 
 	public void start() {
@@ -99,17 +91,13 @@ public class Metro implements Runnable {
 		this.currentBeat = 0;
 		this.currentNoteCount = 0;
 
-		alive = true;
-		Runnable r = this;
-		counter = new Thread(r);
-		counter.start();
+		super.start();
 	}
 
 	@Override
 	public void run() {
 
-		while (alive) {
-			//int time = (int) ((60 * 1000) / (this.bpm * (this.globalNoteValue)));
+		while (this.isAlive()) {
 			int time = (int) 60 * 1000 / this.bpm;
 			
 			float mult = this.globalNoteValue/4f;
@@ -117,14 +105,9 @@ public class Metro implements Runnable {
 			
 			Util.delay(adaptedTime);
 
-			//currentNoteCount = (currentNoteCount + 1) % this.globalNoteValue;
-			
-			//if (currentNoteCount == 0) {
-				currentBeat = (currentBeat + 1) % globalBeat;
-
-				if (currentBeat == 0)
-					currentBar = currentBar + 1;
-			//}
+			currentBeat = (currentBeat + 1) % globalBeat;
+			if (currentBeat == 0)
+				currentBar = currentBar + 1;
 		}
 	}
 
