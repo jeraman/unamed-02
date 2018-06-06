@@ -13,12 +13,13 @@ public class MetroTest extends PApplet {
 		PApplet.main("soundengine.time.MetroTest");
 	}
 
-//	Metro m = new Metro(120, 3, 8);
-//	Timer t = new Timer();
-	
+	// Metro m = new Metro(120, 3, 8);
+	// Timer t = new Timer();
+
 	TimeManager tm;
-	
+
 	boolean counting = false;
+	boolean shouldSound = true;
 
 	public void settings() {
 		size(800, 600);
@@ -30,17 +31,26 @@ public class MetroTest extends PApplet {
 		tm = new TimeManager(120, 4, 4);
 	}
 
+	public void keyPressed() {
+		if (shouldSound)
+			tm.enableSound();
+		else
+			tm.disableSound();
+
+		shouldSound = !shouldSound;
+	}
+
 	public void mousePressed() {
 		if (counting) {
 			println("stopping...");
-//			m.stop();
-//			t.stop();
+			// m.stop();
+			// t.stop();
 			tm.stop();
 			counting = false;
 		} else {
 			println("restarting...");
-//			m.start();
-//			t.start();
+			// m.start();
+			// t.start();
 			tm.start();
 			counting = true;
 		}
@@ -48,8 +58,9 @@ public class MetroTest extends PApplet {
 
 	public void draw() {
 		if (counting) {
-//			println("metro: " + m.getCurrentBar() + " : " + m.getCurrentBeat() + " : " + m.getCurrentNoteCount());
-//			println("timer: " + t.getElapsedTime());
+			// println("metro: " + m.getCurrentBar() + " : " +
+			// m.getCurrentBeat() + " : " + m.getCurrentNoteCount());
+			// println("timer: " + t.getElapsedTime());
 			println("TimeManager in time: " + tm.getElapsedTime());
 			println("TimeManager in music: " + tm.getMusicalTime());
 		}

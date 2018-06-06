@@ -19,6 +19,7 @@ class Metro extends AbstractTimeMeter {
 	private int currentNoteCount;
 	private int globalBeat;
 	private int globalNoteValue;
+	private boolean shouldSound;
 
 	AudioSample sample;
 	
@@ -39,6 +40,15 @@ class Metro extends AbstractTimeMeter {
 		this.currentBeat = 0;
 		
 		this.sample = SoundEngine.minim.loadSample("metronome.wav", 256);
+		this.shouldSound = false;
+	}
+	
+	public void enableSound() {
+		this.shouldSound = true;
+	}
+	
+	public void disableSound() {
+		this.shouldSound = false;
 	}
 
 	public int getBpm() {
@@ -121,16 +131,20 @@ class Metro extends AbstractTimeMeter {
 
 	private void playBar1() {
 		currentBar = currentBar + 1;
-//		sample.setVolume(0.25f);
-		sample.setGain(-10);
-		sample.trigger();
+		
+		if (shouldSound) {
+			sample.setGain(-10);
+			sample.trigger();
+		}
 	}
 
 	private void playBars234() {
 		currentBeat = (currentBeat + 1) % globalBeat;
-//		sample.setVolume(0.05f);
-		sample.setGain(-20);
-		sample.trigger();
+
+		if (shouldSound) {
+			sample.setGain(-20);
+			sample.trigger();
+		}
 	}
 
 }

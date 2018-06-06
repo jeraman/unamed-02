@@ -15,6 +15,14 @@ public class TimeManager {
 		this.m = new Metro(bpm, globalBeat, globalNoteValue);
 	}
 	
+	public void enableSound() {
+		m.enableSound();
+	}
+	
+	public void disableSound() {
+		m.disableSound();
+	}
+	
 	public int getBpm() {
 		return m.getBpm();
 	}
