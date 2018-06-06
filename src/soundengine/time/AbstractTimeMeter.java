@@ -1,5 +1,10 @@
-package soundengine.util;
+package soundengine.time;
 
+/**
+ * Abstract class used by metro and timer.
+ * @author jeronimo
+ *
+ */
 abstract class AbstractTimeMeter implements Runnable {
 	
 	private Thread counter;

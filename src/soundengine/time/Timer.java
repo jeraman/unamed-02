@@ -1,7 +1,7 @@
-package soundengine.util;
+package soundengine.time;
 
 /**
- * 
+ * Simple timer in seconds.
  * @author jeraman.info
  *
  */

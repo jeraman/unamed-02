@@ -1,4 +1,8 @@
-package soundengine.util;
+package soundengine.time;
+
+import ddf.minim.AudioSample;
+import soundengine.SoundEngine;
+import soundengine.util.Util;
 
 /**
  * Class that counts time in musical terms using BPM, bars, beats, and note
@@ -16,7 +20,8 @@ class Metro extends AbstractTimeMeter {
 	private int globalBeat;
 	private int globalNoteValue;
 
-
+	AudioSample sample;
+	
 	public Metro() {
 		this(120);
 	}
@@ -32,6 +37,8 @@ class Metro extends AbstractTimeMeter {
 		this.globalNoteValue = globalNoteValue;
 		this.currentBar = 0;
 		this.currentBeat = 0;
+		
+		this.sample = SoundEngine.minim.loadSample("metronome.wav", 256);
 	}
 
 	public int getBpm() {
@@ -105,10 +112,25 @@ class Metro extends AbstractTimeMeter {
 			
 			Util.delay(adaptedTime);
 
-			currentBeat = (currentBeat + 1) % globalBeat;
-			if (currentBeat == 0)
-				currentBar = currentBar + 1;
+			playBars234();
+			
+			if (currentBeat == 0) 
+				playBar1();
 		}
+	}
+
+	private void playBar1() {
+		currentBar = currentBar + 1;
+//		sample.setVolume(0.25f);
+		sample.setGain(-10);
+		sample.trigger();
+	}
+
+	private void playBars234() {
+		currentBeat = (currentBeat + 1) % globalBeat;
+//		sample.setVolume(0.05f);
+		sample.setGain(-20);
+		sample.trigger();
 	}
 
 }

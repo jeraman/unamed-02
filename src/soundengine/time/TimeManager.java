@@ -1,7 +1,7 @@
-package soundengine.util;
+package soundengine.time;
 
 /**
- * Timer in elapsed time and in musical meter.
+ * Metronome that is able to display bars & beats, elapsed time, and to produce sound.
  * @author jeraman.info
  *
  */
