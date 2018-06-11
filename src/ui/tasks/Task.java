@@ -114,7 +114,6 @@ public abstract class Task implements Serializable {
     String result = "[TASK]";
 
     if (this instanceof SetBBTask) result = "[B_B]";
-    if (this instanceof AudioTask) result = "[AUDIO]";
     if (this instanceof OSCTask) result = "[OSC]";
     if (this instanceof StateMachine) result = "[S_M]";
 

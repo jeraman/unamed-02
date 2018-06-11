@@ -1,5 +1,6 @@
 package ui;
 
+
 /************************************************
  ** My main!
  ************************************************
@@ -24,11 +25,10 @@ public class ZenStates extends PApplet {
 
 	public MainCanvas canvas;
 	Blackboard board;
-	Serializer serializer = new Serializer(this);
+	Serializer serializer;
 
 	OscP5 oscP5; // my osc variables
 	ControlP5 cp5; // my controlP5 variable for gui
-	Minim minim; // my minim variable
 
 	// system's default port for receiveing osc messages
 	String SERVER_IP;
@@ -53,6 +53,7 @@ public class ZenStates extends PApplet {
 
 	public void setup() {
 		setup_util();
+		this.serializer = new Serializer(this);
 		is_loading = true;
 		background(0);
 		smooth();
@@ -115,7 +116,6 @@ public class ZenStates extends PApplet {
 		load_config();
 		setup_osc();
 		setup_control_p5();
-		setup_minim();
 	}
 
 	// function for setting up osc
@@ -130,10 +130,6 @@ public class ZenStates extends PApplet {
 		cp5.setFont(cp5.getFont().getFont(), FONT_SIZE);
 	}
 
-	// sets the minim up
-	void setup_minim() {
-		minim = new Minim(this);
-	}
 
 	// rounds a float to two decimals for the gui
 	// retrieved from:
@@ -291,10 +287,6 @@ public class ZenStates extends PApplet {
 
 	public ControlP5 cp5() {
 		return cp5;
-	}
-
-	public Minim minim() {
-		return minim;
 	}
 
 	public Blackboard board() {

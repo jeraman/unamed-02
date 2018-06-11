@@ -1,14 +1,17 @@
 package ui;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
+
 /******************************************************
  ** Class that implements file saving/loading *********
  ******************************************************
  ** this code was written by Sofian and incorporated *
  ** into my prototype in DEc. 1st *********************
  *****************************************************/
-import java.io.*;
-import processing.core.PApplet;
-
-
 public class Serializer {
 
 	ZenStates p;
@@ -18,10 +21,14 @@ public class Serializer {
 	int timestamp;
 	File autosave_file;
 
-	public Serializer(ZenStates p) {
-		this.p = p;
+	public Serializer(ZenStates zenStates) {
+		this.p = zenStates;
 		setup_autosave();
 	}
+
+//	public Serializer(ZenStates zenStates) {
+//		// TODO Auto-generated constructor stub
+//	}
 
 	File lastSaveFile = null;
 

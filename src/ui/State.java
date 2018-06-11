@@ -11,7 +11,6 @@ package ui;
 import java.util.*;
 import java.io.Serializable;
 import processing.core.PApplet;
-import ui.tasks.AudioTask;
 import ui.tasks.ControlRemoteAuraTask;
 import ui.tasks.ControlRemoteDMXTask;
 import ui.tasks.ControlRemoteSoundTask;
@@ -528,13 +527,6 @@ public class State implements Serializable {
 		//println(selected + " " + pie.options[selected]);
 	}
 
-	//method that initializes a random demo audio task
-	void init_random_audio_task () {
-		String taskname = generate_random_name();
-		AudioTask t = new AudioTask(p, cp5, taskname, "123go.mp3");
-		this.add_task(t);
-		//println(selected + " " + pie.options[selected]);
-	}
 
 	//method that initializes a random demo state machine task
 	void init_random_state_machine_task () {

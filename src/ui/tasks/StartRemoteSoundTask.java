@@ -9,6 +9,7 @@ import ui.State;
 
 ////////////////////////////////////////
 //implementing a task for OSC messages
+@Deprecated
 public class StartRemoteSoundTask extends RemoteOSCTask {
 
   String filename;
