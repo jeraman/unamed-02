@@ -50,6 +50,10 @@ public class AugmenterFactory {
 		if (aug instanceof ChordAugmenter)
 			updateChordAugmenter((ChordAugmenter) aug, parameters);
 	}
+	
+	public static void updateAugmenter(Augmenter aug, String singleParameter) {
+		aug.updateParameterFromString(singleParameter);
+	}
 
 	// note
 	private static Augmenter createNote(String[] parameters) {

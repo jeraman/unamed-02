@@ -14,6 +14,15 @@ public class ChordAugmenter extends Augmenter {
 		this.type = type;
 	}
 	
+	public void updateParameterFromString(String singleParameter) {
+		String[] parts = singleParameter.split(":");
+		
+		if (parts[0].trim().equalsIgnoreCase("root"))
+			this.setRoot(Integer.parseInt(parts[1].trim()));
+		if (parts[0].trim().equalsIgnoreCase("type"))
+			this.setType(parts[1].trim());
+	}
+	
 	protected int getRoot() {
 		return root;
 	}

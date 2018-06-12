@@ -35,15 +35,16 @@ public class TestParameterUpdateOnSoundEngine extends PApplet {
 	int counter = 0;
 
 	public void mousePressed() {
-		// processMousePressedGenUpdates();
-		// processMousePressedAugUpdates();
+		 //processMousePressedGenUpdates();
+		 processMousePressedAugUpdates();
 		counter++;
 	}
 
 	public void mouseMoved() {
-		// processMouseMovedGenUpdates();
+		processMouseMovedGenUpdates();
 		processMouseMovedFxUpdates();
 	}
+	
 
 	public void processMousePressedGenUpdates() {
 		if (isGen3Active && mouseButton == LEFT)
@@ -85,7 +86,6 @@ public class TestParameterUpdateOnSoundEngine extends PApplet {
 	}
 
 	public void processMouseMovedFxUpdates() {
-
 		if (isFx1Active) {
 			// lowpass and highpass
 			float cutoff = map(mouseX, 0, width, 60f, 5000f);
@@ -115,26 +115,24 @@ public class TestParameterUpdateOnSoundEngine extends PApplet {
 			float amplitudeFactor = map((float) mouseY, 0.f, (float) height, 0.99f, 0.0f);
 			eng.updateEffect("3", "delayTime : " + delayTime);
 			eng.updateEffect("3", "amplitudeFactor : " + amplitudeFactor);
-			// eng.updateEffect("3", new String[] { "" + delayTime, "" +
-			// feedbackFactor });
 		}
 	}
 
 	private void processMousePressedAugUpdates() {
 		if (isAug1Active)
-			eng.updateAugmenter("1", new String[] { ((counter % 48) + 45) + "" });
+			eng.updateAugmenter("1", "pitch : " + ((counter % 48) + 45));
 		if (isAug2Active)
-			eng.updateAugmenter("2", new String[] { ((counter % 12) + 1) + "" });
+			eng.updateAugmenter("2", "type : " +  ((counter % 12) + 1));
 		if (isAug3Active) {
 			int temp = counter % 4;
 			if (temp == 0)
-				eng.updateAugmenter("3", new String[] { "maj" });
+				eng.updateAugmenter("3", "type : maj" );
 			if (temp == 1)
-				eng.updateAugmenter("3", new String[] { "min" });
+				eng.updateAugmenter("3", "type : min" );
 			if (temp == 2)
-				eng.updateAugmenter("3", new String[] { "dim" });
+				eng.updateAugmenter("3", "type : dim" );
 			if (temp == 3)
-				eng.updateAugmenter("3", new String[] { "aug" });
+				eng.updateAugmenter("3", "type : aug" );
 		}
 	}
 

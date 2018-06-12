@@ -13,6 +13,13 @@ public class RelativeChordAugmenter extends Augmenter {
 		this.type = type;
 	}
 	
+	public void updateParameterFromString(String singleParameter) {
+		String[] parts = singleParameter.split(":");
+		
+		if (parts[0].trim().equalsIgnoreCase("type"))
+			this.setType(parts[1].trim());
+	}
+	
 	protected String getType() {
 		return type;
 	}

@@ -10,6 +10,13 @@ public class NoteAugmenter extends Augmenter {
 		this.pitch = pitch;
 	}
 	
+	public void updateParameterFromString(String singleParameter) {
+		String[] parts = singleParameter.split(":");
+		
+		if (parts[0].trim().equalsIgnoreCase("pitch"))
+			this.setPitch(Integer.parseInt(parts[1].trim()));
+	}
+	
 	protected int getPitch() {
 		return pitch;
 	}
