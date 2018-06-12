@@ -97,6 +97,11 @@ public class GeneratorFactory {
 		if (gen instanceof LiveInputGenerator)
 			updateLiveInpuGen((LiveInputGenerator)gen, parameters);
 	}
+	
+	public static void updateGenerator(Generator gen, String singleParameter) {
+		gen.updateParameterFromString(singleParameter);
+		gen.notifyAllObservers(singleParameter);
+	}
 
 	//Oscillator Factory
 	public static Generator noteOnOscillatorGen(int pitch, int velocity, String waveform) {
@@ -133,7 +138,6 @@ public class GeneratorFactory {
 		
 		gen.notifyAllObservers();
 	}
-	
 	
 	//FM factory
 	public static Generator noteOnFMGen(float carrierFreq, float carrierAmp, String carrierWave,
@@ -181,6 +185,25 @@ public class GeneratorFactory {
 		gen.notifyAllObservers();
 	}
 	
+	public static void updateFMGen(FMGenerator gen, String singleParameter) {
+		String[] parts = singleParameter.split(":");
+		
+		if (parts[0].trim().equalsIgnoreCase("carrierFreq"))
+			gen.setCarrierFreq(Float.parseFloat(parts[1]));
+		if (parts[0].trim().equalsIgnoreCase("carrierAmp"))
+			gen.setCarrierAmp(Float.parseFloat(parts[1]));
+		if (parts[0].trim().equalsIgnoreCase("carrierWave"))
+			gen.setCarrierWave(parts[1]);
+		if (parts[0].trim().equalsIgnoreCase("modFreq"))
+			gen.setModFreq(Float.parseFloat(parts[1]));
+		if (parts[0].trim().equalsIgnoreCase("modAmp"))
+			gen.setModAmp(Float.parseFloat(parts[1]));
+		if (parts[0].trim().equalsIgnoreCase("modWave"))
+			gen.setModWave(parts[1]);
+			
+		gen.notifyAllObservers();
+	}
+	
 	
 	//SampleFile factory
 	public static Generator noteOnSampleFileGen(String fileStream, int pitch, int velocity, boolean shouldLoop) {
@@ -213,7 +236,7 @@ public class GeneratorFactory {
 		
 		gen.setFilename(filename);
 		gen.setPitch(pitch);
-		gen.setVolume(velocity);
+		gen.setVelocity(velocity);
 		gen.setLoopStatus(shouldLoop);
 		
 		gen.notifyAllObservers();

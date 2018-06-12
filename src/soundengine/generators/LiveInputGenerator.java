@@ -137,6 +137,18 @@ public class LiveInputGenerator extends Oscil implements Generator, Runnable {
 //		// repatching output
 //		patched.patch(GeneratorFactory.out);
 //	}
+	
+	@Override
+	public void updateParameterFromString(String singleParameter) {
+		String[] parts = singleParameter.split(":");
+		
+		if (parts[0].trim().equalsIgnoreCase("pitch"))
+			this.setPitch(Integer.parseInt(parts[1].trim()));
+		if (parts[0].trim().equalsIgnoreCase("velocity"))
+			this.setVelocity(Integer.parseInt(parts[1].trim()));
+		if (parts[0].trim().equalsIgnoreCase("duration"))
+			this.setDuration((int)Float.parseFloat(parts[1].trim()));
+	}
 
 	public int getDuration() {
 		return duration;
@@ -265,6 +277,12 @@ public class LiveInputGenerator extends Oscil implements Generator, Runnable {
 	public void notifyAllObservers() {
 		for (GeneratorObserver observer : observers)
 			observer.update();
+	}
+	
+	@Override
+	public void notifyAllObservers(String updatedParameter) {
+		for (GeneratorObserver observer : observers)
+			observer.update(updatedParameter);
 	}
 
 	@Override

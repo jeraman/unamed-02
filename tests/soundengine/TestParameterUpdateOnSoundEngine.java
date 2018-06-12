@@ -4,11 +4,11 @@ import ddf.minim.Minim;
 import processing.core.PApplet;
 import soundengine.util.MidiIO;
 
-public class TestingSoundEngine extends PApplet {
+public class TestParameterUpdateOnSoundEngine extends PApplet {
 	SoundEngine eng;
 
 	public static void main(String[] args) {
-		PApplet.main("soundengine.TestingSoundEngine");
+		PApplet.main("soundengine.TestParameterUpdateOnSoundEngine");
 	}
 
 	public void settings() {
@@ -36,31 +36,54 @@ public class TestingSoundEngine extends PApplet {
 	int counter = 0;
 	
 	public void mousePressed() {
-		 processMousePressedGenUpdates();
-		
-		if (isAug1Active)
-			eng.updateAugmenter("1", new String[] { ((counter % 48) + 45) + "" });
-		if (isAug2Active)
-			eng.updateAugmenter("2", new String[] { ((counter % 12) + 1) + "" });
-		if (isAug3Active) {
-			int temp = counter%4;
-			if (temp==0)
-				eng.updateAugmenter("3", new String[] { "maj" });
-			if (temp==1)
-				eng.updateAugmenter("3", new String[] { "min" });
-			if (temp==2)
-				eng.updateAugmenter("3", new String[] { "dim" });
-			if (temp==3)
-				eng.updateAugmenter("3", new String[] { "aug" });
-		}
-		
+		processMousePressedGenUpdates();
+		//processMousePressedAugUpdates();
 		counter++;
 	}
 
 	public void mouseMoved() {
 		processMouseMovedGenUpdates();
 		//processMouseMovedFxUpdates();
+	}
+	
+	public void processMousePressedGenUpdates() {
+		if (isGen3Active && mouseButton == LEFT)
+			eng.updateGenerator("3", "modWave : SAW");
+		if (isGen3Active && mouseButton == RIGHT)
+			eng.updateGenerator("3", "modWave : SINE");
+		
+		if (isGen2Active && mouseButton == LEFT)
+			eng.updateGenerator("2", "Waveform : SAW");
+		if (isGen2Active && mouseButton == RIGHT)
+			eng.updateGenerator("2", "Waveform : SINE");
 
+		int rand = (int) random(2);
+		
+		if (isGen1Active && mouseButton == LEFT)
+			eng.updateGenerator("1", "Loop : false");
+		if (isGen1Active && mouseButton == RIGHT)
+			eng.updateGenerator("1", "Loop : true");
+		if (isGen1Active && rand==0)
+			eng.updateGenerator("1", "filename : 123go.mp3");
+		if (isGen1Active && rand==1)
+			eng.updateGenerator("1", "filename : error.mp3");
+			
+	}
+
+	
+	public void processMouseMovedGenUpdates() {
+		if (isGen1Active) {
+			int a = (int) map(mouseY, 0, height, 127, 0);
+			eng.updateGenerator("1", "Velocity:" + a);
+		}
+
+		if (isGen3Active) {
+			// testing mod parameters
+			float freq1 = map(mouseX, 0, width, 0.1f, 100f);
+			float amp1 = map(mouseY, 0, height, 220, 1f);
+			eng.updateGenerator("3","modFreq:" + freq1);
+			eng.updateGenerator("3","modAmp:" + amp1);
+		}
 	}
 	
 	public void processMouseMovedFxUpdates() {
@@ -92,35 +115,23 @@ public class TestingSoundEngine extends PApplet {
 			eng.updateEffect("3", new String[] { "" + delayTime, "" + feedbackFactor });
 		}
 	}
-
-	public void processMousePressedGenUpdates() {
-		if (isGen2Active && mouseButton == LEFT)
-			eng.updateGenerator("2", new String[] { "60", "127", "SAW" });
-		if (isGen2Active && mouseButton == RIGHT)
-			eng.updateGenerator("2", new String[] { "60", "127", "SINE" });
-
-		if (isGen1Active && mouseButton == LEFT)
-			eng.updateGenerator("1", new String[] { "123go.mp3", "60", "127", "false" });
-		if (isGen1Active && mouseButton == RIGHT)
-			eng.updateGenerator("1", new String[] { "error.mp3", "60", "127", "true" });
-	}
-
-	public void processMouseMovedGenUpdates() {
-		if (isGen1Active) {
-			int a = (int) map(mouseY, 0, height, 256, 0);
-			eng.updateGenerator("1", new String[] { "123go.mp3", "60", "" + a, "true" });
-		}
-
-		if (isGen3Active) {
-			// testing mod parameters
-			float freq1 = map(mouseX, 0, width, 0.1f, 100f);
-			float amp1 = map(mouseY, 0, height, 220, 1f);
-			eng.updateGenerator("3", new String[] { "60", "127", "SINE", "" + freq1, "" + amp1, "SAW" });
-			// testing carrier parameters
-			// int p = (int)map( mouseX, 0, width, 40, 150 );
-			// int a = (int)map( mouseY, 0, height, 0, 256 );
-			// eng.updateGenerator("3", new String[] { ""+p, ""+a, "SINE", "30",
-			// "75.", "SAW"});
+	
+	
+	private void processMousePressedAugUpdates() {
+		if (isAug1Active)
+			eng.updateAugmenter("1", new String[] { ((counter % 48) + 45) + "" });
+		if (isAug2Active)
+			eng.updateAugmenter("2", new String[] { ((counter % 12) + 1) + "" });
+		if (isAug3Active) {
+			int temp = counter%4;
+			if (temp==0)
+				eng.updateAugmenter("3", new String[] { "maj" });
+			if (temp==1)
+				eng.updateAugmenter("3", new String[] { "min" });
+			if (temp==2)
+				eng.updateAugmenter("3", new String[] { "dim" });
+			if (temp==3)
+				eng.updateAugmenter("3", new String[] { "aug" });
 		}
 	}
 

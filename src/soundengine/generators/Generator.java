@@ -14,6 +14,8 @@ public interface Generator {
 	
 	public void unpatchOutput(AudioOutput out);
 	
+	public void updateParameterFromString(String singleParameter);
+	
 	public void noteOn();
 	
 	public void noteOff();
@@ -23,6 +25,8 @@ public interface Generator {
 	public void attach (GeneratorObserver observer);
 	
 	public void notifyAllObservers();
+	
+	public void notifyAllObservers(String updatedParameter);
 	
 	public void unlinkOldObservers();
 	

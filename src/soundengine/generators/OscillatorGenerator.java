@@ -54,7 +54,20 @@ public class OscillatorGenerator extends Oscil implements Generator,Runnable {
 		
 		this.patched = this;
 	}
-	
+
+	@Override
+	public void updateParameterFromString(String singleParameter) {
+		String[] parts = singleParameter.split(":");
+		
+		if (parts[0].trim().equalsIgnoreCase("frequency"))
+			this.setFrequency(Float.parseFloat(parts[1].trim()));
+		if (parts[0].trim().equalsIgnoreCase("amplitude"))
+			this.setAmplitude(Float.parseFloat(parts[1].trim()));
+		if (parts[0].trim().equalsIgnoreCase("duration"))
+			this.setDuration((int)Float.parseFloat(parts[1].trim()));
+		if (parts[0].trim().equalsIgnoreCase("waveform"))
+			this.setWaveform(parts[1]);
+	}
 	
 	protected int getDuration() {
 		return duration;
@@ -155,22 +168,7 @@ public class OscillatorGenerator extends Oscil implements Generator,Runnable {
 	}
 	
 	private static Waveform getWaveformType (String waveName) {
-		Waveform result = null;
-		
-		if (waveName.equalsIgnoreCase("PHASOR"))
-			result = Waves.PHASOR;
-		if (waveName.equalsIgnoreCase("QUARTERPULSE"))
-			result = Waves.QUARTERPULSE;
-		if (waveName.equalsIgnoreCase("SAW"))
-			result = Waves.SAW;
-		if (waveName.equalsIgnoreCase("SINE"))
-			result = Waves.SINE;
-		if (waveName.equalsIgnoreCase("SQUARE"))
-			result = Waves.SQUARE;
-		if (waveName.equalsIgnoreCase("TRIANGLE"))
-			result = Waves.TRIANGLE;
-		
-		return result;
+		return Util.getWaveformType(waveName);
 	}
 
 	@Override
@@ -228,4 +226,12 @@ public class OscillatorGenerator extends Oscil implements Generator,Runnable {
 		for (GeneratorObserver observer : observers)
 			observer.update();
 	}
+	
+	@Override
+	public void notifyAllObservers(String updatedParameter) {
+		for (GeneratorObserver observer : observers)
+			observer.update(updatedParameter);
+	}
+
+
 }

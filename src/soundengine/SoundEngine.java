@@ -62,6 +62,12 @@ public class SoundEngine implements SoundEngineFacade {
 		GeneratorFactory.updateGenerator(gen, parameters);
 		System.out.println("updating generator " + gen + " (id: "+  id + ") with the following parameters: "  + parameters.toString());
 	}
+	
+	public void updateGenerator(String id, String singleParameter) {
+		Generator gen = this.activeGenerators.get(id);
+		GeneratorFactory.updateGenerator(gen, singleParameter.trim());
+		System.out.println("updating generator " + gen + " (id: "+  id + ") with "  + singleParameter);
+	}
 
 	@Override
 	public void removeGenerator(String id) {
@@ -82,6 +88,12 @@ public class SoundEngine implements SoundEngineFacade {
 		EffectFactory.updateEffect(fx, parameters);
 		System.out.println("updating effect " + fx + " (id: "+  id + ") with the following parameters: "  + parameters.toString());
 	}
+	
+	public void updateEffect(String id, String singleParameter) {
+		Effect fx = this.activeEffects.get(id);
+		EffectFactory.updateEffect(fx, singleParameter);
+		System.out.println("updating effect " + fx +  " (id: "+  id + ") with "  + singleParameter);
+	}
 
 	@Override
 	public void removeEffect(String id) {
@@ -101,6 +113,13 @@ public class SoundEngine implements SoundEngineFacade {
 		Augmenter aug = this.activeAugmenters.get(id);
 		AugmenterFactory.updateAugmenter(aug, parameters);
 		System.out.println("updating augmenter " + aug + " (id: "+  id + ") with the following parameters: "  + parameters.toString());
+	}
+	
+	@Override
+	public void updateAugmenter(String id, String singleParameter) {
+		Augmenter aug = this.activeAugmenters.get(id);
+		AugmenterFactory.updateAugmenter(aug, singleParameter);
+		System.out.println("updating augmenter " + aug + " (id: "+  id + ") with "  + singleParameter);
 	}
 
 	@Override
@@ -184,5 +203,4 @@ public class SoundEngine implements SoundEngineFacade {
 		n.noteOff();
 		this.cleanOldObservers();
 	}
-
 }

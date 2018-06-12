@@ -20,7 +20,7 @@ public class SampleFileGeneratorObserver extends GeneratorObserver {
 			updatable.setPitch(original.getPitch());
 		
 		if (original.getVolume() != updatable.getVolume())
-			updatable.setVolume(original.getVolume());
+			updatable.setVelocity(original.getVolume());
 
 		if (original.getLoopStatus() != updatable.getLoopStatus())
 			updatable.setLoopStatus(original.getLoopStatus());

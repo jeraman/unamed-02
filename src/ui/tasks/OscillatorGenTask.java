@@ -56,6 +56,8 @@ public class OscillatorGenTask extends Task {
 			return;
 		System.out.println("updating frequency!" + v);
 		this.frequency = new Expression(v);
+		
+		updateSoundEngine();
 	}
 
 	void update_amplitude(String v) {
@@ -63,6 +65,8 @@ public class OscillatorGenTask extends Task {
 			return;
 		System.out.println("updating amplitude!" + v);
 		this.amplitude = new Expression(v);
+
+		updateSoundEngine();
 	}
 
 	void update_duration(String v) {
@@ -70,11 +74,15 @@ public class OscillatorGenTask extends Task {
 			return;
 		System.out.println("updating duration!" + v);
 		this.duration = new Expression(v);
+		
+		updateSoundEngine();
 	}
 	
 	void update_wavetype(String wt) {
 		System.out.println("updating wavetype!" + wt);
 		this.wavetype = wt;
+		
+		updateSoundEngine();
 	}
 
 
@@ -115,6 +123,7 @@ public class OscillatorGenTask extends Task {
 		return clone;
 	}
 
+	//TODO: properly link this function with the soundengine
 	private void updateSoundEngine() {
 		String freq_val = (evaluate_value(this.frequency)).toString();
 		String amp_val = (evaluate_value(this.amplitude)).toString();
@@ -131,7 +140,6 @@ public class OscillatorGenTask extends Task {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		if (!should_run())
 			return;
 
@@ -157,18 +165,25 @@ public class OscillatorGenTask extends Task {
 		this.backgroundheight = (int) (font_size * 18);
 		g.setBackgroundHeight(backgroundheight);
 
-		this.createGuiTextField("frequency", localx, localy + (1 * localoffset), width, g, callback("frequency")).setText(this.frequency.toString());
-		this.createGuiTextField("amplitude", localx, localy + (2 * localoffset), width, g, callback("amplitude")).setText(this.amplitude.toString());
-		this.createGuiTextField("duration", localx, localy + (3 * localoffset), width, g, callback("duration")).setText(this.duration.toString());
-
+		this.createGuiTextField("frequency", localx, localy + (1 * localoffset), width, g, callbackTextField("frequency")).setText(this.frequency.toString());
+		this.createGuiTextField("amplitude", localx, localy + (2 * localoffset), width, g, callbackTextField("amplitude")).setText(this.amplitude.toString());
+		this.createGuiTextField("duration", localx, localy + (3 * localoffset), width, g, callbackTextField("duration")).setText(this.duration.toString());
 		this.createGuiToggle(localx, localy + (4 * localoffset), width, g, callbackRepeatToggle());
-		
-		this.createScrollableList("wavetype", list, localx, localy + (0 * localoffset), width, g,  callback("wavetype"));
+		this.createScrollableList("wavetype", list, localx, localy + (0 * localoffset), width, g,  callbackScrollList());
 
 		return g;
 	}
 	
-	public CallbackListener callback(String target) {
+	protected CallbackListener callbackScrollList() {
+		return new CallbackListener() {
+			public void controlEvent(CallbackEvent theEvent) {
+				int index = (int)theEvent.getController().getValue();
+				update_wavetype(list.get(index));
+			}
+		};
+	}
+	
+	public CallbackListener callbackTextField(String target) {
 		return new CallbackListener() {
 			public void controlEvent(CallbackEvent theEvent) {
 
@@ -194,8 +209,6 @@ public class OscillatorGenTask extends Task {
 						update_amplitude(content);
 					if (target.equals("duration"))
 						update_duration(content);
-					if (target.equals("repeat"))
-						check_repeat_toggle(theEvent.getController().getName(), theEvent);
 				}
 			}
 		};

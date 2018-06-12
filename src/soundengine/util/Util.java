@@ -2,6 +2,9 @@ package soundengine.util;
 
 import java.util.concurrent.TimeUnit;
 
+import ddf.minim.ugens.Waveform;
+import ddf.minim.ugens.Waves;
+
 public class Util {
 	
 	public static float map(int x, int startLower, int startHigher, int endLower, int endHigher) {
@@ -31,6 +34,25 @@ public class Util {
 
 	public static int mapFromAmplitudeToMidi(float x) {
 		return (int) Util.map(x, 0, 1, 0, 127);
+	}
+	
+	public static Waveform getWaveformType(String waveName) {
+		Waveform result = null;
+
+		if (waveName.trim().equalsIgnoreCase("PHASOR"))
+			return Waves.PHASOR;
+		if (waveName.trim().equalsIgnoreCase("QUARTERPULSE"))
+			return Waves.QUARTERPULSE;
+		if (waveName.trim().equalsIgnoreCase("SAW"))
+			return Waves.SAW;
+		if (waveName.trim().equalsIgnoreCase("SINE"))
+			return Waves.SINE;
+		if (waveName.trim().equalsIgnoreCase("SQUARE"))
+			return Waves.SQUARE;
+		if (waveName.trim().equalsIgnoreCase("TRIANGLE"))
+			return Waves.TRIANGLE;
+
+		return result;
 	}
 	
 	

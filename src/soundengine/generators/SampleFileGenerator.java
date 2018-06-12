@@ -15,7 +15,7 @@ public class SampleFileGenerator extends ModifiedSampler implements Generator,Ru
 	
 	String 	   filename;
 	int 	   pitch;
-	int 	   volume;
+	int 	   velocity;
 	int 	   duration;
 	
 	private UGen patched;
@@ -64,11 +64,11 @@ public class SampleFileGenerator extends ModifiedSampler implements Generator,Ru
 		initializeVariables("", pitch, volume, duration, shouldLoop);
 	}
 	
-	private void initializeVariables(String filename, int pitch, int volume, int duration, boolean shouldLoop) {
+	private void initializeVariables(String filename, int pitch, int velocity, int duration, boolean shouldLoop) {
 		this.filename = filename;
 		//this.filename = filename;
 		this.pitch	 = pitch;
-		this.volume  = volume;
+		this.velocity  = velocity;
 		//this.shouldLoop  = shouldLoop;
 		this.looping = shouldLoop;
 		this.duration    = duration;
@@ -77,11 +77,27 @@ public class SampleFileGenerator extends ModifiedSampler implements Generator,Ru
 		this.setPlaybackRate(pR);
 		//this.rateControl = new TickRate(pR);
 		//this.gain        = new Gain(Util.mapFromMidiToDecibels(volume));
-		this.setVolume(volume);
+		this.setVelocity(velocity);
 		
 		this.observers = new ArrayList<SampleFileGeneratorObserver>();
 		
 		this.patched = this;
+	}
+	
+	@Override
+	public void updateParameterFromString(String singleParameter) {
+		String[] parts = singleParameter.trim().split(":");
+		
+		if (parts[0].trim().equalsIgnoreCase("filename"))
+			this.setFilename(parts[1].trim());
+		if (parts[0].trim().equalsIgnoreCase("pitch"))
+			this.setPitch(Integer.parseInt(parts[1].trim()));
+		if (parts[0].trim().equalsIgnoreCase("velocity"))
+			this.setVelocity(Integer.parseInt(parts[1].trim()));
+		if (parts[0].trim().equalsIgnoreCase("duration"))
+			this.setDuration((int)Float.parseFloat(parts[1].trim()));
+		if (parts[0].trim().equalsIgnoreCase("loop"))
+			this.setLoopStatus(Boolean.parseBoolean(parts[1].trim()));
 	}
 	
 	
@@ -103,6 +119,14 @@ public class SampleFileGenerator extends ModifiedSampler implements Generator,Ru
 		this.trigger();
 	}
 	
+	protected int getDuration() {
+		return duration;
+	}
+
+	protected void setDuration(int duration) {
+		this.duration = duration;
+	}
+	
 	public int getPitch() {
 		return this.pitch;
 	}
@@ -122,12 +146,12 @@ public class SampleFileGenerator extends ModifiedSampler implements Generator,Ru
 	}
 
 	public int getVolume() {
-		return this.volume;
+		return this.velocity;
 	}
 	
-	public void setVolume(int v) {
-		this.volume = v;
-		float newVel = Util.mapFromMidiToAmplitude(volume);
+	public void setVelocity(int v) {
+		this.velocity = v;
+		float newVel = Util.mapFromMidiToAmplitude(velocity);
 		this.amplitude.setLastValue(newVel);
 	}
 	
@@ -192,19 +216,25 @@ public class SampleFileGenerator extends ModifiedSampler implements Generator,Ru
 	
 
 	@Override
-	public void attach(GeneratorObserver observer) {
+	public synchronized void attach(GeneratorObserver observer) {
 		this.observers.add((SampleFileGeneratorObserver)observer);
 	}
 
 	@Override
-	public void notifyAllObservers() {
+	public synchronized void notifyAllObservers() {
 		for (GeneratorObserver observer : observers)
 			observer.update();
+	}
+	
+	@Override
+	public void notifyAllObservers(String updatedParameter) {
+		for (GeneratorObserver observer : observers)
+			observer.update(updatedParameter);
 	}
 
 	@Override
 	public Generator clone(int newPitch) {
-		return this.clone(newPitch, this.volume);
+		return this.clone(newPitch, this.velocity);
 	}
 	
 	@Override
@@ -218,7 +248,7 @@ public class SampleFileGenerator extends ModifiedSampler implements Generator,Ru
 		new SampleFileGeneratorObserver(this, clone);
 	}
 	
-	public void unlinkOldObservers () {
+	public synchronized void unlinkOldObservers () {
 		for (int i = observers.size()-1; i >= 0; i--)
 			if (observers.get(i).isClosed())
 				this.observers.remove(i);

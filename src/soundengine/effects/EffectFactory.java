@@ -1,6 +1,7 @@
 package soundengine.effects;
 
 import soundengine.SoundEngine;
+import soundengine.generators.Generator;
 
 /**
  * Singleton class used to create custom effects
@@ -55,7 +56,11 @@ public class EffectFactory {
 		if (fx instanceof MoogFilterEffect)
 			updateMoogFilter((MoogFilterEffect)fx, parameters);
 	}
-
+	
+//	public static void updateEffect(Effect fx, String singleParameter) {
+//		fx.updateParameterFromString(singleParameter);
+//		fx.notifyAllObservers(singleParameter);
+//	}
 
 	// adsr
 	private static Effect createAdrs(String[] parameters) {
@@ -86,6 +91,11 @@ public class EffectFactory {
 		fx.setParameters(maxAmp, attTime, decTime, susLvl, relTime, befAmp, aftAmp);
 		fx.notifyAllObservers();
 	}
+	
+//	private static void updateAdrs(AdsrEffect fx, String singleParameter) {
+//		String[] parts = singleParameter.split(":");
+//		
+//	}
 
 	// bandpass filter
 	private static Effect createBandPass(String[] parameters) {
