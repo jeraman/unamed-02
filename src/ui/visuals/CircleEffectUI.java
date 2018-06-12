@@ -1,7 +1,7 @@
 package ui.visuals;
 
 import ui.StateMachine;
-import ui.ZenStates;
+import ui.Main;
 
 /************************************************
  ** UI Effect for opening and closing a certain *
@@ -14,7 +14,7 @@ import ui.ZenStates;
 
 public class CircleEffectUI {
 
-	ZenStates 	 p;
+	Main 	 p;
 	CircleStatus circle_status;
 	StateMachine parent;
 	
@@ -25,7 +25,7 @@ public class CircleEffectUI {
 	int x;
 	int y;
 
-	public CircleEffectUI(ZenStates p, StateMachine m, int x, int y) {
+	public CircleEffectUI(Main p, StateMachine m, int x, int y) {
 		this.p 		= p;
 		this.parent = m;
 		this.x = x;

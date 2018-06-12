@@ -58,7 +58,7 @@ public class Connection implements Serializable {
 		Object ret = false;
 
 		try {
-			ret = expression.eval(ZenStates.instance().board());
+			ret = expression.eval(Main.instance().board());
 		}
 		catch (ScriptException e) {
 			System.out.println("Problems in processing certain transition condition. Expr: " + expression.toString() + " next state: " + next_state.toString());
@@ -248,7 +248,7 @@ public class Connection implements Serializable {
 
 	ControlP5 get_controlP5_gui() {
 		//String gui_name = parent.get_name() + "_" + next_state.get_name();
-		return ZenStates.instance().cp5();
+		return Main.instance().cp5();
 	}
 
 	DropdownList get_dropdown_gui () {
@@ -295,7 +295,7 @@ public class Connection implements Serializable {
 	}
 
 	boolean should_be_removed() {
-		if (ZenStates.instance().user_pressed_minus() && is_mouse_over())
+		if (Main.instance().user_pressed_minus() && is_mouse_over())
 			return true;
 		else
 			return false;
@@ -334,7 +334,7 @@ public class Connection implements Serializable {
 	CallbackListener generate_callback_textfield_change() {
 		return new CallbackListener() {
 			public void controlEvent(CallbackEvent theEvent) {
-				if (((ZenStates)p).is_loading) return;
+				if (((Main)p).is_loading) return;
 				
 				//@TODO implement the update
 				//Textfield    t = get_textfield_gui();

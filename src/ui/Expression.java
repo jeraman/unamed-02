@@ -20,7 +20,7 @@ public class Expression implements Serializable {
 
   public Expression(String expression) {
     this.expression = expression;
-    PApplet p = ZenStates.instance();
+    PApplet p = Main.instance();
     this.build(p);
   }
 

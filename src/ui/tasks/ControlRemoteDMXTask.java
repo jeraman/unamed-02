@@ -168,7 +168,7 @@ public class ControlRemoteDMXTask extends RemoteOSCTask {
       .getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE)
     ;
 
-    create_gui_toggle(localx, localy+(4*localoffset), w, g, cb_enter);
+    createGuiToggle(localx, localy+(4*localoffset), w, g, cb_enter);
 
     return g;
   }
@@ -239,6 +239,5 @@ public class ControlRemoteDMXTask extends RemoteOSCTask {
     nv = ((Textfield)cp5.get(g_name+"/duration")).getText();
     update_duration(nv);
   }
-
 
 }

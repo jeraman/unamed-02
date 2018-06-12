@@ -7,7 +7,7 @@ import ui.Blackboard;
 import ui.Expression;
 import ui.State;
 import ui.Status;
-import ui.ZenStates;
+import ui.Main;
 
 
 public class SetBBRampTask extends SetBBTask {
@@ -67,7 +67,7 @@ public class SetBBRampTask extends SetBBTask {
     if (is_up) ne = new Expression(amp_val+"*math.abs(("+timer+"/"+dur_val+") % 1)");
     else       ne = new Expression("math.abs("+amp_val+"-("+amp_val+"*(("+timer+"/"+dur_val+") % 1)))");
 
-    Blackboard board = ZenStates.instance().board();
+    Blackboard board = Main.instance().board();
     this.status = Status.RUNNING;
     
     Object result = evaluate_value(ne);
@@ -183,7 +183,7 @@ public class SetBBRampTask extends SetBBTask {
       .getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE)
     ;
 
-    create_gui_toggle(localx, localy+(4*localoffset), w, g, cb_enter);
+    createGuiToggle(localx, localy+(4*localoffset), w, g, cb_enter);
 
     return g;
   }

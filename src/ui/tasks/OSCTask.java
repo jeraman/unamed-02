@@ -7,7 +7,7 @@ import processing.core.PApplet;
 import ui.Expression;
 import ui.State;
 import ui.Status;
-import ui.ZenStates;
+import ui.Main;
 
 ////////////////////////////////////////
 //implementing a task for OSC messages
@@ -49,7 +49,7 @@ public class OSCTask extends Task {
     this.cp5 = cp5;
     this.broadcast = new NetAddress(ip, port);
     //this.oscP5     = new OscP5(p, port+1);
-    this.oscP5 = ZenStates.instance().oscP5();
+    this.oscP5 = Main.instance().oscP5();
   }
 
   //method that returns if this OSC Task is curerntly initialized
@@ -70,7 +70,7 @@ public class OSCTask extends Task {
 
     oscP5.send(msg, broadcast);
 
-    if (((ZenStates)p).debug())
+    if (((Main)p).debug())
     	System.out.println("sending OSC message to: " + broadcast.toString() + ". content: " + msg.toString());
     this.status = Status.DONE;
   }
@@ -279,7 +279,7 @@ public class OSCTask extends Task {
       .getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE);
       ;
 
-    create_gui_toggle(localx, localy+(4*localoffset), w, g, cb_enter);
+    createGuiToggle(localx, localy+(4*localoffset), w, g, cb_enter);
 
     return g;
   }

@@ -2,7 +2,7 @@ package ui.visuals;
 import controlP5.Canvas;
 import processing.core.PGraphics;
 import ui.StateMachine;
-import ui.ZenStates;
+import ui.Main;
 
 /******************************************************************************
  ******************************************************************************
@@ -13,7 +13,7 @@ import ui.ZenStates;
 
 public class StateMachinePreview extends Canvas {
 
-	ZenStates 	 p;
+	Main 	 p;
 	StateMachine sm; //the state machine to be previewed
 	CircleEffectUI animation;
 	
@@ -22,7 +22,7 @@ public class StateMachinePreview extends Canvas {
 	int x;
 	int y;
 
-	public StateMachinePreview(ZenStates p, StateMachine sm, int x, int y) {
+	public StateMachinePreview(Main p, StateMachine sm, int x, int y) {
 		this.p = p;
 		this.sm = sm;
 		this.x = x;
@@ -48,7 +48,7 @@ public class StateMachinePreview extends Canvas {
 	public void draw(PGraphics pg) {
 		p.pushMatrix();
 		//for 20
-		int fontsize = (int) ((ZenStates)p).get_font_size();
+		int fontsize = (int) ((Main)p).get_font_size();
 		//int transx = (int)(4.5*fontsize);
 		int transx = (int)(4.25*fontsize);
 		int transy = (int)(3*fontsize);

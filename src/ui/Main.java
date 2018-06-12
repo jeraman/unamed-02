@@ -9,8 +9,9 @@ package ui;
  ************************************************/
 
 import processing.core.PApplet;
+import soundengine.SoundEngine;
+import soundengine.util.MidiIO;
 import oscP5.*;
-import java.io.File;
 import java.math.BigDecimal;
 import java.util.Vector;
 
@@ -19,13 +20,13 @@ import javax.script.*;
 import controlP5.*;
 import ddf.minim.*;
 
-import java.awt.event.KeyEvent;
 
-public class ZenStates extends PApplet {
+public class Main extends PApplet {
 
 	public MainCanvas canvas;
 	Blackboard board;
 	Serializer serializer;
+	public static SoundEngine eng;
 
 	OscP5 oscP5; // my osc variables
 	ControlP5 cp5; // my controlP5 variable for gui
@@ -43,7 +44,7 @@ public class ZenStates extends PApplet {
 	boolean is_loading = false;
 
 	public static void main(String[] args) {
-		PApplet.main("ui.ZenStates");
+		PApplet.main("ui.Main");
 	}
 
 	public void settings() {
@@ -52,7 +53,9 @@ public class ZenStates extends PApplet {
 	}
 
 	public void setup() {
-		setup_util();
+		setupUtil();
+		setupAudio();
+		
 		this.serializer = new Serializer(this);
 		is_loading = true;
 		background(0);
@@ -70,6 +73,12 @@ public class ZenStates extends PApplet {
 		// cp5.setAutoDraw(false);
 
 		is_loading = false;
+	}
+	
+	void setupAudio() {
+		Minim minim = new Minim(this);
+		eng = new SoundEngine(minim);
+		MidiIO.setup(this);
 	}
 
 	// solves the freezing problem when loading the first expression
@@ -107,12 +116,21 @@ public class ZenStates extends PApplet {
 
 		serializer.autosave();
 	}
+	
+
+	public void noteOn(int channel, int pitch, int velocity) {
+		eng.noteOn(channel, pitch, velocity);
+	}
+
+	public void noteOff(int channel, int pitch, int velocity) {
+		eng.noteOff(channel, pitch, velocity);
+	}
 
 	//////////////////////////////////////
 	// UTIL FUNCTIONS
 
 	// calls all other utils
-	void setup_util() {
+	void setupUtil() {
 		load_config();
 		setup_osc();
 		setup_control_p5();
@@ -296,6 +314,10 @@ public class ZenStates extends PApplet {
 	public MainCanvas canvas() {
 		return canvas;
 	}
+	
+	public SoundEngine soundEngine() {
+		return eng;
+	}
 
 	public boolean debug() {
 		return debug;
@@ -317,9 +339,9 @@ public class ZenStates extends PApplet {
 		return FONT_SIZE;
 	}
 
-	private static ZenStates inst;
+	private static Main inst;
 
-	public static ZenStates instance() {
+	public static Main instance() {
 		return inst;
 	}
 }

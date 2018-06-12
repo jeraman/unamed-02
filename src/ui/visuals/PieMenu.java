@@ -11,7 +11,7 @@ package ui.visuals;
  *****************************************************************************/
 
 import processing.core.PApplet;
-import ui.ZenStates;
+import ui.Main;
 
 class PieMenu {
 
@@ -49,7 +49,7 @@ class PieMenu {
     this.x                = (int)p.width/2;
     this.y                = (int)p.height/2;
     //this.set_diam(200);
-    this.set_diam(((ZenStates)p).get_state_circle_size()*4);
+    this.set_diam(((Main)p).get_state_circle_size()*4);
 
     this.is_showing       = false;
     this.up               = false;

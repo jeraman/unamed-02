@@ -13,6 +13,7 @@ import java.io.Serializable;
 import processing.core.PApplet;
 import ui.tasks.ControlRemoteDMXTask;
 import ui.tasks.OSCTask;
+import ui.tasks.OscillatorGenTask;
 import ui.tasks.ScriptingTask;
 import ui.tasks.SetBBOscillatorTask;
 import ui.tasks.SetBBRampTask;
@@ -59,7 +60,7 @@ public class State implements Serializable {
 	public State(PApplet p, ControlP5 cp5, String name) {
 		this.p = p;
 		this.cp5 = cp5;
-		this.size = ((ZenStates) p).get_state_circle_size();
+		this.size = ((Main) p).get_state_circle_size();
 		this.name = name.toUpperCase();
 		this.status = Status.INACTIVE;
 		this.tasks = new Vector<Task>();
@@ -67,7 +68,7 @@ public class State implements Serializable {
 		this.x = (int) p.random(10, p.width - size);
 		this.y = (int) p.random(10, p.height - size);
 		this.movement_status = MovementStatus.FREE;
-		this.debug = ZenStates.instance().debug();
+		this.debug = Main.instance().debug();
 		this.id = UUID.randomUUID().toString();
 
 		init_gui();
@@ -517,7 +518,32 @@ public class State implements Serializable {
 	}
 
 	/////////////////////////////
-	// special remote tasks
+	// tasks
+	private void init_sample_task() {
+		// TODO Auto-generated method stub
+		System.out.println("create sample task!");
+
+	}
+
+	private void init_live_input_task() {
+		// TODO Auto-generated method stub
+		System.out.println("create live input task!");
+
+	}
+
+	private void init_fm_synth_task() {
+		// TODO Auto-generated method stub
+		System.out.println("create fm synth task!");
+
+	}
+
+	private void init_oscillator_task() {
+		System.out.println("create oscillator task!");
+		String taskname = generate_random_name();
+		OscillatorGenTask t = new OscillatorGenTask(p, cp5, taskname);
+		this.add_task(t);
+	}
+	
 	private void init_filter_task() {
 		// TODO Auto-generated method stub
 		System.out.println("create filter task!");
@@ -564,29 +590,7 @@ public class State implements Serializable {
 
 	}
 
-	private void init_sample_task() {
-		// TODO Auto-generated method stub
-		System.out.println("create sample task!");
-
-	}
-
-	private void init_live_input_task() {
-		// TODO Auto-generated method stub
-		System.out.println("create live input task!");
-
-	}
-
-	private void init_fm_synth_task() {
-		// TODO Auto-generated method stub
-		System.out.println("create fm synth task!");
-
-	}
-
-	private void init_oscillator_task() {
-		// TODO Auto-generated method stub
-		System.out.println("create oscillator task!");
-
-	}
+	
 	
 	// method that initializes a random demo osc task
 	void init_random_osc_task() {
@@ -621,8 +625,8 @@ public class State implements Serializable {
 	// method that initializes a random demo osc task
 	void init_osc_task() {
 		String taskname = generate_random_name();
-		OSCTask t = new OSCTask(p, cp5, taskname, "/test/value", ((ZenStates) p).get_remote_port(),
-				((ZenStates) p).get_remote_ip(), new Object[] { 0 });
+		OSCTask t = new OSCTask(p, cp5, taskname, "/test/value", ((Main) p).get_remote_port(),
+				((Main) p).get_remote_ip(), new Object[] { 0 });
 		this.add_task(t);
 		// println(selected + " " + pie.options[selected]);
 	}
@@ -974,7 +978,7 @@ public class State implements Serializable {
 		// accordion = cp5.addAccordion("acc_"+this.name)
 		accordion = cp5.addAccordion(this.id + "/acc")
 				// .setWidth(150)
-				.setWidth(10 * ((ZenStates) p).FONT_SIZE).setVisible(true)
+				.setWidth(10 * ((Main) p).FONT_SIZE).setVisible(true)
 		// .hide()
 		;
 	}
@@ -1002,8 +1006,9 @@ public class State implements Serializable {
 			p.println("OPPPAAAAAAA!!!! NULL POINTER!!!! WTF!!!!");
 			return;
 		}
-		p.println("removing task " + t.get_gui_id());
-		cp5.getGroup(t.get_gui_id()).remove();
+		
+		t.closeTask();
+		//cp5.getGroup(t.get_gui_id()).remove();
 		// cp5.getGroup(this.name + " " + t.get_name()).remove();
 	}
 
@@ -1135,7 +1140,7 @@ public class State implements Serializable {
 	}
 
 	boolean verify_if_user_released_mouse_while_temporary_connecting() {
-		return (there_is_a_temporary_connection_on_gui() && ZenStates.instance().mouseRightButtonReleased);
+		return (there_is_a_temporary_connection_on_gui() && Main.instance().mouseRightButtonReleased);
 	}
 
 	void draw_temp_connection() {
@@ -1383,7 +1388,7 @@ public class State implements Serializable {
 			}
 
 			// verifies if the menu item is selected and the user pressed '-'
-			if (g.isMouseOver() && ZenStates.instance().user_pressed_minus()) {
+			if (g.isMouseOver() && Main.instance().user_pressed_minus()) {
 				// stores the item to be removed
 				to_be_removed = t;
 				break;
@@ -1445,7 +1450,7 @@ public class State implements Serializable {
 		for (Connection c : connections)
 			c.remove_gui_items();
 
-		ZenStates.instance().canvas().root.remove_all_gui_connections_to_a_state(this);
+		Main.instance().canvas().root.remove_all_gui_connections_to_a_state(this);
 	}
 
 	void remove_all_gui_connections_to_a_state(State dest) {
@@ -1476,7 +1481,7 @@ public class State implements Serializable {
 		for (Connection c : connections)
 			c.init_gui_items();
 
-		ZenStates.instance().canvas().root.init_all_gui_connections_to_a_state(this);
+		Main.instance().canvas().root.init_all_gui_connections_to_a_state(this);
 	}
 
 	void init_all_gui_connections_to_a_state(State dest) {

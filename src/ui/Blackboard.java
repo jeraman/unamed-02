@@ -38,8 +38,8 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
   public Blackboard (PApplet p) {
     //this.x = width-(mywidth*3)-20;
     //this.x = width-(mywidth*3)-20;
-	this.mywidth  = 6 * ((ZenStates)p).get_font_size(); 
-	this.myheight = 2 * ((ZenStates)p).get_font_size(); 
+	this.mywidth  = 6 * ((Main)p).get_font_size(); 
+	this.myheight = 2 * ((Main)p).get_font_size(); 
 	
     this.build(p);
     //init_global_variables();
@@ -54,7 +54,7 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
     this.p = p;
     init_global_variables();
     //set_gui_position(p.width-(mywidth*3)-2, 20);
-    this.x = ((ZenStates)p).width-(int)(mywidth*2.8);//-myheight;
+    this.x = ((Main)p).width-(int)(mywidth*2.8);//-myheight;
   	this.y = myheight;
   }
 

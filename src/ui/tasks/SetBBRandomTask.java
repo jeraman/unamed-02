@@ -133,7 +133,7 @@ public class SetBBRandomTask extends SetBBTask {
       .getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE)
     ;
 
-    create_gui_toggle(localx, localy+(2*localoffset), w, g, cb_enter);
+    createGuiToggle(localx, localy+(2*localoffset), w, g, cb_enter);
 
     return g;
   }

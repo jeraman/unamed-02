@@ -8,10 +8,11 @@ import ui.Expression;
 import ui.State;
 import ui.StateMachine;
 import ui.Status;
-import ui.ZenStates;
+import ui.Main;
 import controlP5.*;
 import javax.script.*;
 
+import java.util.List;
 import java.util.UUID;
 
 ////////////////////////////////////////
@@ -23,6 +24,8 @@ public abstract class Task implements Serializable {
   protected boolean repeat;
   protected boolean first_time;
   
+  
+  static String userInputAsDefault = "(USER INPUT)";
   
   //UI variables
   protected String textlabel;
@@ -46,18 +49,9 @@ public abstract class Task implements Serializable {
     this.group_gui_id = UUID.randomUUID().toString();
     this.first_time = true;
     
-    if (((ZenStates)p).debug())
+    if (((Main)p).debug())
     	System.out.println("task " + this.toString() + " created!");
   }
-  /*
-  public Task (PApplet p, String taskname) {
-    //this.p = p;
-    this.name   = taskname;
-    this.status = Status.INACTIVE;
-
-    println("task " + this.toString() + " created!");
-  }
-  */
 
   public void set_name(String newname) {
     this.name = newname;
@@ -74,23 +68,6 @@ public abstract class Task implements Serializable {
   public String get_gui_id() {
     return this.group_gui_id;
   }
-
-  /*
-  //method that generates a random name for the demo task
-  String generate_random_group_id(State s) {
-    this.group_gui_id = ("/" + s.get_name() + "/"+ this.getClass() + "/"+ ((int)p.random(-100, 100)));
-    return this.group_gui_id;
-  }
-
-  String get_gui_id() {
-    return this.group_gui_id;
-  }
-
-  void set_gui_id(String g_name) {
-    this.group_gui_id = g_name;
-  }
-  */
-
 
   public Status get_status () {
     return this.status;
@@ -125,7 +102,7 @@ public abstract class Task implements Serializable {
   //function that tries to evaluates the value (if necessary) and returns the real value
   public Object evaluate_value (Object o) {
     Object ret = o;
-    Blackboard board = ZenStates.instance().board();
+    Blackboard board = Main.instance().board();
 
     // If added an expression, process it and save result in blackboard.
     if (o instanceof Expression) {
@@ -167,9 +144,12 @@ public abstract class Task implements Serializable {
   public abstract void run();
   public abstract void build(PApplet p, ControlP5 cp5);
   public abstract void update_status();
-  //abstract void stop();
   public abstract Task clone_it();
 
+  public void closeTask() {
+	  p.println("removing task " + get_gui_id());
+	  cp5.getGroup(get_gui_id()).remove();
+  }
 
   //////////////////////////////
   //gui commands
@@ -183,10 +163,55 @@ public abstract class Task implements Serializable {
     }
   }
 
-  protected void create_gui_toggle (int x, int y, int w, Group g, CallbackListener cb) {
-	 int font_size 	 = (int)(((ZenStates)p).get_font_size());
-	  
-	// create a toggle
+  
+  private CallbackListener callbackEmptyWhenUsingUserInput(String target) {
+		return new CallbackListener() {
+			public void controlEvent(CallbackEvent theEvent) {
+
+				// if this group is not open, returns...
+				if (!((Group) cp5.get(get_gui_id())).isOpen())
+					return;
+
+				String content = theEvent.getController().getValueLabel().getText();
+				
+				if (content.trim().equals(Task.userInputAsDefault)) 
+					((Textfield) cp5.get(get_gui_id() + "/" + target)).setText("");
+			}
+		};
+	}
+  
+  protected Textfield createGuiTextField(String target, int localx, int localy, int w, Group g, CallbackListener callback) {
+		return (cp5.addTextfield(get_gui_id() + "/" + target)
+		.setPosition(localx, localy)
+		.setSize(w, (int) (font_size * 1.25))
+		.setGroup(g)
+		.setAutoClear(false)
+		.setLabel(target)
+		.align(ControlP5.CENTER, ControlP5.CENTER, ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE)
+		.onClick(callbackEmptyWhenUsingUserInput(target))
+		.onChange(callback)
+		.onReleaseOutside(callback));
+	}
+  
+  protected ScrollableList createScrollableList(String name, List list, int localx, int localy, int w, Group g, CallbackListener callback) {
+		return cp5.addScrollableList(get_gui_id() + "/" + name)
+		.setPosition(localx, localy)
+		.setLabel(name)
+		.setSize(w, 100)
+		.setGroup(g)
+		.setDefaultValue(2)
+		.close()
+		.setValue(1)
+		.setBarHeight(20)
+		.setItemHeight(20)
+		.align(ControlP5.CENTER, ControlP5.CENTER, ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE)
+		.onChange(callback)
+		.setType(ControlP5.DROPDOWN)
+		.addItems(list);
+	}
+
+  
+  protected void createGuiToggle (int x, int y, int w, Group g, CallbackListener callback) {
     cp5.addToggle(get_gui_id()+"/repeat")
        .setPosition(x, y)
        .setSize(w, (int)(font_size*1.25))
@@ -194,8 +219,8 @@ public abstract class Task implements Serializable {
        .setMode(ControlP5.SWITCH)
        .setLabel("repeat -  once")
        .setValue(this.repeat)
-       .onChange(cb)
-       .onReleaseOutside(cb)
+       .onChange(callback)
+       .onReleaseOutside(callback)
        .getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE)
        ;
   }
@@ -206,26 +231,25 @@ public abstract class Task implements Serializable {
 		
 	    String g_name = this.get_gui_id();
 
-	    //String textlabel = "Control aura";
-	    //int backgroundheight = (int)(font_size* 10.5);
-
 	    Group g = cp5.addGroup(g_name)
-	    .setHeight(font_size)
-	    .setWidth((10*((ZenStates)p).FONT_SIZE))
-	    //.setBackgroundHeight(backgroundheight)
+	    .setHeight((int) (font_size*1.5f))
+	    //.setWidth((10*((Main)p).FONT_SIZE))
+	    .setWidth(10*font_size)
 	    .setColorBackground(p.color(255, 50)) //color of the task
 	    .setBackgroundColor(p.color(255, 25)) //color of task when openned
-	    //.setLabel(textlabel)
 	    ;
 
+	    
+	    
+	    g.setLabel(textlabel);
 	    g.getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER);
 	    
 	    return g;
   }
   
   void setup_ui_variables() {
-	  font_size			= (int)(((ZenStates)p).get_font_size());
-	  localoffset 		= 3*font_size;
+	  font_size			= (int)(((Main)p).get_font_size());
+	  localoffset 		= (int) (3.2*font_size);
 	  localx 			= 10;
 	  localy 			= (int)(font_size);
   }
@@ -233,5 +257,4 @@ public abstract class Task implements Serializable {
   //abstract CallbackListener generate_callback_leave(){}
   public abstract CallbackListener generate_callback_enter();
   public abstract void reset_gui_fields();
-  //abstract void draw_gui();
 }

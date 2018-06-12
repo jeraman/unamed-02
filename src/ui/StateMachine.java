@@ -38,7 +38,7 @@ public class StateMachine extends Task {
 		begin   = new State(p, cp5, "BEGIN");
 		//end     = new State(p, cp5, "END");
 		states  = new Vector<State>();
-		debug = ZenStates.instance().debug();
+		debug = Main.instance().debug();
 		
 		brandnew = true;
 
@@ -88,13 +88,13 @@ public class StateMachine extends Task {
 	
 	void reload_from_file () {
 		//checks if there is a file with the same name
-		boolean there_is_file = ((ZenStates)p).serializer.check_if_file_exists_in_sketchpath(title);
+		boolean there_is_file = ((Main)p).serializer.check_if_file_exists_in_sketchpath(title);
 		
 		if (there_is_file) {
 			//((ZenStates)p).is_loading = true;
 			//((ZenStates)p).cp5.setAutoDraw(false);
 			//load newtile from file
-			StateMachine loaded = ((ZenStates)p).serializer.loadSubStateMachine(title);
+			StateMachine loaded = ((Main)p).serializer.loadSubStateMachine(title);
 			//next step is to copy all parameters of loaded to this state machine
 			mirror(loaded);			
 		}
@@ -117,7 +117,7 @@ public class StateMachine extends Task {
 	}
 	
 	StateMachine clone_state_machine_saved_in_file(String title) {
-		return ((ZenStates)p).serializer.loadSubStateMachine(title);
+		return ((Main)p).serializer.loadSubStateMachine(title);
 	}
 	
 	StateMachine clone_state_machine_not_saved_in_file(String title) {
@@ -142,7 +142,7 @@ public class StateMachine extends Task {
 		StateMachine duplicate = null;
 		
 		//if there is a file with this name, load it from file!
-		if (((ZenStates)p).serializer.existsSubStateMachineInFile(title))
+		if (((Main)p).serializer.existsSubStateMachineInFile(title))
 			duplicate = clone_state_machine_saved_in_file(title);
 		else 
 			duplicate = clone_state_machine_not_saved_in_file(title);
@@ -284,7 +284,7 @@ public class StateMachine extends Task {
 
 	void update_title(String newtitle) {		
 		String n = get_formated_blackboard_title();
-		((ZenStates)p).board.remove(n+"_timer");
+		((Main)p).board.remove(n+"_timer");
 		this.title = newtitle;
 		//board.remove(this.title+"_stateTimer");
 		//this.title = newtitle.replace(" ", "_");
@@ -376,7 +376,7 @@ public class StateMachine extends Task {
 	//in case there are statemachine inside this state, this machine should be saved to file
 	void save() {
 		//saving the current state machine
-		((ZenStates)p).serializer._saveAs(title, this);
+		((Main)p).serializer._saveAs(title, this);
 		
 		//saving substatemachines inside all states...
 		for (State s : states)
@@ -433,7 +433,7 @@ public class StateMachine extends Task {
 			//if you're removing this state
 			if (s == actual) {
 				//stops
-				((ZenStates)p).canvas.button_stop();
+				((Main)p).canvas.button_stop();
 				p.println("You're removing the state that is currently executing. Halting the state machine.");
 			}
 			
@@ -562,14 +562,14 @@ public class StateMachine extends Task {
 	//inits the global variables related to this blackboard
 	void init_global_variables() {
 		String n = get_formated_blackboard_title();
-		ZenStates.instance().board.put(n+"_timer", 0);
+		Main.instance().board.put(n+"_timer", 0);
 	}
 	
 	//updates the global variable related to this blackboard
 	void update_global_variables() {
 		update_state_timer();
 		String n = get_formated_blackboard_title();
-		ZenStates.instance().board.put(n+"_timer", this.stateTimer);
+		Main.instance().board.put(n+"_timer", this.stateTimer);
 		//println("update variable " + this.stateTimer);
 	}
 
@@ -722,7 +722,7 @@ public class StateMachine extends Task {
 				if (newtitle.endsWith(".zen")) { //if yes
 					
 					//checks if there is a file named newtitle
-					boolean there_is_newtitle = ((ZenStates)p).serializer.check_if_file_exists_in_sketchpath(newtitle);
+					boolean there_is_newtitle = ((Main)p).serializer.check_if_file_exists_in_sketchpath(newtitle);
 					
 					//if there is a file named newtitle
 					if (there_is_newtitle) {
@@ -731,14 +731,14 @@ public class StateMachine extends Task {
 						if (brandnew) {
 							
 							//p.print("we jsut loaded a sm from file! name: " + loaded.title);
-							((ZenStates)p).is_loading = true;
-							((ZenStates)p).cp5.setAutoDraw(false);
+							((Main)p).is_loading = true;
+							((Main)p).cp5.setAutoDraw(false);
 							//load newtile from file
-							StateMachine loaded = ((ZenStates)p).serializer.loadSubStateMachine(newtitle);
+							StateMachine loaded = ((Main)p).serializer.loadSubStateMachine(newtitle);
 							//next step is to copy all parameters of loaded to this state machine
 							mirror(loaded);
-							((ZenStates)p).is_loading = false;
-							((ZenStates)p).cp5.setAutoDraw(true);
+							((Main)p).is_loading = false;
+							((Main)p).cp5.setAutoDraw(true);
 						
 						//if the current machine isn't brandnew
 						} else {
@@ -756,11 +756,11 @@ public class StateMachine extends Task {
 					} else {		  
 						p.println("no " + newtitle + " was found in sketchpath");
 						//delete the old
-						((ZenStates)p).serializer.delete(oldtitle);
+						((Main)p).serializer.delete(oldtitle);
 						//update title
 						update_title(newtitle);
 						//save new
-						((ZenStates)p).serializer._saveAs(newtitle, getReferenceForThisStateMachine());
+						((Main)p).serializer._saveAs(newtitle, getReferenceForThisStateMachine());
 					}
 					
 				//if it does not finish with .zen, just update the name
@@ -849,7 +849,7 @@ public class StateMachine extends Task {
 		.getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE);
 		;
 
-		smp = new StateMachinePreview( (ZenStates)p, this, localx, localy+localoffset);
+		smp = new StateMachinePreview( (Main)p, this, localx, localy+localoffset);
 		g.addCanvas((controlP5.Canvas)smp);
 
 		//int preview_height = font_size*5;
@@ -864,7 +864,7 @@ public class StateMachine extends Task {
 		;
 
 		//create_gui_toggle(localx, localy+preview_height+(2*localoffset), w, g, cb_enter);
-		create_gui_toggle(localx, localy+(int)(4.3*localoffset), w, g, cb_enter);
+		createGuiToggle(localx, localy+(int)(4.3*localoffset), w, g, cb_enter);
 
 		return g;
 	}

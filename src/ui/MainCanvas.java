@@ -17,14 +17,14 @@ public class MainCanvas {
 	public StateMachine  	   root; 	 //my basic state machine
 	Vector<StateMachine> sm_stack; //a stack of sm used for allowing hierarchy
 
-	transient private ZenStates p;
+	transient private Main p;
 	transient private ControlP5 cp5;
 	transient private Button close_preview;
 
 	private boolean is_running;
 
 	//contructor
-	public MainCanvas (ZenStates p, ControlP5 cp5) {
+	public MainCanvas (Main p, ControlP5 cp5) {
 		this.p = p;
 		this.cp5 = cp5;
 		is_running = false;
@@ -38,7 +38,7 @@ public class MainCanvas {
 		return is_running;
 	}
 
-	void build(ZenStates p, ControlP5 cp5) {
+	void build(Main p, ControlP5 cp5) {
 		System.out.println("@TODO [CANVAS] verify what sorts of things needs to be initialize when loaded from file");
 		this.p = p;
 		this.cp5 = cp5;
@@ -140,7 +140,7 @@ public class MainCanvas {
 		is_running = false;
 		stop_server();
 		root.stop();
-		Blackboard board = ZenStates.instance().board();
+		Blackboard board = Main.instance().board();
 		board.reset();
 	}
 	

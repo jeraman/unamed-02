@@ -14,14 +14,14 @@ import java.io.ObjectOutputStream;
  *****************************************************/
 public class Serializer {
 
-	ZenStates p;
+	Main p;
 	
 	//variable to handle autosave
 	int autosavetime = 1; //minutes
 	int timestamp;
 	File autosave_file;
 
-	public Serializer(ZenStates zenStates) {
+	public Serializer(Main zenStates) {
 		this.p = zenStates;
 		setup_autosave();
 	}

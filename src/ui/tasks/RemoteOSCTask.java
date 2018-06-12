@@ -8,7 +8,7 @@ import controlP5.*;
 import processing.core.PApplet;
 import ui.Expression;
 import ui.Status;
-import ui.ZenStates;
+import ui.Main;
 
 ////////////////////////////////////////
 //implementing a task for OSC messages
@@ -43,14 +43,14 @@ public abstract class RemoteOSCTask extends Task {
 	public void build(PApplet p, ControlP5 cp5) {
 		//initializing ip and port, in case there are none
 		if (ip.equals("") || port == -1) {
-			ip = ZenStates.instance().get_remote_ip();
-			port = ZenStates.instance().get_remote_port();
+			ip = Main.instance().get_remote_ip();
+			port = Main.instance().get_remote_port();
 		}
 
 		this.p = p;
 		this.cp5 = cp5;
 		this.broadcast = new NetAddress(ip, port);
-		this.oscP5 = ZenStates.instance().oscP5();
+		this.oscP5 = Main.instance().oscP5();
 	}
 
 	public void run () {
@@ -64,7 +64,7 @@ public abstract class RemoteOSCTask extends Task {
 
 		oscP5.send(msg, broadcast);
 
-		if (((ZenStates)p).debug())
+		if (((Main)p).debug())
 			System.out.println("sending OSC message to: " + broadcast.toString() + ". content: " + msg.toString());
 		
 		this.status = Status.DONE;
