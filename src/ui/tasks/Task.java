@@ -152,17 +152,26 @@ public abstract class Task implements Serializable {
   }
 
   //////////////////////////////
-  //gui commands
-  protected void check_repeat_toggle(String s, CallbackEvent theEvent) {
-    if (s.equals(get_gui_id() + "/repeat")) {
-        float value = theEvent.getController().getValue();
-        if (value==0.0)  {
-          this.repeat = false; //once
-          this.first_time = true;
-        } else             this.repeat = true;  //repeat
-    }
-  }
+	// gui commands
+	protected void check_repeat_toggle(String s, CallbackEvent theEvent) {
+		System.out.println("repeat callback!");
 
+		float value = theEvent.getController().getValue();
+		
+		if (value == 0.0) {
+			this.repeat = false; // once
+			this.first_time = true;
+		} else
+			this.repeat = true; // repeat
+	}
+  
+  protected CallbackListener callbackRepeatToggle() {
+		return new CallbackListener() {
+			public void controlEvent(CallbackEvent theEvent) {
+				check_repeat_toggle(theEvent.getController().getName(), theEvent);
+			}
+		};
+  }
   
   private CallbackListener callbackEmptyWhenUsingUserInput(String target) {
 		return new CallbackListener() {

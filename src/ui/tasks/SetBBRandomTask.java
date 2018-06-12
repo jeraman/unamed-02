@@ -133,7 +133,7 @@ public class SetBBRandomTask extends SetBBTask {
       .getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE)
     ;
 
-    createGuiToggle(localx, localy+(2*localoffset), w, g, cb_enter);
+    createGuiToggle(localx, localy+(2*localoffset), w, g, callbackRepeatToggle());
 
     return g;
   }
@@ -167,7 +167,6 @@ public class SetBBRandomTask extends SetBBTask {
                 update_delay(nv);
             }
 
-            check_repeat_toggle(s, theEvent);
           }
     };
   }

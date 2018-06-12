@@ -168,7 +168,7 @@ public class ControlRemoteDMXTask extends RemoteOSCTask {
       .getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE)
     ;
 
-    createGuiToggle(localx, localy+(4*localoffset), w, g, cb_enter);
+    createGuiToggle(localx, localy+(4*localoffset), w, g, callbackRepeatToggle());
 
     return g;
   }
@@ -218,7 +218,6 @@ public class ControlRemoteDMXTask extends RemoteOSCTask {
                 update_duration(nv);
             }
 
-            check_repeat_toggle(s, theEvent);
           }
     };
   }

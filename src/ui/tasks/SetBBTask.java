@@ -105,7 +105,7 @@ public class SetBBTask extends Task {
 				.setText(this.value.toString()).onChange(cb_enter).onReleaseOutside(cb_enter).getCaptionLabel()
 				.align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE);
 
-		createGuiToggle(localx, localy + (2 * localoffset), w, g, cb_enter);
+		createGuiToggle(localx, localy + (2 * localoffset), w, g, callbackRepeatToggle());
 
 		return g;
 	}
@@ -142,7 +142,6 @@ public class SetBBTask extends Task {
 					System.out.println(s + " " + newvalue);
 				}
 
-				check_repeat_toggle(s, theEvent);
 			}
 		};
 	}

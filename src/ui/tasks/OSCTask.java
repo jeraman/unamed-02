@@ -279,7 +279,7 @@ public class OSCTask extends Task {
       .getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE);
       ;
 
-    createGuiToggle(localx, localy+(4*localoffset), w, g, cb_enter);
+    createGuiToggle(localx, localy+(4*localoffset), w, g, callbackRepeatToggle());
 
     return g;
   }
@@ -344,7 +344,6 @@ public class OSCTask extends Task {
                 //System.out.println(s + " " + text);
             }
 
-            check_repeat_toggle(s, theEvent);
           }
 
 

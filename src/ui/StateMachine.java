@@ -714,7 +714,7 @@ public class StateMachine extends Task {
 					process_title(text, title);
 				}
 
-				check_repeat_toggle(s, theEvent);
+//				check_repeat_toggle(s, theEvent);
 			}
 			
 			public void process_title(String newtitle, String oldtitle) {
@@ -863,8 +863,7 @@ public class StateMachine extends Task {
 		.setGroup(g)
 		;
 
-		//create_gui_toggle(localx, localy+preview_height+(2*localoffset), w, g, cb_enter);
-		createGuiToggle(localx, localy+(int)(4.3*localoffset), w, g, cb_enter);
+		createGuiToggle(localx, localy+(int)(4.3*localoffset), w, g, callbackRepeatToggle());
 
 		return g;
 	}

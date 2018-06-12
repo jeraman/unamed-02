@@ -193,7 +193,6 @@ public class ScriptingTask extends Task {
 					System.out.println(s + " " + text);
 				}
 
-				check_repeat_toggle(s, theEvent);
 			}
 		};
 	}
@@ -256,7 +255,7 @@ public class ScriptingTask extends Task {
 		cp5.addButton(g_name + "/open_file").setPosition(localx, localy + (1 * localoffset))
 				.setSize(w, (int) (font_size * 1.25)).setValue(0).setLabel("open file").onPress(cb_pressed).setGroup(g);
 
-		createGuiToggle(localx, localy + (2 * localoffset), w, g, cb_enter);
+		createGuiToggle(localx, localy + (2 * localoffset), w, g, callbackRepeatToggle());
 
 		return g;
 	}

@@ -202,8 +202,8 @@ public class Main extends PApplet {
 	public boolean should_copy = false;
 
 	public void keyPressed() {
-		// if (debug)
-		println("keyCode: " + keyCode + " key: " + key);
+		if (debug)
+			 println("keyCode: " + keyCode + " key: " + key);
 
 		// if is loading an open patch, do not draw anything
 		if (is_loading)
