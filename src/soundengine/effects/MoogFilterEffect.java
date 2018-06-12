@@ -28,6 +28,18 @@ public class MoogFilterEffect extends MoogFilter implements Effect {
 		this.closed = false;
 	}
 	
+	@Override
+	public void updateParameterFromString(String singleParameter) {
+		String[] parts = singleParameter.split(":");
+
+		if (parts[0].trim().equalsIgnoreCase("centerFreq"))
+			this.setFrequency(Float.parseFloat(parts[1].trim()));
+		if (parts[0].trim().equalsIgnoreCase("resonance"))
+			this.setResonance(Float.parseFloat(parts[1].trim()));
+		if (parts[0].trim().equalsIgnoreCase("filterType"))
+			this.setType(parts[1].trim());
+	}
+	
 	public float getFrequency() {
 		return this.freq;
 	}
@@ -64,11 +76,11 @@ public class MoogFilterEffect extends MoogFilter implements Effect {
 
 	private static Type convertType(String type) {
 		Type result = null;
-		if (type.equalsIgnoreCase("LP"))
+		if (type.trim().equalsIgnoreCase("LP"))
 			result = Type.LP;
-		if (type.equalsIgnoreCase("HP"))
+		if (type.trim().equalsIgnoreCase("HP"))
 			result = Type.HP;
-		if (type.equalsIgnoreCase("BP"))
+		if (type.trim().equalsIgnoreCase("BP"))
 			result = Type.BP;
 
 		return result;
@@ -83,6 +95,12 @@ public class MoogFilterEffect extends MoogFilter implements Effect {
 	public void notifyAllObservers() {
 		for (EffectObserver observer : observers)
 			observer.update();
+	}
+	
+	@Override
+	public void notifyAllObservers(String updatedParameter) {
+		for (EffectObserver observer : observers)
+			observer.update(updatedParameter);
 	}
 	
 	private void linkClonedObserver(MoogFilterEffect clone) {

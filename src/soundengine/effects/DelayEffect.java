@@ -30,6 +30,16 @@ public class DelayEffect extends Delay implements Effect{
 		this.closed = false;
 	}
 	
+	@Override
+	public void updateParameterFromString(String singleParameter) {
+		String[] parts = singleParameter.split(":");
+
+		if (parts[0].trim().equalsIgnoreCase("delayTime"))
+			this.setMaxDelayTime(Float.parseFloat(parts[1].trim()));
+		if (parts[0].trim().equalsIgnoreCase("amplitudeFactor"))
+			this.setAmplitudeFactor(Float.parseFloat(parts[1].trim()));
+	}
+	
 	protected float getMaxDelayTime() {
 		return maxDelayTime;
 	}
@@ -64,6 +74,12 @@ public class DelayEffect extends Delay implements Effect{
 	public void notifyAllObservers() {
 		for (EffectObserver observer : observers)
 			observer.update();
+	}
+	
+	@Override
+	public void notifyAllObservers(String updatedParameter) {
+		for (EffectObserver observer : observers)
+			observer.update(updatedParameter);
 	}
 	
 	private void linkClonedObserver(DelayEffect clone) {

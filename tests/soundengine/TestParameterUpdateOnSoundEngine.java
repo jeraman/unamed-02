@@ -32,45 +32,43 @@ public class TestParameterUpdateOnSoundEngine extends PApplet {
 		background(0);
 	}
 
-	
 	int counter = 0;
-	
+
 	public void mousePressed() {
-		processMousePressedGenUpdates();
-		//processMousePressedAugUpdates();
+		// processMousePressedGenUpdates();
+		// processMousePressedAugUpdates();
 		counter++;
 	}
 
 	public void mouseMoved() {
-		processMouseMovedGenUpdates();
-		//processMouseMovedFxUpdates();
+		// processMouseMovedGenUpdates();
+		processMouseMovedFxUpdates();
 	}
-	
+
 	public void processMousePressedGenUpdates() {
 		if (isGen3Active && mouseButton == LEFT)
 			eng.updateGenerator("3", "modWave : SAW");
 		if (isGen3Active && mouseButton == RIGHT)
 			eng.updateGenerator("3", "modWave : SINE");
-		
+
 		if (isGen2Active && mouseButton == LEFT)
 			eng.updateGenerator("2", "Waveform : SAW");
 		if (isGen2Active && mouseButton == RIGHT)
 			eng.updateGenerator("2", "Waveform : SINE");
 
 		int rand = (int) random(2);
-		
+
 		if (isGen1Active && mouseButton == LEFT)
 			eng.updateGenerator("1", "Loop : false");
 		if (isGen1Active && mouseButton == RIGHT)
 			eng.updateGenerator("1", "Loop : true");
-		if (isGen1Active && rand==0)
+		if (isGen1Active && rand == 0)
 			eng.updateGenerator("1", "filename : 123go.mp3");
-		if (isGen1Active && rand==1)
+		if (isGen1Active && rand == 1)
 			eng.updateGenerator("1", "filename : error.mp3");
-			
+
 	}
 
-	
 	public void processMouseMovedGenUpdates() {
 		if (isGen1Active) {
 			int a = (int) map(mouseY, 0, height, 127, 0);
@@ -81,56 +79,61 @@ public class TestParameterUpdateOnSoundEngine extends PApplet {
 			// testing mod parameters
 			float freq1 = map(mouseX, 0, width, 0.1f, 100f);
 			float amp1 = map(mouseY, 0, height, 220, 1f);
-			eng.updateGenerator("3","modFreq:" + freq1);
-			eng.updateGenerator("3","modAmp:" + amp1);
+			eng.updateGenerator("3", "modFreq:" + freq1);
+			eng.updateGenerator("3", "modAmp:" + amp1);
 		}
 	}
-	
+
 	public void processMouseMovedFxUpdates() {
 
 		if (isFx1Active) {
-			//lowpass and highpass
+			// lowpass and highpass
 			float cutoff = map(mouseX, 0, width, 60f, 5000f);
-			eng.updateEffect("1", new String[] { cutoff + "" });
+			eng.updateEffect("1", "cutoff : " + cutoff);
 		}
 
 		if (isFx2Active) {
 			// flanger
-			// float len = map( mouseX, 0, width, 0.01f, 5f );
-			// eng.updateEffect("2", new String[]{"1.", ""+len, "1", "0.5",
-			// "0.5", "0.5" });
+			float delayLength = map(mouseX, 0, width, 0.01f, 5f);
+			float lfoRate = map(mouseY, 0, height, 0.01f, 5f);
+			eng.updateEffect("2", "delayLength : " + delayLength);
+			eng.updateEffect("2", "lfoRate : " + lfoRate);
 			// moogfilter
-			float freq = constrain(map(mouseX, 0, width, 200, 12000), 200, 12000);
-			float rez = constrain(map(mouseY, height, 0, 0, 1), 0, 1);
-			eng.updateEffect("2", new String[] { "" + freq, "" + rez, "BP" });
+			// float freq = constrain(map(mouseX, 0, width, 200, 12000), 200,
+			// 12000);
+			// float res = constrain(map(mouseY, height, 0, 0, 1), 0, 1);
+			// eng.updateEffect("2", "centerFreq : " + freq);
+			// eng.updateEffect("2", "resonance : " + res);
 		}
 
 		if (isFx3Active) {
 			// bitchrush
 			// int res = (int) map(mouseX, 0, width, 2, 8);
 			// eng.updateEffect("3", new String[] { res + "" });
-			//delay
+			// delay
 			float delayTime = map((float) mouseX, 0.f, (float) width, 0.0001f, 0.5f);
-			float feedbackFactor = map((float) mouseY, 0.f, (float) height, 0.99f, 0.0f);
-			eng.updateEffect("3", new String[] { "" + delayTime, "" + feedbackFactor });
+			float amplitudeFactor = map((float) mouseY, 0.f, (float) height, 0.99f, 0.0f);
+			eng.updateEffect("3", "delayTime : " + delayTime);
+			eng.updateEffect("3", "amplitudeFactor : " + amplitudeFactor);
+			// eng.updateEffect("3", new String[] { "" + delayTime, "" +
+			// feedbackFactor });
 		}
 	}
-	
-	
+
 	private void processMousePressedAugUpdates() {
 		if (isAug1Active)
 			eng.updateAugmenter("1", new String[] { ((counter % 48) + 45) + "" });
 		if (isAug2Active)
 			eng.updateAugmenter("2", new String[] { ((counter % 12) + 1) + "" });
 		if (isAug3Active) {
-			int temp = counter%4;
-			if (temp==0)
+			int temp = counter % 4;
+			if (temp == 0)
 				eng.updateAugmenter("3", new String[] { "maj" });
-			if (temp==1)
+			if (temp == 1)
 				eng.updateAugmenter("3", new String[] { "min" });
-			if (temp==2)
+			if (temp == 2)
 				eng.updateAugmenter("3", new String[] { "dim" });
-			if (temp==3)
+			if (temp == 3)
 				eng.updateAugmenter("3", new String[] { "aug" });
 		}
 	}
@@ -210,9 +213,8 @@ public class TestParameterUpdateOnSoundEngine extends PApplet {
 
 	private void processFx2() {
 		if (!isFx2Active)
-			// eng.addEffect("2", "FLANGER", new String[] { "1", "0.5", "1",
-			// "0.5", "0.5", "0.5" });
-			eng.addEffect("2", "MOOGFILTER", new String[] { "300", "150", "BP" });
+			eng.addEffect("2", "FLANGER", new String[] { "1", "0.5", "1", "0.5", "0.5", "0.5" });
+		// eng.addEffect("2", "MOOGFILTER", new String[] { "300", "150", "BP"});
 		else
 			eng.removeEffect("2");
 		isFx2Active = !isFx2Active;

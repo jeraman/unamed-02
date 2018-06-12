@@ -26,6 +26,14 @@ public class HighPassFilterEffect extends HighPassSP implements Effect {
 		this.closed = false;
 	}
 	
+	@Override
+	public void updateParameterFromString(String singleParameter) {
+		String[] parts = singleParameter.split(":");
+
+		if (parts[0].trim().equalsIgnoreCase("cutoff"))
+			this.setCutOffFreq(Float.parseFloat(parts[1].trim()));
+	}
+	
 	
 	public float getCutOffFreq() {
 		return cutOffFreq;
@@ -51,6 +59,12 @@ public class HighPassFilterEffect extends HighPassSP implements Effect {
 	public void notifyAllObservers() {
 		for (EffectObserver observer : observers)
 			observer.update();
+	}
+	
+	@Override
+	public void notifyAllObservers(String updatedParameter) {
+		for (EffectObserver observer : observers)
+			observer.update(updatedParameter);
 	}
 	
 	private void linkClonedObserver(HighPassFilterEffect clone) {

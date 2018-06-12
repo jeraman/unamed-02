@@ -42,6 +42,26 @@ public class AdsrEffect extends ADSR implements Effect {
 		this.noteOn();
 	}
 	
+	@Override
+	public void updateParameterFromString(String singleParameter) {
+		String[] parts = singleParameter.split(":");
+
+		if (parts[0].trim().equalsIgnoreCase("maxAmp"))
+			this.setMaxAmp(Float.parseFloat(parts[1].trim()));
+		if (parts[0].trim().equalsIgnoreCase("attTime"))
+			this.setAttTime(Float.parseFloat(parts[1].trim()));
+		if (parts[0].trim().equalsIgnoreCase("decTime"))
+			this.setDecTime(Float.parseFloat(parts[1].trim()));
+		if (parts[0].trim().equalsIgnoreCase("susLvl"))
+			this.setSusLvl(Float.parseFloat(parts[1].trim()));
+		if (parts[0].trim().equalsIgnoreCase("relTime"))
+			this.setRelTime(Float.parseFloat(parts[1].trim()));
+		if (parts[0].trim().equalsIgnoreCase("befAmp"))
+			this.setBefAmp(Float.parseFloat(parts[1].trim()));
+		if (parts[0].trim().equalsIgnoreCase("aftAmp"))
+			this.setAftAmp(Float.parseFloat(parts[1].trim()));
+	}
+	
 	
 	public float getMaxAmp() {
 		return maxAmp;
@@ -69,6 +89,41 @@ public class AdsrEffect extends ADSR implements Effect {
 
 	public float getAftAmp() {
 		return aftAmp;
+	}
+	
+	protected void setMaxAmp(float maxAmp) {
+		this.maxAmp = maxAmp;
+		this.setParameters(maxAmp, attTime, decTime, susLvl, relTime, befAmp, aftAmp);
+	}
+
+	protected void setAttTime(float attTime) {
+		this.attTime = attTime;
+		this.setParameters(maxAmp, attTime, decTime, susLvl, relTime, befAmp, aftAmp);
+	}
+
+	protected void setDecTime(float decTime) {
+		this.decTime = decTime;
+		this.setParameters(maxAmp, attTime, decTime, susLvl, relTime, befAmp, aftAmp);
+	}
+
+	protected void setSusLvl(float susLvl) {
+		this.susLvl = susLvl;
+		this.setParameters(maxAmp, attTime, decTime, susLvl, relTime, befAmp, aftAmp);
+	}
+
+	protected void setRelTime(float relTime) {
+		this.relTime = relTime;
+		this.setParameters(maxAmp, attTime, decTime, susLvl, relTime, befAmp, aftAmp);
+	}
+
+	protected void setBefAmp(float befAmp) {
+		this.befAmp = befAmp;
+		this.setParameters(maxAmp, attTime, decTime, susLvl, relTime, befAmp, aftAmp);
+	}
+
+	protected void setAftAmp(float aftAmp) {
+		this.aftAmp = aftAmp;
+		this.setParameters(maxAmp, attTime, decTime, susLvl, relTime, befAmp, aftAmp);
 	}
 
 	@Override
@@ -100,7 +155,12 @@ public class AdsrEffect extends ADSR implements Effect {
 		for (EffectObserver observer : observers)
 			observer.update();
 	}
-	
+
+	@Override
+	public void notifyAllObservers(String updatedParameter) {
+		for (EffectObserver observer : observers)
+			observer.update(updatedParameter);
+	}
 
 	private void linkClonedObserver (AdsrEffect clone) {
 		new AdsrEffectObserver(this, clone);

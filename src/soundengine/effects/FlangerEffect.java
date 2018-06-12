@@ -40,6 +40,24 @@ public class FlangerEffect extends Flanger implements Effect {
 		
 	}
 	
+	@Override
+	public void updateParameterFromString(String singleParameter) {
+		String[] parts = singleParameter.split(":");
+
+		if (parts[0].trim().equalsIgnoreCase("delayLength"))
+			this.setDelayDepth(Float.parseFloat(parts[1].trim()));
+		if (parts[0].trim().equalsIgnoreCase("lfoRate"))
+			this.setLfoRate(Float.parseFloat(parts[1].trim()));
+		if (parts[0].trim().equalsIgnoreCase("delayDepth"))
+			this.setDelayDepth(Float.parseFloat(parts[1].trim()));
+		if (parts[0].trim().equalsIgnoreCase("feedbackAmplitude"))
+			this.setFeedbackAmplitude(Float.parseFloat(parts[1].trim()));
+		if (parts[0].trim().equalsIgnoreCase("dryAmplitude"))
+			this.setDryAmplitude(Float.parseFloat(parts[1].trim()));
+		if (parts[0].trim().equalsIgnoreCase("wetAmplitude"))
+			this.setWetAmplitude(Float.parseFloat(parts[1].trim()));
+	}
+	
 	protected float getDelayLength() {
 		return delayLength;
 	}
@@ -110,6 +128,12 @@ public class FlangerEffect extends Flanger implements Effect {
 	public void notifyAllObservers() {
 		for (EffectObserver observer : observers)
 			observer.update();
+	}
+	
+	@Override
+	public void notifyAllObservers(String updatedParameter) {
+		for (EffectObserver observer : observers)
+			observer.update(updatedParameter);
 	}
 	
 	private void linkClonedObserver(FlangerEffect clone) {

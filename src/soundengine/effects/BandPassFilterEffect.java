@@ -27,6 +27,16 @@ public class BandPassFilterEffect extends BandPass implements Effect {
 		this.observers = new ArrayList<BandPassFilterEffectObserver>();
 		this.closed = false;
 	}
+	
+	@Override
+	public void updateParameterFromString(String singleParameter) {
+		String[] parts = singleParameter.split(":");
+
+		if (parts[0].trim().equalsIgnoreCase("centerFreq"))
+			this.setCenterFreq(Float.parseFloat(parts[1].trim()));
+		if (parts[0].trim().equalsIgnoreCase("bandWidth"))
+			this.setBandWidth(Float.parseFloat(parts[1].trim()));
+	}
 
 	
 	protected float getCenterFreq() {
@@ -62,6 +72,12 @@ public class BandPassFilterEffect extends BandPass implements Effect {
 	public void notifyAllObservers() {
 		for (EffectObserver observer : observers)
 			observer.update();
+	}
+	
+	@Override
+	public void notifyAllObservers(String updatedParameter) {
+		for (EffectObserver observer : observers)
+			observer.update(updatedParameter);
 	}
 
 	private void linkClonedObserver(BandPassFilterEffect clone) {

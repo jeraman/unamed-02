@@ -57,10 +57,10 @@ public class EffectFactory {
 			updateMoogFilter((MoogFilterEffect)fx, parameters);
 	}
 	
-//	public static void updateEffect(Effect fx, String singleParameter) {
-//		fx.updateParameterFromString(singleParameter);
-//		fx.notifyAllObservers(singleParameter);
-//	}
+	public static void updateEffect(Effect fx, String singleParameter) {
+		fx.updateParameterFromString(singleParameter);
+		fx.notifyAllObservers(singleParameter);
+	}
 
 	// adsr
 	private static Effect createAdrs(String[] parameters) {

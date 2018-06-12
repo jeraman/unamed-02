@@ -29,6 +29,13 @@ public class BitChrushEffect extends BitCrush implements Effect {
 		this.closed = false;
 	}
 	
+	@Override
+	public void updateParameterFromString(String singleParameter) {
+		String[] parts = singleParameter.split(":");
+
+		if (parts[0].trim().equalsIgnoreCase("resolution"))
+			this.setBitResolution(Integer.parseInt(parts[1].trim()));
+	}
 	
 	protected int getBitResolution() {
 		return bitResolution;
@@ -54,6 +61,12 @@ public class BitChrushEffect extends BitCrush implements Effect {
 	public void notifyAllObservers() {
 		for (EffectObserver observer : observers)
 			observer.update();
+	}
+	
+	@Override
+	public void notifyAllObservers(String updatedParameter) {
+		for (EffectObserver observer : observers)
+			observer.update(updatedParameter);
 	}
 	
 	private void linkClonedObserver(BitChrushEffect clone) {
