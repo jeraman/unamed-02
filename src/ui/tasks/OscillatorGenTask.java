@@ -29,10 +29,10 @@ public class OscillatorGenTask extends Task {
 	public OscillatorGenTask(PApplet p, ControlP5 cp5, String taskname) {
 		super(p, cp5, taskname);
 		
-		update_frequency(Task.userInputAsDefault);
-		update_amplitude(Task.userInputAsDefault);
-		update_duration(Task.userInputAsDefault);
-		update_wavetype("SINE");
+		this.frequency = new Expression(Task.userInputAsDefault);
+		this.amplitude = new Expression(Task.userInputAsDefault);
+		this.duration = new Expression(Task.userInputAsDefault);
+		this.wavetype = "SINE";
 
 		Main.eng.addGenerator(this.get_gui_id(), "OSCILLATOR", getDefaultParameters());
 	}
@@ -57,7 +57,6 @@ public class OscillatorGenTask extends Task {
 		System.out.println("updating frequency!" + v);
 		this.frequency = new Expression(v);
 		
-		updateSoundEngine();
 	}
 
 	void update_amplitude(String v) {
@@ -66,7 +65,6 @@ public class OscillatorGenTask extends Task {
 		System.out.println("updating amplitude!" + v);
 		this.amplitude = new Expression(v);
 
-		updateSoundEngine();
 	}
 
 	void update_duration(String v) {
@@ -75,14 +73,16 @@ public class OscillatorGenTask extends Task {
 		System.out.println("updating duration!" + v);
 		this.duration = new Expression(v);
 		
-		updateSoundEngine();
 	}
 	
 	void update_wavetype(String wt) {
 		System.out.println("updating wavetype!" + wt);
 		this.wavetype = wt;
-		
-		updateSoundEngine();
+		processWavetypeChange();
+	}
+	
+	void processWavetypeChange() {
+		Main.eng.updateGenerator(this.get_gui_id(), "waveform: " + this.wavetype);
 	}
 
 
@@ -101,7 +101,7 @@ public class OscillatorGenTask extends Task {
 	String getWavetype() {
 		return this.wavetype + "";
 	}
-
+	
 	@Override
 	public void build(PApplet p, ControlP5 cp5) {
 		// TODO Auto-generated method stub
@@ -123,27 +123,27 @@ public class OscillatorGenTask extends Task {
 		return clone;
 	}
 
-	//TODO: properly link this function with the soundengine
-	private void updateSoundEngine() {
-		String freq_val = (evaluate_value(this.frequency)).toString();
-		String amp_val = (evaluate_value(this.amplitude)).toString();
-		String dur_val = (evaluate_value(this.duration)).toString();
-
-		this.status = Status.RUNNING;
-
-		System.out.println("executing OscillatorGentask");
-
-		String[] par = new String[] { freq_val, amp_val, getWavetype() };
-
-		Main.eng.updateGenerator(this.get_gui_id(), par);
-	}
+//	//TODO: properly link this function with the soundengine
+//	private void updateSoundEngine() {
+//		String freq_val = (evaluate_value(this.frequency)).toString();
+//		String amp_val = (evaluate_value(this.amplitude)).toString();
+//		String dur_val = (evaluate_value(this.duration)).toString();
+//
+//		this.status = Status.RUNNING;
+//
+//		System.out.println("executing OscillatorGentask");
+//
+//		String[] par = new String[] { freq_val, amp_val, getWavetype() };
+//
+//		Main.eng.updateGenerator(this.get_gui_id(), par);
+//	}
 
 	@Override
 	public void run() {
 		if (!should_run())
 			return;
 
-		updateSoundEngine();
+		//updateSoundEngine();
 
 		// this.status = Status.DONE;
 	}

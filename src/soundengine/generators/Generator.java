@@ -34,10 +34,11 @@ public interface Generator {
 
 	public void close();
 		
-	public Generator clone(int newPitch, int newVelocity); 
-
-	public Generator clone(int newPitch);	
+//	public Generator cloneWithPitchAndVelocityIfUnlocked(int newPitch, int newVelocity);
 	
-//	public void run();
+	public Generator cloneWithPitchAndVelocity(int newPitch, int newVelocity); 
+
+	public Generator cloneWithPitch(int newPitch);	
+	
 }
 

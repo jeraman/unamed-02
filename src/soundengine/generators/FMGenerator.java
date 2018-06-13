@@ -228,21 +228,45 @@ public class FMGenerator extends Oscil implements Generator, Runnable {
 		for (GeneratorObserver observer : observers)
 			observer.update(updatedParameter);
 	}
+	
+	//if frequency is negative, frequency should be unlocked for changes
+	private float getRightFrequencyForClone(int newPitch) {
+		if (this.carrierFreq <= 0)
+			return MusicTheory.freqFromMIDI(newPitch);
+		else
+			return this.carrierFreq;
+	}
 
-	@Override
-	public Generator clone(int newPitch) {
-		float newFreq = MusicTheory.freqFromMIDI(newPitch);
-		return cloneWithFreqAndAmplitude(newFreq, carrierAmp);
+	// if amplitude is negative, amplitude should be unlocked for changes
+	private float getRightAmplitudeForClone(int newVelocity) {
+		if (this.carrierAmp <= 0)
+			return Util.mapFromMidiToAmplitude(newVelocity);
+		else
+			return this.carrierAmp;
+	}
+	
+	public Generator cloneWithPitchAndVelocityIfUnlocked(int newPitch, int newVelocity) {
+		float newFreq = getRightFrequencyForClone(newPitch);
+		float newAmp = getRightAmplitudeForClone(newVelocity);
+		
+		return clone(newFreq, newAmp);
 	}
 
 	@Override
-	public Generator clone(int newPitch, int newVelocity) {
+	public Generator cloneWithPitch(int newPitch) {
 		float newFreq = MusicTheory.freqFromMIDI(newPitch);
-		float newAmp = Util.mapFromMidiToAmplitude(newVelocity);
-		return cloneWithFreqAndAmplitude(newFreq, newAmp);
+		return clone(newFreq, carrierAmp);
+	}
+	
+	@Override
+	public Generator cloneWithPitchAndVelocity(int newPitch, int newVelocity) {
+//		float newFreq = MusicTheory.freqFromMIDI(newPitch);
+//		float newAmp = Util.mapFromMidiToAmplitude(newVelocity);
+//		return clone(newFreq, newAmp);
+		return cloneWithPitchAndVelocityIfUnlocked(newPitch, newVelocity);
 	}
 
-	private Generator cloneWithFreqAndAmplitude(float newFreq, float newAmp) {
+	private Generator clone(float newFreq, float newAmp) {
 		FMGenerator clone = new FMGenerator(newFreq, newAmp, carrierWave, modFreq, modAmp, modWave);
 		this.linkClonedObserver(clone);
 		return clone;

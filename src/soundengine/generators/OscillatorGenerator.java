@@ -13,10 +13,9 @@ import soundengine.util.Util;
 
 public class OscillatorGenerator extends Oscil implements Generator,Runnable {
 
-	private int duration;
-	
 	private float frequency;
 	private float amplitude;
+	private int duration;
 	private String waveform;
 	
 	private UGen patched;
@@ -170,21 +169,45 @@ public class OscillatorGenerator extends Oscil implements Generator,Runnable {
 	private static Waveform getWaveformType (String waveName) {
 		return Util.getWaveformType(waveName);
 	}
+	
+	//if frequency is negative, frequency should be unlocked for changes
+	private float getRightFrequencyForClone(int newPitch) {
+		if (this.frequency <= 0)
+			return MusicTheory.freqFromMIDI(newPitch);
+		else
+			return this.frequency;
+	}
+	
+	//if amplitude is negative, amplitude should be unlocked for changes
+	private float getRightAmplitudeForClone(int newVelocity) {
+		if (this.amplitude <= 0)
+			return Util.mapFromMidiToAmplitude(newVelocity);
+		else
+			return this.amplitude;
+	}
+	
+	public Generator cloneWithPitchAndVelocityIfUnlocked(int newPitch, int newVelocity) {
+		float newFreq = getRightFrequencyForClone(newPitch);
+		float newAmp = getRightAmplitudeForClone(newVelocity);
+		
+		return clone(newFreq, newAmp);
+	}
 
 	@Override
-	public Generator clone(int newPitch) {
+	public Generator cloneWithPitch(int newPitch) {
 		float newFreq = MusicTheory.freqFromMIDI(newPitch);
-		return this.cloneWithFreqAndAmplitude(newFreq, this.amplitude);
+		return this.clone(newFreq, this.amplitude);
 	}
 	
 	@Override
-	public Generator clone(int newPitch, int newVelocity) {
-		float newFreq = MusicTheory.freqFromMIDI(newPitch);
-		float newAmp = Util.mapFromMidiToAmplitude(newVelocity);
-		return this.cloneWithFreqAndAmplitude(newFreq, newAmp);
+	public Generator cloneWithPitchAndVelocity(int newPitch, int newVelocity) {
+//		float newFreq = MusicTheory.freqFromMIDI(newPitch);
+//		float newAmp = Util.mapFromMidiToAmplitude(newVelocity);
+//		return this.clone(newFreq, newAmp);
+		return cloneWithPitchAndVelocityIfUnlocked(newPitch, newVelocity);
 	}
 	
-	private Generator cloneWithFreqAndAmplitude(float newFreq, float newAmp) {
+	private Generator clone(float newFreq, float newAmp) {
 		OscillatorGenerator clone = new OscillatorGenerator(newFreq, newAmp, this.waveform);
 		this.linkForFutureChanges(clone);
 		return clone;

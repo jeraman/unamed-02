@@ -41,7 +41,7 @@ public class Util {
 
 		if (waveName.trim().equalsIgnoreCase("PHASOR"))
 			return Waves.PHASOR;
-		if (waveName.trim().equalsIgnoreCase("QUARTERPULSE"))
+		if (waveName.trim().equalsIgnoreCase("QUATERPULSE"))
 			return Waves.QUARTERPULSE;
 		if (waveName.trim().equalsIgnoreCase("SAW"))
 			return Waves.SAW;

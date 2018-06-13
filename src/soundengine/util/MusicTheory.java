@@ -21,7 +21,10 @@ public class MusicTheory {
 	}
 
 	public static float freqFromMIDI(int note) {
-		return (float)Note.getFrequencyForNote(note);
+		if (note <=0)
+			return -1;
+		else
+			return (float)Note.getFrequencyForNote(note);
 	}
 
 	public static float freqFromNote(String note) {

@@ -231,13 +231,40 @@ public class SampleFileGenerator extends ModifiedSampler implements Generator,Ru
 		for (GeneratorObserver observer : observers)
 			observer.update(updatedParameter);
 	}
+	
+	//if pitch is negative, pitch should be unlocked for changes
+	private int getRightPitchForClone(int newPitch) {
+		if (this.pitch <= 0)
+			return newPitch;
+		else
+			return this.pitch;
+	}
+
+	// if velocity is negative, velocity should be unlocked for changes
+	private int getRightVelocityForClone(int newVelocity) {
+		if (this.velocity <= 0)
+			return newVelocity;
+		else
+			return this.velocity;
+	}
+
+	public Generator cloneWithPitchAndVelocityIfUnlocked(int newPitch, int newVelocity) {
+		int rightPitch = getRightPitchForClone(newPitch);
+		int rightVelocity = getRightVelocityForClone(newVelocity);
+		return clone(rightPitch, rightVelocity);
+	}
 
 	@Override
-	public Generator clone(int newPitch) {
-		return this.clone(newPitch, this.velocity);
+	public Generator cloneWithPitch(int newPitch) {
+		return this.cloneWithPitchAndVelocity(newPitch, this.velocity);
 	}
-	
+
 	@Override
+	public Generator cloneWithPitchAndVelocity(int newPitch, int newVelocity) {
+		// return this.clone(newPitch, newVelocity);
+		return cloneWithPitchAndVelocityIfUnlocked(newPitch, newVelocity);
+	}
+
 	public Generator clone(int newPitch, int newVelocity) {
 		SampleFileGenerator clone = new SampleFileGenerator(this.getSampleData(), this.getSampleDataSampleRate(), newPitch, newVelocity, this.duration, this.looping);
 		this.linkForFutureChanges(clone);

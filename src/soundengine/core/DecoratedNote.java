@@ -269,7 +269,7 @@ public class DecoratedNote extends BasicNote implements Runnable {
 
 		if (this.thereIsAGenerator())
 			for (Generator g : generators)
-				gens.add(g.clone(newNotePitch));
+				gens.add(g.cloneWithPitch(newNotePitch));
 		return gens;
 	}
 
