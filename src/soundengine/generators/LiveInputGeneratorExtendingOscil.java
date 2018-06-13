@@ -194,8 +194,10 @@ public class LiveInputGeneratorExtendingOscil extends Oscil implements Generator
 	}
 	
 	public void mute() {
-		if (!this.isClosed())
+		if (!this.isClosed()) {
 			this.setAmplitude(0);
+			this.setFrequency(0);
+		}
 	}
 
 	public void noteOffAfterDuration(int duration) {
@@ -221,15 +223,19 @@ public class LiveInputGeneratorExtendingOscil extends Oscil implements Generator
 	}
 
 	@Override
-	public void notifyAllObservers() {
+	public synchronized void notifyAllObservers() {
+		synchronized (observers) {
 		for (GeneratorObserver observer : observers)
 			observer.update();
+		}
 	}
 	
 	@Override
-	public void notifyAllObservers(String updatedParameter) {
+	public synchronized void notifyAllObservers(String updatedParameter) {
+		synchronized (observers) {
 		for (GeneratorObserver observer : observers)
 			observer.update(updatedParameter);
+		}
 	}
 
 	//if pitch is negative, pitch should be unlocked for changes

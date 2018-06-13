@@ -100,16 +100,16 @@ public abstract class Task implements Serializable {
   }
 
   //function that tries to evaluates the value (if necessary) and returns the real value
-  public Object evaluate_value (Object o) {
+  public Object evaluate_value (Object o){
     Object ret = o;
     Blackboard board = Main.instance().board();
 
     // If added an expression, process it and save result in blackboard.
     if (o instanceof Expression) {
-      try {
+      try { 
         ret = ((Expression)o).eval(board);
       }
-      catch (ScriptException e) {
+      catch (ScriptException e) { 
         System.out.println("ScriptExpression thrown, unhandled update.");
       }
     }

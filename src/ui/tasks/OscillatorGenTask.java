@@ -24,7 +24,10 @@ public class OscillatorGenTask extends Task {
 	private Object amplitude;
 	private Object duration;
 
-	
+	private String lastWavetype;
+	private String lastFrequency;
+	private String lastAmplitude;
+	private String lastDuration;
 	
 	public OscillatorGenTask(PApplet p, ControlP5 cp5, String taskname) {
 		super(p, cp5, taskname);
@@ -33,12 +36,17 @@ public class OscillatorGenTask extends Task {
 		this.amplitude = new Expression(Task.userInputAsDefault);
 		this.duration = new Expression(Task.userInputAsDefault);
 		this.wavetype = "SINE";
+		
+		lastWavetype = "";
+		lastFrequency = "";
+		lastAmplitude = "";
+		lastDuration = "";
 
 		Main.eng.addGenerator(this.get_gui_id(), "OSCILLATOR", getDefaultParameters());
 	}
 	
 	private String[] getDefaultParameters(){
-		return new String[] { "0", "0", "SINE"};
+		return new String[] { "-1", "-1", "SINE", "-1"};
 	}
 
 	private boolean frequencyShouldBeUpdated(String v) {
@@ -84,6 +92,22 @@ public class OscillatorGenTask extends Task {
 		processWavetypeChange();
 	}
 	
+	private boolean willFrequencyChange(String newValue) {
+		return !this.lastFrequency.trim().equalsIgnoreCase(newValue);
+	}
+	
+	private boolean willAmplitudeChange(String newValue) {
+		return !this.lastAmplitude.trim().equalsIgnoreCase(newValue);
+	}
+
+	private boolean willDurationChange(String newValue) {
+		return !this.lastDuration.trim().equalsIgnoreCase(newValue);
+	}
+	
+	private boolean willWavetypeChange(String newValue) {
+		return !this.lastWavetype.trim().equalsIgnoreCase(newValue);
+	}
+	
 	void processFrequencyChange() {
 		String valueToUpdate = "";
 		
@@ -91,8 +115,11 @@ public class OscillatorGenTask extends Task {
 			valueToUpdate = "-1";
 		else
 			valueToUpdate = (evaluate_value(this.frequency)).toString();
-		
-		Main.eng.updateGenerator(this.get_gui_id(), "frequency : " + valueToUpdate);
+				
+		if (willFrequencyChange(valueToUpdate)) {
+			Main.eng.updateGenerator(this.get_gui_id(), "frequency : " + valueToUpdate);
+			this.lastFrequency = valueToUpdate;
+		}
 	}
 	
 	void processAmplitudeChange() {
@@ -103,22 +130,30 @@ public class OscillatorGenTask extends Task {
 		else
 			valueToUpdate = (evaluate_value(this.amplitude)).toString();
 
-		Main.eng.updateGenerator(this.get_gui_id(), "amplitude : " + valueToUpdate);
+		if (willAmplitudeChange(valueToUpdate)) {
+			Main.eng.updateGenerator(this.get_gui_id(), "amplitude : " + valueToUpdate);
+			this.lastAmplitude = valueToUpdate;
+		}
 	}
 	
 	void processDurationChange() {
 		String valueToUpdate = "";
-		
 		if (this.duration.toString().trim().equalsIgnoreCase(Task.userInputAsDefault))
 			valueToUpdate = "-1";
 		else
 			valueToUpdate = (evaluate_value(this.duration)).toString();
-		
-		Main.eng.updateGenerator(this.get_gui_id(), "duration : " + valueToUpdate);
+
+		if (willDurationChange(valueToUpdate)) {
+			Main.eng.updateGenerator(this.get_gui_id(), "duration : " + valueToUpdate);
+			this.lastDuration = valueToUpdate;
+		}
 	}
 	
 	void processWavetypeChange() {
-		Main.eng.updateGenerator(this.get_gui_id(), "waveform: " + this.wavetype);
+		if (willWavetypeChange(this.wavetype)) {
+			Main.eng.updateGenerator(this.get_gui_id(), "waveform: " + this.wavetype);
+			this.lastWavetype = this.wavetype;
+		}
 	}
 
 
@@ -171,7 +206,7 @@ public class OscillatorGenTask extends Task {
 		if (!should_run())
 			return;
 
-		//processAllParameters();
+		processAllParameters();
 
 		// this.status = Status.DONE;
 	}

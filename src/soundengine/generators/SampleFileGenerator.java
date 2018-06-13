@@ -213,8 +213,10 @@ public class SampleFileGenerator extends ModifiedSampler implements Generator,Ru
 	}
 	
 	public void mute() {
-		if (!this.isClosed())
+		if (!this.isClosed()) {
 			this.setVelocity(0);
+			this.setPitch(0);
+		}
 	}
 	
 	public void noteOffAfterDuration(int duration) {
@@ -241,14 +243,18 @@ public class SampleFileGenerator extends ModifiedSampler implements Generator,Ru
 
 	@Override
 	public synchronized void notifyAllObservers() {
+		synchronized (observers) {
 		for (GeneratorObserver observer : observers)
 			observer.update();
+		}
 	}
 	
 	@Override
-	public void notifyAllObservers(String updatedParameter) {
+	public synchronized void notifyAllObservers(String updatedParameter) {
+		synchronized (observers) {
 		for (GeneratorObserver observer : observers)
 			observer.update(updatedParameter);
+		}
 	}
 	
 	//if pitch is negative, pitch should be unlocked for changes

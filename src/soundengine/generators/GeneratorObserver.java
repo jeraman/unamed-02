@@ -15,11 +15,13 @@ public abstract class GeneratorObserver extends Observer {
 	}
 
 	public void forwardUpdatesToUpdatable() {
-		this.updatable.notifyAllObservers();
+		if (!isClosed())
+			this.updatable.notifyAllObservers();
 	}
 	
 	public void forwardUpdatesToUpdatable(String singleParameter) {
-		this.updatable.notifyAllObservers(singleParameter);
+		if (!isClosed())
+			this.updatable.notifyAllObservers(singleParameter);
 	}
 
 	public boolean isClosed() {
