@@ -43,7 +43,9 @@ public class TestParameterUpdateOnSoundEngine extends PApplet {
 	public void mouseMoved() {
 		//processMouseMovedGenUpdates();
 		//processMouseMovedFxUpdates();
+		processMouseMovedUpdateGenDuration();
 	}
+	
 
 	public void processMousePressedGenUpdates() {
 		if (isGen3Active && mouseButton == LEFT)
@@ -66,6 +68,18 @@ public class TestParameterUpdateOnSoundEngine extends PApplet {
 			eng.updateGenerator("1", "filename : 123go.mp3");
 		if (isGen1Active && rand == 1)
 			eng.updateGenerator("1", "filename : error.mp3");
+	}
+	
+
+	public void processMouseMovedUpdateGenDuration() {
+		int a = (int) map(mouseX, 0, width, 2000, 10);
+		if (isGen1Active)
+			eng.updateGenerator("1", "Duration:" + a);
+		if (isGen2Active)
+			eng.updateGenerator("2", "Duration:" + a);
+		if (isGen3Active)
+			eng.updateGenerator("3", "Duration:" + a);
+		
 	}
 
 	public void processMouseMovedGenUpdates() {
