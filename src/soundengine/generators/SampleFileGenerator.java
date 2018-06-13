@@ -26,6 +26,7 @@ public class SampleFileGenerator extends ModifiedSampler implements Generator,Ru
 //		this(fileStream, Integer.MAX_VALUE);
 //	}
 
+	@Deprecated
 	public SampleFileGenerator(String filename) {
 		this(filename, basePitch, 127);
 	}
@@ -34,14 +35,15 @@ public class SampleFileGenerator extends ModifiedSampler implements Generator,Ru
 //		this(filename, pitch, volume, Integer.MAX_VALUE, true);
 //	}
 
+	@Deprecated
 	public SampleFileGenerator(String filename, int pitch, int volume) {
-		this(filename, pitch, volume, true);
+		this(filename, pitch, volume, true, -1);
 	}
 	
-	public SampleFileGenerator(String filename, int pitch, int volume, boolean shouldLoop) {
+	public SampleFileGenerator(String filename, int pitch, int volume, boolean shouldLoop, int duration) {
 		super(filename, 1, SoundEngine.minim);
 		
-		initializeVariables(filename, pitch, volume, Integer.MIN_VALUE, shouldLoop);
+		initializeVariables(filename, pitch, volume, shouldLoop, duration);
 	}
 	
 	
@@ -50,28 +52,28 @@ public class SampleFileGenerator extends ModifiedSampler implements Generator,Ru
 		this(new MultiChannelBuffer(0,0), 0, 0, 0);
 	}
 	
+	@Deprecated
 	protected SampleFileGenerator(MultiChannelBuffer sampleData, float sampleRate, int pitch, int volume) {
 		this(sampleData, sampleRate, pitch, volume, Integer.MAX_VALUE);
 	}
 
 	private SampleFileGenerator(MultiChannelBuffer sampleData, float sampleRate, int pitch, int volume, int duration) {
-		this(sampleData, sampleRate, pitch, volume, duration, true);
+		this(sampleData, sampleRate, pitch, volume, true, duration);
 	}
 	
-	private SampleFileGenerator(MultiChannelBuffer sampleData, float sampleRate, int pitch, int volume, int duration, boolean shouldLoop) {
+	private SampleFileGenerator(MultiChannelBuffer sampleData, float sampleRate, int pitch, int volume, boolean shouldLoop, int duration) {
 		super(sampleData, sampleRate, 1);
 		
-		initializeVariables("", pitch, volume, duration, shouldLoop);
+		initializeVariables("", pitch, volume, shouldLoop, duration);
 	}
 	
-	private void initializeVariables(String filename, int pitch, int velocity, int duration, boolean shouldLoop) {
+	private void initializeVariables(String filename, int pitch, int velocity, boolean shouldLoop, int duration) {
 		this.filename = filename;
 		//this.filename = filename;
 		this.pitch	 = pitch;
 		this.velocity  = velocity;
 		//this.shouldLoop  = shouldLoop;
 		this.looping = shouldLoop;
-		this.duration    = duration;
 		
 		float pR = calculateRelativePitch(pitch);
 		this.setPlaybackRate(pR);
@@ -82,6 +84,11 @@ public class SampleFileGenerator extends ModifiedSampler implements Generator,Ru
 		this.observers = new ArrayList<SampleFileGeneratorObserver>();
 		
 		this.patched = this;
+		
+		this.duration = duration;
+		
+		if (this.shouldNoteOffWithDuration())
+			this.noteOffAfterDuration(this.duration);
 	}
 	
 	@Override
@@ -125,6 +132,10 @@ public class SampleFileGenerator extends ModifiedSampler implements Generator,Ru
 
 	protected void setDuration(int duration) {
 		this.duration = duration;
+	}
+	
+	protected boolean shouldNoteOffWithDuration() {
+		return this.duration > 0;
 	}
 	
 	public int getPitch() {
@@ -195,8 +206,15 @@ public class SampleFileGenerator extends ModifiedSampler implements Generator,Ru
 	
 	@Override
 	public void noteOff() {
-		this.stop();
-		GeneratorFactory.unpatch(this);
+		if (!this.isClosed()) {
+			this.stop();
+			GeneratorFactory.unpatch(this);
+		}
+	}
+	
+	public void mute() {
+		if (!this.isClosed())
+			this.setVelocity(0);
 	}
 	
 	public void noteOffAfterDuration(int duration) {
@@ -211,7 +229,8 @@ public class SampleFileGenerator extends ModifiedSampler implements Generator,Ru
 		// TODO Auto-generated method stub
 		Util.delay(this.duration);
 		System.out.println("stop playing!");
-		this.noteOff();
+//		this.noteOff();
+		this.mute();
 	}
 	
 
@@ -266,7 +285,7 @@ public class SampleFileGenerator extends ModifiedSampler implements Generator,Ru
 	}
 
 	public Generator clone(int newPitch, int newVelocity) {
-		SampleFileGenerator clone = new SampleFileGenerator(this.getSampleData(), this.getSampleDataSampleRate(), newPitch, newVelocity, this.duration, this.looping);
+		SampleFileGenerator clone = new SampleFileGenerator(this.getSampleData(), this.getSampleDataSampleRate(), newPitch, newVelocity, this.looping, this.duration);
 		this.linkForFutureChanges(clone);
 		return clone;
 	}

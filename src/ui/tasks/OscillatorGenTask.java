@@ -56,6 +56,7 @@ public class OscillatorGenTask extends Task {
 			return;
 		System.out.println("updating frequency!" + v);
 		this.frequency = new Expression(v);
+		processFrequencyChange();
 		
 	}
 
@@ -64,6 +65,7 @@ public class OscillatorGenTask extends Task {
 			return;
 		System.out.println("updating amplitude!" + v);
 		this.amplitude = new Expression(v);
+		processAmplitudeChange();
 
 	}
 
@@ -72,6 +74,7 @@ public class OscillatorGenTask extends Task {
 			return;
 		System.out.println("updating duration!" + v);
 		this.duration = new Expression(v);
+		processDurationChange();
 		
 	}
 	
@@ -79,6 +82,39 @@ public class OscillatorGenTask extends Task {
 		System.out.println("updating wavetype!" + wt);
 		this.wavetype = wt;
 		processWavetypeChange();
+	}
+	
+	void processFrequencyChange() {
+		String valueToUpdate = "";
+		
+		if (this.frequency.toString().trim().equalsIgnoreCase(Task.userInputAsDefault))
+			valueToUpdate = "-1";
+		else
+			valueToUpdate = (evaluate_value(this.frequency)).toString();
+		
+		Main.eng.updateGenerator(this.get_gui_id(), "frequency : " + valueToUpdate);
+	}
+	
+	void processAmplitudeChange() {
+		String valueToUpdate = "";
+
+		if (this.amplitude.toString().trim().equalsIgnoreCase(Task.userInputAsDefault))
+			valueToUpdate = "-1";
+		else
+			valueToUpdate = (evaluate_value(this.amplitude)).toString();
+
+		Main.eng.updateGenerator(this.get_gui_id(), "amplitude : " + valueToUpdate);
+	}
+	
+	void processDurationChange() {
+		String valueToUpdate = "";
+		
+		if (this.duration.toString().trim().equalsIgnoreCase(Task.userInputAsDefault))
+			valueToUpdate = "-1";
+		else
+			valueToUpdate = (evaluate_value(this.duration)).toString();
+		
+		Main.eng.updateGenerator(this.get_gui_id(), "duration : " + valueToUpdate);
 	}
 	
 	void processWavetypeChange() {
@@ -123,27 +159,19 @@ public class OscillatorGenTask extends Task {
 		return clone;
 	}
 
-//	//TODO: properly link this function with the soundengine
-//	private void updateSoundEngine() {
-//		String freq_val = (evaluate_value(this.frequency)).toString();
-//		String amp_val = (evaluate_value(this.amplitude)).toString();
-//		String dur_val = (evaluate_value(this.duration)).toString();
-//
-//		this.status = Status.RUNNING;
-//
-//		System.out.println("executing OscillatorGentask");
-//
-//		String[] par = new String[] { freq_val, amp_val, getWavetype() };
-//
-//		Main.eng.updateGenerator(this.get_gui_id(), par);
-//	}
+	private void processAllParameters() {
+		this.processFrequencyChange();
+		this.processAmplitudeChange();
+		this.processDurationChange();
+		this.processWavetypeChange();
+	}
 
 	@Override
 	public void run() {
 		if (!should_run())
 			return;
 
-		//updateSoundEngine();
+		//processAllParameters();
 
 		// this.status = Status.DONE;
 	}
@@ -159,7 +187,6 @@ public class OscillatorGenTask extends Task {
 		this.textlabel = "Oscillator Generator";
 
 		Group g = super.load_gui_elements(s);
-		// CallbackListener cb_enter = generate_callback_enter();
 		int width = g.getWidth() - (localx * 2);
 
 		this.backgroundheight = (int) (font_size * 18);
@@ -198,18 +225,18 @@ public class OscillatorGenTask extends Task {
 					return;
 				
 				//if user deleted the text, sets user input as default value
-				if (content.trim().equals("")) 
-					((Textfield) cp5.get(get_gui_id() + "/" + target)).setText(Task.userInputAsDefault);
-				
-				//anything else, updates the parameter accordingly
-				else {
-					if (target.equals("frequency"))
-						update_frequency(content);
-					if (target.equals("amplitude"))
-						update_amplitude(content);
-					if (target.equals("duration"))
-						update_duration(content);
+				if (content.trim().equals("")) {
+					content = Task.userInputAsDefault;
+					((Textfield) cp5.get(get_gui_id() + "/" + target)).setText(content);
 				}
+				
+				//updates accordingly
+				if (target.equals("frequency"))
+					update_frequency(content);
+				if (target.equals("amplitude"))
+					update_amplitude(content);
+				if (target.equals("duration"))
+					update_duration(content);
 			}
 		};
 	}

@@ -31,15 +31,16 @@ public class LiveInputGeneratorExtendingOscil extends Oscil implements Generator
 	
 	private List<LiveInputGeneratorObserver> observers;
 
+	@Deprecated
 	public LiveInputGeneratorExtendingOscil() {
-		this(false, 0, 0);
+		this(false, 0, 0, -1);
 	}
 
-	public LiveInputGeneratorExtendingOscil(int pitch, int velocity) {
-		this(true, pitch, velocity);
+	public LiveInputGeneratorExtendingOscil(int pitch, int velocity, int duration) {
+		this(true, pitch, velocity, duration);
 	}
 
-	public LiveInputGeneratorExtendingOscil(boolean hasVocode, int pitch, int velocity) {
+	public LiveInputGeneratorExtendingOscil(boolean hasVocode, int pitch, int velocity, int duration) {
 		super((float) MusicTheory.freqFromMIDI(pitch), Util.mapFromMidiToAmplitude(velocity), Waves.SAW);
 
 		if (!isClassInitialized())
@@ -58,6 +59,11 @@ public class LiveInputGeneratorExtendingOscil extends Oscil implements Generator
 		// Util.mapFromMidiToAmplitude(velocity), Waves.SAW);
 
 		// }
+		
+		this.duration = duration;
+		
+		if (this.shouldNoteOffWithDuration())
+			this.noteOffAfterDuration(this.duration);
 	}
 
 	public boolean isClassInitialized() {
@@ -103,6 +109,11 @@ public class LiveInputGeneratorExtendingOscil extends Oscil implements Generator
 		this.duration = duration;
 	}
 
+
+	protected boolean shouldNoteOffWithDuration() {
+		return this.duration > 0;
+	}
+	
 	public int getPitch() {
 		return pitch;
 	}
@@ -178,8 +189,13 @@ public class LiveInputGeneratorExtendingOscil extends Oscil implements Generator
 
 	@Override
 	public void noteOff() {
-		// TODO Auto-generated method stub
-		GeneratorFactory.unpatch(this);
+		if (!this.isClosed())
+			GeneratorFactory.unpatch(this);
+	}
+	
+	public void mute() {
+		if (!this.isClosed())
+			this.setAmplitude(0);
 	}
 
 	public void noteOffAfterDuration(int duration) {
@@ -195,7 +211,8 @@ public class LiveInputGeneratorExtendingOscil extends Oscil implements Generator
 		Util.delay(this.duration);
 		// stop playing!
 		System.out.println("stop playing!");
-		this.noteOff();
+		//this.noteOff();
+		this.mute();
 	}
 	
 	@Override
@@ -249,7 +266,7 @@ public class LiveInputGeneratorExtendingOscil extends Oscil implements Generator
 	}
 
 	public Generator clone(int newPitch, int newVelocity) {
-		LiveInputGeneratorExtendingOscil clone = new LiveInputGeneratorExtendingOscil(newPitch, newVelocity);
+		LiveInputGeneratorExtendingOscil clone = new LiveInputGeneratorExtendingOscil(newPitch, newVelocity, this.duration);
 		this.linkForFutureChanges(clone);
 		return clone;
 	}

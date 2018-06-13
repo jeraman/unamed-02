@@ -79,8 +79,8 @@ public class EffectsPipelineTest extends PApplet {
 
 	public void noteOn(int channel, int pitch, int velocity) {
 		Generator gen1 = GeneratorFactory.noteOnSampleFileGen(buf, sampleRate, pitch, velocity);
-		Generator gen2 = GeneratorFactory.noteOnFMGen(pitch, velocity / 5);
-		Generator gen3 = GeneratorFactory.noteOnOscillatorGen(pitch, velocity / 5, "SINE");
+		Generator gen2 = GeneratorFactory.noteOnFMGen(pitch, (int) velocity / 5);
+		Generator gen3 = GeneratorFactory.noteOnOscillatorGen(pitch, (int) (velocity/5), "SINE", -1);
 		// this gen is chrashing the entire thing!
 		// Generator gen4 = GeneratorFactory.noteOnLiveInpuGen(pitch, velocity);
 

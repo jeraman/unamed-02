@@ -28,20 +28,9 @@ public class FMGenerator extends Oscil implements Generator, Runnable {
 
 	private List<FMGeneratorObserver> observers;
 
-	// TODO: delete deprecated constructors
-	@Deprecated
-	public FMGenerator() {
-		this(0, 0);
-	}
-
-	@Deprecated
-	public FMGenerator(int pitch, int velocity) {
-		this((float) MusicTheory.freqFromMIDI(pitch), Util.mapFromMidiToAmplitude(velocity), "SINE", 30.f, 75.f,
-				"QUARTERPULSE");
-	}
 
 	public FMGenerator(float carrierFreq, float carrierAmp, String carrierWave, float modFreq, float modAmp,
-			String modWave) {
+			String modWave, int duration) {
 
 		super(carrierFreq, carrierAmp, getWaveformType(carrierWave));
 
@@ -59,6 +48,11 @@ public class FMGenerator extends Oscil implements Generator, Runnable {
 		this.observers = new ArrayList<FMGeneratorObserver>();
 
 		this.patched = this;
+		
+		this.duration = duration;
+		
+		if (this.shouldNoteOffWithDuration())
+			this.noteOffAfterDuration(this.duration);
 	}
 
 	//////////////////////////////////////
@@ -89,6 +83,10 @@ public class FMGenerator extends Oscil implements Generator, Runnable {
 
 	protected void setDuration(int duration) {
 		this.duration = duration;
+	}
+	
+	protected boolean shouldNoteOffWithDuration() {
+		return this.duration > 0;
 	}
 
 	protected float getCarrierFreq() {
@@ -192,7 +190,13 @@ public class FMGenerator extends Oscil implements Generator, Runnable {
 	@Override
 	public synchronized void noteOff() {
 		// TODO Auto-generated method stub
-		GeneratorFactory.unpatch(this);
+		if (!this.isClosed())
+			GeneratorFactory.unpatch(this);
+	}
+	
+	public void mute() {
+		if (!this.isClosed())
+			this.setAmplitude(0);
 	}
 
 	public void noteOffAfterDuration(int duration) {
@@ -209,7 +213,8 @@ public class FMGenerator extends Oscil implements Generator, Runnable {
 		// stop playing!
 		System.out.println("stop playing!");
 		// GeneratorFactory.unpatch(this);
-		this.noteOff();
+		//this.noteOff();
+		this.mute();
 	}
 
 	@Override
@@ -267,7 +272,7 @@ public class FMGenerator extends Oscil implements Generator, Runnable {
 	}
 
 	private Generator clone(float newFreq, float newAmp) {
-		FMGenerator clone = new FMGenerator(newFreq, newAmp, carrierWave, modFreq, modAmp, modWave);
+		FMGenerator clone = new FMGenerator(newFreq, newAmp, carrierWave, modFreq, modAmp, modWave, this.duration);
 		this.linkClonedObserver(clone);
 		return clone;
 	}

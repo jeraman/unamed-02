@@ -17,41 +17,29 @@ public class OscillatorGenerator extends Oscil implements Generator,Runnable {
 	private float amplitude;
 	private int duration;
 	private String waveform;
-	
 	private UGen patched;
-	
 	private List<OscillatorGeneratorObserver> observers;
 	
-	@Deprecated
-	public OscillatorGenerator() {
-		this(0, 0, true);
+	
+	public OscillatorGenerator(int pitch, int velocity, String wf,  int duration) {
+		this((float)MusicTheory.freqFromMIDI(pitch), Util.mapFromMidiToAmplitude(velocity), wf, duration);
 	}
 	
-	@Deprecated
-	public OscillatorGenerator(int pitch, int velocity, boolean usesMidiValue) {
-		this(pitch, velocity, "SINE", usesMidiValue);
-	}
-	
-	@Deprecated
-	public OscillatorGenerator(float frequencyInHertz, float amplitude) {
-		this(frequencyInHertz, amplitude, "SINE");
-	}
-	
-	public OscillatorGenerator(int pitch, int velocity, String wf,  boolean usesMidiValue) {
-		this((float)MusicTheory.freqFromMIDI(pitch), Util.mapFromMidiToAmplitude(velocity), wf);
-	}
-	
-	
-	public OscillatorGenerator(float frequencyInHertz, float amplitude, String wf) {
+	public OscillatorGenerator(float frequencyInHertz, float amplitude, String wf, int duration) {
 		super(frequencyInHertz, amplitude, getWaveformType(wf));
 		
 		this.frequency = frequencyInHertz;
-		this.amplitude  = amplitude;
+		this.amplitude = amplitude;
 		this.waveform = wf;
 		
 		this.observers = new ArrayList<OscillatorGeneratorObserver>();
 		
 		this.patched = this;
+		
+		this.duration = duration;
+		
+		if (this.shouldNoteOffWithDuration())
+			this.noteOffAfterDuration(this.duration);
 	}
 
 	@Override
@@ -75,7 +63,11 @@ public class OscillatorGenerator extends Oscil implements Generator,Runnable {
 	protected void setDuration(int duration) {
 		this.duration = duration;
 	}
-
+	
+	protected boolean shouldNoteOffWithDuration() {
+		return this.duration > 0;
+	}
+	
 	protected float getFrequency() {
 		return frequency;
 	}
@@ -145,10 +137,15 @@ public class OscillatorGenerator extends Oscil implements Generator,Runnable {
 
 	@Override
 	public void noteOff() {
-		// TODO Auto-generated method stub
-		GeneratorFactory.unpatch(this);
+		if (!this.isClosed())
+			GeneratorFactory.unpatch(this);
 	}
-
+	
+	public void mute() {
+		if (!this.isClosed())
+			this.setAmplitude(0);
+	}
+	
 	public void noteOffAfterDuration(int duration) {
 		this.duration = duration;
 		System.out.println("waiting! " + duration);
@@ -161,9 +158,10 @@ public class OscillatorGenerator extends Oscil implements Generator,Runnable {
 		// TODO Auto-generated method stub
 		Util.delay(this.duration);
 		//stop playing!
-		System.out.println("stop playing!");
+		System.out.println("muting...");
 		//GeneratorFactory.unpatch(this);
-		this.noteOff();
+		//this.noteOff();
+		this.mute();
 	}
 	
 	private static Waveform getWaveformType (String waveName) {
@@ -208,7 +206,7 @@ public class OscillatorGenerator extends Oscil implements Generator,Runnable {
 	}
 	
 	private Generator clone(float newFreq, float newAmp) {
-		OscillatorGenerator clone = new OscillatorGenerator(newFreq, newAmp, this.waveform);
+		OscillatorGenerator clone = new OscillatorGenerator(newFreq, newAmp, this.waveform, this.duration);
 		this.linkForFutureChanges(clone);
 		return clone;
 	}

@@ -33,14 +33,14 @@ public class LiveInputGeneratorExtendingLiveInput extends ModifiedLiveInput impl
 	private List<LiveInputGeneratorObserver> observers;
 	
 	public LiveInputGeneratorExtendingLiveInput() {
-		this(false, 0, 0);
+		this(false, 0, 0, -1);
 	}
 	
-	public LiveInputGeneratorExtendingLiveInput(int pitch, int velocity) {
-		this(true, pitch, velocity);
+	public LiveInputGeneratorExtendingLiveInput(int pitch, int velocity, int duration) {
+		this(true, pitch, velocity, duration);
 	}
 	
-	public LiveInputGeneratorExtendingLiveInput(boolean hasVocode, int pitch, int velocity) {
+	public LiveInputGeneratorExtendingLiveInput(boolean hasVocode, int pitch, int velocity, int duration) {
 		super(GeneratorFactory.getInput());
 		
 		this.hasVocode = hasVocode;
@@ -54,6 +54,11 @@ public class LiveInputGeneratorExtendingLiveInput extends ModifiedLiveInput impl
 			super.patch(vocode.modulator);
 			mod = new Oscil((float) MusicTheory.freqFromMIDI(pitch), Util.mapFromMidiToAmplitude(velocity), Waves.SAW);
 		}
+		
+		this.duration = duration;
+		
+		if (this.shouldNoteOffWithDuration())
+			this.noteOffAfterDuration(this.duration);
 	}
 	
 	@Override
@@ -75,6 +80,10 @@ public class LiveInputGeneratorExtendingLiveInput extends ModifiedLiveInput impl
 
 	public void setDuration(int duration) {
 		this.duration = duration;
+	}
+	
+	protected boolean shouldNoteOffWithDuration() {
+		return this.duration > 0;
 	}
 
 	public int getPitch() {
@@ -139,8 +148,13 @@ public class LiveInputGeneratorExtendingLiveInput extends ModifiedLiveInput impl
 
 	@Override
 	public void noteOff() {
-		// TODO Auto-generated method stub
-		GeneratorFactory.unpatch(this);
+		if (!this.isClosed())
+			GeneratorFactory.unpatch(this);
+	}
+	
+	public void mute() {
+		if (!this.isClosed())
+			this.setVelocity(0);
 	}
 	
 	public void noteOffAfterDuration(int duration) {
@@ -156,7 +170,8 @@ public class LiveInputGeneratorExtendingLiveInput extends ModifiedLiveInput impl
 		Util.delay(this.duration);
 		//stop playing!
 		System.out.println("stop playing!");
-		this.noteOff();
+//		this.noteOff();
+		this.mute();
 	}
 	
 	@Override
@@ -210,7 +225,7 @@ public class LiveInputGeneratorExtendingLiveInput extends ModifiedLiveInput impl
 	}
 
 	public Generator clone(int newPitch, int newVelocity) {
-		LiveInputGeneratorExtendingLiveInput clone = new LiveInputGeneratorExtendingLiveInput(newPitch, newVelocity);
+		LiveInputGeneratorExtendingLiveInput clone = new LiveInputGeneratorExtendingLiveInput(newPitch, newVelocity, this.duration);
 		this.linkForFutureChanges(clone);
 		return clone;
 	}

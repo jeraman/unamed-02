@@ -142,6 +142,24 @@ public class DecoratedNote extends BasicNote implements Runnable {
 		Runnable r = this;
 		new Thread(r).start();
 	}
+	
+	public synchronized void defaultNoteOff() {
+		if (this.closed) 
+			return;
+		
+		this.unpatchEffects();
+		
+		if (!this.thereIsAGenerator()) {
+			if (this.artificialNotes != null)
+				this.artificialNotes.noteOff();
+			MidiIO.outputNoteOff(this.getChannel(), this.getPitch(), this.getVelocity());
+		} else {
+			this.outputChain.unpatch(SoundEngine.out);
+			this.mixer.unpatch(SoundEngine.out);
+		}
+		
+		this.close();
+	}
 
 	private boolean checkIfContainsADSREffect() {
 		for (Effect e : effects)
@@ -169,25 +187,6 @@ public class DecoratedNote extends BasicNote implements Runnable {
 		this.defaultNoteOff();
 	}
 
-	public synchronized void defaultNoteOff() {
-		if (this.closed) 
-			return;
-
-		this.unpatchEffects();
-
-			if (!this.thereIsAGenerator()) {
-				if (this.artificialNotes != null)
-					this.artificialNotes.noteOff();
-				MidiIO.outputNoteOff(this.getChannel(), this.getPitch(), this.getVelocity());
-			} else {
-				this.outputChain.unpatch(SoundEngine.out);
-				this.mixer.unpatch(SoundEngine.out);
-			}
-
-		this.close();
-		
-		
-	}
 	
 	protected DecoratedNote cloneInADifferentPitch(int newNotePitch) {
 		return new DecoratedNote(this.getChannel(), newNotePitch, this.getVelocity(), this.cloneGenerators(newNotePitch),

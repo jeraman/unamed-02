@@ -44,7 +44,6 @@ public class TestParameterUpdateOnSoundEngine extends PApplet {
 		//processMouseMovedGenUpdates();
 		//processMouseMovedFxUpdates();
 	}
-	
 
 	public void processMousePressedGenUpdates() {
 		if (isGen3Active && mouseButton == LEFT)
@@ -67,7 +66,6 @@ public class TestParameterUpdateOnSoundEngine extends PApplet {
 			eng.updateGenerator("1", "filename : 123go.mp3");
 		if (isGen1Active && rand == 1)
 			eng.updateGenerator("1", "filename : error.mp3");
-
 	}
 
 	public void processMouseMovedGenUpdates() {
@@ -175,7 +173,7 @@ public class TestParameterUpdateOnSoundEngine extends PApplet {
 	private void processGen1() {
 		if (!isGen1Active)
 //			eng.addGenerator("1", "SAMPLE", new String[] { "123go.mp3", "60", "127", "true" });
-		eng.addGenerator("1", "SAMPLE", new String[] { "123go.mp3", "60", "-1", "true" });
+		eng.addGenerator("1", "SAMPLE", new String[] { "123go.mp3", "60", "-1", "true", "1000" });
 		else
 			eng.removeGenerator("1");
 		isGen1Active = !isGen1Active;
@@ -185,9 +183,9 @@ public class TestParameterUpdateOnSoundEngine extends PApplet {
 
 	private void processGen2() {
 		if (!isGen2Active)
-//			eng.addGenerator("2", "OSCILLATOR", new String[] { "60", "127", "SINE" });
-			eng.addGenerator("2", "OSCILLATOR", new String[] { "60", "-1", "SINE" });
-//		eng.addGenerator("2", "OSCILLATOR", new String[] { "-1", "-1", "SINE" });
+//			eng.addGenerator("2", "OSCILLATOR", new String[] { "60", "127", "SINE","100" });
+//			eng.addGenerator("2", "OSCILLATOR", new String[] { "60", "-1", "SINE", "-1" });
+		eng.addGenerator("2", "OSCILLATOR", new String[] { "-1", "-1", "SINE", "1000" });
 		else
 			eng.removeGenerator("2");
 		isGen2Active = !isGen2Active;
@@ -198,7 +196,7 @@ public class TestParameterUpdateOnSoundEngine extends PApplet {
 	private void processGen3() {
 		if (!isGen3Active)
 //			eng.addGenerator("3", "FM", new String[] { "440", "0.5", "SINE", "30", "75.", "SAW" });
-			eng.addGenerator("3", "FM", new String[] { "220", "-1", "SINE", "30", "75.", "SAW" });
+			eng.addGenerator("3", "FM", new String[] { "220", "-1", "SINE", "30", "75.", "SAW", "500" });
 		else
 			eng.removeGenerator("3");
 		isGen3Active = !isGen3Active;

@@ -47,7 +47,7 @@ public class GeneratorFactory {
 
 	@Deprecated
 	public static Generator noteOnFMGen(int pitch, int velocity) {
-		Generator gen = new FMGenerator(pitch, velocity);
+		Generator gen = new FMGenerator(pitch, velocity, "SINE", 5.0f, 5.0f, "SINE", 1000);
 		return gen;
 	}
 	
@@ -104,8 +104,8 @@ public class GeneratorFactory {
 	}
 
 	//Oscillator Factory
-	public static Generator noteOnOscillatorGen(int pitch, int velocity, String waveform) {
-		Generator gen = new OscillatorGenerator(pitch, velocity, waveform, true);
+	public static Generator noteOnOscillatorGen(int pitch, int velocity, String waveform, int duration) {
+		Generator gen = new OscillatorGenerator(pitch, velocity, waveform, duration);
 		return gen;
 	}
 	
@@ -113,36 +113,35 @@ public class GeneratorFactory {
 		int pitch = Integer.parseInt(parameters[0]);
 		int velocity = Integer.parseInt(parameters[1]);
 		String waveform = parameters[2];
-		return noteOnOscillatorGen(pitch, velocity, waveform);
+		int duration = Integer.parseInt(parameters[3]);
+		return noteOnOscillatorGen(pitch, velocity, waveform, duration);
 	}
 	
-	public static Generator temporaryOscillatorGen(int pitch, int velocity, String waveform, int duration) {
-		Generator gen = noteOnOscillatorGen(pitch, velocity, waveform);
-		gen.noteOffAfterDuration(duration);
-		return gen;
-	}
 	
 	public static void updateOscillatorGen(OscillatorGenerator gen, String[] parameters) {
 		int pitch = Integer.parseInt(parameters[0]);
 		int velocity = Integer.parseInt(parameters[1]);
 		String waveform = parameters[2];
+		int duration = Integer.parseInt(parameters[3]);
 		
 		System.out.println("updateOscillatorGen " + gen);
 		System.out.println("pitch " + pitch);
 		System.out.println("velocity " + velocity);
 		System.out.println("waveform " + waveform);
+		System.out.println("duration " + duration);
 		
 		gen.setFrequencyFromPitch(pitch);
 		gen.setAmplitudeFromVelocity(velocity);
 		gen.setWaveform(waveform);
+		gen.setDuration(duration);
 		
 		gen.notifyAllObservers();
 	}
 	
 	//FM factory
 	public static Generator noteOnFMGen(float carrierFreq, float carrierAmp, String carrierWave,
-			float modFreq, float modAmp, String modWave) {
-		Generator gen = new FMGenerator(carrierFreq, carrierAmp, carrierWave, modFreq, modAmp, modWave);
+			float modFreq, float modAmp, String modWave, int duration) {
+		Generator gen = new FMGenerator(carrierFreq, carrierAmp, carrierWave, modFreq, modAmp, modWave, duration);
 		return gen;
 	}
 
@@ -154,16 +153,10 @@ public class GeneratorFactory {
 		float modFreq = Float.parseFloat(parameters[3]);
 		float modAmp = Float.parseFloat(parameters[4]);
 		String modWave = parameters[5];
+		int duration = Integer.parseInt(parameters[6]);
 		
-		return noteOnFMGen(carrierFreq, carrierAmp, carrierWave, modFreq, modAmp, modWave);
+		return noteOnFMGen(carrierFreq, carrierAmp, carrierWave, modFreq, modAmp, modWave, duration);
 	}
-	
-	public static Generator temporaryFMGen(float carrierFreq, float carrierAmp, String carrierWave,
-			float modFreq, float modAmp, String modWave, int duration) {
-		Generator gen = noteOnFMGen(carrierFreq, carrierAmp, carrierWave, modFreq, modAmp, modWave);
-		gen.noteOffAfterDuration(duration);
-		return gen;
-	}	
 
 
 	private static void updateFMGen(FMGenerator gen, String[] parameters) {
@@ -174,6 +167,7 @@ public class GeneratorFactory {
 		float modFreq = Float.parseFloat(parameters[3]);
 		float modAmp = Float.parseFloat(parameters[4]);
 		String modWave = parameters[5];
+		int duration = Integer.parseInt(parameters[6]);
 		
 		gen.setCarrierFreqFromPitch(pitch);
 		gen.setCarrierAmpFromVelocity(velocity);
@@ -181,33 +175,15 @@ public class GeneratorFactory {
 		gen.setModFreq(modFreq);
 		gen.setModAmp(modAmp);
 		gen.setModWave(modWave);
+		gen.setDuration(duration);
 		
-		gen.notifyAllObservers();
-	}
-	
-	public static void updateFMGen(FMGenerator gen, String singleParameter) {
-		String[] parts = singleParameter.split(":");
-		
-		if (parts[0].trim().equalsIgnoreCase("carrierFreq"))
-			gen.setCarrierFreq(Float.parseFloat(parts[1]));
-		if (parts[0].trim().equalsIgnoreCase("carrierAmp"))
-			gen.setCarrierAmp(Float.parseFloat(parts[1]));
-		if (parts[0].trim().equalsIgnoreCase("carrierWave"))
-			gen.setCarrierWave(parts[1]);
-		if (parts[0].trim().equalsIgnoreCase("modFreq"))
-			gen.setModFreq(Float.parseFloat(parts[1]));
-		if (parts[0].trim().equalsIgnoreCase("modAmp"))
-			gen.setModAmp(Float.parseFloat(parts[1]));
-		if (parts[0].trim().equalsIgnoreCase("modWave"))
-			gen.setModWave(parts[1]);
-			
 		gen.notifyAllObservers();
 	}
 	
 	
 	//SampleFile factory
-	public static Generator noteOnSampleFileGen(String fileStream, int pitch, int velocity, boolean shouldLoop) {
-		Generator gen = new SampleFileGenerator(fileStream, pitch, velocity, shouldLoop);
+	public static Generator noteOnSampleFileGen(String fileStream, int pitch, int velocity, boolean shouldLoop, int duration) {
+		Generator gen = new SampleFileGenerator(fileStream, pitch, velocity, shouldLoop, duration);
 		return gen;
 	}
 	
@@ -216,16 +192,11 @@ public class GeneratorFactory {
 		int pitch = Integer.parseInt(parameters[1]);
 		int velocity = Integer.parseInt(parameters[2]);
 		boolean shouldLoop = Boolean.parseBoolean(parameters[3]);
+		int duration = Integer.parseInt(parameters[4]);
 		
-		return noteOnSampleFileGen(filename, pitch, velocity, shouldLoop);
+		return noteOnSampleFileGen(filename, pitch, velocity, shouldLoop, duration);
 	}
 	
-	public static Generator temporarySampleFileGen(String filename, int pitch, int velocity, int duration, boolean shouldLoop) {
-		Generator gen = noteOnSampleFileGen(filename, pitch, velocity, shouldLoop);
-		gen.noteOffAfterDuration(duration);
-		return gen;
-	}
-
 
 	private static void updateSampleFileGen(SampleFileGenerator gen, String[] parameters) {
 		// TODO Auto-generated method stub
@@ -233,41 +204,41 @@ public class GeneratorFactory {
 		int pitch = Integer.parseInt(parameters[1]);
 		int velocity = Integer.parseInt(parameters[2]);
 		boolean shouldLoop = Boolean.parseBoolean(parameters[3]);
+		int duration = Integer.parseInt(parameters[4]);
 		
 		gen.setFilename(filename);
 		gen.setPitch(pitch);
 		gen.setVelocity(velocity);
 		gen.setLoopStatus(shouldLoop);
+		gen.setDuration(duration);
 		
 		gen.notifyAllObservers();
 	}
 	
 	//Live Input factory
-	public static Generator noteOnLiveInpuGen(int pitch, int velocity) {
-		Generator gen = new LiveInputGenerator(pitch, velocity);
-//		Generator gen = new LiveInputGeneratorExtendingLiveInput(pitch, velocity);
-//		Generator gen = new LiveInputGeneratorExtendingOscil(pitch, velocity);
+	public static Generator noteOnLiveInpuGen(int pitch, int velocity, int duration) {
+		Generator gen = new LiveInputGenerator(pitch, velocity, duration);
+//		Generator gen = new LiveInputGeneratorExtendingLiveInput(pitch, velocity, duration);
+//		Generator gen = new LiveInputGeneratorExtendingOscil(pitch, velocity, duration);
 		return gen;
 	}
 	
 	public static Generator noteOnLiveInpuGen(String[] parameters) {
-		int pitch = Integer.parseInt(parameters[1]);
-		int velocity = Integer.parseInt(parameters[2]);
-		return noteOnLiveInpuGen(pitch, velocity);
+		int pitch = Integer.parseInt(parameters[0]);
+		int velocity = Integer.parseInt(parameters[1]);
+		int duration = Integer.parseInt(parameters[2]);
+		
+		return noteOnLiveInpuGen(pitch, velocity, duration);
 	}
 	
-	public static Generator temporaryLiveInpuGen(int pitch, int velocity, int duration) {
-		Generator gen = noteOnLiveInpuGen(pitch, velocity);
-		gen.noteOffAfterDuration(duration);
-		return gen;
-	}
-	
+
+	@Deprecated
 	public static Generator noteOnLiveInpuGen() {
 		Generator gen = new LiveInputGenerator();
-//		return GeneratorFactory.patch(gen);
 		return gen;
 	}
 	
+	@Deprecated
 	public static Generator temporaryLiveInpuGen(int duration) {
 		Generator gen = noteOnLiveInpuGen();
 		gen.noteOffAfterDuration(duration);
@@ -278,9 +249,11 @@ public class GeneratorFactory {
 		// TODO Auto-generated method stub
 		int pitch = Integer.parseInt(parameters[0]);
 		int velocity = Integer.parseInt(parameters[1]);
+		int duration = Integer.parseInt(parameters[2]);
 		
 		gen.setPitch(pitch);
 		gen.setVelocity(velocity);
+		gen.setDuration(duration);
 
 		gen.notifyAllObservers();
 		
