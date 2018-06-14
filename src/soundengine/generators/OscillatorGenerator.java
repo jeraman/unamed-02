@@ -11,7 +11,7 @@ import ddf.minim.ugens.Waves;
 import soundengine.util.MusicTheory;
 import soundengine.util.Util;
 
-public class OscillatorGenerator extends Oscil implements Generator,Runnable {
+public class OscillatorGenerator extends Oscil implements Generator, Runnable {
 
 	private float frequency;
 	private float amplitude;
@@ -19,25 +19,27 @@ public class OscillatorGenerator extends Oscil implements Generator,Runnable {
 	private String waveform;
 	private UGen patched;
 	private List<OscillatorGeneratorObserver> observers;
-	
-	
-	public OscillatorGenerator(int pitch, int velocity, String wf,  int duration) {
-		this((float)MusicTheory.freqFromMIDI(pitch), Util.mapFromMidiToAmplitude(velocity), wf, duration);
+
+	private static final float amplitudeNormalizer = 5.0f;
+
+	public OscillatorGenerator(int pitch, int velocity, String wf, int duration) {
+		this((float) MusicTheory.freqFromMIDI(pitch), Util.mapFromMidiToAmplitude(velocity), wf, duration);
 	}
-	
+
 	public OscillatorGenerator(float frequencyInHertz, float amplitude, String wf, int duration) {
 		super(frequencyInHertz, amplitude, getWaveformType(wf));
-		
+
 		this.frequency = frequencyInHertz;
-		this.amplitude = amplitude;
+		// this.amplitude = amplitude;
+		this.setAmplitude(amplitude);
 		this.waveform = wf;
-		
+
 		this.observers = new ArrayList<OscillatorGeneratorObserver>();
-		
+
 		this.patched = this;
-		
+
 		this.duration = duration;
-		
+
 		if (this.shouldNoteOffWithDuration())
 			this.noteOffAfterDuration(this.duration);
 	}
@@ -45,17 +47,17 @@ public class OscillatorGenerator extends Oscil implements Generator,Runnable {
 	@Override
 	public void updateParameterFromString(String singleParameter) {
 		String[] parts = singleParameter.split(":");
-		
+
 		if (parts[0].trim().equalsIgnoreCase("frequency"))
 			this.setFrequency(Float.parseFloat(parts[1].trim()));
 		if (parts[0].trim().equalsIgnoreCase("amplitude"))
 			this.setAmplitude(Float.parseFloat(parts[1].trim()));
 		if (parts[0].trim().equalsIgnoreCase("duration"))
-			this.setDuration((int)Float.parseFloat(parts[1].trim()));
+			this.setDuration((int) Float.parseFloat(parts[1].trim()));
 		if (parts[0].trim().equalsIgnoreCase("waveform"))
 			this.setWaveform(parts[1]);
 	}
-	
+
 	protected int getDuration() {
 		return duration;
 	}
@@ -63,19 +65,19 @@ public class OscillatorGenerator extends Oscil implements Generator,Runnable {
 	protected void setDuration(int duration) {
 		this.duration = duration;
 	}
-	
+
 	protected boolean shouldNoteOffWithDuration() {
 		return this.duration > 0;
 	}
-	
+
 	protected float getFrequency() {
 		return frequency;
 	}
 
 	public void setFrequencyFromPitch(int pitch) {
-		this.setFrequency((float)MusicTheory.freqFromMIDI(pitch));
+		this.setFrequency((float) MusicTheory.freqFromMIDI(pitch));
 	}
-	
+
 	public void setFrequency(float frequency) {
 		this.frequency = frequency;
 		super.setFrequency(this.frequency);
@@ -88,10 +90,10 @@ public class OscillatorGenerator extends Oscil implements Generator,Runnable {
 	public void setAmplitudeFromVelocity(int velocity) {
 		this.setAmplitude(Util.mapFromMidiToAmplitude(velocity));
 	}
-	
+
 	public void setAmplitude(float amplitude) {
 		this.amplitude = amplitude;
-		super.setAmplitude(amplitude);
+		super.setAmplitude(amplitude / amplitudeNormalizer);
 	}
 
 	public Waveform getWaveform() {
@@ -140,14 +142,14 @@ public class OscillatorGenerator extends Oscil implements Generator,Runnable {
 		if (!this.isClosed())
 			GeneratorFactory.unpatch(this);
 	}
-	
+
 	public void mute() {
 		if (!this.isClosed()) {
 			this.setAmplitude(0);
 			this.setFrequency(0);
 		}
 	}
-	
+
 	public void noteOffAfterDuration(int duration) {
 		this.duration = duration;
 		System.out.println("waiting! " + duration);
@@ -159,37 +161,37 @@ public class OscillatorGenerator extends Oscil implements Generator,Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		Util.delay(this.duration);
-		//stop playing!
+		// stop playing!
 		System.out.println("muting...");
-		//GeneratorFactory.unpatch(this);
-		//this.noteOff();
+		// GeneratorFactory.unpatch(this);
+		// this.noteOff();
 		this.mute();
 	}
-	
-	private static Waveform getWaveformType (String waveName) {
+
+	private static Waveform getWaveformType(String waveName) {
 		return Util.getWaveformType(waveName);
 	}
-	
-	//if frequency is negative, frequency should be unlocked for changes
+
+	// if frequency is negative, frequency should be unlocked for changes
 	private float getRightFrequencyForClone(int newPitch) {
 		if (this.frequency <= 0)
 			return MusicTheory.freqFromMIDI(newPitch);
 		else
 			return this.frequency;
 	}
-	
-	//if amplitude is negative, amplitude should be unlocked for changes
+
+	// if amplitude is negative, amplitude should be unlocked for changes
 	private float getRightAmplitudeForClone(int newVelocity) {
 		if (this.amplitude <= 0)
 			return Util.mapFromMidiToAmplitude(newVelocity);
 		else
 			return this.amplitude;
 	}
-	
+
 	public Generator cloneWithPitchAndVelocityIfUnlocked(int newPitch, int newVelocity) {
 		float newFreq = getRightFrequencyForClone(newPitch);
 		float newAmp = getRightAmplitudeForClone(newVelocity);
-		
+
 		return clone(newFreq, newAmp);
 	}
 
@@ -198,27 +200,27 @@ public class OscillatorGenerator extends Oscil implements Generator,Runnable {
 		float newFreq = MusicTheory.freqFromMIDI(newPitch);
 		return this.clone(newFreq, this.amplitude);
 	}
-	
+
 	@Override
 	public Generator cloneWithPitchAndVelocity(int newPitch, int newVelocity) {
-//		float newFreq = MusicTheory.freqFromMIDI(newPitch);
-//		float newAmp = Util.mapFromMidiToAmplitude(newVelocity);
-//		return this.clone(newFreq, newAmp);
+		// float newFreq = MusicTheory.freqFromMIDI(newPitch);
+		// float newAmp = Util.mapFromMidiToAmplitude(newVelocity);
+		// return this.clone(newFreq, newAmp);
 		return cloneWithPitchAndVelocityIfUnlocked(newPitch, newVelocity);
 	}
-	
+
 	private Generator clone(float newFreq, float newAmp) {
 		OscillatorGenerator clone = new OscillatorGenerator(newFreq, newAmp, this.waveform, this.duration);
 		this.linkForFutureChanges(clone);
 		return clone;
 	}
-	
-	private void linkForFutureChanges (OscillatorGenerator clone) {
+
+	private void linkForFutureChanges(OscillatorGenerator clone) {
 		new OscillatorGeneratorObserver(this, clone);
 	}
-	
-	public void unlinkOldObservers () {
-		for (int i = observers.size()-1; i >= 0; i--)
+
+	public void unlinkOldObservers() {
+		for (int i = observers.size() - 1; i >= 0; i--)
 			if (observers.get(i).isClosed())
 				this.observers.remove(i);
 	}
@@ -226,7 +228,7 @@ public class OscillatorGenerator extends Oscil implements Generator,Runnable {
 	public boolean isClosed() {
 		if (this.observers == null)
 			return true;
-		else 
+		else
 			return false;
 	}
 
@@ -241,22 +243,22 @@ public class OscillatorGenerator extends Oscil implements Generator,Runnable {
 
 	@Override
 	public void attach(GeneratorObserver observer) {
-		this.observers.add((OscillatorGeneratorObserver)observer);
+		this.observers.add((OscillatorGeneratorObserver) observer);
 	}
 
 	@Override
 	public synchronized void notifyAllObservers() {
 		synchronized (observers) {
-		for (GeneratorObserver observer : observers)
-			observer.update();
+			for (GeneratorObserver observer : observers)
+				observer.update();
 		}
 	}
-	
+
 	@Override
 	public synchronized void notifyAllObservers(String updatedParameter) {
 		synchronized (observers) {
-		for (GeneratorObserver observer : observers)
-			observer.update(updatedParameter);
+			for (GeneratorObserver observer : observers)
+				observer.update(updatedParameter);
 		}
 	}
 

@@ -28,6 +28,7 @@ public class FMGenerator extends Oscil implements Generator, Runnable {
 
 	private List<FMGeneratorObserver> observers;
 
+	private static final float amplitudeNormalizer = 5.0f;
 
 	public FMGenerator(float carrierFreq, float carrierAmp, String carrierWave, float modFreq, float modAmp,
 			String modWave, int duration) {
@@ -35,7 +36,8 @@ public class FMGenerator extends Oscil implements Generator, Runnable {
 		super(carrierFreq, carrierAmp, getWaveformType(carrierWave));
 
 		this.carrierFreq = carrierFreq;
-		this.carrierAmp = carrierAmp;
+		// this.carrierAmp = carrierAmp;
+		this.setCarrierAmp(carrierAmp);
 		this.carrierWave = carrierWave;
 		this.modFreq = modFreq;
 		this.modAmp = modAmp;
@@ -48,9 +50,9 @@ public class FMGenerator extends Oscil implements Generator, Runnable {
 		this.observers = new ArrayList<FMGeneratorObserver>();
 
 		this.patched = this;
-		
+
 		this.duration = duration;
-		
+
 		if (this.shouldNoteOffWithDuration())
 			this.noteOffAfterDuration(this.duration);
 	}
@@ -85,7 +87,7 @@ public class FMGenerator extends Oscil implements Generator, Runnable {
 	protected void setDuration(int duration) {
 		this.duration = duration;
 	}
-	
+
 	protected boolean shouldNoteOffWithDuration() {
 		return this.duration > 0;
 	}
@@ -109,7 +111,7 @@ public class FMGenerator extends Oscil implements Generator, Runnable {
 
 	protected void setCarrierAmp(float carrierAmp) {
 		this.carrierAmp = carrierAmp;
-		super.setAmplitude(this.carrierAmp);
+		super.setAmplitude(this.carrierAmp / amplitudeNormalizer);
 	}
 
 	public void setCarrierAmpFromVelocity(int velocity) {
@@ -194,7 +196,7 @@ public class FMGenerator extends Oscil implements Generator, Runnable {
 		if (!this.isClosed())
 			GeneratorFactory.unpatch(this);
 	}
-	
+
 	public void mute() {
 		if (!this.isClosed()) {
 			this.setAmplitude(0);
@@ -216,7 +218,7 @@ public class FMGenerator extends Oscil implements Generator, Runnable {
 		// stop playing!
 		System.out.println("stop playing!");
 		// GeneratorFactory.unpatch(this);
-		//this.noteOff();
+		// this.noteOff();
 		this.mute();
 	}
 
@@ -228,20 +230,20 @@ public class FMGenerator extends Oscil implements Generator, Runnable {
 	@Override
 	public synchronized void notifyAllObservers() {
 		synchronized (observers) {
-		for (GeneratorObserver observer : observers)
-			observer.update();
+			for (GeneratorObserver observer : observers)
+				observer.update();
 		}
 	}
 
 	@Override
 	public synchronized void notifyAllObservers(String updatedParameter) {
 		synchronized (observers) {
-		for (GeneratorObserver observer : observers)
-			observer.update(updatedParameter);
+			for (GeneratorObserver observer : observers)
+				observer.update(updatedParameter);
 		}
 	}
-	
-	//if frequency is negative, frequency should be unlocked for changes
+
+	// if frequency is negative, frequency should be unlocked for changes
 	private float getRightFrequencyForClone(int newPitch) {
 		if (this.carrierFreq <= 0)
 			return MusicTheory.freqFromMIDI(newPitch);
@@ -256,11 +258,11 @@ public class FMGenerator extends Oscil implements Generator, Runnable {
 		else
 			return this.carrierAmp;
 	}
-	
+
 	public Generator cloneWithPitchAndVelocityIfUnlocked(int newPitch, int newVelocity) {
 		float newFreq = getRightFrequencyForClone(newPitch);
 		float newAmp = getRightAmplitudeForClone(newVelocity);
-		
+
 		return clone(newFreq, newAmp);
 	}
 
@@ -269,12 +271,12 @@ public class FMGenerator extends Oscil implements Generator, Runnable {
 		float newFreq = MusicTheory.freqFromMIDI(newPitch);
 		return clone(newFreq, carrierAmp);
 	}
-	
+
 	@Override
 	public Generator cloneWithPitchAndVelocity(int newPitch, int newVelocity) {
-//		float newFreq = MusicTheory.freqFromMIDI(newPitch);
-//		float newAmp = Util.mapFromMidiToAmplitude(newVelocity);
-//		return clone(newFreq, newAmp);
+		// float newFreq = MusicTheory.freqFromMIDI(newPitch);
+		// float newAmp = Util.mapFromMidiToAmplitude(newVelocity);
+		// return clone(newFreq, newAmp);
 		return cloneWithPitchAndVelocityIfUnlocked(newPitch, newVelocity);
 	}
 
@@ -310,7 +312,7 @@ public class FMGenerator extends Oscil implements Generator, Runnable {
 		this.observers = null;
 	}
 
-	private static Waveform getWaveformType (String waveName) {
+	private static Waveform getWaveformType(String waveName) {
 		return Util.getWaveformType(waveName);
 	}
 
