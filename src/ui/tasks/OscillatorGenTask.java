@@ -3,6 +3,8 @@ package ui.tasks;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.script.ScriptException;
+
 import controlP5.CallbackEvent;
 import controlP5.CallbackListener;
 import controlP5.ControlP5;
@@ -109,13 +111,20 @@ public class OscillatorGenTask extends Task {
 	}
 	
 	void processFrequencyChange() {
-		String valueToUpdate = "";
+		String valueToUpdate = this.lastFrequency;
 		
 		if (this.frequency.toString().trim().equalsIgnoreCase(Task.userInputAsDefault))
 			valueToUpdate = "-1";
 		else
-			valueToUpdate = (evaluate_value(this.frequency)).toString();
-				
+			try {
+				valueToUpdate = evaluateAsFloat(this.frequency)+"";
+				((Textfield) cp5.get(get_gui_id() + "/frequency")).setColorBackground(Task.defaultColor); //color of the task
+			} catch (ScriptException | NumberFormatException e) {
+				System.out.println("ScriptExpression-related error thrown, unhandled update.");
+				((Textfield) cp5.get(get_gui_id() + "/frequency")).setColorBackground(p.color(255,0, 0, 100)); //color of the task
+				valueToUpdate = "-1";
+			}
+						
 		if (willFrequencyChange(valueToUpdate)) {
 			Main.eng.updateGenerator(this.get_gui_id(), "frequency : " + valueToUpdate);
 			this.lastFrequency = valueToUpdate;
@@ -128,7 +137,14 @@ public class OscillatorGenTask extends Task {
 		if (this.amplitude.toString().trim().equalsIgnoreCase(Task.userInputAsDefault))
 			valueToUpdate = "-1";
 		else
-			valueToUpdate = (evaluate_value(this.amplitude)).toString();
+			try {
+				valueToUpdate = evaluateAsFloat(this.amplitude)+"";
+				((Textfield) cp5.get(get_gui_id() + "/amplitude")).setColorBackground(Task.defaultColor); //color of the task
+			} catch (ScriptException | NumberFormatException e) {
+				System.out.println("ScriptExpression-related error thrown, unhandled update.");
+				((Textfield) cp5.get(get_gui_id() + "/amplitude")).setColorBackground(p.color(255,0, 0, 100)); //color of the task
+				valueToUpdate = "-1";
+			}
 
 		if (willAmplitudeChange(valueToUpdate)) {
 			Main.eng.updateGenerator(this.get_gui_id(), "amplitude : " + valueToUpdate);
@@ -141,7 +157,14 @@ public class OscillatorGenTask extends Task {
 		if (this.duration.toString().trim().equalsIgnoreCase(Task.userInputAsDefault))
 			valueToUpdate = "-1";
 		else
-			valueToUpdate = (evaluate_value(this.duration)).toString();
+			try {
+				valueToUpdate = evaluateAsFloat(this.duration)+"";
+				((Textfield) cp5.get(get_gui_id() + "/duration")).setColorBackground(Task.defaultColor); //color of the task
+			} catch (ScriptException | NumberFormatException e) {
+				System.out.println("ScriptExpression-related error thrown, unhandled update.");
+				((Textfield) cp5.get(get_gui_id() + "/duration")).setColorBackground(p.color(255,0, 0, 100)); //color of the task
+				valueToUpdate = "-1";
+			}
 
 		if (willDurationChange(valueToUpdate)) {
 			Main.eng.updateGenerator(this.get_gui_id(), "duration : " + valueToUpdate);

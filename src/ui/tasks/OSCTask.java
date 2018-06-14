@@ -86,7 +86,7 @@ public class OSCTask extends Task {
 
     //evaluates each item of the osc message
     for (int i = 0; i < args.length; i++) {
-      args[i] = evaluate_value(content[i]);
+      args[i] = old_evaluate_value(content[i]);
 
       //fixes the problems for in sending double in osc messages
       if (args[i] instanceof Double)

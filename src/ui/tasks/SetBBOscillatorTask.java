@@ -50,14 +50,14 @@ public class SetBBOscillatorTask extends SetBBTask {
 		if (!should_run())
 			return;
 
-		String freq_val = (evaluate_value(this.frequency)).toString();
-		String amp_val = (evaluate_value(this.amplitude)).toString();
+		String freq_val = (old_evaluate_value(this.frequency)).toString();
+		String amp_val = (old_evaluate_value(this.amplitude)).toString();
 
 		Expression ne = new Expression(amp_val + "*math.sin(" + timer + "*" + freq_val + ")");
 
 		Blackboard board = Main.instance().board();
 		this.status = Status.RUNNING;
-		board.put(variableName, evaluate_value(ne));
+		board.put(variableName, old_evaluate_value(ne));
 		this.status = Status.DONE;
 	}
 

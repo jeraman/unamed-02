@@ -41,7 +41,7 @@ public class SetBBRandomTask extends SetBBTask {
   public void run() {
     if (!should_run()) return;
 
-    String delay_val = (evaluate_value(this.delay)).toString();
+    String delay_val = (old_evaluate_value(this.delay)).toString();
     
     //String rootTimer = "$" + ((ZenStates)p).canvas.root.get_formated_blackboard_title() + "_timer";
     
@@ -51,7 +51,7 @@ public class SetBBRandomTask extends SetBBTask {
     
     if (!delay_val.equals("0")) {
     	Expression ne = new Expression("("+timer+"%"+delay_val+")>("+delay_val+"-0.05)");
-    	reached_delay = (boolean)(evaluate_value(ne));
+    	reached_delay = (boolean)(old_evaluate_value(ne));
     }
 
     //p.println("exp: " + ne.toString() + "   reached_delay? " + reached_delay);

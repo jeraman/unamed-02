@@ -53,8 +53,8 @@ public class SetBBRampTask extends SetBBTask {
   public void run() { 
     if (!should_run()) return;
     
-    String dur_val = evaluate_value(this.duration).toString();
-    String amp_val = evaluate_value(this.amplitude).toString();
+    String dur_val = old_evaluate_value(this.duration).toString();
+    String amp_val = old_evaluate_value(this.amplitude).toString();
 
     Expression ne;
     
@@ -70,7 +70,7 @@ public class SetBBRampTask extends SetBBTask {
     Blackboard board = Main.instance().board();
     this.status = Status.RUNNING;
     
-    Object result = evaluate_value(ne);
+    Object result = old_evaluate_value(ne);
     
     board.put(variableName, result);
     

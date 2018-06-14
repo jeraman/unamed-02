@@ -63,7 +63,7 @@ public class SetBBTask extends Task {
 
 		Blackboard board = Main.instance().board();
 		this.status = Status.RUNNING;
-		board.put(variableName, evaluate_value(value));
+		board.put(variableName, old_evaluate_value(value));
 		this.status = Status.DONE;
 	}
 

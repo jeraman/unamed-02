@@ -25,7 +25,8 @@ public abstract class Task implements Serializable {
   protected boolean first_time;
   
   
-  static String userInputAsDefault = "(USER INPUT)";
+  public static final String userInputAsDefault = "(USER INPUT)";
+  public static final int defaultColor = ControlP5Constants.THEME_CP52014.getBackground();
   
   //UI variables
   protected String textlabel;
@@ -99,8 +100,36 @@ public abstract class Task implements Serializable {
     return result;
   }
 
+  public boolean evaluateAsBoolean (Object o) throws ScriptException {
+	  return Boolean.parseBoolean(this.evaluateAsString(o));
+  }
+  
+  public float evaluateAsFloat (Object o) throws ScriptException {
+	  return Float.parseFloat(this.evaluateAsString(o));
+  }
+  
+  public int evaluateAsInteger (Object o) throws ScriptException {
+	  return Integer.parseInt(this.evaluateAsString(o));
+  }
+  
+  public String evaluateAsString (Object o) throws ScriptException {
+	  return this.evaluate_value(o).toString();
+  }
+  
   //function that tries to evaluates the value (if necessary) and returns the real value
-  public Object evaluate_value (Object o){
+  public Object evaluate_value (Object o) throws ScriptException {
+    Object ret = o;
+    Blackboard board = Main.instance().board();
+
+    // If added an expression, process it and save result in blackboard.
+    if (o instanceof Expression) 
+        ret = ((Expression)o).eval(board);
+
+    return ret;
+  }
+  
+  @Deprecated
+  public Object old_evaluate_value (Object o){
     Object ret = o;
     Blackboard board = Main.instance().board();
 
