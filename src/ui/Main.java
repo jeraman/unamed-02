@@ -72,13 +72,13 @@ public class Main extends PApplet {
 		//also here for the origins of the bug
 		//https://forum.processing.org/one/topic/controlp5-blurry-text.html
 		
-		PFont pfont = createFont("Arial",FONT_SIZE,true); // use true/false for smooth/no-smooth
-		ControlFont font = new ControlFont(pfont,FONT_SIZE);
-		cp5.setFont(font);
-		textFont(pfont);
+//		PFont pfont = createFont("Arial",15,true); // use true/false for smooth/no-smooth
+//		ControlFont font = new ControlFont(pfont,12);
+//		cp5.setFont(font);
+//		textFont(pfont);
 		
-//		textFont(cp5.getFont().getFont());
-//		textSize(FONT_SIZE);
+		textFont(cp5.getFont().getFont());
+		textSize(FONT_SIZE);
 
 		// testing autodraw
 		// cp5.setAutoDraw(false);

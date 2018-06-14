@@ -247,13 +247,13 @@ public class OscillatorGenTask extends Task {
 		Group g = super.load_gui_elements(s);
 		int width = g.getWidth() - (localx * 2);
 
-		this.backgroundheight = (int) (font_size * 18);
+		this.backgroundheight = (int) (font_size * 15);
 		g.setBackgroundHeight(backgroundheight);
 
 		this.createGuiTextField("frequency", localx, localy + (1 * localoffset), width, g, callbackTextField("frequency")).setText(this.frequency.toString());
 		this.createGuiTextField("amplitude", localx, localy + (2 * localoffset), width, g, callbackTextField("amplitude")).setText(this.amplitude.toString());
 		this.createGuiTextField("duration", localx, localy + (3 * localoffset), width, g, callbackTextField("duration")).setText(this.duration.toString());
-		this.createGuiToggle(localx, localy + (4 * localoffset), width, g, callbackRepeatToggle());
+		//this.createGuiToggle(localx, localy + (4 * localoffset), width, g, callbackRepeatToggle());
 		this.createScrollableList("wavetype", list, localx, localy + (0 * localoffset), width, g,  callbackScrollList());
 
 		return g;
