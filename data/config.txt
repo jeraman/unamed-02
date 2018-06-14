@@ -14,5 +14,6 @@ localhost
 50
 #font size
 10
+#12
 #15
 #20

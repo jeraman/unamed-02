@@ -9,6 +9,7 @@ package ui;
  ************************************************/
 
 import processing.core.PApplet;
+import processing.core.PFont;
 import soundengine.SoundEngine;
 import soundengine.util.MidiIO;
 import oscP5.*;
@@ -66,8 +67,18 @@ public class Main extends PApplet {
 
 		setup_expression_loading_bug();
 
-		textFont(cp5.getFont().getFont());
-		textSize(FONT_SIZE);
+		//this link covers changing font size:
+		//https://www.kasperkamperman.com/blog/processing-code/controlp5-library-example2/
+		//also here for the origins of the bug
+		//https://forum.processing.org/one/topic/controlp5-blurry-text.html
+		
+		PFont pfont = createFont("Arial",FONT_SIZE,true); // use true/false for smooth/no-smooth
+		ControlFont font = new ControlFont(pfont,FONT_SIZE);
+		cp5.setFont(font);
+		textFont(pfont);
+		
+//		textFont(cp5.getFont().getFont());
+//		textSize(FONT_SIZE);
 
 		// testing autodraw
 		// cp5.setAutoDraw(false);
