@@ -13,8 +13,8 @@ public class ScrollableListUI extends UiElement {
 	
 	private String selection;
 	private String lastSelection;
-	transient private List<String> options; 
-	private ScrollableList scrollableList;
+	private List<String> options; 
+	private transient ScrollableList scrollableList;
 	
 	public ScrollableListUI (List<String> list) {
 		this.options = list;

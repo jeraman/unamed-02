@@ -35,7 +35,7 @@ public class TestParameterUpdateOnSoundEngine extends PApplet {
 	int counter = 0;
 
 	public void mousePressed() {
-		 //processMousePressedGenUpdates();
+		 processMousePressedGenUpdates();
 		 //processMousePressedAugUpdates();
 		counter++;
 	}
@@ -61,13 +61,15 @@ public class TestParameterUpdateOnSoundEngine extends PApplet {
 		int rand = (int) random(2);
 
 		if (isGen1Active && mouseButton == LEFT)
-			eng.updateGenerator("1", "Loop : false");
+//			eng.updateGenerator("1", "Loop : false");
+			eng.updateGenerator("1", "pitch: 60");
 		if (isGen1Active && mouseButton == RIGHT)
-			eng.updateGenerator("1", "Loop : true");
-		if (isGen1Active && rand == 0)
-			eng.updateGenerator("1", "filename : 123go.mp3");
-		if (isGen1Active && rand == 1)
-			eng.updateGenerator("1", "filename : error.mp3");
+//			eng.updateGenerator("1", "Loop : true");
+			eng.updateGenerator("1", "pitch : -1");
+//		if (isGen1Active && rand == 0)
+//			eng.updateGenerator("1", "filename : 123go.mp3");
+//		if (isGen1Active && rand == 1)
+//			eng.updateGenerator("1", "filename : error.mp3");
 	}
 	
 
@@ -187,7 +189,7 @@ public class TestParameterUpdateOnSoundEngine extends PApplet {
 	private void processGen1() {
 		if (!isGen1Active)
 //			eng.addGenerator("1", "SAMPLE", new String[] { "123go.mp3", "60", "127", "true" });
-		eng.addGenerator("1", "SAMPLE", new String[] { "123go.mp3", "60", "-1", "true", "1000" });
+		eng.addGenerator("1", "SAMPLE", new String[] { "123go.mp3", "-1", "-1", "true", "1000" });
 		else
 			eng.removeGenerator("1");
 		isGen1Active = !isGen1Active;

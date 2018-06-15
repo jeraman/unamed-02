@@ -143,12 +143,13 @@ public class SampleFileGenerator extends ModifiedSampler implements Generator,Ru
 	}
 	
 	public void setPitch(int pitch) {
+		this.pitch = pitch;
 		float pr = calculateRelativePitch(pitch);
 		this.setPlaybackRate(pr);
 	}
 
 	private float calculateRelativePitch(int pitchOffset) {
-		float difPit = ((SampleFileGenerator.basePitch - pitchOffset) % 24) * -1;
+		float difPit = Math.abs(((SampleFileGenerator.basePitch - pitchOffset) % 24) * -1);
 		return (1.f + (difPit) * (1.f / 12.f));
 	}
 	

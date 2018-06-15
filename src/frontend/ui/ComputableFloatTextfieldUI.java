@@ -14,14 +14,14 @@ import frontend.tasks.Task;
 
 
 
-public class ComputableTextfieldUI extends UiElement {
+public class ComputableFloatTextfieldUI extends UiElement {
 	
 	private Object valueExpression;
 	private float computedValue;
 	private String lastComputedValue;
 	transient private Textfield textfield;
 
-	public ComputableTextfieldUI() {
+	public ComputableFloatTextfieldUI() {
 		this("-1");
 	}
 
@@ -30,7 +30,7 @@ public class ComputableTextfieldUI extends UiElement {
 		this.lastComputedValue = "";
 	}
 	
-	public ComputableTextfieldUI(String defaultValue) {
+	public ComputableFloatTextfieldUI(String defaultValue) {
 		this.setValueExpression(defaultValue);
 	}
 	
@@ -47,7 +47,7 @@ public class ComputableTextfieldUI extends UiElement {
 		this.textfield.setText(this.valueExpression.toString());
 	}
 	
-	private boolean isValueExpressionEquals(String target) {
+	protected boolean isValueExpressionEquals(String target) {
 		return this.valueExpression.toString().trim().equalsIgnoreCase(target);
 	}
 	
@@ -84,52 +84,23 @@ public class ComputableTextfieldUI extends UiElement {
 	}
 	
 	public void computeValue() {
-		//float computedValue = -1;
-		
 		if (this.isValueExpressionEquals(Task.userInputAsDefault)) {
 			computedValue = -1;
 			textfield.setColorBackground(defaultColor);
 		} else
 			try {
-				computedValue = evaluateAsFloat(this.valueExpression);
+				computedValue = localEvaluate(this.valueExpression);
 				textfield.setColorBackground(defaultColor); 
 			} catch (ScriptException | NumberFormatException e) {
 				System.out.println("ScrriptExpression-related error thrown, unhandled update.");
 				computedValue = -1;
 				textfield.setColorBackground(errorColor); 
 			}
-		
-		//return computedValue;
 	}
 	
-	public boolean evaluateAsBoolean(Object o) throws ScriptException {
-		return Boolean.parseBoolean(this.evaluateAsString(o));
+	public float localEvaluate (Object exp) throws ScriptException{
+		return evaluateAsFloat(exp);
 	}
-
-	public float evaluateAsFloat(Object o) throws ScriptException {
-		return Float.parseFloat(this.evaluateAsString(o));
-	}
-
-	public int evaluateAsInteger(Object o) throws ScriptException {
-		return Integer.parseInt(this.evaluateAsString(o));
-	}
-
-	public String evaluateAsString(Object o) throws ScriptException {
-		return this.evaluate_value(o).toString();
-	}
-
-	// function that tries to evaluates the value (if necessary) and returns the real value
-	public Object evaluate_value(Object o) throws ScriptException {
-		Object ret = o;
-		Blackboard board = Main.instance().board();
-
-		// If added an expression, process it and save result in blackboard.
-		if (o instanceof Expression)
-			ret = ((Expression) o).eval(board);
-
-		return ret;
-	}
-	
 	
 	public void createUI(String id, String label, int localx, int localy, int w, Group g) { 
 		this.textfield = (cp5.addTextfield(id + "/" + label)

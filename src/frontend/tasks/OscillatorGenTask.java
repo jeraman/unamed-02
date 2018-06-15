@@ -8,7 +8,7 @@ import controlP5.ControlP5;
 import controlP5.Group;
 import frontend.Main;
 import frontend.State;
-import frontend.ui.ComputableTextfieldUI;
+import frontend.ui.ComputableFloatTextfieldUI;
 import frontend.ui.ScrollableListUI;
 import processing.core.PApplet;
 
@@ -17,17 +17,17 @@ public class OscillatorGenTask extends Task {
 	private static final List<String> list = Arrays.asList("SINE", "PHASOR", "QUATERPULSE", "SAW",  "SQUARE",
 			"TRIANGLE");
 
-	private ComputableTextfieldUI frequency;
-	private ComputableTextfieldUI amplitude;
-	private ComputableTextfieldUI duration;
+	private ComputableFloatTextfieldUI frequency;
+	private ComputableFloatTextfieldUI amplitude;
+	private ComputableFloatTextfieldUI duration;
 	private ScrollableListUI wavetype;
 	
 	public OscillatorGenTask(PApplet p, ControlP5 cp5, String taskname) {
 		super(p, cp5, taskname);
 		
-		this.frequency = new ComputableTextfieldUI();
-		this.amplitude = new ComputableTextfieldUI();
-		this.duration = new ComputableTextfieldUI();
+		this.frequency = new ComputableFloatTextfieldUI();
+		this.amplitude = new ComputableFloatTextfieldUI();
+		this.duration = new ComputableFloatTextfieldUI();
 		this.wavetype = new ScrollableListUI(list);
 
 		Main.eng.addGenerator(this.get_gui_id(), "OSCILLATOR", getDefaultParameters());
@@ -35,27 +35,6 @@ public class OscillatorGenTask extends Task {
 	
 	private String[] getDefaultParameters(){
 		return new String[] { "-1", "-1", "SINE", "-1"};
-	}
-	
-	@Override
-	public void build(PApplet p, ControlP5 cp5) {
-		// TODO Auto-generated method stub
-		this.p = p;
-		this.cp5 = cp5;
-	}
-
-	@Override
-	public void update_status() {
-	}
-
-	@Override
-	public Task clone_it() {
-		OscillatorGenTask clone = new OscillatorGenTask(this.p, this.cp5, this.name);
-		clone.frequency = this.frequency;
-		clone.amplitude = this.amplitude;
-		clone.duration = this.duration;
-		clone.wavetype = this.wavetype;
-		return clone;
 	}
 	
 	private void processFrequencyChange() {
@@ -82,6 +61,11 @@ public class OscillatorGenTask extends Task {
 		this.processDurationChange();
 		this.processWavetypeChange();
 	}
+	
+	public void closeTask() {
+		Main.eng.removeGenerator(this.get_gui_id());
+		super.closeTask();
+	}
 
 	@Override
 	public void run() {
@@ -92,10 +76,27 @@ public class OscillatorGenTask extends Task {
 
 	}
 	
-	public void closeTask() {
-		Main.eng.removeGenerator(this.get_gui_id());
-		super.closeTask();
+	@Override
+	public Task clone_it() {
+		OscillatorGenTask clone = new OscillatorGenTask(this.p, this.cp5, this.name);
+		clone.frequency = this.frequency;
+		clone.amplitude = this.amplitude;
+		clone.duration = this.duration;
+		clone.wavetype = this.wavetype;
+		return clone;
 	}
+	
+	@Override
+	public void build(PApplet p, ControlP5 cp5) {
+		// TODO Auto-generated method stub
+		this.p = p;
+		this.cp5 = cp5;
+	}
+
+	@Override
+	public void update_status() {
+	}
+	
 
 	/////////////////////////////////
 	// UI config

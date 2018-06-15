@@ -15,6 +15,7 @@ import controlP5.*;
 import frontend.tasks.ControlRemoteDMXTask;
 import frontend.tasks.OSCTask;
 import frontend.tasks.OscillatorGenTask;
+import frontend.tasks.SampleGenTask;
 import frontend.tasks.ScriptingTask;
 import frontend.tasks.SetBBOscillatorTask;
 import frontend.tasks.SetBBRampTask;
@@ -523,7 +524,9 @@ public class State implements Serializable {
 	private void init_sample_task() {
 		// TODO Auto-generated method stub
 		System.out.println("create sample task!");
-
+		String taskname = generate_random_name();
+		SampleGenTask t = new SampleGenTask(p, cp5, taskname);
+		this.add_task(t);
 	}
 
 	private void init_live_input_task() {
