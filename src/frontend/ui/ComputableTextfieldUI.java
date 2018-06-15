@@ -17,6 +17,7 @@ import frontend.tasks.Task;
 public class ComputableTextfieldUI extends UiElement {
 	
 	private Object valueExpression;
+	private float computedValue;
 	private String lastComputedValue;
 	transient private Textfield textfield;
 
@@ -54,12 +55,12 @@ public class ComputableTextfieldUI extends UiElement {
 		return this.valueExpression == null || !this.isValueExpressionEquals(newValue);
 	}
 	
-	public void setLastValue(String l) {
-		this.lastComputedValue = l;
+	public void setLastValue() {
+		this.lastComputedValue = computedValue+"";
 	}
 	
-	public boolean hasChanged(String newValue) {
-		return !this.lastComputedValue.trim().equalsIgnoreCase(newValue);
+	public boolean hasChanged() {
+		return !this.lastComputedValue.trim().equalsIgnoreCase(this.computedValue+"");
 	}
 	
 	public void updateValueExpression() {
@@ -70,26 +71,35 @@ public class ComputableTextfieldUI extends UiElement {
 		if (!isNecessaryToUpdateValueExpression(newValue))
 			return;
 		this.valueExpression = new Expression(newValue);
-		getValue();
+		computeValue();
 	}
 	
-	public String getValue() {
-		String valueToUpdate = this.lastComputedValue;
+	public float getValue() {
+		return this.computedValue;
+	}
+	
+	public boolean update() {
+		this.computeValue();
+		return super.update();
+	}
+	
+	public void computeValue() {
+		//float computedValue = -1;
 		
 		if (this.isValueExpressionEquals(Task.userInputAsDefault)) {
-			valueToUpdate = "-1";
+			computedValue = -1;
 			textfield.setColorBackground(defaultColor);
 		} else
 			try {
-				valueToUpdate = evaluateAsFloat(this.valueExpression)+"";
+				computedValue = evaluateAsFloat(this.valueExpression);
 				textfield.setColorBackground(defaultColor); 
 			} catch (ScriptException | NumberFormatException e) {
 				System.out.println("ScrriptExpression-related error thrown, unhandled update.");
-				valueToUpdate = "-1";
+				computedValue = -1;
 				textfield.setColorBackground(errorColor); 
 			}
 		
-		return valueToUpdate;
+		//return computedValue;
 	}
 	
 	public boolean evaluateAsBoolean(Object o) throws ScriptException {

@@ -13,7 +13,7 @@ public class ScrollableListUI extends UiElement {
 	
 	private String selection;
 	private String lastSelection;
-	List<String> options; 
+	transient private List<String> options; 
 	private ScrollableList scrollableList;
 	
 	public ScrollableListUI (List<String> list) {
@@ -22,17 +22,17 @@ public class ScrollableListUI extends UiElement {
 		this.selection = list.get(0);
 	}
 	
-	void update(String newSelection) {
+	void setSelection(String newSelection) {
 		this.selection = newSelection;
 		//processWavetypeChange();
 	}
 	
-	public boolean hasChanged(String newValue) {
-		return !this.lastSelection.trim().equalsIgnoreCase(newValue);
+	public boolean hasChanged() {
+		return !this.lastSelection.trim().equalsIgnoreCase(this.selection);
 	}
 	
-	public void setLastValue(String l) {
-		this.lastSelection = l;
+	public void setLastValue() {
+		this.lastSelection = this.selection;
 	}
 	
 	public String getValue() {
@@ -43,7 +43,7 @@ public class ScrollableListUI extends UiElement {
 		return new CallbackListener() {
 			public void controlEvent(CallbackEvent theEvent) {
 				int index = (int)theEvent.getController().getValue();
-				update(options.get(index));
+				setSelection(options.get(index));
 			}
 		};
 	}

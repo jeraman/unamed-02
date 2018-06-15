@@ -24,10 +24,18 @@ public abstract class UiElement implements Serializable {
 		font_size = (int)(((Main)p).get_font_size());
 	}
 	
+	public boolean update() {
+		if (this.hasChanged()) {
+			this.setLastValue();
+			return true;
+		}
+		else 
+			return false;
+	}
 	
-	public abstract String getValue();
-	public abstract boolean hasChanged(String newValue);
-	public abstract void setLastValue(String v);
+	//public abstract Object getValue();
+	public abstract boolean hasChanged();
+	public abstract void setLastValue();
 	public abstract void createUI(String id, String label, int localx, int localy, int w, Group g);
 
 }

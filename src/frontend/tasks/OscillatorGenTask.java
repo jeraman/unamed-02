@@ -59,37 +59,21 @@ public class OscillatorGenTask extends Task {
 	}
 	
 	private void processFrequencyChange() {
-		String result = frequency.getValue();
-		if (frequency.hasChanged(result)) {
-			frequency.setLastValue(result);
-			System.out.println("updating " + frequency + " with " + result);
-			Main.eng.updateGenerator(this.get_gui_id(), "frequency : " + result);
-		}
+		if (frequency.update())
+			Main.eng.updateGenerator(this.get_gui_id(), "frequency : " + frequency.getValue());
 	}
 	private void processAmplitudeChange() {
-		String result = amplitude.getValue();
-		if (amplitude.hasChanged(result)) {
-			amplitude.setLastValue(result);
-			System.out.println("updating " + amplitude + " with " + result);
-			Main.eng.updateGenerator(this.get_gui_id(), "amplitude : " + result);
-		}
+		if (amplitude.update())
+			Main.eng.updateGenerator(this.get_gui_id(), "amplitude : " + amplitude.getValue());
 	}
 	private void processDurationChange() {
-		String result = duration.getValue();
-		if (duration.hasChanged(result)) {
-			duration.setLastValue(result);
-			System.out.println("updating " + duration + " with " + result);
-			Main.eng.updateGenerator(this.get_gui_id(), "duration : " + result);
-		}
+		if (duration.update())
+			Main.eng.updateGenerator(this.get_gui_id(), "duration : " + duration.getValue());
 	}
-	
-	void processWavetypeChange() {
-		String result = wavetype.getValue();
-		if (wavetype.hasChanged(result)) {
-			wavetype.setLastValue(result);
-			System.out.println("updating " + wavetype + " with " + result);
-			Main.eng.updateGenerator(this.get_gui_id(), "waveform: " + result);
-		}
+			
+	private void processWavetypeChange() {
+		if (wavetype.update())
+			Main.eng.updateGenerator(this.get_gui_id(), "waveform : " + wavetype.getValue());
 	}
 
 	private void processAllParameters() {
