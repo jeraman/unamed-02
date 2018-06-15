@@ -1,15 +1,16 @@
-package ui.tasks;
+package frontend.tasks;
 
 
 import java.io.Serializable;
 import processing.core.PApplet;
-import ui.Blackboard;
-import ui.Expression;
-import ui.State;
-import ui.StateMachine;
-import ui.Status;
-import ui.Main;
 import controlP5.*;
+import frontend.Blackboard;
+import frontend.Expression;
+import frontend.Main;
+import frontend.State;
+import frontend.StateMachine;
+import frontend.Status;
+
 import javax.script.*;
 
 import java.util.List;
@@ -24,22 +25,24 @@ public abstract class Task implements Serializable {
   protected boolean repeat;
   protected boolean first_time;
   
-  
   public static final String userInputAsDefault = "(USER INPUT)";
   public static final int defaultColor = ControlP5Constants.THEME_CP52014.getBackground();
   
   //UI variables
-  protected String textlabel;
-  protected int font_size;//			= (int)(((ZenStates)p).get_font_size());
+  protected String textlabel;  
   protected int backgroundheight;// 	= (int)(font_size* 12.5);
   protected int localoffset;// 		= 3*font_size;
   protected int localx;// 			= 10;
   protected int localy;// 			= (int)(font_size);
   
+  @Deprecated
+  static protected int font_size;//			= (int)(((ZenStates)p).get_font_size());
+  
   //transient variables
+  @Deprecated
   transient protected PApplet  p;
+  @Deprecated
   transient protected ControlP5 cp5;
-
 
   public Task (PApplet p, ControlP5 cp5, String taskname) {
     this.p = p;
@@ -175,6 +178,7 @@ public abstract class Task implements Serializable {
   public abstract void update_status();
   public abstract Task clone_it();
 
+  
   public void closeTask() {
 	  p.println("removing task " + get_gui_id());
 	  cp5.getGroup(get_gui_id()).remove();
@@ -218,6 +222,7 @@ public abstract class Task implements Serializable {
 		};
 	}
   
+  @Deprecated
   protected Textfield createGuiTextField(String target, int localx, int localy, int w, Group g, CallbackListener callback) {
 		return (cp5.addTextfield(get_gui_id() + "/" + target)
 		.setPosition(localx, localy)
@@ -231,6 +236,7 @@ public abstract class Task implements Serializable {
 		.onReleaseOutside(callback));
 	}
   
+  @Deprecated
   protected ScrollableList createScrollableList(String name, List list, int localx, int localy, int w, Group g, CallbackListener callback) {
 		return cp5.addScrollableList(get_gui_id() + "/" + name)
 		.setPosition(localx, localy)
@@ -262,6 +268,7 @@ public abstract class Task implements Serializable {
        .getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE)
        ;
   }
+  
   
   public Group load_gui_elements(State s) {
 

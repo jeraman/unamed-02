@@ -1,5 +1,7 @@
-package ui.visuals;
+package frontend.visuals;
 
+
+import frontend.Main;
 
 /******************************************************************************
  ******************************************************************************
@@ -11,7 +13,6 @@ package ui.visuals;
  *****************************************************************************/
 
 import processing.core.PApplet;
-import ui.Main;
 
 class PieMenu {
 

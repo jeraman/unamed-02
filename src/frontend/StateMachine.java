@@ -1,14 +1,14 @@
-package ui;
+package frontend;
 
 
 import processing.core.PApplet;
-import ui.tasks.Task;
-import ui.visuals.StateMachinePreview;
 
 import java.util.UUID;
 import java.util.Vector;
 
 import controlP5.*;
+import frontend.tasks.Task;
+import frontend.visuals.StateMachinePreview;
 
 public class StateMachine extends Task {
 

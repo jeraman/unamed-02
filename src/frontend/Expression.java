@@ -1,4 +1,4 @@
-package ui;
+package frontend;
 
 /************************************************
  ** Class used to interpret expressions developed by Sofian

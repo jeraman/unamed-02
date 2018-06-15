@@ -1,4 +1,4 @@
-package ui;
+package frontend;
 /************************************************
  ** Class representing a state in the HFSM
  ************************************************
@@ -11,17 +11,18 @@ package ui;
 import java.util.*;
 import java.io.Serializable;
 import processing.core.PApplet;
-import ui.tasks.ControlRemoteDMXTask;
-import ui.tasks.OSCTask;
-import ui.tasks.OscillatorGenTask;
-import ui.tasks.ScriptingTask;
-import ui.tasks.SetBBOscillatorTask;
-import ui.tasks.SetBBRampTask;
-import ui.tasks.SetBBRandomTask;
-import ui.tasks.SetBBTask;
-import ui.tasks.Task;
-import ui.visuals.MultiLevelPieMenu;
 import controlP5.*;
+import frontend.tasks.ControlRemoteDMXTask;
+import frontend.tasks.OSCTask;
+import frontend.tasks.OscillatorGenTask;
+import frontend.tasks.ScriptingTask;
+import frontend.tasks.SetBBOscillatorTask;
+import frontend.tasks.SetBBRampTask;
+import frontend.tasks.SetBBRandomTask;
+import frontend.tasks.SetBBTask;
+import frontend.tasks.Task;
+import frontend.visuals.MultiLevelPieMenu;
+
 import java.util.UUID;
 
 ////////////////////////////////////////

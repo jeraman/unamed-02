@@ -1,14 +1,14 @@
-package ui.tasks;
+package frontend.tasks;
 
 
 
 import oscP5.*;
 import netP5.*;
 import controlP5.*;
+import frontend.Expression;
+import frontend.Main;
+import frontend.Status;
 import processing.core.PApplet;
-import ui.Expression;
-import ui.Status;
-import ui.Main;
 
 ////////////////////////////////////////
 //implementing a task for OSC messages

@@ -1,4 +1,4 @@
-package ui;
+package frontend;
 /************************************************
  ** Basic Status enum for running machine
  ************************************************

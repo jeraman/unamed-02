@@ -1,4 +1,4 @@
-package ui.tasks;
+package frontend.tasks;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -20,11 +20,11 @@ import controlP5.CallbackListener;
 import controlP5.ControlP5;
 import controlP5.Group;
 import controlP5.Textfield;
+import frontend.Blackboard;
+import frontend.Main;
+import frontend.State;
+import frontend.Status;
 import processing.core.PApplet;
-import ui.Blackboard;
-import ui.State;
-import ui.Status;
-import ui.Main;
 
 public class ScriptingTask extends Task {
 

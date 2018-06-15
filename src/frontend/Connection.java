@@ -1,4 +1,4 @@
-package ui;
+package frontend;
 /************************************************
  ** Class representing a conection between two states in the HFSM
  ************************************************

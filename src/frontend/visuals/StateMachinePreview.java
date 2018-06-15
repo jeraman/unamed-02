@@ -1,8 +1,8 @@
-package ui.visuals;
+package frontend.visuals;
 import controlP5.Canvas;
+import frontend.Main;
+import frontend.StateMachine;
 import processing.core.PGraphics;
-import ui.StateMachine;
-import ui.Main;
 
 /******************************************************************************
  ******************************************************************************

@@ -1,4 +1,4 @@
-package ui;
+package frontend;
 
 
 /************************************************
@@ -20,6 +20,7 @@ import javax.script.*;
 
 import controlP5.*;
 import ddf.minim.*;
+import frontend.ui.*;
 
 
 public class Main extends PApplet {
@@ -45,7 +46,7 @@ public class Main extends PApplet {
 	boolean is_loading = false;
 
 	public static void main(String[] args) {
-		PApplet.main("ui.Main");
+		PApplet.main("frontend.Main");
 	}
 
 	public void settings() {
@@ -64,6 +65,8 @@ public class Main extends PApplet {
 		inst = this;
 		board = new Blackboard(this);
 		canvas = new MainCanvas(this, cp5);
+		
+		UiElement.setup(cp5, this);
 
 		setup_expression_loading_bug();
 

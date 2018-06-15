@@ -1,12 +1,12 @@
-package ui.tasks;
+package frontend.tasks;
 
 import controlP5.*;
+import frontend.Blackboard;
+import frontend.Expression;
+import frontend.Main;
+import frontend.State;
+import frontend.Status;
 import processing.core.PApplet;
-import ui.Blackboard;
-import ui.Expression;
-import ui.State;
-import ui.Status;
-import ui.Main;
 
 public class SetBBTask extends Task {
 

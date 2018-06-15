@@ -1,16 +1,13 @@
-package ui.visuals;
-
+package frontend;
 /************************************************
- ** Enum used by CircleEffectUI class ***********
+ ** Basic movement status for a state
  ************************************************
- ** jeraman.info, Feb. 22 2017 ******************
+ ** jeraman.info, Nov. 29 2016 ******************
  ************************************************
  ************************************************/
 
-
-public enum CircleStatus {
-    CLOSED,
-    OPENING,
-    OPEN,
-    CLOSING
+public enum MovementStatus {
+    FREE,
+    MOVING,
+    FREEZED,
 }
