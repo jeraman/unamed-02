@@ -6,6 +6,7 @@ import controlP5.ControlP5;
 import controlP5.ControlP5Constants;
 import controlP5.Group;
 import controlP5.ScrollableList;
+import controlP5.Textlabel;
 import controlP5.Toggle;
 import frontend.tasks.Task;
 
@@ -13,8 +14,8 @@ public class ToggleUi extends AbstractElementUi {
 
 	private boolean value;
 	private String lastValue;
-	private transient Toggle toggle;
 	private static boolean defaultValue = true;
+	private transient Toggle toggle;
 
 	public ToggleUi() {
 		this.value = defaultValue;
@@ -48,7 +49,9 @@ public class ToggleUi extends AbstractElementUi {
 
 	@Override
 	public void createUI(String id, String label, int localx, int localy, int w, Group g) {
-		this.toggle = (cp5.addToggle(id + "/" + label).setPosition(localx, localy).setSize(w, (int) (font_size * 1.25))
+		this.toggle = (cp5.addToggle(id + "/" + label)
+				.setPosition(localx, localy)
+				.setSize(w, (int) (font_size * 1.25))
 				.setGroup(g)
 				// .setMode(ControlP5.DEFAULT)
 				.setMode(ControlP5.SWITCH)
@@ -58,6 +61,8 @@ public class ToggleUi extends AbstractElementUi {
 				.onReleaseOutside(callback()));
 		//this.enable();
 		this.toggle.getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE);
+		
+
 	}
 
 	private CallbackListener callback() {

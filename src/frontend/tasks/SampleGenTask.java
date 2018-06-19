@@ -5,7 +5,7 @@ import controlP5.ControlP5;
 import controlP5.Group;
 import frontend.Main;
 import frontend.State;
-import frontend.ui.ComputableIntegerTextFieldUI;
+import frontend.ui.ComputableIntegerTextfieldUI;
 import frontend.ui.FileOpenerTextfieldUI;
 import frontend.ui.ToggleUi;
 import processing.core.PApplet;
@@ -13,18 +13,18 @@ import processing.core.PApplet;
 public class SampleGenTask extends Task {
 	
 	private FileOpenerTextfieldUI filename;
-	private ComputableIntegerTextFieldUI pitch;
-	private ComputableIntegerTextFieldUI velocity;
-	private ComputableIntegerTextFieldUI duration;
+	private ComputableIntegerTextfieldUI pitch;
+	private ComputableIntegerTextfieldUI velocity;
+	private ComputableIntegerTextfieldUI duration;
 	private ToggleUi loopStatus;
 	
 	public SampleGenTask(PApplet p, ControlP5 cp5, String taskname) {
 		super(p, cp5, taskname);
 		
 		this.filename = new FileOpenerTextfieldUI();
-		this.pitch = new ComputableIntegerTextFieldUI();
-		this.velocity = new ComputableIntegerTextFieldUI();
-		this.duration = new ComputableIntegerTextFieldUI();
+		this.pitch = new ComputableIntegerTextfieldUI();
+		this.velocity = new ComputableIntegerTextfieldUI();
+		this.duration = new ComputableIntegerTextfieldUI();
 		this.loopStatus = new ToggleUi();
 		
 		Main.eng.addGenerator(this.get_gui_id(), "SAMPLE", getDefaultParameters());
@@ -121,7 +121,7 @@ public class SampleGenTask extends Task {
 		Group g = super.load_gui_elements(s);
 		int width = g.getWidth() - (localx * 2);
 
-		this.backgroundheight = (int) (font_size * 18);
+		this.backgroundheight = (int) (localoffset * 5.2);
 		g.setBackgroundHeight(backgroundheight);
 
 		filename.createUI(id, "filename", localx, localy + (0 * localoffset), width, g);

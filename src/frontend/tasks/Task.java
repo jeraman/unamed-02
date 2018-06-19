@@ -168,7 +168,7 @@ public abstract class Task implements Serializable {
 
     return result;
   }
-
+  
   public void stop () {
 
   }
@@ -186,6 +186,7 @@ public abstract class Task implements Serializable {
 
   //////////////////////////////
 	// gui commands
+  @Deprecated
 	protected void check_repeat_toggle(String s, CallbackEvent theEvent) {
 		System.out.println("repeat callback!");
 
@@ -198,6 +199,7 @@ public abstract class Task implements Serializable {
 			this.repeat = true; // repeat
 	}
   
+@Deprecated
   protected CallbackListener callbackRepeatToggle() {
 		return new CallbackListener() {
 			public void controlEvent(CallbackEvent theEvent) {
@@ -206,6 +208,7 @@ public abstract class Task implements Serializable {
 		};
   }
   
+  @Deprecated
   private CallbackListener callbackEmptyWhenUsingUserInput(String target) {
 		return new CallbackListener() {
 			public void controlEvent(CallbackEvent theEvent) {
@@ -254,7 +257,8 @@ public abstract class Task implements Serializable {
 		.addItems(list);
 	}
 
-  
+
+  @Deprecated
   protected void createGuiToggle (int x, int y, int w, Group g, CallbackListener callback) {
     cp5.addToggle(get_gui_id()+"/repeat")
        .setPosition(x, y)
@@ -294,7 +298,7 @@ public abstract class Task implements Serializable {
   
   void setup_ui_variables() {
 	  font_size			= (int)(((Main)p).get_font_size());
-	  localoffset 		= (int) (3.2*font_size);
+	  localoffset 		= (int) (4*font_size);
 	  localx 			= 10;
 	  localy 			= (int)(font_size);
   }

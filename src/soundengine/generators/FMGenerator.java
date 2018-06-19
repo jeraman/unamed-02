@@ -77,7 +77,7 @@ public class FMGenerator extends Oscil implements AbstractGenerator, Runnable {
 		if (parts[0].trim().equalsIgnoreCase("modWave"))
 			this.setModWave(parts[1].trim());
 		if (parts[0].trim().equalsIgnoreCase("duration"))
-			this.setDuration(Integer.parseInt(parts[1].trim()));
+			this.setDuration((int)Float.parseFloat(parts[1].trim()));
 	}
 
 	protected int getDuration() {

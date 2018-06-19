@@ -21,6 +21,7 @@ public abstract class AbstractElementUi implements Serializable {
 	protected static final String userInputAsDefault = "(USER INPUT)";
 	protected static final int defaultColor = ControlP5Constants.THEME_CP52014.getBackground();
 	protected static final int errorColor = ControlP5Constants.THEME_RED.getBackground();
+	protected static final int defaultHeight = 15;
 	protected static int font_size;
 	
 	public static void setup(ControlP5 cp5, PApplet p) {

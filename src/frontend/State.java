@@ -11,8 +11,10 @@ package frontend;
 import java.util.*;
 import java.io.Serializable;
 import processing.core.PApplet;
+import soundengine.generators.FMGenerator;
 import controlP5.*;
 import frontend.tasks.ControlRemoteDMXTask;
+import frontend.tasks.FMGenTask;
 import frontend.tasks.OSCTask;
 import frontend.tasks.OscillatorGenTask;
 import frontend.tasks.SampleGenTask;
@@ -536,9 +538,10 @@ public class State implements Serializable {
 	}
 
 	private void init_fm_synth_task() {
-		// TODO Auto-generated method stub
 		System.out.println("create fm synth task!");
-
+		String taskname = generate_random_name();
+		FMGenTask t = new FMGenTask(p, cp5, taskname);
+		this.add_task(t);
 	}
 
 	private void init_oscillator_task() {

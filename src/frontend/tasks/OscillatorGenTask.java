@@ -14,7 +14,7 @@ import processing.core.PApplet;
 
 public class OscillatorGenTask extends Task {
 
-	private static final List<String> list = Arrays.asList("SINE", "PHASOR", "QUATERPULSE", "SAW",  "SQUARE",
+	protected static final List<String> list = Arrays.asList("SINE", "PHASOR", "QUATERPULSE", "SAW",  "SQUARE",
 			"TRIANGLE");
 
 	private ComputableFloatTextfieldUI frequency;
@@ -61,11 +61,6 @@ public class OscillatorGenTask extends Task {
 		this.processDurationChange();
 		this.processWavetypeChange();
 	}
-	
-	public void closeTask() {
-		Main.eng.removeGenerator(this.get_gui_id());
-		super.closeTask();
-	}
 
 	@Override
 	public void run() {
@@ -73,7 +68,6 @@ public class OscillatorGenTask extends Task {
 			return;
 
 		processAllParameters();
-
 	}
 	
 	@Override
@@ -85,18 +79,6 @@ public class OscillatorGenTask extends Task {
 		clone.wavetype = this.wavetype;
 		return clone;
 	}
-	
-	@Override
-	public void build(PApplet p, ControlP5 cp5) {
-		// TODO Auto-generated method stub
-		this.p = p;
-		this.cp5 = cp5;
-	}
-
-	@Override
-	public void update_status() {
-	}
-	
 
 	/////////////////////////////////
 	// UI config
@@ -107,17 +89,35 @@ public class OscillatorGenTask extends Task {
 		Group g = super.load_gui_elements(s);
 		int width = g.getWidth() - (localx * 2);
 
-		this.backgroundheight = (int) (font_size * 15);
+		this.backgroundheight = (int) (localoffset * 4.5);
 		g.setBackgroundHeight(backgroundheight);
-		
-		frequency.createUI(id, "frequency", localx, localy + (1 * localoffset), width, g);
-		amplitude.createUI(id, "amplitude", localx, localy + (2 * localoffset), width, g);
-		duration.createUI(id, "duration", localx, localy + (3 * localoffset), width, g);
+		int miniOffsetDueToScrollList = 5;
+		frequency.createUI(id, "frequency", localx, localy + miniOffsetDueToScrollList + (1 * localoffset), width, g);
+		amplitude.createUI(id, "amplitude", localx, localy + miniOffsetDueToScrollList + (2 * localoffset), width, g);
+		duration.createUI(id, "duration", localx, localy + miniOffsetDueToScrollList + (3 * localoffset), width, g);
 		wavetype.createUI(id, "wavetype", localx, localy + (0 * localoffset), width, g);
 		
 //		this.createGuiToggle(localx, localy + (4 * localoffset), width, g, callbackRepeatToggle());
 
 		return g;
+	}
+	
+	/////////////////////////////////////
+	//methods to be carried to super or to be deleted	
+	public void closeTask() {
+		Main.eng.removeGenerator(this.get_gui_id());
+		super.closeTask();
+	}
+	
+	@Override
+	public void build(PApplet p, ControlP5 cp5) {
+		// TODO Auto-generated method stub
+		this.p = p;
+		this.cp5 = cp5;
+	}
+	
+	@Override
+	public void update_status() {
 	}
 	
 	public CallbackListener generate_callback_enter() {

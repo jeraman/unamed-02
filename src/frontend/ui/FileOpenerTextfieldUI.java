@@ -49,6 +49,7 @@ public class FileOpenerTextfieldUI extends AbstractElementUi {
 		this.textfield = (cp5.addTextfield(id + "/" + label)
 				.setPosition(localx, localy)
 				.setSize(w, (int) (font_size * 1.25))
+				.setHeight(defaultHeight)
 				.setGroup(g)
 				.setText(defaultSoundFile)
 				.setAutoClear(false)
