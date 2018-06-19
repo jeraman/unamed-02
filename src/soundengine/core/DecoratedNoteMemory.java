@@ -3,7 +3,7 @@ package soundengine.core;
 import java.util.ArrayList;
 import org.jfugue.theory.Chord;
 
-import soundengine.generators.Generator;
+import soundengine.generators.AbstractGenerator;
 import soundengine.generators.GeneratorFactory;
 import soundengine.util.MusicTheory;
 

@@ -1,7 +1,7 @@
 package soundengine.effects;
 
 public class MoogFilterEffectObserver extends EffectObserver {
-	public MoogFilterEffectObserver(Effect original, Effect updatable) {
+	public MoogFilterEffectObserver(AbstractEffect original, AbstractEffect updatable) {
 		super(original, updatable);
 	}
 

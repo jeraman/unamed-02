@@ -2,7 +2,7 @@ package soundengine.util;
 
 import processing.core.PApplet;
 import soundengine.core.DecoratedNoteMemory;
-import soundengine.generators.Generator;
+import soundengine.generators.AbstractGenerator;
 import soundengine.util.MidiIO;
 import themidibus.MidiBus;
 import ddf.minim.*;

@@ -1,7 +1,7 @@
 package soundengine.effects;
 
 public class BandPassFilterEffectObserver extends EffectObserver {
-	public BandPassFilterEffectObserver(Effect original, Effect updatable) {
+	public BandPassFilterEffectObserver(AbstractEffect original, AbstractEffect updatable) {
 		super(original, updatable);
 	}
 

@@ -1,6 +1,6 @@
 package soundengine.augmenters;
 
-import soundengine.effects.Effect;
+import soundengine.effects.AbstractEffect;
 
 /**
  * Singleton class used to create custom augmenters
@@ -14,8 +14,8 @@ public class AugmenterFactory {
 	private AugmenterFactory() {
 	}
 
-	public static Augmenter createAugmenter(String type, String[] parameters) {
-		Augmenter aug = null;
+	public static AbstractAugmenter createAugmenter(String type, String[] parameters) {
+		AbstractAugmenter aug = null;
 
 		if (type.equalsIgnoreCase("NOTE"))
 			aug = createNote(parameters);
@@ -37,7 +37,7 @@ public class AugmenterFactory {
 		return aug;
 	}
 
-	public static void updateAugmenter(Augmenter aug, String[] parameters) {
+	public static void updateAugmenter(AbstractAugmenter aug, String[] parameters) {
 
 		if (aug instanceof NoteAugmenter)
 			updateNoteAugmenter((NoteAugmenter) aug, parameters);
@@ -51,12 +51,12 @@ public class AugmenterFactory {
 			updateChordAugmenter((ChordAugmenter) aug, parameters);
 	}
 	
-	public static void updateAugmenter(Augmenter aug, String singleParameter) {
+	public static void updateAugmenter(AbstractAugmenter aug, String singleParameter) {
 		aug.updateParameterFromString(singleParameter);
 	}
 
 	// note
-	private static Augmenter createNote(String[] parameters) {
+	private static AbstractAugmenter createNote(String[] parameters) {
 		int pitch = Integer.parseInt(parameters[0]);
 		return new NoteAugmenter(pitch);
 	}
@@ -67,7 +67,7 @@ public class AugmenterFactory {
 	}
 
 	// relative interval
-	private static Augmenter createRelativeInterval(String[] parameters) {
+	private static AbstractAugmenter createRelativeInterval(String[] parameters) {
 		String type = parameters[0];
 		return new RelativeIntervalAugmenter(type);
 	}
@@ -78,7 +78,7 @@ public class AugmenterFactory {
 	}
 
 	// interval
-	private static Augmenter createInterval(String[] parameters) {
+	private static AbstractAugmenter createInterval(String[] parameters) {
 		int root = Integer.parseInt(parameters[0]);
 		String type = parameters[1];
 		return new IntervalAugmenter(root, type);
@@ -92,7 +92,7 @@ public class AugmenterFactory {
 	}
 
 	// relative chord
-	private static Augmenter createRelativeChord(String[] parameters) {
+	private static AbstractAugmenter createRelativeChord(String[] parameters) {
 		String type = parameters[0];
 		return new RelativeChordAugmenter(type);
 	}
@@ -103,7 +103,7 @@ public class AugmenterFactory {
 	}
 
 	// chord
-	private static Augmenter createChord(String[] parameters) {
+	private static AbstractAugmenter createChord(String[] parameters) {
 		int root = Integer.parseInt(parameters[0]);
 		String type = parameters[1];
 		return new ChordAugmenter(root, type);

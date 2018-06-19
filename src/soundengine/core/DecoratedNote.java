@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import ddf.minim.UGen;
 import ddf.minim.ugens.Summer;
 import soundengine.SoundEngine;
-import soundengine.augmenters.Augmenter;
+import soundengine.augmenters.AbstractAugmenter;
 import soundengine.effects.AdsrEffect;
-import soundengine.effects.Effect;
-import soundengine.generators.Generator;
+import soundengine.effects.AbstractEffect;
+import soundengine.generators.AbstractGenerator;
 import soundengine.generators.GeneratorFactory;
 import soundengine.util.MidiIO;
 import soundengine.util.Util;
@@ -22,8 +22,8 @@ import soundengine.util.Util;
 
 public class DecoratedNote extends BasicNote implements Runnable {
 	private ArtificialNotes artificialNotes;
-	private ArrayList<Generator> generators;
-	private ArrayList<Effect> effects;
+	private ArrayList<AbstractGenerator> generators;
+	private ArrayList<AbstractEffect> effects;
 	private Summer mixer;
 	private UGen outputChain;
 
@@ -31,15 +31,15 @@ public class DecoratedNote extends BasicNote implements Runnable {
 	private boolean closed;
 
 	public DecoratedNote(int channel, int pitch, int velocity) {
-		this(channel, pitch, velocity, new ArrayList<Generator>());
+		this(channel, pitch, velocity, new ArrayList<AbstractGenerator>());
 	}
 
-	public DecoratedNote(int channel, int pitch, int velocity, ArrayList<Generator> generators) {
-		this(channel, pitch, velocity, generators, new ArrayList<Effect>());
+	public DecoratedNote(int channel, int pitch, int velocity, ArrayList<AbstractGenerator> generators) {
+		this(channel, pitch, velocity, generators, new ArrayList<AbstractEffect>());
 	}
 
-	public DecoratedNote(int channel, int pitch, int velocity, ArrayList<Generator> generators,
-			ArrayList<Effect> effects) {
+	public DecoratedNote(int channel, int pitch, int velocity, ArrayList<AbstractGenerator> generators,
+			ArrayList<AbstractEffect> effects) {
 		super(channel, pitch, velocity);
 		this.artificialNotes = new ArtificialNotes();
 		this.generators = generators;
@@ -72,7 +72,7 @@ public class DecoratedNote extends BasicNote implements Runnable {
 		this.artificialNotes.loadUpAllGenerators(s);
 
 		if (thereIsAGenerator())
-			for (Generator g : generators)
+			for (AbstractGenerator g : generators)
 				g.patchEffect(s);
 	}
 
@@ -84,7 +84,7 @@ public class DecoratedNote extends BasicNote implements Runnable {
 		this.loadUpAllGenerators();
 
 		if (thereIsAEffect())
-			for (Effect e : effects) 
+			for (AbstractEffect e : effects) 
 				this.outputChain = this.outputChain.patch((UGen) e);
 	}
 	
@@ -94,7 +94,7 @@ public class DecoratedNote extends BasicNote implements Runnable {
 		
 		synchronized(effects) {
 		if (thereIsAEffect())
-			for (Effect e : effects) {
+			for (AbstractEffect e : effects) {
 				outputChain.unpatch((UGen) e);
 				mixer.unpatch((UGen) e);
 			}
@@ -102,7 +102,7 @@ public class DecoratedNote extends BasicNote implements Runnable {
 
 		synchronized(generators) {
 			if (thereIsAGenerator()) {
-				for (Generator g : generators)
+				for (AbstractGenerator g : generators)
 					g.unpatchEffect(mixer);
 			}
 		}
@@ -134,7 +134,7 @@ public class DecoratedNote extends BasicNote implements Runnable {
 
 		this.artificialNotes.noteOffUsingADSR();
 
-		for (Effect e : effects)
+		for (AbstractEffect e : effects)
 			if (e instanceof AdsrEffect)
 				((AdsrEffect) e).noteOff();
 
@@ -162,7 +162,7 @@ public class DecoratedNote extends BasicNote implements Runnable {
 	}
 
 	private boolean checkIfContainsADSREffect() {
-		for (Effect e : effects)
+		for (AbstractEffect e : effects)
 			if (e instanceof AdsrEffect)
 				return true;
 		return false;
@@ -172,7 +172,7 @@ public class DecoratedNote extends BasicNote implements Runnable {
 		float longestReleaseTime = 0;
 
 		// for (Effect e : clonedFxs)
-		for (Effect e : effects)
+		for (AbstractEffect e : effects)
 
 			if (e instanceof AdsrEffect && ((AdsrEffect)e).getRelTime() > longestReleaseTime)
 				longestReleaseTime = ((AdsrEffect) e).getRelTime();
@@ -193,7 +193,7 @@ public class DecoratedNote extends BasicNote implements Runnable {
 				this.cloneEffects());
 	}
 
-	public ArrayList<Generator> getGenerators() {
+	public ArrayList<AbstractGenerator> getGenerators() {
 		return generators;
 	}
 
@@ -204,14 +204,14 @@ public class DecoratedNote extends BasicNote implements Runnable {
 		this.closed = true;
 
 		synchronized (generators) {
-			for (Generator g : generators)
+			for (AbstractGenerator g : generators)
 				g.close();
 			this.generators.clear();
 			this.generators = null;
 		}
 		
 		synchronized (effects) {
-			for (Effect e : effects)
+			for (AbstractEffect e : effects)
 				e.close();
 			this.effects.clear();
 			this.effects = null;
@@ -252,22 +252,22 @@ public class DecoratedNote extends BasicNote implements Runnable {
 		this.artificialNotes.addArtificialChord(this, newRoot, chordType);
 	}
 	
-	public void addAugmenter(Augmenter aug) {
+	public void addAugmenter(AbstractAugmenter aug) {
 		this.artificialNotes.addAugmenter(this, aug);
 	}
 
 	/////////////////////////////
 	// generators methods
 	/////////////////////////////
-	public void addGenerator(Generator g) {
+	public void addGenerator(AbstractGenerator g) {
 		this.generators.add(g);
 	}
 
-	private ArrayList<Generator> cloneGenerators(int newNotePitch) {
-		ArrayList<Generator> gens = new ArrayList<Generator>();
+	private ArrayList<AbstractGenerator> cloneGenerators(int newNotePitch) {
+		ArrayList<AbstractGenerator> gens = new ArrayList<AbstractGenerator>();
 
 		if (this.thereIsAGenerator())
-			for (Generator g : generators)
+			for (AbstractGenerator g : generators)
 				gens.add(g.cloneWithPitch(newNotePitch));
 		return gens;
 	}
@@ -275,17 +275,17 @@ public class DecoratedNote extends BasicNote implements Runnable {
 	/////////////////////////////
 	// effects methods
 	/////////////////////////////
-	public void addEffect(Effect e) {
+	public void addEffect(AbstractEffect e) {
 		this.effects.add(e);
 		if (e instanceof AdsrEffect)
 			this.containsADSR = true;
 	}
 
-	private ArrayList<Effect> cloneEffects() {
-		ArrayList<Effect> fxs = new ArrayList<Effect>();
+	private ArrayList<AbstractEffect> cloneEffects() {
+		ArrayList<AbstractEffect> fxs = new ArrayList<AbstractEffect>();
 
 		if (this.thereIsAEffect())
-			for (Effect e : effects)
+			for (AbstractEffect e : effects)
 				fxs.add(e.clone());
 
 		return fxs;

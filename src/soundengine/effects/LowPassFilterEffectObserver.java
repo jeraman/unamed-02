@@ -1,7 +1,7 @@
 package soundengine.effects;
 
 public class LowPassFilterEffectObserver extends EffectObserver {
-	public LowPassFilterEffectObserver(Effect original, Effect updatable) {
+	public LowPassFilterEffectObserver(AbstractEffect original, AbstractEffect updatable) {
 		super(original, updatable);
 	}
 

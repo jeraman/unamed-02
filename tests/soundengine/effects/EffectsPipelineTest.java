@@ -12,12 +12,12 @@ import soundengine.effects.AdsrEffect;
 import soundengine.effects.BandPassFilterEffect;
 import soundengine.effects.BitChrushEffect;
 import soundengine.effects.DelayEffect;
-import soundengine.effects.Effect;
+import soundengine.effects.AbstractEffect;
 import soundengine.effects.FlangerEffect;
 import soundengine.effects.HighPassFilterEffect;
 import soundengine.effects.LowPassFilterEffect;
 import soundengine.effects.MoogFilterEffect;
-import soundengine.generators.Generator;
+import soundengine.generators.AbstractGenerator;
 import soundengine.generators.GeneratorFactory;
 import soundengine.util.MidiIO;
 import soundengine.util.MusicTheory;
@@ -69,7 +69,7 @@ public class EffectsPipelineTest extends PApplet {
 	}
 
 	public void mousePressed() {
-		Generator gen = GeneratorFactory.temporaryFMGen(60, 127, 1500);
+		AbstractGenerator gen = GeneratorFactory.temporaryFMGen(60, 127, 1500);
 		// Generator gen = GeneratorFactory.temporaryOscillatorGen(60, 127,
 		// 1500);
 		DecoratedNote newNote = new DecoratedNote(0, 60, 127);
@@ -78,21 +78,21 @@ public class EffectsPipelineTest extends PApplet {
 	}
 
 	public void noteOn(int channel, int pitch, int velocity) {
-		Generator gen1 = GeneratorFactory.noteOnSampleFileGen(buf, sampleRate, pitch, velocity);
-		Generator gen2 = GeneratorFactory.noteOnFMGen(pitch, (int) velocity / 5);
-		Generator gen3 = GeneratorFactory.noteOnOscillatorGen(pitch, (int) (velocity/5), "SINE", -1);
+		AbstractGenerator gen1 = GeneratorFactory.noteOnSampleFileGen(buf, sampleRate, pitch, velocity);
+		AbstractGenerator gen2 = GeneratorFactory.noteOnFMGen(pitch, (int) velocity / 5);
+		AbstractGenerator gen3 = GeneratorFactory.noteOnOscillatorGen(pitch, (int) (velocity/5), "SINE", -1);
 		// this gen is chrashing the entire thing!
 		// Generator gen4 = GeneratorFactory.noteOnLiveInpuGen(pitch, velocity);
 
 		// Effect fx = null;
-		Effect fx1 = new HighPassFilterEffect(5000, sampleRate);
-		Effect fx2 = new LowPassFilterEffect(200, sampleRate);
-		Effect fx3 = new BandPassFilterEffect(1000, 100, sampleRate);
-		Effect fx4 = new DelayEffect(0.5f, 0.9f, true, true);
-		Effect fx5 = new MoogFilterEffect(200, 500, "LP");
-		Effect fx6 = new FlangerEffect(1, 0.5f, 1, 0.5f, 0.5f, 0.5f);
-		Effect fx7 = new BitChrushEffect(4, sampleRate);
-		Effect fx8 = new AdsrEffect(1.f, 0.1f, 0.5f, 0.5f, 1.f, 0.f, 0.f);
+		AbstractEffect fx1 = new HighPassFilterEffect(5000, sampleRate);
+		AbstractEffect fx2 = new LowPassFilterEffect(200, sampleRate);
+		AbstractEffect fx3 = new BandPassFilterEffect(1000, 100, sampleRate);
+		AbstractEffect fx4 = new DelayEffect(0.5f, 0.9f, true, true);
+		AbstractEffect fx5 = new MoogFilterEffect(200, 500, "LP");
+		AbstractEffect fx6 = new FlangerEffect(1, 0.5f, 1, 0.5f, 0.5f, 0.5f);
+		AbstractEffect fx7 = new BitChrushEffect(4, sampleRate);
+		AbstractEffect fx8 = new AdsrEffect(1.f, 0.1f, 0.5f, 0.5f, 1.f, 0.f, 0.f);
 
 		DecoratedNote newNote = new DecoratedNote(channel, pitch, velocity);
 		// first the generators

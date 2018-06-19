@@ -7,7 +7,7 @@ import ddf.minim.spi.AudioStream;
 import processing.core.PApplet;
 import soundengine.core.DecoratedNote;
 import soundengine.core.DecoratedNoteMemory;
-import soundengine.generators.Generator;
+import soundengine.generators.AbstractGenerator;
 import soundengine.generators.GeneratorFactory;
 import soundengine.generators.OscillatorGenerator;
 import soundengine.util.MidiIO;
@@ -54,7 +54,7 @@ public class MidiDrivenGenerator extends PApplet {
 		println("memory: " + memory.getNoteArray());
 		println("removalLive " + memory.getToBeDeletedArray());
 		
-		Generator gen = GeneratorFactory.temporaryFMGen(60, 127, 1500);
+		AbstractGenerator gen = GeneratorFactory.temporaryFMGen(60, 127, 1500);
 		//Generator gen = GeneratorFactory.temporarySampleFileGen("123go.mp3", 60, 127, 1500);
 		//Generator gen = GeneratorFactory.temporaryOscillatorGen(60, 127, 500);
 		//Generator gen = GeneratorFactory.temporaryLiveInpuGen(1500);
@@ -62,7 +62,7 @@ public class MidiDrivenGenerator extends PApplet {
 	}
 
 	public void noteOn(int channel, int pitch, int velocity) {
-		Generator gen = GeneratorFactory.noteOnFMGen(pitch, velocity);
+		AbstractGenerator gen = GeneratorFactory.noteOnFMGen(pitch, velocity);
 		//Generator gen = GeneratorFactory.noteOnSampleFileGen("123go.mp3", pitch, velocity);
 		//Generator gen = GeneratorFactory.noteOnOscillatorGen(pitch, velocity);
 		//Generator gen = GeneratorFactory.noteOnLiveInpuGen(pitch, velocity);

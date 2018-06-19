@@ -14,7 +14,7 @@ import frontend.tasks.Task;
 
 
 
-public class ComputableFloatTextfieldUI extends UiElement {
+public class ComputableFloatTextfieldUI extends AbstractElementUi {
 	
 	private Object valueExpression;
 	private float computedValue;

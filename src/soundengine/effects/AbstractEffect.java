@@ -1,8 +1,8 @@
 package soundengine.effects;
 
-public interface Effect {
+public interface AbstractEffect {
 	public void updateParameterFromString(String singleParameter);
-	public Effect clone();
+	public AbstractEffect clone();
 	public void notifyAllObservers();
 	public void notifyAllObservers(String updatedParameter);
 	public void attach(EffectObserver obs);

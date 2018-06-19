@@ -2,7 +2,7 @@ package soundengine.generators;
 
 public class LiveInputGeneratorObserver extends GeneratorObserver {
 
-	public LiveInputGeneratorObserver(Generator original, Generator updatable) {
+	public LiveInputGeneratorObserver(AbstractGenerator original, AbstractGenerator updatable) {
 		super(original, updatable);
 	}
 

@@ -7,6 +7,7 @@ import frontend.Main;
 import frontend.State;
 import frontend.ui.ComputableIntegerTextFieldUI;
 import frontend.ui.FileOpenerTextfieldUI;
+import frontend.ui.ToggleUi;
 import processing.core.PApplet;
 
 public class SampleGenTask extends Task {
@@ -15,6 +16,7 @@ public class SampleGenTask extends Task {
 	private ComputableIntegerTextFieldUI pitch;
 	private ComputableIntegerTextFieldUI velocity;
 	private ComputableIntegerTextFieldUI duration;
+	private ToggleUi loopStatus;
 	
 	public SampleGenTask(PApplet p, ControlP5 cp5, String taskname) {
 		super(p, cp5, taskname);
@@ -23,6 +25,7 @@ public class SampleGenTask extends Task {
 		this.pitch = new ComputableIntegerTextFieldUI();
 		this.velocity = new ComputableIntegerTextFieldUI();
 		this.duration = new ComputableIntegerTextFieldUI();
+		this.loopStatus = new ToggleUi();
 		
 		Main.eng.addGenerator(this.get_gui_id(), "SAMPLE", getDefaultParameters());
 	}
@@ -56,11 +59,19 @@ public class SampleGenTask extends Task {
 		}
 	}
 	
+	private void processLoopChange() {
+		if (loopStatus.update()) {
+			System.out.println("update loop " + duration.getValue());
+			Main.eng.updateGenerator(this.get_gui_id(), "loop : " + loopStatus.getValue());
+		}
+	}
+	
 	private void processAllParameters() {
 		this.processFilenameChange();
 		this.processPitchChange();
 		this.processlVelocityChange();
 		this.processDurationChange();
+		this.processLoopChange();
 	}
 	
 	public void closeTask() {
@@ -84,6 +95,7 @@ public class SampleGenTask extends Task {
 		clone.velocity = this.velocity;
 		clone.duration = this.duration;
 		clone.filename = this.filename;
+		clone.loopStatus = this.loopStatus;
 		return clone;
 	}
 
@@ -109,13 +121,14 @@ public class SampleGenTask extends Task {
 		Group g = super.load_gui_elements(s);
 		int width = g.getWidth() - (localx * 2);
 
-		this.backgroundheight = (int) (font_size * 15);
+		this.backgroundheight = (int) (font_size * 18);
 		g.setBackgroundHeight(backgroundheight);
 
 		filename.createUI(id, "filename", localx, localy + (0 * localoffset), width, g);
 		pitch.createUI(id, "pitch", localx, localy + (1 * localoffset), width, g);
 		velocity.createUI(id, "velocity", localx, localy + (2 * localoffset), width, g);
 		duration.createUI(id, "duration", localx, localy + (3 * localoffset), width, g);
+		loopStatus.createUI(id, "once - repeat", localx, localy + (4 * localoffset), width, g);
 
 		// this.createGuiToggle(localx, localy + (4 * localoffset), width, g,
 

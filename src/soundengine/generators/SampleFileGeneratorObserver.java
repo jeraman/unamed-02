@@ -2,7 +2,7 @@ package soundengine.generators;
 
 public class SampleFileGeneratorObserver extends GeneratorObserver {
 
-	public SampleFileGeneratorObserver(Generator original, Generator updatable) {
+	public SampleFileGeneratorObserver(AbstractGenerator original, AbstractGenerator updatable) {
 		super(original, updatable);
 	}
 

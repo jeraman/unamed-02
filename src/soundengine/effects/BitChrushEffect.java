@@ -6,7 +6,7 @@ import java.util.List;
 import ddf.minim.ugens.BitCrush;
 import soundengine.SoundEngine;
 
-public class BitChrushEffect extends BitCrush implements Effect {
+public class BitChrushEffect extends BitCrush implements AbstractEffect {
 
 	private int bitResolution;
 	private float sampleRate;
@@ -46,7 +46,7 @@ public class BitChrushEffect extends BitCrush implements Effect {
 		super.setBitRes(this.bitResolution);
 	}
 
-	public Effect clone() {
+	public AbstractEffect clone() {
 		BitChrushEffect clone = new BitChrushEffect(bitResolution, sampleRate);
 		this.linkClonedObserver(clone);
 		return clone;

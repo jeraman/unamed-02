@@ -5,7 +5,7 @@ import java.util.List;
 
 import ddf.minim.effects.BandPass;
 
-public class BandPassFilterEffect extends BandPass implements Effect {
+public class BandPassFilterEffect extends BandPass implements AbstractEffect {
 	
 	private float centerFreq;
 	private float bandWidth;
@@ -57,7 +57,7 @@ public class BandPassFilterEffect extends BandPass implements Effect {
 		super.setBandWidth(bandWidth);
 	}
 
-	public Effect clone() {
+	public AbstractEffect clone() {
 		BandPassFilterEffect clone = new BandPassFilterEffect(this.frequency(), this.getBandWidth(), this.sampleRate());
 		this.linkClonedObserver(clone);
 		return clone;

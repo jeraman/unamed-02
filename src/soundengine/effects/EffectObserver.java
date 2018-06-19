@@ -4,10 +4,10 @@ import soundengine.core.Observer;
 
 public abstract class EffectObserver extends Observer{
 
-	Effect original;
-	Effect updatable;
+	AbstractEffect original;
+	AbstractEffect updatable;
 
-	public EffectObserver(Effect original, Effect updatable) {
+	public EffectObserver(AbstractEffect original, AbstractEffect updatable) {
 		this.original = original;
 		this.updatable = updatable;
 		

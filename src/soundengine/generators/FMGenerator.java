@@ -11,7 +11,7 @@ import ddf.minim.ugens.Waves;
 import soundengine.util.MusicTheory;
 import soundengine.util.Util;
 
-public class FMGenerator extends Oscil implements Generator, Runnable {
+public class FMGenerator extends Oscil implements AbstractGenerator, Runnable {
 
 	private Oscil fm;
 
@@ -259,7 +259,7 @@ public class FMGenerator extends Oscil implements Generator, Runnable {
 			return this.carrierAmp;
 	}
 
-	public Generator cloneWithPitchAndVelocityIfUnlocked(int newPitch, int newVelocity) {
+	public AbstractGenerator cloneWithPitchAndVelocityIfUnlocked(int newPitch, int newVelocity) {
 		float newFreq = getRightFrequencyForClone(newPitch);
 		float newAmp = getRightAmplitudeForClone(newVelocity);
 
@@ -267,20 +267,20 @@ public class FMGenerator extends Oscil implements Generator, Runnable {
 	}
 
 	@Override
-	public Generator cloneWithPitch(int newPitch) {
+	public AbstractGenerator cloneWithPitch(int newPitch) {
 		float newFreq = MusicTheory.freqFromMIDI(newPitch);
 		return clone(newFreq, carrierAmp);
 	}
 
 	@Override
-	public Generator cloneWithPitchAndVelocity(int newPitch, int newVelocity) {
+	public AbstractGenerator cloneWithPitchAndVelocity(int newPitch, int newVelocity) {
 		// float newFreq = MusicTheory.freqFromMIDI(newPitch);
 		// float newAmp = Util.mapFromMidiToAmplitude(newVelocity);
 		// return clone(newFreq, newAmp);
 		return cloneWithPitchAndVelocityIfUnlocked(newPitch, newVelocity);
 	}
 
-	private Generator clone(float newFreq, float newAmp) {
+	private AbstractGenerator clone(float newFreq, float newAmp) {
 		FMGenerator clone = new FMGenerator(newFreq, newAmp, carrierWave, modFreq, modAmp, modWave, this.duration);
 		this.linkClonedObserver(clone);
 		return clone;

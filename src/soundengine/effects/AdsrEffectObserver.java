@@ -2,7 +2,7 @@ package soundengine.effects;
 
 public class AdsrEffectObserver extends EffectObserver {
 
-	public AdsrEffectObserver(Effect original, Effect updatable) {
+	public AdsrEffectObserver(AbstractEffect original, AbstractEffect updatable) {
 		super(original, updatable);
 	}
 

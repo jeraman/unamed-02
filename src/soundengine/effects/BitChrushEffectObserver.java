@@ -1,7 +1,7 @@
 package soundengine.effects;
 
 public class BitChrushEffectObserver extends EffectObserver {
-	public BitChrushEffectObserver(Effect original, Effect updatable) {
+	public BitChrushEffectObserver(AbstractEffect original, AbstractEffect updatable) {
 		super(original, updatable);
 	}
 

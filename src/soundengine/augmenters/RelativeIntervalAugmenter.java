@@ -4,7 +4,7 @@ import org.jfugue.theory.Note;
 
 import soundengine.util.MusicTheory;
 
-public class RelativeIntervalAugmenter extends Augmenter {
+public class RelativeIntervalAugmenter extends AbstractAugmenter {
 	
 	private String type;
 	

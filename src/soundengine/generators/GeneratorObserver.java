@@ -4,10 +4,10 @@ import soundengine.core.Observer;
 
 public abstract class GeneratorObserver extends Observer {
 
-	Generator original;
-	Generator updatable;
+	AbstractGenerator original;
+	AbstractGenerator updatable;
 
-	public GeneratorObserver(Generator original, Generator updatable) {
+	public GeneratorObserver(AbstractGenerator original, AbstractGenerator updatable) {
 		this.original = original;
 		this.updatable = updatable;
 

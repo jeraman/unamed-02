@@ -66,7 +66,7 @@ public class Main extends PApplet {
 		board = new Blackboard(this);
 		canvas = new MainCanvas(this, cp5);
 		
-		UiElement.setup(cp5, this);
+		AbstractElementUi.setup(cp5, this);
 
 		setup_expression_loading_bug();
 

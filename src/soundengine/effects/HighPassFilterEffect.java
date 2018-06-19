@@ -5,7 +5,7 @@ import java.util.List;
 
 import ddf.minim.effects.HighPassSP;
 
-public class HighPassFilterEffect extends HighPassSP implements Effect {
+public class HighPassFilterEffect extends HighPassSP implements AbstractEffect {
 
 	private List<HighPassFilterEffectObserver> observers;
 	private boolean closed;
@@ -44,7 +44,7 @@ public class HighPassFilterEffect extends HighPassSP implements Effect {
 		super.setFreq(this.cutOffFreq);
 	}
 
-	public Effect clone() {
+	public AbstractEffect clone() {
 		HighPassFilterEffect clone = new HighPassFilterEffect(this.frequency(), this.sampleRate());
 		this.linkClonedObserver(clone);
 		return clone;

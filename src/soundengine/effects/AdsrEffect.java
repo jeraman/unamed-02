@@ -9,7 +9,7 @@ import soundengine.generators.FMGeneratorObserver;
 import soundengine.generators.GeneratorObserver;
 import soundengine.generators.OscillatorGeneratorObserver;
 
-public class AdsrEffect extends ADSR implements Effect {
+public class AdsrEffect extends ADSR implements AbstractEffect {
 	private float maxAmp; 
 	private float attTime; 
 	private float decTime;
@@ -139,7 +139,7 @@ public class AdsrEffect extends ADSR implements Effect {
 	}
 	
 	@Override
-	public Effect clone() {
+	public AbstractEffect clone() {
 		AdsrEffect clone =  new AdsrEffect(maxAmp, attTime, decTime, susLvl, relTime, befAmp, aftAmp);
 		this.linkClonedObserver(clone);
 		return clone;

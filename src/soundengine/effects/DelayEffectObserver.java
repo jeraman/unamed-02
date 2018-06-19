@@ -1,7 +1,7 @@
 package soundengine.effects;
 
 public class DelayEffectObserver extends EffectObserver {
-	public DelayEffectObserver(Effect original, Effect updatable) {
+	public DelayEffectObserver(AbstractEffect original, AbstractEffect updatable) {
 		super(original, updatable);
 	}
 

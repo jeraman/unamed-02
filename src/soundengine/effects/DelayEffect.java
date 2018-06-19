@@ -5,7 +5,7 @@ import java.util.List;
 
 import ddf.minim.ugens.Delay;
 
-public class DelayEffect extends Delay implements Effect{
+public class DelayEffect extends Delay implements AbstractEffect{
 	private float maxDelayTime;
 	private float amplitudeFactor;
 	private boolean feedBackOn;
@@ -59,7 +59,7 @@ public class DelayEffect extends Delay implements Effect{
 	}
 
 	@Override
-	public Effect clone() {
+	public AbstractEffect clone() {
 		DelayEffect clone = new DelayEffect(this.maxDelayTime, this.amplitudeFactor, this.feedBackOn, this.passAudioOn);
 		this.linkClonedObserver(clone);
 		return clone;

@@ -5,7 +5,7 @@ import java.util.List;
 
 import ddf.minim.ugens.Flanger;
 
-public class FlangerEffect extends Flanger implements Effect {
+public class FlangerEffect extends Flanger implements AbstractEffect {
 
 	private float delayLength; //delay length in milliseconds ( clamped to [0,100] )
 	private float lfoRate; //lfo rate in Hz ( clamped at low end to 0.001 )
@@ -112,7 +112,7 @@ public class FlangerEffect extends Flanger implements Effect {
 		this.wet.setLastValue(this.wetAmplitude);
 	}
 	
-	public Effect clone () {
+	public AbstractEffect clone () {
 		FlangerEffect clone = new FlangerEffect(delayLength, lfoRate, delayDepth, feedbackAmplitude, dryAmplitude, wetAmplitude);
 		this.linkClonedObserver(clone);
 		return clone;

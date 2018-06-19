@@ -4,7 +4,7 @@ import ddf.minim.AudioOutput;
 import ddf.minim.UGen;
 
 
-public interface Generator {
+public interface AbstractGenerator {
 
 	public void patchEffect(UGen effect);
 	
@@ -36,9 +36,9 @@ public interface Generator {
 		
 //	public Generator cloneWithPitchAndVelocityIfUnlocked(int newPitch, int newVelocity);
 	
-	public Generator cloneWithPitchAndVelocity(int newPitch, int newVelocity); 
+	public AbstractGenerator cloneWithPitchAndVelocity(int newPitch, int newVelocity); 
 
-	public Generator cloneWithPitch(int newPitch);	
+	public AbstractGenerator cloneWithPitch(int newPitch);	
 	
 }
 

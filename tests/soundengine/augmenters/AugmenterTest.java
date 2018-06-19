@@ -9,8 +9,8 @@ import javafx.util.Pair;
 import processing.core.PApplet;
 import soundengine.core.DecoratedNote;
 import soundengine.core.DecoratedNoteMemory;
-import soundengine.effects.Effect;
-import soundengine.generators.Generator;
+import soundengine.effects.AbstractEffect;
+import soundengine.generators.AbstractGenerator;
 import soundengine.generators.GeneratorFactory;
 import soundengine.util.MidiIO;
 
@@ -75,7 +75,7 @@ public class AugmenterTest extends PApplet{
 		//Generator gen = GeneratorFactory.temporaryOscillatorGen(60, 127, 500);
 		//Generator gen = GeneratorFactory.temporaryLiveInpuGen(1500);
 		
-		Generator gen = GeneratorFactory.temporaryFMGen(60, 127, 1500);
+		AbstractGenerator gen = GeneratorFactory.temporaryFMGen(60, 127, 1500);
 		DecoratedNote newNote = new DecoratedNote(0, 60, 127);
 		newNote.addGenerator(gen);
 		//newNote.addArtificialChord("min7");
@@ -84,7 +84,7 @@ public class AugmenterTest extends PApplet{
 	}
 	
 	public void noteOn(int channel, int pitch, int velocity) {
-		Generator gen = GeneratorFactory.noteOnSampleFileGen(buf, sampleRate, pitch, velocity);
+		AbstractGenerator gen = GeneratorFactory.noteOnSampleFileGen(buf, sampleRate, pitch, velocity);
 		//Generator gen = GeneratorFactory.noteOnFMGen(pitch, velocity);
 		//Generator gen = GeneratorFactory.noteOnOscillatorGen(pitch, velocity);
 		//Generator gen = GeneratorFactory.noteOnLiveInpuGen(pitch, velocity);

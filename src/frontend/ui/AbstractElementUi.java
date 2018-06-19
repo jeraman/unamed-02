@@ -12,7 +12,7 @@ import frontend.Expression;
 import frontend.Main;
 import processing.core.PApplet;
 
-public abstract class UiElement implements Serializable {
+public abstract class AbstractElementUi implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -24,7 +24,7 @@ public abstract class UiElement implements Serializable {
 	protected static int font_size;
 	
 	public static void setup(ControlP5 cp5, PApplet p) {
-		UiElement.cp5 = cp5;
+		AbstractElementUi.cp5 = cp5;
 		font_size = (int)(((Main)p).get_font_size());
 	}
 	

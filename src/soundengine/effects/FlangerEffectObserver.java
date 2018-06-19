@@ -1,7 +1,7 @@
 package soundengine.effects;
 
 public class FlangerEffectObserver extends EffectObserver {
-	public FlangerEffectObserver(Effect original, Effect updatable) {
+	public FlangerEffectObserver(AbstractEffect original, AbstractEffect updatable) {
 		super(original, updatable);
 	}
 

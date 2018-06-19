@@ -1,7 +1,7 @@
 package soundengine.effects;
 
 import soundengine.SoundEngine;
-import soundengine.generators.Generator;
+import soundengine.generators.AbstractGenerator;
 
 /**
  * Singleton class used to create custom effects
@@ -15,8 +15,8 @@ public class EffectFactory {
 	private EffectFactory() {
 	}
 
-	public static Effect createEffect(String type, String[] parameters) {
-		Effect fx = null;
+	public static AbstractEffect createEffect(String type, String[] parameters) {
+		AbstractEffect fx = null;
 
 		if (type.equalsIgnoreCase("ADSR"))
 			fx = createAdrs(parameters);
@@ -38,7 +38,7 @@ public class EffectFactory {
 		return fx;
 	}
 	
-	public static void updateEffect(Effect fx, String[] parameters) {
+	public static void updateEffect(AbstractEffect fx, String[] parameters) {
 		if (fx instanceof AdsrEffect)
 			updateAdrs((AdsrEffect)fx, parameters);
 		if (fx instanceof BandPassFilterEffect)
@@ -57,13 +57,13 @@ public class EffectFactory {
 			updateMoogFilter((MoogFilterEffect)fx, parameters);
 	}
 	
-	public static void updateEffect(Effect fx, String singleParameter) {
+	public static void updateEffect(AbstractEffect fx, String singleParameter) {
 		fx.updateParameterFromString(singleParameter);
 		fx.notifyAllObservers(singleParameter);
 	}
 
 	// adsr
-	private static Effect createAdrs(String[] parameters) {
+	private static AbstractEffect createAdrs(String[] parameters) {
 		float maxAmp = Float.parseFloat(parameters[0]);
 		float attTime = Float.parseFloat(parameters[1]);
 		float decTime = Float.parseFloat(parameters[2]);
@@ -74,7 +74,7 @@ public class EffectFactory {
 		return createAdrs(maxAmp, attTime, decTime, susLvl, relTime, befAmp, aftAmp);
 	}
 
-	private static Effect createAdrs(float maxAmp, float attTime, float decTime, float susLvl, float relTime,
+	private static AbstractEffect createAdrs(float maxAmp, float attTime, float decTime, float susLvl, float relTime,
 			float befAmp, float aftAmp) {
 		return new AdsrEffect(maxAmp, attTime, decTime, susLvl, relTime, befAmp, aftAmp);
 	}
@@ -98,7 +98,7 @@ public class EffectFactory {
 //	}
 
 	// bandpass filter
-	private static Effect createBandPass(String[] parameters) {
+	private static AbstractEffect createBandPass(String[] parameters) {
 		float centerFreq = Float.parseFloat(parameters[0]);
 		float bandWidth = Float.parseFloat(parameters[1]);
 		float sampleRate = SoundEngine.out.sampleRate();
@@ -106,7 +106,7 @@ public class EffectFactory {
 		return createBandPass(centerFreq, bandWidth, sampleRate);
 	}
 
-	private static Effect createBandPass(float centerFreq, float bandWidth, float sampleRate) {
+	private static AbstractEffect createBandPass(float centerFreq, float bandWidth, float sampleRate) {
 		return new BandPassFilterEffect(centerFreq, bandWidth, sampleRate);
 	}
 	
@@ -120,14 +120,14 @@ public class EffectFactory {
 	}
 
 	// bitchrush
-	private static Effect createBitChrush(String[] parameters) {
+	private static AbstractEffect createBitChrush(String[] parameters) {
 		int bitResolution = Integer.parseInt(parameters[0]);
 		float sampleRate = SoundEngine.out.sampleRate();
 
 		return createBitChrush(bitResolution, sampleRate);
 	}
 
-	private static Effect createBitChrush(int bitResolution, float sampleRate) {
+	private static AbstractEffect createBitChrush(int bitResolution, float sampleRate) {
 		return new BitChrushEffect(bitResolution, sampleRate);
 	}
 	
@@ -139,7 +139,7 @@ public class EffectFactory {
 	}
 
 	// delay
-	private static Effect createDelay(String[] parameters) {
+	private static AbstractEffect createDelay(String[] parameters) {
 		float maxDelayTime = Float.parseFloat(parameters[0]);
 		float amplitudeFactor = Float.parseFloat(parameters[1]);
 		boolean feedBackOn = Boolean.parseBoolean(parameters[2]);
@@ -148,7 +148,7 @@ public class EffectFactory {
 		return createDelay(maxDelayTime, amplitudeFactor, feedBackOn, passAudioOn);
 	}
 
-	private static Effect createDelay(float maxDelayTime, float amplitudeFactor, boolean feedBackOn,
+	private static AbstractEffect createDelay(float maxDelayTime, float amplitudeFactor, boolean feedBackOn,
 			boolean passAudioOn) {
 		return new DelayEffect(maxDelayTime, amplitudeFactor, feedBackOn, passAudioOn);
 	}
@@ -166,7 +166,7 @@ public class EffectFactory {
 	}
 
 	// flanger
-	private static Effect createFlanger(String[] parameters) {
+	private static AbstractEffect createFlanger(String[] parameters) {
 		float delayLength = Float.parseFloat(parameters[0]);
 		float lfoRate = Float.parseFloat(parameters[1]);
 		float delayDepth = Float.parseFloat(parameters[2]);
@@ -177,7 +177,7 @@ public class EffectFactory {
 		return createFlanger(delayLength, lfoRate, delayDepth, feedbackAmplitude, dryAmplitude, wetAmplitude);
 	}
 
-	private static Effect createFlanger(float delayLength, float lfoRate, float delayDepth, float feedbackAmplitude,
+	private static AbstractEffect createFlanger(float delayLength, float lfoRate, float delayDepth, float feedbackAmplitude,
 			float dryAmplitude, float wetAmplitude) {
 		return new FlangerEffect(delayLength, lfoRate, delayDepth, feedbackAmplitude, dryAmplitude, wetAmplitude);
 	}
@@ -200,13 +200,13 @@ public class EffectFactory {
 	}
 
 	// highpass filter
-	private static Effect createHighPass(String[] parameters) {
+	private static AbstractEffect createHighPass(String[] parameters) {
 		float freq = Float.parseFloat(parameters[0]);
 		float sampleRate = SoundEngine.out.sampleRate();
 		return createHighPass(freq, sampleRate);
 	}
 
-	private static Effect createHighPass(float freq, float sampleRate) {
+	private static AbstractEffect createHighPass(float freq, float sampleRate) {
 		return new HighPassFilterEffect(freq, sampleRate);
 	}
 	
@@ -218,14 +218,14 @@ public class EffectFactory {
 	}
 
 	// lowpass filter
-	private static Effect createLowPass(String[] parameters) {
+	private static AbstractEffect createLowPass(String[] parameters) {
 		float freq = Float.parseFloat(parameters[0]);
 		float sampleRate = SoundEngine.out.sampleRate();
 
 		return createLowPass(freq, sampleRate);
 	}
 
-	private static Effect createLowPass(float freq, float sampleRate) {
+	private static AbstractEffect createLowPass(float freq, float sampleRate) {
 		return new LowPassFilterEffect(freq, sampleRate);
 	}
 	
@@ -238,7 +238,7 @@ public class EffectFactory {
 	}
 
 	// moog filter
-	private static Effect createMoogFilter(String[] parameters) {
+	private static AbstractEffect createMoogFilter(String[] parameters) {
 		float freq = Float.parseFloat(parameters[0]);
 		float res = Float.parseFloat(parameters[1]);
 		String type = parameters[2];
@@ -246,7 +246,7 @@ public class EffectFactory {
 		return createMoogFilter(freq, res, type);
 	}
 
-	private static Effect createMoogFilter(float freq, float resonance, String type) {
+	private static AbstractEffect createMoogFilter(float freq, float resonance, String type) {
 		return new MoogFilterEffect(freq, resonance, type);
 	}
 	

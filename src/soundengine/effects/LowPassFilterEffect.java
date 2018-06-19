@@ -5,7 +5,7 @@ import java.util.List;
 
 import ddf.minim.effects.*;
 
-public class LowPassFilterEffect extends LowPassFS implements Effect {
+public class LowPassFilterEffect extends LowPassFS implements AbstractEffect {
 
 	private List<LowPassFilterEffectObserver> observers;
 	private boolean closed;
@@ -43,7 +43,7 @@ public class LowPassFilterEffect extends LowPassFS implements Effect {
 		super.setFreq(this.cutOffFreq);
 	}
 
-	public Effect clone() {
+	public AbstractEffect clone() {
 		LowPassFilterEffect clone = new LowPassFilterEffect(this.frequency(), this.sampleRate());
 		this.linkClonedObserver(clone);
 		return clone;

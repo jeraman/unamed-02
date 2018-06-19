@@ -11,7 +11,7 @@ import frontend.Main;
 import frontend.tasks.SampleGenTask;
 import frontend.tasks.Task;
 
-public class FileOpenerTextfieldUI extends UiElement {
+public class FileOpenerTextfieldUI extends AbstractElementUi {
 	
 	transient private Textfield textfield;
 	String filename;

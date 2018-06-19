@@ -9,7 +9,7 @@ import controlP5.Group;
 import controlP5.ScrollableList;
 import frontend.Main;
 
-public class ScrollableListUI extends UiElement {
+public class ScrollableListUI extends AbstractElementUi {
 	
 	private String selection;
 	private String lastSelection;

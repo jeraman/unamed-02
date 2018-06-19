@@ -5,7 +5,7 @@ import org.jfugue.theory.Note;
 
 //is there any need for this class?
 
-public class RelativeNoteAugmenter extends Augmenter {
+public class RelativeNoteAugmenter extends AbstractAugmenter {
 
 	int pitch;
 

@@ -5,7 +5,7 @@ import java.util.List;
 
 import ddf.minim.ugens.MoogFilter;
 
-public class MoogFilterEffect extends MoogFilter implements Effect {
+public class MoogFilterEffect extends MoogFilter implements AbstractEffect {
 	private float freq;
 	private float res;
 	private String filterType;
@@ -68,7 +68,7 @@ public class MoogFilterEffect extends MoogFilter implements Effect {
 	}
 
 	@Override
-	public Effect clone() {
+	public AbstractEffect clone() {
 		MoogFilterEffect clone = new MoogFilterEffect(this.freq, this.res, this.filterType);
 		this.linkClonedObserver(clone);
 		return clone;

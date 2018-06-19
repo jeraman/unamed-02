@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import org.jfugue.theory.Chord;
 import org.jfugue.theory.Note;
 import ddf.minim.ugens.Summer;
-import soundengine.augmenters.Augmenter;
+import soundengine.augmenters.AbstractAugmenter;
 import soundengine.util.MusicTheory;
 
 /**
@@ -58,7 +58,7 @@ public class ArtificialNotes {
 		this.addArtificialChord(baseline, baseline.getPitch(), chordType);
 	}
 	
-	public void addAugmenter(DecoratedNote baseline, Augmenter aug) {
+	public void addAugmenter(DecoratedNote baseline, AbstractAugmenter aug) {
 		Note[] notes = aug.getNotes(baseline.getPitch());
 		for (Note n : notes) 
 			addArtificialNote(baseline, (int)n.getValue());

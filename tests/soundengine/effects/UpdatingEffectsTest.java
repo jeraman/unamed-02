@@ -8,7 +8,7 @@ import processing.core.PApplet;
 import soundengine.core.DecoratedNote;
 import soundengine.core.DecoratedNoteMemory;
 import soundengine.effects.LowPassFilterEffect;
-import soundengine.generators.Generator;
+import soundengine.generators.AbstractGenerator;
 import soundengine.generators.GeneratorFactory;
 import soundengine.util.MidiIO;
 
@@ -19,7 +19,7 @@ public class UpdatingEffectsTest extends PApplet {
 	MultiChannelBuffer buf;
 	float sampleRate;
 	
-	Generator gen = null;
+	AbstractGenerator gen = null;
 	LowPassFilterEffect fx = null;
 
 	public static void main(String[] args) {

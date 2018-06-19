@@ -5,7 +5,7 @@ import org.jfugue.theory.Note;
 
 import soundengine.util.MusicTheory;
 
-public class ChordAugmenter extends Augmenter {
+public class ChordAugmenter extends AbstractAugmenter {
 	private int root;
 	private String type;
 	

@@ -18,7 +18,7 @@ import soundengine.util.Util;
 
 //TODO: DELETE THIS CLASS! NO LONGER NECESSARY TO THE PROJECT
 
-public class LiveInputGeneratorExtendingLiveInput extends ModifiedLiveInput implements Generator,Runnable {
+public class LiveInputGeneratorExtendingLiveInput extends ModifiedLiveInput implements AbstractGenerator,Runnable {
 	
 	//protected static LiveInput mic;
 	
@@ -213,24 +213,24 @@ public class LiveInputGeneratorExtendingLiveInput extends ModifiedLiveInput impl
 			return this.velocity;
 	}
 
-	public Generator cloneWithPitchAndVelocityIfUnlocked(int newPitch, int newVelocity) {
+	public AbstractGenerator cloneWithPitchAndVelocityIfUnlocked(int newPitch, int newVelocity) {
 		int rightPitch = getRightPitchForClone(newPitch);
 		int rightVelocity = getRightVelocityForClone(newVelocity);
 		return clone(rightPitch, rightVelocity);
 	}
 
 	@Override
-	public Generator cloneWithPitch(int newPitch) {
+	public AbstractGenerator cloneWithPitch(int newPitch) {
 		return this.cloneWithPitchAndVelocity(newPitch, this.velocity);
 	}
 
 	@Override
-	public Generator cloneWithPitchAndVelocity(int newPitch, int newVelocity) {
+	public AbstractGenerator cloneWithPitchAndVelocity(int newPitch, int newVelocity) {
 		// return this.clone(newPitch, newVelocity);
 		return cloneWithPitchAndVelocityIfUnlocked(newPitch, newVelocity);
 	}
 
-	public Generator clone(int newPitch, int newVelocity) {
+	public AbstractGenerator clone(int newPitch, int newVelocity) {
 		LiveInputGeneratorExtendingLiveInput clone = new LiveInputGeneratorExtendingLiveInput(newPitch, newVelocity, this.duration);
 		this.linkForFutureChanges(clone);
 		return clone;

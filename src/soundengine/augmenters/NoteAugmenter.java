@@ -2,7 +2,7 @@ package soundengine.augmenters;
 
 import org.jfugue.theory.Note;
 
-public class NoteAugmenter extends Augmenter {
+public class NoteAugmenter extends AbstractAugmenter {
 
 	private int pitch;
 

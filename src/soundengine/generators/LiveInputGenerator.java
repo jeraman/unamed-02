@@ -14,7 +14,7 @@ import soundengine.SoundEngine;
 import soundengine.util.MusicTheory;
 import soundengine.util.Util;
 
-public class LiveInputGenerator extends Oscil implements Generator, Runnable {
+public class LiveInputGenerator extends Oscil implements AbstractGenerator, Runnable {
 
 	private static LiveInput micInput;
 	private static Vocoder vocode;
@@ -324,24 +324,24 @@ public class LiveInputGenerator extends Oscil implements Generator, Runnable {
 			return this.velocity;
 	}
 	
-	public Generator cloneWithPitchAndVelocityIfUnlocked(int newPitch, int newVelocity) {
+	public AbstractGenerator cloneWithPitchAndVelocityIfUnlocked(int newPitch, int newVelocity) {
 		int rightPitch = getRightPitchForClone(newPitch);
 		int rightVelocity = getRightVelocityForClone(newVelocity);
 		return clone(rightPitch, rightVelocity);
 	}
 
 	@Override
-	public Generator cloneWithPitch(int newPitch) {
+	public AbstractGenerator cloneWithPitch(int newPitch) {
 		return this.cloneWithPitchAndVelocity(newPitch, this.velocity);
 	}
 	
 	@Override
-	public Generator cloneWithPitchAndVelocity(int newPitch, int newVelocity) {
+	public AbstractGenerator cloneWithPitchAndVelocity(int newPitch, int newVelocity) {
 		//return this.clone(newPitch, newVelocity);
 		return cloneWithPitchAndVelocityIfUnlocked(newPitch, newVelocity);
 	}
 	
-	public Generator clone(int newPitch, int newVelocity) {
+	public AbstractGenerator clone(int newPitch, int newVelocity) {
 		LiveInputGenerator clone = new LiveInputGenerator(newPitch, newVelocity, this.duration);
 		this.linkForFutureChanges(clone);
 		return clone;

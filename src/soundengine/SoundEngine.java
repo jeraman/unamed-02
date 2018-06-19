@@ -5,13 +5,13 @@ import java.util.Map.Entry;
 import ddf.minim.AudioOutput;
 import ddf.minim.Minim;
 import ddf.minim.spi.AudioStream;
-import soundengine.augmenters.Augmenter;
+import soundengine.augmenters.AbstractAugmenter;
 import soundengine.augmenters.AugmenterFactory;
 import soundengine.core.DecoratedNote;
 import soundengine.core.DecoratedNoteMemory;
-import soundengine.effects.Effect;
+import soundengine.effects.AbstractEffect;
 import soundengine.effects.EffectFactory;
-import soundengine.generators.Generator;
+import soundengine.generators.AbstractGenerator;
 import soundengine.generators.GeneratorFactory;
 
 /**
@@ -22,9 +22,9 @@ import soundengine.generators.GeneratorFactory;
 public class SoundEngine implements SoundEngineFacade {
 	
 	private DecoratedNoteMemory memory;
-	private LinkedHashMap<String, Generator> activeGenerators;
-	private LinkedHashMap<String, Effect> activeEffects;
-	private LinkedHashMap<String, Augmenter> activeAugmenters;
+	private LinkedHashMap<String, AbstractGenerator> activeGenerators;
+	private LinkedHashMap<String, AbstractEffect> activeEffects;
+	private LinkedHashMap<String, AbstractAugmenter> activeAugmenters;
 	
 	public static Minim minim;
 	public static AudioOutput out;
@@ -32,9 +32,9 @@ public class SoundEngine implements SoundEngineFacade {
 	
 	public SoundEngine(Minim minim) {
 		this.memory 		  = new DecoratedNoteMemory();
-		this.activeGenerators = new LinkedHashMap<String, Generator>();
-		this.activeEffects 	  = new LinkedHashMap<String, Effect>();
-		this.activeAugmenters = new LinkedHashMap<String, Augmenter>();
+		this.activeGenerators = new LinkedHashMap<String, AbstractGenerator>();
+		this.activeEffects 	  = new LinkedHashMap<String, AbstractEffect>();
+		this.activeAugmenters = new LinkedHashMap<String, AbstractAugmenter>();
 		
 		SoundEngine.minim = minim;
 		SoundEngine.out = minim.getLineOut(Minim.MONO, 256);
@@ -51,88 +51,88 @@ public class SoundEngine implements SoundEngineFacade {
 	}
 	
 	public void addGenerator(String id, String type, String[] parameters) {
-		Generator gen = GeneratorFactory.createGenerator(type, parameters);
+		AbstractGenerator gen = GeneratorFactory.createGenerator(type, parameters);
 		System.out.println("inserting " + id + ","  + type + " as generator " + gen);
 		this.activeGenerators.put(id, gen);
 	}
 
 	@Override
 	public void updateGenerator(String id, String[] parameters) {
-		Generator gen = this.activeGenerators.get(id);
+		AbstractGenerator gen = this.activeGenerators.get(id);
 		GeneratorFactory.updateGenerator(gen, parameters);
 		System.out.println("updating generator " + gen + " (id: "+  id + ") with the following parameters: "  + parameters.toString());
 	}
 	
 	public void updateGenerator(String id, String singleParameter) {
-		Generator gen = this.activeGenerators.get(id);
+		AbstractGenerator gen = this.activeGenerators.get(id);
 		GeneratorFactory.updateGenerator(gen, singleParameter.trim());
 		System.out.println("updating generator " + gen + " (id: "+  id + ") with "  + singleParameter);
 	}
 
 	@Override
 	public void removeGenerator(String id) {
-		Generator gen = this.activeGenerators.remove(id);
+		AbstractGenerator gen = this.activeGenerators.remove(id);
 		System.out.println("removing generator " + gen + " (id: "+  id + ")");
 	}
 
 	@Override
 	public void addEffect(String id, String type, String[] parameters) {
-		Effect fx = EffectFactory.createEffect(type, parameters);
+		AbstractEffect fx = EffectFactory.createEffect(type, parameters);
 		System.out.println("inserting " + id + ","  + type + " as effect " + fx);
 		this.activeEffects.put(id, fx);
 	}
 
 	@Override
 	public void updateEffect(String id, String[] parameters) {
-		Effect fx = this.activeEffects.get(id);
+		AbstractEffect fx = this.activeEffects.get(id);
 		EffectFactory.updateEffect(fx, parameters);
 		System.out.println("updating effect " + fx + " (id: "+  id + ") with the following parameters: "  + parameters.toString());
 	}
 	
 	public void updateEffect(String id, String singleParameter) {
-		Effect fx = this.activeEffects.get(id);
+		AbstractEffect fx = this.activeEffects.get(id);
 		EffectFactory.updateEffect(fx, singleParameter);
 		System.out.println("updating effect " + fx +  " (id: "+  id + ") with "  + singleParameter);
 	}
 
 	@Override
 	public void removeEffect(String id) {
-		Effect fx = this.activeEffects.remove(id);
+		AbstractEffect fx = this.activeEffects.remove(id);
 		System.out.println("removing effect " + fx + " (id: "+  id + ")");
 	}
 	
 	@Override
 	public void addAugmenter(String id, String type, String[] parameters) {
-		Augmenter aug = AugmenterFactory.createAugmenter(type, parameters);
+		AbstractAugmenter aug = AugmenterFactory.createAugmenter(type, parameters);
 		System.out.println("inserting " + id + ","  + type + " as augmenter " + aug);
 		this.activeAugmenters.put(id, aug);
 	}
 
 	@Override
 	public void updateAugmenter(String id, String[] parameters) {
-		Augmenter aug = this.activeAugmenters.get(id);
+		AbstractAugmenter aug = this.activeAugmenters.get(id);
 		AugmenterFactory.updateAugmenter(aug, parameters);
 		System.out.println("updating augmenter " + aug + " (id: "+  id + ") with the following parameters: "  + parameters.toString());
 	}
 	
 	@Override
 	public void updateAugmenter(String id, String singleParameter) {
-		Augmenter aug = this.activeAugmenters.get(id);
+		AbstractAugmenter aug = this.activeAugmenters.get(id);
 		AugmenterFactory.updateAugmenter(aug, singleParameter);
 		System.out.println("updating augmenter " + aug + " (id: "+  id + ") with "  + singleParameter);
 	}
 
 	@Override
 	public void removeAugmenter(String id) {
-		Augmenter aug = this.activeAugmenters.remove(id);
+		AbstractAugmenter aug = this.activeAugmenters.remove(id);
 		System.out.println("removing augmenter " + aug + " (id: "+  id + ")");		
 	}
 	
 	private void attachGenerators(DecoratedNote targetNote) {
 		synchronized (activeGenerators) {
-			for (Entry<String, Generator> pair : activeGenerators.entrySet()) {
-				Generator gen = pair.getValue();
-				Generator cloned = gen.cloneWithPitchAndVelocity(targetNote.getPitch(), targetNote.getVelocity());
+			for (Entry<String, AbstractGenerator> pair : activeGenerators.entrySet()) {
+				AbstractGenerator gen = pair.getValue();
+				AbstractGenerator cloned = gen.cloneWithPitchAndVelocity(targetNote.getPitch(), targetNote.getVelocity());
 				targetNote.addGenerator(cloned);
 			}
 		}
@@ -140,9 +140,9 @@ public class SoundEngine implements SoundEngineFacade {
 	
 	private void attachEffects(DecoratedNote targetNote) {
 		synchronized (activeEffects) {
-			for (Entry<String, Effect> pair : activeEffects.entrySet()) {
-				Effect fx = pair.getValue();
-				Effect cloned = fx.clone();
+			for (Entry<String, AbstractEffect> pair : activeEffects.entrySet()) {
+				AbstractEffect fx = pair.getValue();
+				AbstractEffect cloned = fx.clone();
 				targetNote.addEffect(cloned);
 			}
 		}
@@ -150,8 +150,8 @@ public class SoundEngine implements SoundEngineFacade {
 	
 	private void attachAugmenters(DecoratedNote targetNote) {
 		synchronized (activeAugmenters) {
-			for (Entry<String, Augmenter> pair : activeAugmenters.entrySet()) {
-				Augmenter aug = pair.getValue();
+			for (Entry<String, AbstractAugmenter> pair : activeAugmenters.entrySet()) {
+				AbstractAugmenter aug = pair.getValue();
 				targetNote.addAugmenter(aug);
 				System.out.println("add " + aug);
 			}
@@ -165,8 +165,8 @@ public class SoundEngine implements SoundEngineFacade {
 	
 	private void cleanOldGeneratorObservers() {
 		synchronized (activeGenerators) {
-			for (Entry<String, Generator> pair : activeGenerators.entrySet()) {
-				Generator gen = pair.getValue();
+			for (Entry<String, AbstractGenerator> pair : activeGenerators.entrySet()) {
+				AbstractGenerator gen = pair.getValue();
 				gen.unlinkOldObservers();
 			}
 		}
@@ -174,8 +174,8 @@ public class SoundEngine implements SoundEngineFacade {
 	
 	private void cleanOldEffectObservers() {
 		synchronized (activeEffects) {
-			for (Entry<String, Effect> pair : activeEffects.entrySet()) {
-				Effect fx = pair.getValue();
+			for (Entry<String, AbstractEffect> pair : activeEffects.entrySet()) {
+				AbstractEffect fx = pair.getValue();
 				fx.unlinkOldObservers();
 			}
 		}

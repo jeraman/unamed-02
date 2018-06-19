@@ -5,7 +5,7 @@ import org.jfugue.theory.Note;
 
 import soundengine.util.MusicTheory;
 
-public class RelativeChordAugmenter extends Augmenter {
+public class RelativeChordAugmenter extends AbstractAugmenter {
 
 	public String type;
 	
