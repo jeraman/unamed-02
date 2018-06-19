@@ -54,16 +54,16 @@ public class FMGenTask extends Task {
 	}
 	
 	private void processModFrequencyChange() {
-		if (frequency.update())
+		if (modFreq.update())
 			Main.eng.updateGenerator(this.get_gui_id(), "modFreq : " + modFreq.getValue());
 	}
 	private void processModAmplitudeChange() {
-		if (amplitude.update())
+		if (modAmp.update())
 			Main.eng.updateGenerator(this.get_gui_id(), "modAmp : " + modAmp.getValue());
 	}
 			
 	private void processModWavetypeChange() {
-		if (carrierWavetype.update())
+		if (modWavetype.update())
 			Main.eng.updateGenerator(this.get_gui_id(), "modWave : " + modWavetype.getValue());
 	}
 
@@ -155,7 +155,18 @@ public class FMGenTask extends Task {
 	@Override
 	public void reset_gui_fields() {
 		// TODO Auto-generated method stub
-		
+		String g_name = this.get_gui_id();
+		String nv;
+		// if this group is not open, returns...
+		if (!((Group) cp5.get(get_gui_id())).isOpen())
+			return;
+
+		frequency.updateValueExpression();
+		amplitude.updateValueExpression();
+		this.modFreq.updateValueExpression();
+		this.modAmp.updateValueExpression();
+		this.duration = new ComputableFloatTextfieldUI();
+		duration.updateValueExpression();
 	}
 
 }
