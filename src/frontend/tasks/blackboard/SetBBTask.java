@@ -80,6 +80,12 @@ public class SetBBTask extends Task {
 	void update_variable_name(String newname) {
 		this.variableName = newname;
 	}
+	
+	@Override
+	protected void processAllParameters() {
+		// TODO Auto-generated method stub
+		
+	}
 
 	public void update_status() {
 	}

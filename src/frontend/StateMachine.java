@@ -939,4 +939,9 @@ public class StateMachine extends Task {
 		//nothing in here!
 	}
 
+	@Override
+	protected void processAllParameters() {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -273,5 +273,11 @@ public class ScriptingTask extends Task {
 		nv = ((Textfield) cp5.get(g_name + "/filename")).getText();
 		update_name(nv);
 	}
+	
+	@Override
+	protected void processAllParameters() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

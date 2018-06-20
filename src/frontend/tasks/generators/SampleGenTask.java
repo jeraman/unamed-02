@@ -68,7 +68,7 @@ public class SampleGenTask extends Task {
 		}
 	}
 	
-	private void processAllParameters() {
+	protected void processAllParameters() {
 		this.processFilenameChange();
 		this.processPitchChange();
 		this.processlVelocityChange();
@@ -81,14 +81,19 @@ public class SampleGenTask extends Task {
 		super.closeTask();
 	}
 	
-	@Override
-	public void run() {
-		if (!should_run())
-			return;
-
-		processAllParameters();
-
-	}
+//	@Override
+//	public void run() {
+//		if (!should_run())
+//			return;
+//		processAllParameters();
+//	}
+	
+//	@Override
+//	public void build(PApplet p, ControlP5 cp5) {
+//		// TODO Auto-generated method stub
+//		this.p = p;
+//		this.cp5 = cp5;
+//	}
 	
 	@Override
 	public Task clone_it() {
@@ -101,12 +106,6 @@ public class SampleGenTask extends Task {
 		return clone;
 	}
 
-	@Override
-	public void build(PApplet p, ControlP5 cp5) {
-		// TODO Auto-generated method stub
-		this.p = p;
-		this.cp5 = cp5;
-	}
 
 	@Override
 	public void update_status() {

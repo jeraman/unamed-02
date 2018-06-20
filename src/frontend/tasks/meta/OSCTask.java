@@ -406,6 +406,12 @@ public class OSCTask extends Task {
     update_content_from_string(nv);
 
   }
+  
+	@Override
+	protected void processAllParameters() {
+		// TODO Auto-generated method stub
+		
+	}
 
 
 }

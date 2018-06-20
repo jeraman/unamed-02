@@ -24,9 +24,6 @@ public class FMGenTask extends Task {
 	private ScrollableListUI modWavetype;
 	private ComputableFloatTextfieldUIWithUserInput duration;
 	
-	
-	
-	
 	public FMGenTask(PApplet p, ControlP5 cp5, String taskname) {
 		super(p, cp5, taskname);
 		this.frequency = new ComputableFloatTextfieldUIWithUserInput();
@@ -77,7 +74,7 @@ public class FMGenTask extends Task {
 			Main.eng.updateGenerator(this.get_gui_id(), "duration : " + duration.getValue());
 	}
 
-	private void processAllParameters() {
+	protected void processAllParameters() {
 		this.processFrequencyChange();
 		this.processAmplitudeChange();
 		this.processWavetypeChange();
@@ -87,12 +84,19 @@ public class FMGenTask extends Task {
 		this.processDurationChange();
 	}
 	
-	@Override
-	public void run() {
-		if (!should_run())
-			return;
-		processAllParameters();
-	}
+//	@Override
+//	public void run() {
+//		if (!should_run())
+//			return;
+//		processAllParameters();
+//	}
+	
+//	@Override
+//	public void build(PApplet p, ControlP5 cp5) {
+//		// TODO Auto-generated method stub
+//		this.p = p;
+//		this.cp5 = cp5;
+//	}
 	
 
 	@Override
@@ -138,13 +142,6 @@ public class FMGenTask extends Task {
 	public void closeTask() {
 		Main.eng.removeGenerator(this.get_gui_id());
 		super.closeTask();
-	}
-	
-	@Override
-	public void build(PApplet p, ControlP5 cp5) {
-		// TODO Auto-generated method stub
-		this.p = p;
-		this.cp5 = cp5;
 	}
 	
 	@Override

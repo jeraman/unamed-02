@@ -239,5 +239,11 @@ public class ControlRemoteDMXTask extends RemoteOSCTask {
     nv = ((Textfield)cp5.get(g_name+"/duration")).getText();
     update_duration(nv);
   }
+  
+	@Override
+	protected void processAllParameters() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
