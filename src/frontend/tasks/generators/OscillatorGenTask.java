@@ -35,7 +35,7 @@ public class OscillatorGenTask extends Task {
 		Main.eng.addGenerator(this.get_gui_id(), "OSCILLATOR", getDefaultParameters());
 	}
 	
-	private String[] getDefaultParameters(){
+	protected String[] getDefaultParameters(){
 		return new String[] { "-1", "-1", "SINE", "-1"};
 	}
 	

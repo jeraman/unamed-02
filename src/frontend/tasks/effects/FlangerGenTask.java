@@ -39,7 +39,7 @@ public class FlangerGenTask extends Task {
 		Main.eng.addEffect(this.get_gui_id(), "FLANGER", getDefaultParameters());
 	}
 
-	private String[] getDefaultParameters() {
+	protected String[] getDefaultParameters() {
 		return new String[] { "1", "0.5", "1", "0.5", "0.5", "0.5" };
 	}
 
@@ -107,7 +107,7 @@ public class FlangerGenTask extends Task {
 		this.backgroundheight = (int) (localoffset * 6.2);
 		g.setBackgroundHeight(backgroundheight);
 
-		delayLength.createUI(id, "Delay length", localx, localy + (0 * localoffset), width, g);
+		delayLength.createUI(id, "length", localx, localy + (0 * localoffset), width, g);
 		lfoRate.createUI(id, "LFO Rate", localx, localy + (1 * localoffset), width, g);
 		delayDepth.createUI(id, "Depth", localx, localy + (2 * localoffset), width, g);
 		feedbackAmplitude.createUI(id, "Feedback", localx, localy + (3 * localoffset), width, g);

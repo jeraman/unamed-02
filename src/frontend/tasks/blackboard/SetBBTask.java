@@ -33,7 +33,7 @@ public class SetBBTask extends Task {
 		this.p = p;
 		this.cp5 = cp5;
 	}
-
+	
 	public SetBBTask clone_it() {
 		return new SetBBTask(this.p, this.cp5, this.name, this.value, this.repeat);
 	}
@@ -192,6 +192,11 @@ public class SetBBTask extends Task {
 		nv = ((Textfield) cp5.get(g_name + "/value")).getText();
 		update_value(nv);
 
+	}
+	
+	protected String[] getDefaultParameters(){
+		//TODO: abstract auto gen method
+		return null;
 	}
 
 }

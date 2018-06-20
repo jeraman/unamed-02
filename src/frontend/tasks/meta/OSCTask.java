@@ -410,8 +410,10 @@ public class OSCTask extends Task {
 	@Override
 	protected void processAllParameters() {
 		// TODO Auto-generated method stub
-		
 	}
 
-
+	protected String[] getDefaultParameters(){
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

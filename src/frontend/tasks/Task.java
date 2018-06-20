@@ -193,8 +193,8 @@ public abstract class Task implements Serializable {
 		processAllParameters();
 	}
 
+	protected abstract String[] getDefaultParameters();
 	protected abstract void processAllParameters();
-
 	public abstract Task clone_it();
 
 	public void closeTask() {

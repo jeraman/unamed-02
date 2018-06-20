@@ -944,4 +944,9 @@ public class StateMachine extends Task {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	protected String[] getDefaultParameters(){
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -32,7 +32,7 @@ public class SampleGenTask extends Task {
 		Main.eng.addGenerator(this.get_gui_id(), "SAMPLE", getDefaultParameters());
 	}
 	
-	private String[] getDefaultParameters(){
+	protected String[] getDefaultParameters(){
 		return new String[] { FileOpenerTextfieldUI.defaultSoundFile, "-1", "-1", "true", "-1"};
 	}
 	

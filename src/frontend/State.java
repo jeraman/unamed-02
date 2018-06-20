@@ -11,6 +11,7 @@ package frontend;
 import java.util.*;
 import java.io.Serializable;
 import processing.core.PApplet;
+import soundengine.effects.AdsrEffect;
 import soundengine.generators.FMGenerator;
 import controlP5.*;
 import frontend.tasks.Task;
@@ -18,6 +19,7 @@ import frontend.tasks.blackboard.SetBBOscillatorTask;
 import frontend.tasks.blackboard.SetBBRampTask;
 import frontend.tasks.blackboard.SetBBRandomTask;
 import frontend.tasks.blackboard.SetBBTask;
+import frontend.tasks.effects.AdsrGenTask;
 import frontend.tasks.effects.DelayGenTask;
 import frontend.tasks.effects.FlangerGenTask;
 import frontend.tasks.generators.FMGenTask;
@@ -566,7 +568,9 @@ public class State implements Serializable {
 	private void init_adsr_task() {
 		// TODO Auto-generated method stub
 		System.out.println("create adsr task!");
-
+		String taskname = generate_random_name();
+		AdsrGenTask t = new AdsrGenTask(p, cp5, taskname);
+		this.add_task(t);
 	}
 
 	private void init_flanger_task() {

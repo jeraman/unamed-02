@@ -243,7 +243,11 @@ public class ControlRemoteDMXTask extends RemoteOSCTask {
 	@Override
 	protected void processAllParameters() {
 		// TODO Auto-generated method stub
-		
+	}
+	
+	protected String[] getDefaultParameters(){
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

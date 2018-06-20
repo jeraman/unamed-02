@@ -37,7 +37,7 @@ public class FMGenTask extends Task {
 		Main.eng.addGenerator(this.get_gui_id(), "FM", getDefaultParameters());
 	}
 	
-	private String[] getDefaultParameters(){
+	protected String[] getDefaultParameters(){
 		return new String[] { "-1", "-1", "SINE", "30", "75.", "SAW", "-1"};
 	}
 	

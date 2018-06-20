@@ -25,7 +25,7 @@ public class DelayGenTask extends Task {
 		Main.eng.addEffect(this.get_gui_id(), "DELAY", getDefaultParameters());
 	}
 	
-	private String[] getDefaultParameters(){
+	protected String[] getDefaultParameters(){
 		return new String[] { "0.02", "1", "true", "true" };
 	}
 	
@@ -51,8 +51,8 @@ public class DelayGenTask extends Task {
 		return clone;
 	}
 	
-/////////////////////////////////
-// UI config
+	/////////////////////////////////
+	// UI config
 	public Group load_gui_elements(State s) {
 		this.textlabel = "Delay Effect";
 
@@ -62,8 +62,8 @@ public class DelayGenTask extends Task {
 
 		this.backgroundheight = (int) (localoffset * 2);
 		g.setBackgroundHeight(backgroundheight);
-		
-		delayTime.createUI(id, "Delay time", localx, localy +  (0 * localoffset), width, g);
+
+		delayTime.createUI(id, "Delay time", localx, localy + (0 * localoffset), width, g);
 		amplitudeFactor.createUI(id, "Amplitude", localx, localy + (1 * localoffset), width, g);
 
 		return g;
