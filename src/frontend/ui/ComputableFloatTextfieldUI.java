@@ -24,7 +24,7 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 	private String defaultText;
 	transient private Textfield textfield;
 	
-	private static final String classDefaultText = "CLICK TO CHANGE";
+	protected static final String classDefaultText = "CLICK TO CHANGE";
 
 	public ComputableFloatTextfieldUI(float defaultValue) {
 		this(classDefaultText, defaultValue);

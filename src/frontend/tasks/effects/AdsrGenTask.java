@@ -90,6 +90,13 @@ public class AdsrGenTask extends Task {
 		return clone;
 	}
 	
+	/////////////////////////////////////
+	// methods to be carried to super or to be deleted
+	public void closeTask() {
+		Main.eng.removeEffect(this.get_gui_id());
+		super.closeTask();
+	}
+	
 	/////////////////////////////////
 	// UI config
 	public Group load_gui_elements(State s) {

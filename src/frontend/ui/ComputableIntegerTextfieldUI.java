@@ -6,6 +6,9 @@ import frontend.tasks.Task;
 
 public class ComputableIntegerTextfieldUI extends ComputableFloatTextfieldUI {
 	
+	public ComputableIntegerTextfieldUI (float defaultValue) {
+		super(classDefaultText, defaultValue);
+	}
 	public ComputableIntegerTextfieldUI(String defaultText, float defaultValue) {
 		super(defaultText, defaultValue);
 	}
