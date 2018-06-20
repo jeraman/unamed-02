@@ -110,8 +110,6 @@ public class OscillatorGenTask extends Task {
 		duration.createUI(id, "duration", localx, localy + miniOffsetDueToScrollList + (3 * localoffset), width, g);
 		wavetype.createUI(id, "wavetype", localx, localy + (0 * localoffset), width, g);
 		
-//		this.createGuiToggle(localx, localy + (4 * localoffset), width, g, callbackRepeatToggle());
-
 		return g;
 	}
 	

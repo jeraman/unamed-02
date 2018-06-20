@@ -22,6 +22,7 @@ import frontend.tasks.blackboard.SetBBTask;
 import frontend.tasks.effects.AdsrGenTask;
 import frontend.tasks.effects.BitChrushGenTask;
 import frontend.tasks.effects.DelayGenTask;
+import frontend.tasks.effects.FilterGenTask;
 import frontend.tasks.effects.FlangerGenTask;
 import frontend.tasks.generators.FMGenTask;
 import frontend.tasks.generators.OscillatorGenTask;
@@ -556,8 +557,10 @@ public class State implements Serializable {
 	}
 	
 	private void init_filter_task() {
-		// TODO Auto-generated method stub
 		System.out.println("create filter task!");
+		String taskname = generate_random_name();
+		FilterGenTask t = new FilterGenTask(p, cp5, taskname);
+		this.add_task(t);
 	}
 
 	private void init_bitchrush_task() {
