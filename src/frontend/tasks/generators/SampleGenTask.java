@@ -95,6 +95,12 @@ public class SampleGenTask extends Task {
 //		this.cp5 = cp5;
 //	}
 	
+//	@Override
+//	public CallbackListener generate_callback_enter() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+	
 	@Override
 	public Task clone_it() {
 		SampleGenTask clone = new SampleGenTask(this.p, this.cp5, this.name);
@@ -107,10 +113,10 @@ public class SampleGenTask extends Task {
 	}
 
 
-	@Override
-	public void update_status() {
-		// TODO Auto-generated method stub
-	}
+//	@Override
+//	public void update_status() {
+//		// TODO Auto-generated method stub
+//	}
 	
 	
 	/////////////////////////////////
@@ -136,11 +142,6 @@ public class SampleGenTask extends Task {
 		return g;
 	}
 
-	@Override
-	public CallbackListener generate_callback_enter() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 
 	@Override

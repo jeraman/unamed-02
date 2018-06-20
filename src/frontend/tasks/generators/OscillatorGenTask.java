@@ -79,6 +79,10 @@ public class OscillatorGenTask extends Task {
 //		this.cp5 = cp5;
 //	}
 	
+//	public CallbackListener generate_callback_enter() {
+//		return null;
+//	}
+	
 	@Override
 	public Task clone_it() {
 		OscillatorGenTask clone = new OscillatorGenTask(this.p, this.cp5, this.name);
@@ -118,13 +122,11 @@ public class OscillatorGenTask extends Task {
 		super.closeTask();
 	}
 	
-	@Override
-	public void update_status() {
-	}
+//	@Override
+//	public void update_status() {
+//	}
 	
-	public CallbackListener generate_callback_enter() {
-		return null;
-	}
+
 
 	@Override
 	public void reset_gui_fields() {

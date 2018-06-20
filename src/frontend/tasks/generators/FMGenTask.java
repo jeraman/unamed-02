@@ -98,6 +98,12 @@ public class FMGenTask extends Task {
 //		this.cp5 = cp5;
 //	}
 	
+//	@Override
+//	public CallbackListener generate_callback_enter() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+	
 
 	@Override
 	public Task clone_it() {
@@ -144,16 +150,10 @@ public class FMGenTask extends Task {
 		super.closeTask();
 	}
 	
-	@Override
-	public void update_status() {
-	}
+//	@Override
+//	public void update_status() {
+//	}
 	
-	@Override
-	public CallbackListener generate_callback_enter() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@Override
 	public void reset_gui_fields() {
 		// TODO Auto-generated method stub

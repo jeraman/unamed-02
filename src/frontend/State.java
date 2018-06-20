@@ -19,6 +19,7 @@ import frontend.tasks.blackboard.SetBBRampTask;
 import frontend.tasks.blackboard.SetBBRandomTask;
 import frontend.tasks.blackboard.SetBBTask;
 import frontend.tasks.effects.DelayGenTask;
+import frontend.tasks.effects.FlangerGenTask;
 import frontend.tasks.generators.FMGenTask;
 import frontend.tasks.generators.OscillatorGenTask;
 import frontend.tasks.generators.SampleGenTask;
@@ -525,7 +526,6 @@ public class State implements Serializable {
 	/////////////////////////////
 	// tasks
 	private void init_sample_task() {
-		// TODO Auto-generated method stub
 		System.out.println("create sample task!");
 		String taskname = generate_random_name();
 		SampleGenTask t = new SampleGenTask(p, cp5, taskname);
@@ -570,12 +570,13 @@ public class State implements Serializable {
 	}
 
 	private void init_flanger_task() {
-		// TODO Auto-generated method stub
 		System.out.println("create flanger task!");
+		String taskname = generate_random_name();
+		FlangerGenTask t = new FlangerGenTask(p, cp5, taskname);
+		this.add_task(t);
 	}
 
 	private void init_delay_task() {
-		// TODO Auto-generated method stub
 		System.out.println("create delay task!");
 		String taskname = generate_random_name();
 		DelayGenTask t = new DelayGenTask(p, cp5, taskname);

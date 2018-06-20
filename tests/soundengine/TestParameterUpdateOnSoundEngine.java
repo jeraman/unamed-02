@@ -35,14 +35,14 @@ public class TestParameterUpdateOnSoundEngine extends PApplet {
 	int counter = 0;
 
 	public void mousePressed() {
-		 processMousePressedGenUpdates();
+		 //processMousePressedGenUpdates();
 		 //processMousePressedAugUpdates();
 		counter++;
 	}
 
 	public void mouseMoved() {
-		processMouseMovedGenUpdates();
-		//processMouseMovedFxUpdates();
+		//processMouseMovedGenUpdates();
+		processMouseMovedFxUpdates();
 		//processMouseMovedUpdateGenDuration();
 	}
 	
@@ -189,7 +189,7 @@ public class TestParameterUpdateOnSoundEngine extends PApplet {
 	private void processGen1() {
 		if (!isGen1Active)
 //			eng.addGenerator("1", "SAMPLE", new String[] { "123go.mp3", "60", "127", "true" });
-		eng.addGenerator("1", "SAMPLE", new String[] { "123go.mp3", "-1", "-1", "true", "1000" });
+		eng.addGenerator("1", "SAMPLE", new String[] { "123go.mp3", "-1", "-1", "true", "-1" });
 		else
 			eng.removeGenerator("1");
 		isGen1Active = !isGen1Active;
@@ -201,7 +201,7 @@ public class TestParameterUpdateOnSoundEngine extends PApplet {
 		if (!isGen2Active)
 //			eng.addGenerator("2", "OSCILLATOR", new String[] { "60", "127", "SINE","100" });
 //			eng.addGenerator("2", "OSCILLATOR", new String[] { "60", "-1", "SINE", "-1" });
-		eng.addGenerator("2", "OSCILLATOR", new String[] { "-1", "-1", "SINE", "1000" });
+		eng.addGenerator("2", "OSCILLATOR", new String[] { "-1", "-1", "SINE", "-1" });
 		else
 			eng.removeGenerator("2");
 		isGen2Active = !isGen2Active;

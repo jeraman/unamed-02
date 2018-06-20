@@ -298,8 +298,11 @@ public abstract class Task implements Serializable {
 	}
 
 	// abstract CallbackListener generate_callback_leave(){}
-	@Deprecated
-	public abstract CallbackListener generate_callback_enter();
+//	@Deprecated
+//	public abstract CallbackListener generate_callback_enter();
+	public CallbackListener generate_callback_enter() {
+		return null;
+	}
 
 	@Deprecated
 	public abstract void reset_gui_fields();
@@ -313,5 +316,5 @@ public abstract class Task implements Serializable {
 	}
 
 	@Deprecated
-	public abstract void update_status();
+	public void update_status(){}
 }

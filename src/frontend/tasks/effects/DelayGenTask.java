@@ -29,18 +29,18 @@ public class DelayGenTask extends Task {
 		return new String[] { "0.02", "1", "true", "true" };
 	}
 	
-	private void processDelayLengthChange() {
+	private void processDelayTimeChange() {
 		if (delayTime.update())
 			Main.eng.updateEffect(this.get_gui_id(), "delayTime : " + delayTime.getValue());
 	}
-	private void processLfoRateChange() {
+	private void processAmplitudeChange() {
 		if (amplitudeFactor.update())
 			Main.eng.updateEffect(this.get_gui_id(), "amplitudeFactor : " + amplitudeFactor.getValue());
 	}
 	
 	protected void processAllParameters() {
-		this.processDelayLengthChange();
-		this.processLfoRateChange();
+		this.processDelayTimeChange();
+		this.processAmplitudeChange();
 	}
 
 	@Override
@@ -77,20 +77,14 @@ public class DelayGenTask extends Task {
 	}
 	
 	@Override
-	public CallbackListener generate_callback_enter() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public void reset_gui_fields() {
 		// TODO Auto-generated method stub	
 	}
 
-	@Override
-	public void update_status() {
-		// TODO Auto-generated method stub
-		
-	}
+//	@Override
+//	public void update_status() {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 }
