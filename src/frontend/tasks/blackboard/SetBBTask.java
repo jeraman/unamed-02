@@ -1,4 +1,4 @@
-package frontend.tasks;
+package frontend.tasks.blackboard;
 
 import controlP5.*;
 import frontend.Blackboard;
@@ -6,6 +6,7 @@ import frontend.Expression;
 import frontend.Main;
 import frontend.State;
 import frontend.Status;
+import frontend.tasks.Task;
 import processing.core.PApplet;
 
 public class SetBBTask extends Task {

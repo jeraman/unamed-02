@@ -1,4 +1,4 @@
-package frontend.tasks;
+package frontend.tasks.meta;
 
 import oscP5.*;
 import netP5.*;
@@ -7,6 +7,7 @@ import frontend.Expression;
 import frontend.Main;
 import frontend.State;
 import frontend.Status;
+import frontend.tasks.Task;
 import processing.core.PApplet;
 
 ////////////////////////////////////////

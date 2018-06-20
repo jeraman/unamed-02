@@ -1,10 +1,11 @@
-package frontend.tasks;
+package frontend.tasks.generators;
 
 import controlP5.CallbackListener;
 import controlP5.ControlP5;
 import controlP5.Group;
 import frontend.Main;
 import frontend.State;
+import frontend.tasks.Task;
 import frontend.ui.ComputableIntegerTextfieldUI;
 import frontend.ui.ComputableIntegerTextfieldUIWithUserInput;
 import frontend.ui.FileOpenerTextfieldUI;

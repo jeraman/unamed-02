@@ -10,6 +10,8 @@ import frontend.Main;
 import frontend.State;
 import frontend.StateMachine;
 import frontend.Status;
+import frontend.tasks.blackboard.SetBBTask;
+import frontend.tasks.meta.OSCTask;
 import frontend.ui.ComputableFloatTextfieldUI;
 import frontend.ui.ComputableFloatTextfieldUIWithUserInput;
 

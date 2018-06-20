@@ -1,10 +1,11 @@
-package frontend.tasks;
+package frontend.tasks.meta;
 
 
 
 import controlP5.*;
 import frontend.Expression;
 import frontend.State;
+import frontend.tasks.RemoteOSCTask;
 import processing.core.PApplet;
 
 

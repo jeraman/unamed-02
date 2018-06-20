@@ -1,4 +1,4 @@
-package frontend.tasks;
+package frontend.tasks.meta;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -24,6 +24,7 @@ import frontend.Blackboard;
 import frontend.Main;
 import frontend.State;
 import frontend.Status;
+import frontend.tasks.Task;
 import processing.core.PApplet;
 
 public class ScriptingTask extends Task {

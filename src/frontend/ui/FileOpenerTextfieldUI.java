@@ -8,8 +8,8 @@ import controlP5.ControlP5;
 import controlP5.Group;
 import controlP5.Textfield;
 import frontend.Main;
-import frontend.tasks.SampleGenTask;
 import frontend.tasks.Task;
+import frontend.tasks.generators.SampleGenTask;
 
 public class FileOpenerTextfieldUI extends AbstractElementUi {
 	

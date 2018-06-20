@@ -1,4 +1,4 @@
-package frontend.tasks;
+package frontend.tasks.generators;
 
 import java.util.Arrays;
 import java.util.List;
@@ -8,6 +8,7 @@ import controlP5.ControlP5;
 import controlP5.Group;
 import frontend.Main;
 import frontend.State;
+import frontend.tasks.Task;
 import frontend.ui.ComputableFloatTextfieldUI;
 import frontend.ui.ComputableFloatTextfieldUIWithUserInput;
 import frontend.ui.ScrollableListUI;

@@ -1,4 +1,4 @@
-package frontend.tasks;
+package frontend.tasks.blackboard;
 
 
 import controlP5.*;
