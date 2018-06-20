@@ -6,6 +6,7 @@ import controlP5.Group;
 import frontend.Main;
 import frontend.State;
 import frontend.ui.ComputableIntegerTextfieldUI;
+import frontend.ui.ComputableIntegerTextfieldUIWithUserInput;
 import frontend.ui.FileOpenerTextfieldUI;
 import frontend.ui.ToggleUi;
 import processing.core.PApplet;
@@ -13,18 +14,18 @@ import processing.core.PApplet;
 public class SampleGenTask extends Task {
 	
 	private FileOpenerTextfieldUI filename;
-	private ComputableIntegerTextfieldUI pitch;
-	private ComputableIntegerTextfieldUI velocity;
-	private ComputableIntegerTextfieldUI duration;
+	private ComputableIntegerTextfieldUIWithUserInput pitch;
+	private ComputableIntegerTextfieldUIWithUserInput velocity;
+	private ComputableIntegerTextfieldUIWithUserInput duration;
 	private ToggleUi loopStatus;
 	
 	public SampleGenTask(PApplet p, ControlP5 cp5, String taskname) {
 		super(p, cp5, taskname);
 		
 		this.filename = new FileOpenerTextfieldUI();
-		this.pitch = new ComputableIntegerTextfieldUI();
-		this.velocity = new ComputableIntegerTextfieldUI();
-		this.duration = new ComputableIntegerTextfieldUI();
+		this.pitch = new ComputableIntegerTextfieldUIWithUserInput();
+		this.velocity = new ComputableIntegerTextfieldUIWithUserInput();
+		this.duration = new ComputableIntegerTextfieldUIWithUserInput();
 		this.loopStatus = new ToggleUi();
 		
 		Main.eng.addGenerator(this.get_gui_id(), "SAMPLE", getDefaultParameters());

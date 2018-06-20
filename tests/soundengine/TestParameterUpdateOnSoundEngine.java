@@ -41,9 +41,9 @@ public class TestParameterUpdateOnSoundEngine extends PApplet {
 	}
 
 	public void mouseMoved() {
-		//processMouseMovedGenUpdates();
+		processMouseMovedGenUpdates();
 		//processMouseMovedFxUpdates();
-		processMouseMovedUpdateGenDuration();
+		//processMouseMovedUpdateGenDuration();
 	}
 	
 
@@ -212,7 +212,7 @@ public class TestParameterUpdateOnSoundEngine extends PApplet {
 	private void processGen3() {
 		if (!isGen3Active)
 //			eng.addGenerator("3", "FM", new String[] { "440", "0.5", "SINE", "30", "75.", "SAW" });
-			eng.addGenerator("3", "FM", new String[] { "220", "-1", "SINE", "30", "75.", "SAW", "500" });
+			eng.addGenerator("3", "FM", new String[] { "220", "-1", "SINE", "30", "75.", "SAW", "-1" });
 		else
 			eng.removeGenerator("3");
 		isGen3Active = !isGen3Active;

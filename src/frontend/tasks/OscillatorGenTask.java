@@ -9,26 +9,27 @@ import controlP5.Group;
 import frontend.Main;
 import frontend.State;
 import frontend.ui.ComputableFloatTextfieldUI;
+import frontend.ui.ComputableFloatTextfieldUIWithUserInput;
 import frontend.ui.ScrollableListUI;
 import processing.core.PApplet;
 
 public class OscillatorGenTask extends Task {
 
-	protected static final List<String> list = Arrays.asList("SINE", "PHASOR", "QUATERPULSE", "SAW",  "SQUARE",
+	protected static final List<String> list = Arrays.asList("PHASOR", "QUATERPULSE", "SAW", "SINE", "SQUARE",
 			"TRIANGLE");
 
-	private ComputableFloatTextfieldUI frequency;
-	private ComputableFloatTextfieldUI amplitude;
-	private ComputableFloatTextfieldUI duration;
+	private ComputableFloatTextfieldUIWithUserInput frequency;
+	private ComputableFloatTextfieldUIWithUserInput amplitude;
+	private ComputableFloatTextfieldUIWithUserInput duration;
 	private ScrollableListUI wavetype;
 	
 	public OscillatorGenTask(PApplet p, ControlP5 cp5, String taskname) {
 		super(p, cp5, taskname);
 		
-		this.frequency = new ComputableFloatTextfieldUI();
-		this.amplitude = new ComputableFloatTextfieldUI();
-		this.duration = new ComputableFloatTextfieldUI();
-		this.wavetype = new ScrollableListUI(list);
+		this.frequency = new ComputableFloatTextfieldUIWithUserInput();
+		this.amplitude = new ComputableFloatTextfieldUIWithUserInput();
+		this.duration = new ComputableFloatTextfieldUIWithUserInput();
+		this.wavetype = new ScrollableListUI(list, 3);
 
 		Main.eng.addGenerator(this.get_gui_id(), "OSCILLATOR", getDefaultParameters());
 	}

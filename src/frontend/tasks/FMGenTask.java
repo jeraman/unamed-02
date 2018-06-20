@@ -9,34 +9,38 @@ import controlP5.Group;
 import frontend.Main;
 import frontend.State;
 import frontend.ui.ComputableFloatTextfieldUI;
+import frontend.ui.ComputableFloatTextfieldUIWithUserInput;
 import frontend.ui.ScrollableListUI;
 import processing.core.PApplet;
 
 public class FMGenTask extends Task {
 	
-	private ComputableFloatTextfieldUI frequency;
-	private ComputableFloatTextfieldUI amplitude;
+	private ComputableFloatTextfieldUIWithUserInput frequency;
+	private ComputableFloatTextfieldUIWithUserInput amplitude;
 	private ScrollableListUI carrierWavetype;
 	private ComputableFloatTextfieldUI modFreq;
 	private ComputableFloatTextfieldUI modAmp;
 	private ScrollableListUI modWavetype;
-	private ComputableFloatTextfieldUI duration;
+	private ComputableFloatTextfieldUIWithUserInput duration;
+	
+	
+	
 	
 	public FMGenTask(PApplet p, ControlP5 cp5, String taskname) {
 		super(p, cp5, taskname);
-		this.frequency = new ComputableFloatTextfieldUI();
-		this.amplitude = new ComputableFloatTextfieldUI();
-		this.carrierWavetype = new ScrollableListUI(OscillatorGenTask.list);
-		this.modFreq = new ComputableFloatTextfieldUI();
-		this.modAmp = new ComputableFloatTextfieldUI();
-		this.modWavetype = new ScrollableListUI(OscillatorGenTask.list);
-		this.duration = new ComputableFloatTextfieldUI();
+		this.frequency = new ComputableFloatTextfieldUIWithUserInput();
+		this.amplitude = new ComputableFloatTextfieldUIWithUserInput();
+		this.carrierWavetype = new ScrollableListUI(OscillatorGenTask.list, 3);
+		this.modFreq = new ComputableFloatTextfieldUI(30f);
+		this.modAmp = new ComputableFloatTextfieldUI(75f);
+		this.modWavetype = new ScrollableListUI(OscillatorGenTask.list, 2);
+		this.duration = new ComputableFloatTextfieldUIWithUserInput();
 		
 		Main.eng.addGenerator(this.get_gui_id(), "FM", getDefaultParameters());
 	}
 	
 	private String[] getDefaultParameters(){
-		return new String[] { "-1", "-1", "SINE", "30", "75.", "SINE", "-1"};
+		return new String[] { "-1", "-1", "SINE", "30", "75.", "SAW", "-1"};
 	}
 	
 	private void processFrequencyChange() {
@@ -165,7 +169,6 @@ public class FMGenTask extends Task {
 		amplitude.updateValueExpression();
 		this.modFreq.updateValueExpression();
 		this.modAmp.updateValueExpression();
-		this.duration = new ComputableFloatTextfieldUI();
 		duration.updateValueExpression();
 	}
 

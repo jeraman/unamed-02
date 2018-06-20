@@ -10,6 +10,8 @@ import frontend.Main;
 import frontend.State;
 import frontend.StateMachine;
 import frontend.Status;
+import frontend.ui.ComputableFloatTextfieldUI;
+import frontend.ui.ComputableFloatTextfieldUIWithUserInput;
 
 import javax.script.*;
 
@@ -25,7 +27,7 @@ public abstract class Task implements Serializable {
   protected boolean repeat;
   protected boolean first_time;
   
-  public static final String userInputAsDefault = "(USER INPUT)";
+//  public static final String userInputAsDefault = "(USER INPUT)";
   public static final int defaultColor = ControlP5Constants.THEME_CP52014.getBackground();
   
   //UI variables
@@ -219,7 +221,7 @@ public abstract class Task implements Serializable {
 
 				String content = theEvent.getController().getValueLabel().getText();
 				
-				if (content.trim().equals(Task.userInputAsDefault)) 
+				if (content.trim().equals(ComputableFloatTextfieldUIWithUserInput.userInputAsDefault)) 
 					((Textfield) cp5.get(get_gui_id() + "/" + target)).setText("");
 			}
 		};

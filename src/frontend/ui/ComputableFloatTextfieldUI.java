@@ -19,20 +19,28 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 	private Object valueExpression;
 	private float computedValue;
 	private String lastComputedValue;
+	
+	private float defaultValue;
+	private String defaultText;
 	transient private Textfield textfield;
+	
+	private static final String classDefaultText = "CLICK TO CHANGE";
 
-	public ComputableFloatTextfieldUI() {
-		this("-1");
+	public ComputableFloatTextfieldUI(float defaultValue) {
+		this(classDefaultText, defaultValue);
 	}
-
+	
+	public ComputableFloatTextfieldUI(String defaultText, float defaultValue) {
+		this.defaultValue = defaultValue;
+		this.defaultText = defaultText;
+		this.setValueExpression(defaultText);
+	}
+	
 	public void setValueExpression(String newValue) {
 		this.valueExpression = new Expression(newValue);
 		this.lastComputedValue = "";
 	}
 	
-	public ComputableFloatTextfieldUI(String defaultValue) {
-		this.setValueExpression(defaultValue);
-	}
 	
 	public String getTextFieldText() {
 		return this.textfield.getText();
@@ -84,8 +92,8 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 	}
 	
 	public void computeValue() {
-		if (this.isValueExpressionEquals(Task.userInputAsDefault)) {
-			computedValue = -1;
+		if (this.isValueExpressionEquals(defaultText)) {
+			computedValue = defaultValue;
 			textfield.setColorBackground(defaultColor);
 		} else
 			try {
@@ -93,7 +101,7 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 				textfield.setColorBackground(defaultColor); 
 			} catch (ScriptException | NumberFormatException e) {
 				System.out.println("ScrriptExpression-related error thrown, unhandled update.");
-				computedValue = -1;
+				computedValue = defaultValue;
 				textfield.setColorBackground(errorColor); 
 			}
 	}
@@ -123,7 +131,7 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 
 				String content = theEvent.getController().getValueLabel().getText();
 
-				if (content.trim().equals(Task.userInputAsDefault))
+				if (content.trim().equals(defaultText))
 					textfield.setText("");
 			}
 		};
@@ -135,12 +143,12 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 				String content = theEvent.getController().getValueLabel().getText();
 				
 				//if there parameter should be controlled via user input, do nothing
-				if (content.trim().equals(userInputAsDefault))
+				if (content.trim().equals(defaultText))
 					return;
 				
 				//if user deleted the text, sets user input as default value
 				if (content.trim().equals("")) {
-					content = userInputAsDefault;
+					content = defaultText;
 					textfield.setText(content);
 				}
 				

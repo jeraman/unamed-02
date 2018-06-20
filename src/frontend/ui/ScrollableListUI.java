@@ -18,10 +18,18 @@ public class ScrollableListUI extends AbstractElementUi {
 	private transient ScrollableList scrollableList;
 	private transient Textlabel label;
 	
-	public ScrollableListUI (List<String> list) {
+	public ScrollableListUI (List<String> list, int defaultSelection) {
 		this.options = list;
 		this.lastSelection = "";
-		this.selection = list.get(0);
+
+		this.processDefaultSelection(defaultSelection);
+	}
+	
+	private void processDefaultSelection(int defaultSelection) {
+		if (defaultSelection < options.size())
+			this.selection = options.get(defaultSelection);
+		else
+			this.selection = options.get(0);
 	}
 	
 	void setSelection(String newSelection) {
