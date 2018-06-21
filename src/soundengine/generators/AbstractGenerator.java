@@ -34,13 +34,13 @@ public interface AbstractGenerator {
 
 	public void close();
 		
-	public AbstractGenerator cloneWithPitchAndVelocityIfUnlocked(int newPitch, int newVelocity);
+	public AbstractGenerator cloneWithNewPitchVelocityIfUnlocked(int newPitch, int newVelocity);
 	
-	public AbstractGenerator clone(int newPitch, int newVelocity, int newDuration); 
+	public AbstractGenerator cloneWithNewPitchVelocityAndDuration(int newPitch, int newVelocity, int newDuration); 
 	
-	public AbstractGenerator cloneWithPitchAndVelocity(int newPitch, int newVelocity); 
+	//public AbstractGenerator cloneWithPitchAndVelocity(int newPitch, int newVelocity); 
 
-	public AbstractGenerator cloneWithPitch(int newPitch);	
+	//public AbstractGenerator cloneWithPitch(int newPitch);	
 	
 }
 

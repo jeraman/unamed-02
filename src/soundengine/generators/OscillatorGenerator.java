@@ -188,25 +188,25 @@ public class OscillatorGenerator extends Oscil implements AbstractGenerator, Run
 			return this.amplitude;
 	}
 
-	public AbstractGenerator cloneWithPitchAndVelocityIfUnlocked(int newPitch, int newVelocity) {
+	public AbstractGenerator cloneWithNewPitchVelocityIfUnlocked(int newPitch, int newVelocity) {
 		float newFreq = getRightFrequencyForClone(newPitch);
 		float newAmp = getRightAmplitudeForClone(newVelocity);
 
 		return clone(newFreq, newAmp, this.duration);
 	}
 
-	@Override
-	public AbstractGenerator cloneWithPitch(int newPitch) {
-		float newFreq = MusicTheory.freqFromMIDI(newPitch);
-		return this.clone(newFreq, this.amplitude, this.duration);
-	}
-
-	@Override
-	public AbstractGenerator cloneWithPitchAndVelocity(int newPitch, int newVelocity) {
-		return cloneWithPitchAndVelocityIfUnlocked(newPitch, newVelocity);
-	}
-	
-	public AbstractGenerator clone(int newPitch, int newVelocity, int newDur) {
+//	@Override
+//	public AbstractGenerator cloneWithPitch(int newPitch) {
+//		float newFreq = MusicTheory.freqFromMIDI(newPitch);
+//		return this.clone(newFreq, this.amplitude, this.duration);
+////	}
+//
+//	@Override
+//	public AbstractGenerator cloneWithPitchAndVelocity(int newPitch, int newVelocity) {
+//		return cloneWithPitchAndVelocityIfUnlocked(newPitch, newVelocity);
+//	}
+//	
+	public AbstractGenerator cloneWithNewPitchVelocityAndDuration(int newPitch, int newVelocity, int newDur) {
 		return clone(MusicTheory.freqFromMIDI(newPitch), Util.mapFromMidiToAmplitude(newVelocity), newDur);
 	}
 

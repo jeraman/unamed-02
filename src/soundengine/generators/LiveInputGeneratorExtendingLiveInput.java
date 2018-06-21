@@ -213,24 +213,24 @@ public class LiveInputGeneratorExtendingLiveInput extends ModifiedLiveInput impl
 			return this.velocity;
 	}
 
-	public AbstractGenerator cloneWithPitchAndVelocityIfUnlocked(int newPitch, int newVelocity) {
+	public AbstractGenerator cloneWithNewPitchVelocityIfUnlocked(int newPitch, int newVelocity) {
 		int rightPitch = getRightPitchForClone(newPitch);
 		int rightVelocity = getRightVelocityForClone(newVelocity);
-		return clone(rightPitch, rightVelocity, this.duration);
+		return cloneWithNewPitchVelocityAndDuration(rightPitch, rightVelocity, this.duration);
 	}
 
-	@Override
-	public AbstractGenerator cloneWithPitch(int newPitch) {
-		return this.cloneWithPitchAndVelocity(newPitch, this.velocity);
-	}
+//	@Override
+//	public AbstractGenerator cloneWithPitch(int newPitch) {
+//		return this.cloneWithPitchAndVelocity(newPitch, this.velocity);
+//	}
 
-	@Override
-	public AbstractGenerator cloneWithPitchAndVelocity(int newPitch, int newVelocity) {
-		// return this.clone(newPitch, newVelocity);
-		return cloneWithPitchAndVelocityIfUnlocked(newPitch, newVelocity);
-	}
+//	@Override
+//	public AbstractGenerator cloneWithPitchAndVelocity(int newPitch, int newVelocity) {
+//		// return this.clone(newPitch, newVelocity);
+//		return cloneWithPitchAndVelocityIfUnlocked(newPitch, newVelocity);
+//	}
 
-	public AbstractGenerator clone(int newPitch, int newVelocity, int newDuration) {
+	public AbstractGenerator cloneWithNewPitchVelocityAndDuration(int newPitch, int newVelocity, int newDuration) {
 		LiveInputGeneratorExtendingLiveInput clone = new LiveInputGeneratorExtendingLiveInput(newPitch, newVelocity, newDuration);
 		this.linkForFutureChanges(clone);
 		return clone;

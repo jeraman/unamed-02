@@ -132,7 +132,7 @@ public class SoundEngine implements SoundEngineFacade {
 		synchronized (activeGenerators) {
 			for (Entry<String, AbstractGenerator> pair : activeGenerators.entrySet()) {
 				AbstractGenerator gen = pair.getValue();
-				AbstractGenerator cloned = gen.cloneWithPitchAndVelocity(targetNote.getPitch(), targetNote.getVelocity());
+				AbstractGenerator cloned = gen.cloneWithNewPitchVelocityIfUnlocked(targetNote.getPitch(), targetNote.getVelocity());
 				targetNote.addGenerator(cloned);
 			}
 		}
