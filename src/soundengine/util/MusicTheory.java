@@ -110,7 +110,7 @@ public class MusicTheory {
 	
 
 	// details on: http://www.jfugue.org/doc/org/jfugue/theory/Chord.html
-	public static Chord generateChordFromMIDI(int rootMIDI, int velocity, String chordType) {
+	public static Note[] generateChordFromMIDI(int rootMIDI, int velocity, String chordType) {
 		String note = MusicTheory.noteFromMIDI(rootMIDI);
 
 		System.out.println("The chord to be generated is:");
@@ -119,7 +119,7 @@ public class MusicTheory {
 
 		Chord chord = new Chord(resultingChord);
 		Note[] notes = chord.getNotes();
-
+		
 		System.out.println("Notes from this chord are:");
 		for (Note n : notes) {
 			n.setOnVelocity(Util.parseIntToByte(velocity));
@@ -127,8 +127,7 @@ public class MusicTheory {
 		}
 		
 		System.out.println();
-
-		return chord;
+		return notes;
 	}
 
 //	protected static Chord generateRandomChordFromMIDI(int rootMIDI, int velocity) {

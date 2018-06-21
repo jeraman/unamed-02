@@ -60,8 +60,8 @@ public class ChordAugmenter extends AbstractAugmenter {
 	public Note[] getNotes(int newPitch, int newVel) {
 		int rightPitch = getTheRightPitch(root, newPitch);
 		int rightVel = getTheRightVel(velocity, newVel);
-		Chord result = MusicTheory.generateChordFromMIDI(rightPitch, rightVel, type);
-		return result.getNotes();
+		return MusicTheory.generateChordFromMIDI(rightPitch, rightVel, type);
+		
 	}
 	
 }
