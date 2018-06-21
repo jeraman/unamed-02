@@ -105,7 +105,7 @@ public class EffectsPipelineTest extends PApplet {
 		newNote.addEffect(fx8);
 		// finally, the augmenters
 		// newNote.addArtificialChord("min7");
-		newNote.addArtificialInterval("5");
+		//newNote.addArtificialInterval("5");
 		newNote.noteOn();
 		memory.put(newNote);
 	}

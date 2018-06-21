@@ -7,10 +7,16 @@ import soundengine.util.MusicTheory;
 public class IntervalAugmenter extends AbstractAugmenter {
 
 	private int root;
+	private int velocity;
 	private String type;
 	
 	public IntervalAugmenter(int root, String type) {
+		this(root, -1, type);
+	}
+	
+	public IntervalAugmenter(int root, int velocity, String type) {
 		this.root = root;
+		this.velocity = velocity;
 		this.type = type;
 	}
 	
@@ -19,6 +25,8 @@ public class IntervalAugmenter extends AbstractAugmenter {
 		
 		if (parts[0].trim().equalsIgnoreCase("root"))
 			this.setRoot(Integer.parseInt(parts[1].trim()));
+		if (parts[0].trim().equalsIgnoreCase("velocity"))
+			this.setVelocity(Integer.parseInt(parts[1].trim()));
 		if (parts[0].trim().equalsIgnoreCase("type"))
 			this.setType(parts[1].trim());
 	}
@@ -38,10 +46,20 @@ public class IntervalAugmenter extends AbstractAugmenter {
 	protected void setType(String type) {
 		this.type = type;
 	}
+	
+	protected int getVelocity() {
+		return velocity;
+	}
+	
+	protected void setVelocity(int velocity) {
+		this.velocity = velocity;
+	}
 
 	@Override
-	public Note[] getNotes(int dynamicRoot) {
-		return MusicTheory.generateInterval(root, type);
+	public Note[] getNotes(int dynamicRoot, int dynVel) {
+		int rightPitch = getTheRightPitch(root, dynamicRoot);
+		int rightVel = getTheRightVel(velocity, dynVel);
+		return MusicTheory.generateInterval(rightPitch, rightVel, type);
 	}
 
 }

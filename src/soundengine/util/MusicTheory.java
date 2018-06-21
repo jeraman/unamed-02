@@ -97,18 +97,20 @@ public class MusicTheory {
 		return Intervals.createIntervalsFromNotes(notes);
 	}
 	
-	public static Note[] generateInterval(int pitch, String intervalType) {
+	public static Note[] generateInterval(int pitch, int velocity, String intervalType) {
 		Intervals i = new Intervals("1 " + intervalType);
 		i.setRoot(new Note(pitch));
 		List<Note> notes = i.getNotes();
 		Note[] result = new Note[notes.size()];
 		result = notes.toArray(result);
+		for (Note n : result)
+			n.setOnVelocity(Util.parseIntToByte(velocity));
 		return result;
 	}
 	
 
 	// details on: http://www.jfugue.org/doc/org/jfugue/theory/Chord.html
-	public static Chord generateChordFromMIDI(int rootMIDI, String chordType) {
+	public static Chord generateChordFromMIDI(int rootMIDI, int velocity, String chordType) {
 		String note = MusicTheory.noteFromMIDI(rootMIDI);
 
 		System.out.println("The chord to be generated is:");
@@ -119,24 +121,26 @@ public class MusicTheory {
 		Note[] notes = chord.getNotes();
 
 		System.out.println("Notes from this chord are:");
-		for (Note n : notes)
+		for (Note n : notes) {
+			n.setOnVelocity(Util.parseIntToByte(velocity));
 			System.out.print(n + " ");
-
+		}
+		
 		System.out.println();
 
 		return chord;
 	}
 
-	protected static Chord generateRandomChordFromMIDI(int rootMIDI) {
-		String[] names = Chord.getChordNames();
-
-		System.out.println("All possible chord types are:");
-		System.out.println(names);
-
-		Random rand = new Random();
-		int randomIndex = rand.nextInt(names.length);
-		return generateChordFromMIDI(rootMIDI, names[randomIndex]);
-	}
+//	protected static Chord generateRandomChordFromMIDI(int rootMIDI, int velocity) {
+//		String[] names = Chord.getChordNames();
+//
+//		System.out.println("All possible chord types are:");
+//		System.out.println(names);
+//
+//		Random rand = new Random();
+//		int randomIndex = rand.nextInt(names.length);
+//		return generateChordFromMIDI(rootMIDI, velocity, names[randomIndex]);
+//	}
 
 	// details on: http://www.jfugue.org/doc/index.html?org/jfugue/theory/ChordProgression.html
 	protected static ChordProgression generateChordProgression(int rootMIDI, String chordProgression) {

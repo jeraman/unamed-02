@@ -274,12 +274,13 @@ public class FMGenerator extends Oscil implements AbstractGenerator, Runnable {
 
 	@Override
 	public AbstractGenerator cloneWithPitchAndVelocity(int newPitch, int newVelocity) {
-		// float newFreq = MusicTheory.freqFromMIDI(newPitch);
-		// float newAmp = Util.mapFromMidiToAmplitude(newVelocity);
-		// return clone(newFreq, newAmp);
 		return cloneWithPitchAndVelocityIfUnlocked(newPitch, newVelocity);
 	}
 
+	public AbstractGenerator clone(int newPitch, int newVelocity) {
+		return clone(MusicTheory.freqFromMIDI(newPitch), Util.mapFromMidiToAmplitude(newVelocity));
+	}
+	
 	private AbstractGenerator clone(float newFreq, float newAmp) {
 		FMGenerator clone = new FMGenerator(newFreq, newAmp, carrierWave, modFreq, modAmp, modWave, this.duration);
 		this.linkClonedObserver(clone);

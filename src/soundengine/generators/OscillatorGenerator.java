@@ -203,10 +203,11 @@ public class OscillatorGenerator extends Oscil implements AbstractGenerator, Run
 
 	@Override
 	public AbstractGenerator cloneWithPitchAndVelocity(int newPitch, int newVelocity) {
-		// float newFreq = MusicTheory.freqFromMIDI(newPitch);
-		// float newAmp = Util.mapFromMidiToAmplitude(newVelocity);
-		// return this.clone(newFreq, newAmp);
 		return cloneWithPitchAndVelocityIfUnlocked(newPitch, newVelocity);
+	}
+	
+	public AbstractGenerator clone(int newPitch, int newVelocity) {
+		return clone(MusicTheory.freqFromMIDI(newPitch), Util.mapFromMidiToAmplitude(newVelocity));
 	}
 
 	private AbstractGenerator clone(float newFreq, float newAmp) {

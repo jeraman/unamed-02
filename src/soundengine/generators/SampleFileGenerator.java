@@ -279,6 +279,10 @@ public class SampleFileGenerator extends ModifiedSampler implements AbstractGene
 		int rightVelocity = getRightVelocityForClone(newVelocity);
 		return clone(rightPitch, rightVelocity);
 	}
+	
+	public AbstractGenerator cloneWithExactPitchAndVelocity(int newPitch, int newVelocity) {
+		return clone(newPitch, newVelocity);
+	}
 
 	@Override
 	public AbstractGenerator cloneWithPitch(int newPitch) {

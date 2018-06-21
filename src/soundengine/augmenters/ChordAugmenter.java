@@ -7,10 +7,17 @@ import soundengine.util.MusicTheory;
 
 public class ChordAugmenter extends AbstractAugmenter {
 	private int root;
+	private int velocity;
 	private String type;
 	
+	
 	public ChordAugmenter(int root, String type) {
+		this(root, -1, type);
+	}
+	
+	public ChordAugmenter(int root, int velocity, String type) {
 		this.root = root;
+		this.velocity = velocity;
 		this.type = type;
 	}
 	
@@ -19,6 +26,8 @@ public class ChordAugmenter extends AbstractAugmenter {
 		
 		if (parts[0].trim().equalsIgnoreCase("root"))
 			this.setRoot(Integer.parseInt(parts[1].trim()));
+		if (parts[0].trim().equalsIgnoreCase("velocity"))
+			this.setVelocity(Integer.parseInt(parts[1].trim()));
 		if (parts[0].trim().equalsIgnoreCase("type"))
 			this.setType(parts[1].trim());
 	}
@@ -38,10 +47,20 @@ public class ChordAugmenter extends AbstractAugmenter {
 	protected void setType(String type) {
 		this.type = type;
 	}
+	
+	protected int getVelocity() {
+		return velocity;
+	}
+	
+	protected void setVelocity(int velocity) {
+		this.velocity = velocity;
+	}
 
 	@Override
-	public Note[] getNotes(int uselessRoot) {
-		Chord result = MusicTheory.generateChordFromMIDI(root, type);
+	public Note[] getNotes(int newPitch, int newVel) {
+		int rightPitch = getTheRightPitch(root, newPitch);
+		int rightVel = getTheRightVel(velocity, newVel);
+		Chord result = MusicTheory.generateChordFromMIDI(rightPitch, rightVel, type);
 		return result.getNotes();
 	}
 	

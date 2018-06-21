@@ -91,8 +91,8 @@ public class AugmenterTest extends PApplet{
 
 		DecoratedNote newNote = new DecoratedNote(channel, pitch, velocity);
 		newNote.addGenerator(gen);
-		newNote.addArtificialChord("min7");
-		newNote.addArtificialInterval(pitch+12, "5");
+		//newNote.addArtificialChord("min7");
+		//newNote.addArtificialInterval(pitch+12, "5");
 		newNote.noteOn();
 		memory.put(newNote);
 	}

@@ -15,6 +15,7 @@ import soundengine.effects.AdsrEffect;
 import soundengine.generators.FMGenerator;
 import controlP5.*;
 import frontend.tasks.Task;
+import frontend.tasks.augmenters.NoteAugTask;
 import frontend.tasks.blackboard.SetBBOscillatorTask;
 import frontend.tasks.blackboard.SetBBRampTask;
 import frontend.tasks.blackboard.SetBBRandomTask;
@@ -605,8 +606,10 @@ public class State implements Serializable {
 	}
 
 	private void init_note_task() {
-		// TODO Auto-generated method stub
 		System.out.println("create note task!");
+		String taskname = generate_random_name();
+		NoteAugTask t = new NoteAugTask(p, cp5, taskname);
+		this.add_task(t);
 
 	}
 

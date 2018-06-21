@@ -5,12 +5,19 @@ import org.jfugue.theory.Note;
 
 import soundengine.util.MusicTheory;
 
+@Deprecated
 public class RelativeChordAugmenter extends AbstractAugmenter {
 
-	public String type;
+	private int velocity;
+	private String type;
 	
 	public RelativeChordAugmenter(String type) {
+		this(type, -1);
+	}
+	
+	public RelativeChordAugmenter(String type, int velocity) {
 		this.type = type;
+		this.velocity = velocity;
 	}
 	
 	public void updateParameterFromString(String singleParameter) {
@@ -18,6 +25,16 @@ public class RelativeChordAugmenter extends AbstractAugmenter {
 		
 		if (parts[0].trim().equalsIgnoreCase("type"))
 			this.setType(parts[1].trim());
+		if (parts[0].trim().equalsIgnoreCase("velocity"))
+			this.setVelocity(Integer.parseInt(parts[1].trim()));
+	}
+	
+	protected int getVelocity() {
+		return velocity;
+	}
+	
+	protected void setVelocity(int velocity) {
+		this.velocity = velocity;
 	}
 	
 	protected String getType() {
@@ -30,7 +47,7 @@ public class RelativeChordAugmenter extends AbstractAugmenter {
 
 	@Override
 	public Note[] getNotes(int dynamicRoot) {
-		Chord result = MusicTheory.generateChordFromMIDI(dynamicRoot, type);
+		Chord result = MusicTheory.generateChordFromMIDI(dynamicRoot, velocity, type);
 		return result.getNotes();
 	}
 

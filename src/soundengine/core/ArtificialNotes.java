@@ -25,43 +25,18 @@ public class ArtificialNotes {
 		return this.artificialNotes.contains(pitch);
 	}
 	
-	protected void addArtificialNote (DecoratedNote baseline, int newNotePitch) {
+	
+	protected void addArtificialNote (DecoratedNote baseline, int newNotePitch, int newVelocity) {
 		if (newPitchMeetsInsertionCriteria(baseline, newNotePitch)) {
-			DecoratedNote newNote = baseline.cloneInADifferentPitch(newNotePitch);
+			DecoratedNote newNote = baseline.cloneInADifferentPitchAndVelocity(newNotePitch, newVelocity);
 			artificialNotes.add(newNote);
 		}
 	}
 
-	@Deprecated
-	void addArtificialInterval (DecoratedNote baseline, int pitch, String intervalType) {		
-		Note[] result = MusicTheory.generateInterval(pitch, intervalType);
-		for (Note n:result)
-			addArtificialNote(baseline, (int)n.getValue());
-		
-	}
-	
-	@Deprecated
-	public void addArtificialInterval (DecoratedNote baseline, String intervalType) {
-		this.addArtificialInterval(baseline, baseline.getPitch(), intervalType);
-	}
-	
-	@Deprecated
-	public void addArtificialChord (DecoratedNote baseline, int root, String chordType) {		
-		Chord result = MusicTheory.generateChordFromMIDI(root, chordType);
-		Note[] notes = result.getNotes();
-		for (Note n : notes) 
-			addArtificialNote(baseline, (int)n.getValue());
-	}
-	
-	@Deprecated
-	public void addArtificialChord (DecoratedNote baseline, String chordType) {
-		this.addArtificialChord(baseline, baseline.getPitch(), chordType);
-	}
-	
 	public void addAugmenter(DecoratedNote baseline, AbstractAugmenter aug) {
-		Note[] notes = aug.getNotes(baseline.getPitch());
+		Note[] notes = aug.getNotes(baseline.getPitch(), baseline.getVelocity());
 		for (Note n : notes) 
-			addArtificialNote(baseline, (int)n.getValue());
+			addArtificialNote(baseline, (int)n.getValue(), Byte.toUnsignedInt(n.getOnVelocity()));
 	}
 	
 	private boolean newPitchMeetsInsertionCriteria(DecoratedNote baseline, int newNotePitch) {

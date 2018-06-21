@@ -36,6 +36,8 @@ public interface AbstractGenerator {
 		
 //	public Generator cloneWithPitchAndVelocityIfUnlocked(int newPitch, int newVelocity);
 	
+	public AbstractGenerator clone(int newPitch, int newVelocity); 
+	
 	public AbstractGenerator cloneWithPitchAndVelocity(int newPitch, int newVelocity); 
 
 	public AbstractGenerator cloneWithPitch(int newPitch);	

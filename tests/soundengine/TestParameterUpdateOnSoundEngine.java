@@ -257,7 +257,7 @@ public class TestParameterUpdateOnSoundEngine extends PApplet {
 
 	private void processAug1() {
 		if (!isAug1Active)
-			eng.addAugmenter("1", "NOTE", new String[] { "60" });
+			eng.addAugmenter("1", "NOTE", new String[] { "60", "-1" });
 		else
 			eng.removeAugmenter("1");
 		isAug1Active = !isAug1Active;
@@ -267,7 +267,7 @@ public class TestParameterUpdateOnSoundEngine extends PApplet {
 
 	private void processAug2() {
 		if (!isAug2Active)
-			eng.addAugmenter("2", "INTERVAL", new String[] { "12" });
+			eng.addAugmenter("2", "INTERVAL", new String[] { "60", "127" , "12" });
 		else
 			eng.removeAugmenter("2");
 		isAug2Active = !isAug2Active;
@@ -277,7 +277,7 @@ public class TestParameterUpdateOnSoundEngine extends PApplet {
 
 	private void processAug3() {
 		if (!isAug3Active)
-			eng.addAugmenter("3", "CHORD", new String[] { "min" });
+			eng.addAugmenter("3", "CHORD", new String[] { "60", "127", "min"});
 		else
 			eng.removeAugmenter("3");
 		isAug3Active = !isAug3Active;

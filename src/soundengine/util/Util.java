@@ -2,6 +2,8 @@ package soundengine.util;
 
 import java.util.concurrent.TimeUnit;
 
+import com.sun.org.apache.xml.internal.serializer.ToUnknownStream;
+
 import ddf.minim.ugens.Waveform;
 import ddf.minim.ugens.Waves;
 
@@ -34,6 +36,11 @@ public class Util {
 
 	public static int mapFromAmplitudeToMidi(float x) {
 		return (int) Util.map(x, 0, 1, 0, 127);
+	}
+	
+	public static byte parseIntToByte(int i) {
+		return Byte.parseByte(i+"");
+		
 	}
 	
 	public static Waveform getWaveformType(String waveName) {

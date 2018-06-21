@@ -188,6 +188,12 @@ public class DecoratedNote extends BasicNote implements Runnable {
 	}
 
 	
+	public DecoratedNote cloneInADifferentPitchAndVelocity(int newNotePitch, int newVelocity) {
+		return new DecoratedNote(this.getChannel(), newNotePitch, newVelocity, this.cloneGenerators(newNotePitch, newVelocity),
+				this.cloneEffects());
+	}
+	
+	@Deprecated
 	protected DecoratedNote cloneInADifferentPitch(int newNotePitch) {
 		return new DecoratedNote(this.getChannel(), newNotePitch, this.getVelocity(), this.cloneGenerators(newNotePitch),
 				this.cloneEffects());
@@ -227,31 +233,6 @@ public class DecoratedNote extends BasicNote implements Runnable {
 	/////////////////////////////
 	// augmenters methods
 	/////////////////////////////
-	@Deprecated
-	public void addArtificialNote(int newNotePitch) {
-		this.artificialNotes.addArtificialNote(this, newNotePitch);
-	}
-
-	@Deprecated
-	public void addArtificialInterval(String intervalType) {
-		this.artificialNotes.addArtificialInterval(this, intervalType);
-	}
-
-	@Deprecated
-	public void addArtificialChord(String chordType) {
-		this.artificialNotes.addArtificialChord(this, chordType);
-	}
-
-	@Deprecated
-	public void addArtificialInterval(int newPitch, String intervalType) {
-		this.artificialNotes.addArtificialInterval(this, newPitch, intervalType);
-	}
-	
-	@Deprecated
-	public void addArtificialChord(int newRoot, String chordType) {
-		this.artificialNotes.addArtificialChord(this, newRoot, chordType);
-	}
-	
 	public void addAugmenter(AbstractAugmenter aug) {
 		this.artificialNotes.addAugmenter(this, aug);
 	}
@@ -263,6 +244,17 @@ public class DecoratedNote extends BasicNote implements Runnable {
 		this.generators.add(g);
 	}
 
+	private ArrayList<AbstractGenerator> cloneGenerators(int newNotePitch, int newVelocity) {
+		ArrayList<AbstractGenerator> gens = new ArrayList<AbstractGenerator>();
+		
+		if (this.thereIsAGenerator())
+			for (AbstractGenerator g : generators)
+				gens.add(g.clone(newNotePitch, newVelocity));
+		//		gens.add(g.cloneWithPitchAndVelocity(newNotePitch, newVelocity));
+		return gens;
+	}
+	
+	@Deprecated
 	private ArrayList<AbstractGenerator> cloneGenerators(int newNotePitch) {
 		ArrayList<AbstractGenerator> gens = new ArrayList<AbstractGenerator>();
 
