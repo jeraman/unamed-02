@@ -9,6 +9,7 @@ import frontend.Main;
 import frontend.State;
 import frontend.tasks.Task;
 import frontend.tasks.generators.OscillatorGenTask;
+import frontend.ui.ComputableFloatTextfieldUI;
 import frontend.ui.ComputableFloatTextfieldUIWithUserInput;
 import frontend.ui.ComputableIntegerTextfieldUI;
 import frontend.ui.ComputableIntegerTextfieldUIWithUserInput;
@@ -20,16 +21,16 @@ public class NoteAugTask extends Task {
 	protected static final List<String> list = Arrays.asList("USER INPUT", "PLAY ONCE", "REPEAT");
 	
 	private ComputableIntegerTextfieldUI pitch;
-	private ComputableIntegerTextfieldUIWithUserInput velocity;
-	private ComputableFloatTextfieldUIWithUserInput duration;
+	private ComputableIntegerTextfieldUI velocity;
+	private ComputableFloatTextfieldUI duration;
 	private ScrollableListUI mode;
 
 	public NoteAugTask(PApplet p, ControlP5 cp5, String taskname) {
 		super(p, cp5, taskname);
 
 		this.pitch = new ComputableIntegerTextfieldUI(60);
-		this.velocity = new ComputableIntegerTextfieldUIWithUserInput();
-		this.duration = new ComputableFloatTextfieldUIWithUserInput();
+		this.velocity = new ComputableIntegerTextfieldUI(ComputableIntegerTextfieldUIWithUserInput.userInputAsDefault, -1);
+		this.duration = new ComputableFloatTextfieldUI(ComputableFloatTextfieldUIWithUserInput.userInputAsDefault, -1.0f);
 		this.mode = new ScrollableListUI(list, 0);
 		
 		Main.eng.addAugmenter(this.get_gui_id(), "NOTE", getDefaultParameters());
@@ -38,6 +39,20 @@ public class NoteAugTask extends Task {
 	@Override
 	protected String[] getDefaultParameters() {
 		return new String[] { "60", "-1", "-1"};
+	}
+	
+	private void setModeUserInput() {
+		this.velocity.resetDefaults(ComputableIntegerTextfieldUIWithUserInput.userInputAsDefault, -1);
+		this.duration.resetDefaults(ComputableIntegerTextfieldUIWithUserInput.userInputAsDefault, -1);
+	}
+	
+	private void setModePlayOnce() {
+		this.velocity.resetDefaults(ComputableFloatTextfieldUI.classDefaultText, 1000);
+		this.duration.resetDefaults(ComputableFloatTextfieldUI.classDefaultText, 1000);
+	}
+	
+	private void setModeRepeat() {
+		this.setModePlayOnce();
 	}
 	
 	private void processPitchChange() {
@@ -56,9 +71,17 @@ public class NoteAugTask extends Task {
 	}
 	
 	private void processModeChange() {
-		if (mode.update())
+		if (mode.update()) {
 		//	Main.eng.updateAugmenter(this.get_gui_id(), "duration : " + mode.getValue());
-			System.out.println("changed mode!");
+			System.out.println(mode.getValue());
+			
+			if (mode.getValue().trim().equalsIgnoreCase("USER INPUT"))
+				setModeUserInput();
+			if (mode.getValue().trim().equalsIgnoreCase("PLAY ONCE"))
+				setModePlayOnce();
+			if (mode.getValue().trim().equalsIgnoreCase("REPEAT"))
+				setModeRepeat();
+		}
 	}
 
 	@Override

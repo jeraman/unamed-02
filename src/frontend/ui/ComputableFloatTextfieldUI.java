@@ -24,7 +24,7 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 	private String defaultText;
 	transient private Textfield textfield;
 	
-	protected static final String classDefaultText = "CLICK TO CHANGE";
+	public static final String classDefaultText = "CLICK TO CHANGE";
 
 	public ComputableFloatTextfieldUI(float defaultValue) {
 		this(classDefaultText, defaultValue);
@@ -36,11 +36,30 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 		this.setValueExpression(defaultText);
 	}
 	
+	private void setDefaultValue(float newDefaultValue) {
+		this.defaultValue = newDefaultValue;
+	}
+	
+	private void setDefaultText(String newText) {
+		this.defaultText = newText;
+	}
+	
+	public void resetDefaults (String newDefaultText, float newDefaultValue) {
+		boolean wasDefaultValue = isDefaultValue();
+		
+		this.setDefaultValue(newDefaultValue);
+		this.setDefaultText(newDefaultText);
+		
+		if (wasDefaultValue) {
+			this.setValueExpression(this.defaultText);
+			this.textfield.setText(this.defaultText);
+		}
+	}
+	
 	public void setValueExpression(String newValue) {
 		this.valueExpression = new Expression(newValue);
 		this.lastComputedValue = "";
 	}
-	
 	
 	public String getTextFieldText() {
 		return this.textfield.getText();
@@ -84,6 +103,10 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 	
 	public float getValue() {
 		return this.computedValue;
+	}
+	
+	public boolean isDefaultValue() {
+		return valueExpression.toString().trim().equalsIgnoreCase(defaultText);
 	}
 	
 	public boolean update() {
