@@ -192,13 +192,13 @@ public class OscillatorGenerator extends Oscil implements AbstractGenerator, Run
 		float newFreq = getRightFrequencyForClone(newPitch);
 		float newAmp = getRightAmplitudeForClone(newVelocity);
 
-		return clone(newFreq, newAmp);
+		return clone(newFreq, newAmp, this.duration);
 	}
 
 	@Override
 	public AbstractGenerator cloneWithPitch(int newPitch) {
 		float newFreq = MusicTheory.freqFromMIDI(newPitch);
-		return this.clone(newFreq, this.amplitude);
+		return this.clone(newFreq, this.amplitude, this.duration);
 	}
 
 	@Override
@@ -206,12 +206,12 @@ public class OscillatorGenerator extends Oscil implements AbstractGenerator, Run
 		return cloneWithPitchAndVelocityIfUnlocked(newPitch, newVelocity);
 	}
 	
-	public AbstractGenerator clone(int newPitch, int newVelocity) {
-		return clone(MusicTheory.freqFromMIDI(newPitch), Util.mapFromMidiToAmplitude(newVelocity));
+	public AbstractGenerator clone(int newPitch, int newVelocity, int newDur) {
+		return clone(MusicTheory.freqFromMIDI(newPitch), Util.mapFromMidiToAmplitude(newVelocity), newDur);
 	}
 
-	private AbstractGenerator clone(float newFreq, float newAmp) {
-		OscillatorGenerator clone = new OscillatorGenerator(newFreq, newAmp, this.waveform, this.duration);
+	private AbstractGenerator clone(float newFreq, float newAmp, int newDur) {
+		OscillatorGenerator clone = new OscillatorGenerator(newFreq, newAmp, this.waveform, newDur);
 		this.linkForFutureChanges(clone);
 		return clone;
 	}

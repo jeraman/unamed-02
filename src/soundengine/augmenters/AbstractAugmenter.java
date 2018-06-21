@@ -2,10 +2,24 @@ package soundengine.augmenters;
 
 import org.jfugue.theory.Note;
 
+import soundengine.util.Util;
+
 public abstract class AbstractAugmenter {
 	
-//	public abstract Note[] getNotes();
+	private int duration;
 	
+	public AbstractAugmenter(int duration) {
+		this.duration = duration;
+	}
+	
+	public int getDuration() {
+		return duration;
+	}
+
+	public void setDuration(int duration) {
+		this.duration = duration;
+	}
+
 	public static int getOldValueIfOldIsLessThanZero(int oldValue, int newValue) {
 		if (oldValue < 0)
 			return newValue;

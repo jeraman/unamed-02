@@ -20,20 +20,12 @@ public class AugmenterFactory {
 		if (type.equalsIgnoreCase("NOTE"))
 			aug = createNote(parameters);
 
-		if (type.equalsIgnoreCase("INTERVAL")) {
-			//if (parameters.length == 1)
-			//	aug = createRelativeInterval(parameters);
-			//else
-				aug = createInterval(parameters);
-		}
-
-		if (type.equalsIgnoreCase("CHORD")) {
-			//if (parameters.length == 1)
-			//	aug = createRelativeChord(parameters);
-			//else
-				aug = createChord(parameters);
-		}
-
+		if (type.equalsIgnoreCase("INTERVAL")) 
+			aug = createInterval(parameters);
+		
+		if (type.equalsIgnoreCase("CHORD")) 
+			aug = createChord(parameters);
+		
 		return aug;
 	}
 
@@ -41,12 +33,8 @@ public class AugmenterFactory {
 
 		if (aug instanceof NoteAugmenter)
 			updateNoteAugmenter((NoteAugmenter) aug, parameters);
-		//if (aug instanceof RelativeIntervalAugmenter)
-		//	updateRelativeIntervalAugmenter((RelativeIntervalAugmenter) aug, parameters);
 		if (aug instanceof IntervalAugmenter)
 			updateIntervalAugmenter((IntervalAugmenter) aug, parameters);
-		//if (aug instanceof RelativeChordAugmenter)
-		//	updateRelativeChordAugmenter((RelativeChordAugmenter) aug, parameters);
 		if (aug instanceof ChordAugmenter)
 			updateChordAugmenter((ChordAugmenter) aug, parameters);
 	}
@@ -59,56 +47,36 @@ public class AugmenterFactory {
 	private static AbstractAugmenter createNote(String[] parameters) {
 		int pitch = Integer.parseInt(parameters[0]);
 		int velocity = Integer.parseInt(parameters[1]);
-		return new NoteAugmenter(pitch, velocity);
+		int duration = Integer.parseInt(parameters[2]);
+		return new NoteAugmenter(pitch, velocity, duration);
 	}
 
 	private static void updateNoteAugmenter(NoteAugmenter aug, String[] parameters) {
 		int pitch = Integer.parseInt(parameters[0]);
 		int velocity = Integer.parseInt(parameters[1]);
+		int duration = Integer.parseInt(parameters[2]);
 		aug.setPitch(pitch);
 		aug.setVelocity(velocity);
-	}
-
-	// relative interval
-	@Deprecated
-	private static AbstractAugmenter createRelativeInterval(String[] parameters) {
-		String type = parameters[0];
-		return new RelativeIntervalAugmenter(type);
-	}
-
-	@Deprecated
-	private static void updateRelativeIntervalAugmenter(RelativeIntervalAugmenter aug, String[] parameters) {
-		String type = parameters[0];
-		aug.setType(type);
+		aug.setDuration(duration);
 	}
 
 	// interval
 	private static AbstractAugmenter createInterval(String[] parameters) {
 		int root = Integer.parseInt(parameters[0]);
 		int velocity = Integer.parseInt(parameters[1]);
-		String type = parameters[2];
-		return new IntervalAugmenter(root, velocity, type);
+		int duration = Integer.parseInt(parameters[2]);
+		String type = parameters[3];
+		return new IntervalAugmenter(root, velocity, duration, type);
 	}
 
 	private static void updateIntervalAugmenter(IntervalAugmenter aug, String[] parameters) {
 		int root = Integer.parseInt(parameters[0]);
 		int velocity = Integer.parseInt(parameters[1]);
-		String type = parameters[2];
+		int duration = Integer.parseInt(parameters[2]);
+		String type = parameters[3];
 		aug.setRoot(root);
 		aug.setVelocity(velocity);
-		aug.setType(type);
-	}
-
-	// relative chord
-	@Deprecated
-	private static AbstractAugmenter createRelativeChord(String[] parameters) {
-		String type = parameters[0];
-		return new RelativeChordAugmenter(type);
-	}
-
-	@Deprecated
-	private static void updateRelativeChordAugmenter(RelativeChordAugmenter aug, String[] parameters) {
-		String type = parameters[0];
+		aug.setDuration(duration);
 		aug.setType(type);
 	}
 
@@ -116,16 +84,19 @@ public class AugmenterFactory {
 	private static AbstractAugmenter createChord(String[] parameters) {
 		int root = Integer.parseInt(parameters[0]);
 		int velocity = Integer.parseInt(parameters[1]);
-		String type = parameters[2];
-		return new ChordAugmenter(root, velocity, type);
+		int duration = Integer.parseInt(parameters[2]);
+		String type = parameters[3];
+		return new ChordAugmenter(root, velocity, duration, type);
 	}
 
 	private static void updateChordAugmenter(ChordAugmenter aug, String[] parameters) {
 		int root = Integer.parseInt(parameters[0]);
 		int velocity = Integer.parseInt(parameters[1]);
-		String type = parameters[2];
+		int duration = Integer.parseInt(parameters[2]);
+		String type = parameters[3];
 		aug.setRoot(root);
 		aug.setVelocity(velocity);
+		aug.setDuration(duration);
 		aug.setType(type);
 	}
 }

@@ -188,8 +188,14 @@ public class DecoratedNote extends BasicNote implements Runnable {
 	}
 
 	
-	public DecoratedNote cloneInADifferentPitchAndVelocity(int newNotePitch, int newVelocity) {
-		return new DecoratedNote(this.getChannel(), newNotePitch, newVelocity, this.cloneGenerators(newNotePitch, newVelocity),
+//	@Deprecated
+//	public DecoratedNote cloneInADifferentPitchAndVelocity(int newNotePitch, int newVelocity) {
+//		return new DecoratedNote(this.getChannel(), newNotePitch, newVelocity, this.cloneGenerators(newNotePitch, newVelocity),
+//				this.cloneEffects());
+//	}
+	
+	public DecoratedNote cloneInADifferentPitchAndVelocityAndDuration(int newNotePitch, int newVelocity, int newDuration) {
+		return new DecoratedNote(this.getChannel(), newNotePitch, newVelocity, this.cloneGenerators(newNotePitch, newVelocity, newDuration),
 				this.cloneEffects());
 	}
 	
@@ -244,13 +250,24 @@ public class DecoratedNote extends BasicNote implements Runnable {
 		this.generators.add(g);
 	}
 
-	private ArrayList<AbstractGenerator> cloneGenerators(int newNotePitch, int newVelocity) {
+//	@Deprecated
+//	private ArrayList<AbstractGenerator> cloneGenerators(int newNotePitch, int newVelocity) {
+//		ArrayList<AbstractGenerator> gens = new ArrayList<AbstractGenerator>();
+//		
+//		if (this.thereIsAGenerator())
+//			for (AbstractGenerator g : generators)
+//				gens.add(g.clone(newNotePitch, newVelocity));
+//		
+//		//		gens.add(g.cloneWithPitchAndVelocity(newNotePitch, newVelocity));
+//		return gens;
+//	}
+	
+	private ArrayList<AbstractGenerator> cloneGenerators(int newNotePitch, int newVelocity, int newDuration) {
 		ArrayList<AbstractGenerator> gens = new ArrayList<AbstractGenerator>();
 		
 		if (this.thereIsAGenerator())
 			for (AbstractGenerator g : generators)
-				gens.add(g.clone(newNotePitch, newVelocity));
-		//		gens.add(g.cloneWithPitchAndVelocity(newNotePitch, newVelocity));
+				gens.add(g.clone(newNotePitch, newVelocity, newDuration));
 		return gens;
 	}
 	

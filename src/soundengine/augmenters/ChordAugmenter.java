@@ -11,11 +11,12 @@ public class ChordAugmenter extends AbstractAugmenter {
 	private String type;
 	
 	
-	public ChordAugmenter(int root, String type) {
-		this(root, -1, type);
+	public ChordAugmenter(int root, int duration, String type) {
+		this(root, -1, duration, type);
 	}
 	
-	public ChordAugmenter(int root, int velocity, String type) {
+	public ChordAugmenter(int root, int velocity, int duration, String type) {
+		super(duration);
 		this.root = root;
 		this.velocity = velocity;
 		this.type = type;
@@ -30,6 +31,8 @@ public class ChordAugmenter extends AbstractAugmenter {
 			this.setVelocity(Integer.parseInt(parts[1].trim()));
 		if (parts[0].trim().equalsIgnoreCase("type"))
 			this.setType(parts[1].trim());
+		if (parts[0].trim().equalsIgnoreCase("duration"))
+			this.setDuration((int)Float.parseFloat(parts[1].trim()));
 	}
 	
 	protected int getRoot() {

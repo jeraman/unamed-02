@@ -263,13 +263,13 @@ public class FMGenerator extends Oscil implements AbstractGenerator, Runnable {
 		float newFreq = getRightFrequencyForClone(newPitch);
 		float newAmp = getRightAmplitudeForClone(newVelocity);
 
-		return clone(newFreq, newAmp);
+		return clone(newFreq, newAmp, this.duration);
 	}
 
 	@Override
 	public AbstractGenerator cloneWithPitch(int newPitch) {
 		float newFreq = MusicTheory.freqFromMIDI(newPitch);
-		return clone(newFreq, carrierAmp);
+		return clone(newFreq, carrierAmp,this.duration);
 	}
 
 	@Override
@@ -278,11 +278,15 @@ public class FMGenerator extends Oscil implements AbstractGenerator, Runnable {
 	}
 
 	public AbstractGenerator clone(int newPitch, int newVelocity) {
-		return clone(MusicTheory.freqFromMIDI(newPitch), Util.mapFromMidiToAmplitude(newVelocity));
+		return clone(MusicTheory.freqFromMIDI(newPitch), Util.mapFromMidiToAmplitude(newVelocity), this.duration);
 	}
 	
-	private AbstractGenerator clone(float newFreq, float newAmp) {
-		FMGenerator clone = new FMGenerator(newFreq, newAmp, carrierWave, modFreq, modAmp, modWave, this.duration);
+	public AbstractGenerator clone(int newPitch, int newVelocity, int newDuration) {
+		return clone(MusicTheory.freqFromMIDI(newPitch), Util.mapFromMidiToAmplitude(newVelocity), newDuration);
+	}
+	
+	private AbstractGenerator clone(float newFreq, float newAmp, int newDuration) {
+		FMGenerator clone = new FMGenerator(newFreq, newAmp, carrierWave, modFreq, modAmp, modWave, newDuration);
 		this.linkClonedObserver(clone);
 		return clone;
 	}

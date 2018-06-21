@@ -25,10 +25,9 @@ public class ArtificialNotes {
 		return this.artificialNotes.contains(pitch);
 	}
 	
-	
-	protected void addArtificialNote (DecoratedNote baseline, int newNotePitch, int newVelocity) {
+	protected void addArtificialNote (DecoratedNote baseline, int newNotePitch, int newVelocity, int newDuration) {
 		if (newPitchMeetsInsertionCriteria(baseline, newNotePitch)) {
-			DecoratedNote newNote = baseline.cloneInADifferentPitchAndVelocity(newNotePitch, newVelocity);
+			DecoratedNote newNote = baseline.cloneInADifferentPitchAndVelocityAndDuration(newNotePitch, newVelocity, newDuration);
 			artificialNotes.add(newNote);
 		}
 	}
@@ -36,7 +35,7 @@ public class ArtificialNotes {
 	public void addAugmenter(DecoratedNote baseline, AbstractAugmenter aug) {
 		Note[] notes = aug.getNotes(baseline.getPitch(), baseline.getVelocity());
 		for (Note n : notes) 
-			addArtificialNote(baseline, (int)n.getValue(), Byte.toUnsignedInt(n.getOnVelocity()));
+			addArtificialNote(baseline, (int)n.getValue(), Byte.toUnsignedInt(n.getOnVelocity()), aug.getDuration());
 	}
 	
 	private boolean newPitchMeetsInsertionCriteria(DecoratedNote baseline, int newNotePitch) {

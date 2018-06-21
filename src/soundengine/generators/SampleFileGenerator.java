@@ -277,11 +277,11 @@ public class SampleFileGenerator extends ModifiedSampler implements AbstractGene
 	public AbstractGenerator cloneWithPitchAndVelocityIfUnlocked(int newPitch, int newVelocity) {
 		int rightPitch = getRightPitchForClone(newPitch);
 		int rightVelocity = getRightVelocityForClone(newVelocity);
-		return clone(rightPitch, rightVelocity);
+		return clone(rightPitch, rightVelocity, this.duration);
 	}
 	
 	public AbstractGenerator cloneWithExactPitchAndVelocity(int newPitch, int newVelocity) {
-		return clone(newPitch, newVelocity);
+		return clone(newPitch, newVelocity, this.duration);
 	}
 
 	@Override
@@ -295,8 +295,8 @@ public class SampleFileGenerator extends ModifiedSampler implements AbstractGene
 		return cloneWithPitchAndVelocityIfUnlocked(newPitch, newVelocity);
 	}
 
-	public AbstractGenerator clone(int newPitch, int newVelocity) {
-		SampleFileGenerator clone = new SampleFileGenerator(this.getSampleData(), this.getSampleDataSampleRate(), newPitch, newVelocity, this.looping, this.duration);
+	public AbstractGenerator clone(int newPitch, int newVelocity, int newDuration) {
+		SampleFileGenerator clone = new SampleFileGenerator(this.getSampleData(), this.getSampleDataSampleRate(), newPitch, newVelocity, this.looping, newDuration);
 		this.linkForFutureChanges(clone);
 		return clone;
 	}

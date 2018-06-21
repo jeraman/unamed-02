@@ -9,10 +9,11 @@ public class NoteAugmenter extends AbstractAugmenter {
 	private int pitch;
 	private int velocity;
 
-	public NoteAugmenter(int pitch) {
-		this(pitch, -1);
+	public NoteAugmenter(int pitch, int duration) {
+		this(pitch, duration, -1);
 	}
-	public NoteAugmenter(int pitch, int velocity) {
+	public NoteAugmenter(int pitch, int duration, int velocity) {
+		super(duration);
 		this.pitch = pitch;
 		this.velocity = velocity;
 	}
@@ -24,6 +25,8 @@ public class NoteAugmenter extends AbstractAugmenter {
 			this.setPitch(Integer.parseInt(parts[1].trim()));
 		if (parts[0].trim().equalsIgnoreCase("velocity"))
 			this.setVelocity(Integer.parseInt(parts[1].trim()));
+		if (parts[0].trim().equalsIgnoreCase("duration"))
+			this.setDuration((int)Float.parseFloat(parts[1].trim()));
 	}
 	
 	protected int getPitch() {

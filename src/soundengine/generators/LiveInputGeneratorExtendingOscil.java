@@ -257,7 +257,7 @@ public class LiveInputGeneratorExtendingOscil extends Oscil implements AbstractG
 	public AbstractGenerator cloneWithPitchAndVelocityIfUnlocked(int newPitch, int newVelocity) {
 		int rightPitch = getRightPitchForClone(newPitch);
 		int rightVelocity = getRightVelocityForClone(newVelocity);
-		return clone(rightPitch, rightVelocity);
+		return clone(rightPitch, rightVelocity, this.duration);
 	}
 
 	@Override
@@ -271,8 +271,8 @@ public class LiveInputGeneratorExtendingOscil extends Oscil implements AbstractG
 		return cloneWithPitchAndVelocityIfUnlocked(newPitch, newVelocity);
 	}
 
-	public AbstractGenerator clone(int newPitch, int newVelocity) {
-		LiveInputGeneratorExtendingOscil clone = new LiveInputGeneratorExtendingOscil(newPitch, newVelocity, this.duration);
+	public AbstractGenerator clone(int newPitch, int newVelocity, int newDuration) {
+		LiveInputGeneratorExtendingOscil clone = new LiveInputGeneratorExtendingOscil(newPitch, newVelocity, newDuration);
 		this.linkForFutureChanges(clone);
 		return clone;
 	}

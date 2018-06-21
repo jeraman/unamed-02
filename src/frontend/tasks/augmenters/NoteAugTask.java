@@ -1,5 +1,8 @@
 package frontend.tasks.augmenters;
 
+import java.util.Arrays;
+import java.util.List;
+
 import controlP5.ControlP5;
 import controlP5.Group;
 import frontend.Main;
@@ -9,13 +12,17 @@ import frontend.tasks.generators.OscillatorGenTask;
 import frontend.ui.ComputableFloatTextfieldUIWithUserInput;
 import frontend.ui.ComputableIntegerTextfieldUI;
 import frontend.ui.ComputableIntegerTextfieldUIWithUserInput;
+import frontend.ui.ScrollableListUI;
 import processing.core.PApplet;
 
 public class NoteAugTask extends Task {
 	
+	protected static final List<String> list = Arrays.asList("USER INPUT", "PLAY ONCE", "REPEAT");
+	
 	private ComputableIntegerTextfieldUI pitch;
 	private ComputableIntegerTextfieldUIWithUserInput velocity;
 	private ComputableFloatTextfieldUIWithUserInput duration;
+	private ScrollableListUI mode;
 
 	public NoteAugTask(PApplet p, ControlP5 cp5, String taskname) {
 		super(p, cp5, taskname);
@@ -23,33 +30,43 @@ public class NoteAugTask extends Task {
 		this.pitch = new ComputableIntegerTextfieldUI(60);
 		this.velocity = new ComputableIntegerTextfieldUIWithUserInput();
 		this.duration = new ComputableFloatTextfieldUIWithUserInput();
+		this.mode = new ScrollableListUI(list, 0);
 		
 		Main.eng.addAugmenter(this.get_gui_id(), "NOTE", getDefaultParameters());
 	}
 
 	@Override
 	protected String[] getDefaultParameters() {
-		return new String[] { "60" };
+		return new String[] { "60", "-1", "-1"};
 	}
 	
 	private void processPitchChange() {
 		if (pitch.update())
 			Main.eng.updateAugmenter(this.get_gui_id(), "pitch : " + pitch.getValueAsInt());
 	}
+	
 	private void processVelocityChange() {
 		if (velocity.update())
 			Main.eng.updateAugmenter(this.get_gui_id(), "velocity : " + velocity.getValueAsInt());
 	}
+	
 	private void processDurationChange() {
 		if (duration.update())
 			Main.eng.updateAugmenter(this.get_gui_id(), "duration : " + duration.getValue());
+	}
+	
+	private void processModeChange() {
+		if (mode.update())
+		//	Main.eng.updateAugmenter(this.get_gui_id(), "duration : " + mode.getValue());
+			System.out.println("changed mode!");
 	}
 
 	@Override
 	protected void processAllParameters() {
 		processPitchChange();		
 		processVelocityChange();		
-		processDurationChange();		
+		processDurationChange();
+		processModeChange();
 	}
 
 	@Override
@@ -70,13 +87,13 @@ public class NoteAugTask extends Task {
 		Group g = super.load_gui_elements(s);
 		int width = g.getWidth() - (localx * 2);
 
-		this.backgroundheight = (int) (localoffset * 3.5);
+		this.backgroundheight = (int) (localoffset * 4.5);
 		g.setBackgroundHeight(backgroundheight);
-		int miniOffsetDueToScrollList = 5;
-		pitch.createUI(id, "pitch", localx, localy + miniOffsetDueToScrollList + (0 * localoffset), width, g);
-		velocity.createUI(id, "velocity", localx, localy + miniOffsetDueToScrollList + (1 * localoffset), width, g);
-		duration.createUI(id, "duration", localx, localy + miniOffsetDueToScrollList + (2 * localoffset), width, g);
-
+		pitch.createUI(id, "pitch", localx, localy + (0 * localoffset), width, g);
+		velocity.createUI(id, "velocity", localx, localy + (1 * localoffset), width, g);
+		duration.createUI(id, "duration", localx, localy + (2 * localoffset), width, g);
+		mode.createUI(id, "          mode", localx, localy + (3 * localoffset), width, g);
+		
 		return g;
 	}
 

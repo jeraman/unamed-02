@@ -10,11 +10,12 @@ public class IntervalAugmenter extends AbstractAugmenter {
 	private int velocity;
 	private String type;
 	
-	public IntervalAugmenter(int root, String type) {
-		this(root, -1, type);
+	public IntervalAugmenter(int root, int duration, String type) {
+		this(root, -1, duration, type);
 	}
 	
-	public IntervalAugmenter(int root, int velocity, String type) {
+	public IntervalAugmenter(int root, int velocity, int duration, String type) {
+		super(duration);
 		this.root = root;
 		this.velocity = velocity;
 		this.type = type;
@@ -29,6 +30,8 @@ public class IntervalAugmenter extends AbstractAugmenter {
 			this.setVelocity(Integer.parseInt(parts[1].trim()));
 		if (parts[0].trim().equalsIgnoreCase("type"))
 			this.setType(parts[1].trim());
+		if (parts[0].trim().equalsIgnoreCase("duration"))
+			this.setDuration((int)Float.parseFloat(parts[1].trim()));
 	}
 	
 	protected int getRoot() {
