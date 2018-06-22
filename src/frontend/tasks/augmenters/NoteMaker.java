@@ -5,14 +5,14 @@ import java.io.Serializable;
 import frontend.Main;
 import soundengine.util.Util;
 
-public class NoteKiller implements Runnable, Serializable {
+public class NoteMaker implements Runnable, Serializable {
 	
 	private int duration;
 	private int pitch;
 	private int velocity;
 	private boolean locked;
 	
-	public NoteKiller(int pitch, int velocity, int duration) {
+	public NoteMaker(int pitch, int velocity, int duration) {
 		this.pitch = pitch;
 		this.velocity = velocity;
 		this.duration = duration;
