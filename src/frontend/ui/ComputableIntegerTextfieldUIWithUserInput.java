@@ -5,4 +5,8 @@ public class ComputableIntegerTextfieldUIWithUserInput extends ComputableFloatTe
 	public int getValueAsInt() {
 		return (int) super.getValue();
 	}
+	
+	public int getDefaultValueAsInt() {
+		return (int) super.getDefaultValue();
+	}
 }

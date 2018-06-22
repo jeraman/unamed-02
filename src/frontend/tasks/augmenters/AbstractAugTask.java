@@ -46,9 +46,11 @@ public abstract class AbstractAugTask extends Task {
 
 	protected abstract void addOnEngine();
 	
-	protected abstract void removeFromEngine();
-	
 	public abstract Task clone_it();
+	
+	protected void removeFromEngine() {
+		Main.eng.removeAugmenter(this.get_gui_id());
+	}
 	
 	protected boolean isModeUserInput() {
 		return (this.currentMode == AugmenterMode.USER_INPUT);

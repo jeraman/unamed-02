@@ -11,10 +11,12 @@ package frontend;
 import java.util.*;
 import java.io.Serializable;
 import processing.core.PApplet;
+import soundengine.augmenters.IntervalAugmenter;
 import soundengine.effects.AdsrEffect;
 import soundengine.generators.FMGenerator;
 import controlP5.*;
 import frontend.tasks.Task;
+import frontend.tasks.augmenters.IntervalAugTask;
 import frontend.tasks.augmenters.NoteAugTask;
 import frontend.tasks.blackboard.SetBBOscillatorTask;
 import frontend.tasks.blackboard.SetBBRampTask;
@@ -600,9 +602,10 @@ public class State implements Serializable {
 	}
 
 	private void init_interval_task() {
-		// TODO Auto-generated method stub
 		System.out.println("create interval task!");
-
+		String taskname = generate_random_name();
+		IntervalAugTask t = new IntervalAugTask(p, cp5, taskname);
+		this.add_task(t);
 	}
 
 	private void init_note_task() {
