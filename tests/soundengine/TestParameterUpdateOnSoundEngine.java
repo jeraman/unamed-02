@@ -154,6 +154,8 @@ public class TestParameterUpdateOnSoundEngine extends PApplet {
 				eng.updateAugmenter("3", "type : aug" );
 		}
 	}
+	
+	boolean isNoteActive = false;
 
 	public void keyPressed() {
 		println("key pressed: " + key);
@@ -181,6 +183,14 @@ public class TestParameterUpdateOnSoundEngine extends PApplet {
 			processAug2();
 		if (key == 'd')
 			processAug3();
+		
+		if (key == 'z') {
+			if (isNoteActive)
+				eng.noteOff(0, 60, 127);
+			else
+				eng.noteOnWithoutAugmenters(0, 60, 127);
+			isNoteActive = !isNoteActive;
+		}
 	}
 
 	// generators

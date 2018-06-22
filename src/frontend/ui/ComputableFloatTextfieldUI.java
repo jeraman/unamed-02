@@ -36,6 +36,10 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 		this.setValueExpression(defaultText);
 	}
 	
+	public float getDefaultValue( ) {
+		return this.defaultValue;
+	}
+	
 	private void setDefaultValue(float newDefaultValue) {
 		this.defaultValue = newDefaultValue;
 	}

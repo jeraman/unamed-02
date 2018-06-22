@@ -22,6 +22,7 @@ public interface SoundEngineFacade {
 	public void updateAugmenter(String id, String singleParameter);
 	public void removeAugmenter(String id);
 
+	public void noteOnWithoutAugmenters(int channel, int pitch, int velocity);
 	public void noteOn(int channel, int pitch, int velocity);
 	public void noteOff(int channel, int pitch, int velocity);
 	

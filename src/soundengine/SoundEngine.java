@@ -182,6 +182,16 @@ public class SoundEngine implements SoundEngineFacade {
 	}
 	
 	@Override
+	public void noteOnWithoutAugmenters(int channel, int pitch, int velocity) {
+		DecoratedNote newNote = new DecoratedNote(channel, pitch, velocity);
+		
+		this.attachGenerators(newNote);
+		this.attachEffects(newNote);
+		
+		newNote.noteOn();
+		memory.put(newNote);
+	}
+	
 	public void noteOn(int channel, int pitch, int velocity) {
 		DecoratedNote newNote = new DecoratedNote(channel, pitch, velocity);
 		

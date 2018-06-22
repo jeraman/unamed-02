@@ -16,4 +16,8 @@ public class ComputableIntegerTextfieldUI extends ComputableFloatTextfieldUI {
 	public int getValueAsInt() {
 		return (int) super.getValue();
 	}
+	
+	public int getDefaultValueAsInt() {
+		return (int) super.getDefaultValue();
+	}
 }

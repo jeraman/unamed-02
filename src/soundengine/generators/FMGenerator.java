@@ -213,7 +213,6 @@ public class FMGenerator extends Oscil implements AbstractGenerator, Runnable {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		Util.delay(this.duration);
 		// stop playing!
 		System.out.println("stop playing!");
