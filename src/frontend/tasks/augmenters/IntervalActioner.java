@@ -6,19 +6,20 @@ public class IntervalActioner extends AbstractMusicActioner {
 
 	private int root;
 	private int interval;
-	
+
 	public IntervalActioner(int root, int interval, int velocity, int duration) {
 		super(velocity, duration);
 		this.root = root;
 		this.interval = interval;
 	}
-	
+
 	protected int getRoot() {
 		return root;
 	}
 
 	protected void setRoot(int root) {
-		this.root = root;
+		if (!this.locked)
+			this.root = root;
 	}
 
 	protected int getInterval() {
@@ -26,19 +27,20 @@ public class IntervalActioner extends AbstractMusicActioner {
 	}
 
 	protected void setInterval(int interval) {
-		this.interval = interval;
+		if (!this.locked)
+			this.interval = interval;
 	}
 
 	@Override
 	protected void noteOnInSoundEngine() {
 		Main.eng.noteOnWithoutAugmenters(0, root, velocity);
-		Main.eng.noteOnWithoutAugmenters(0, root+interval, velocity);
+		Main.eng.noteOnWithoutAugmenters(0, root + interval, velocity);
 	}
 
 	@Override
 	protected void noteOffInSoundEngine() {
 		Main.eng.noteOff(0, root, velocity);
-		Main.eng.noteOff(0, root+interval, velocity);
+		Main.eng.noteOff(0, root + interval, velocity);
 	}
 
 }

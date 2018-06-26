@@ -27,7 +27,7 @@ public class ChordAugTask extends AbstractAugTask {
 		this.root = new ComputableIntegerTextfieldUI(ComputableIntegerTextfieldUIWithUserInput.userInputAsDefault,-1);
 		this.chordType = new ScrollableListUI(list, 0);
 		
-//		this.musicActioner = new ChordActioner(this.root.getDefaultValueAsInt(), 5, this.velocity.getDefaultValueAsInt(),(int) this.duration.getValue());
+		this.musicActioner = new ChordActioner(this.root.getDefaultValueAsInt(), "maj", this.velocity.getDefaultValueAsInt(),(int) this.duration.getValue());
 
 		addOnEngine();
 	}
@@ -64,8 +64,8 @@ public class ChordAugTask extends AbstractAugTask {
 		if (root.update()) {
 			if (isModeUserInput())
 				Main.eng.updateAugmenter(this.get_gui_id(), "root : " + root.getValueAsInt());
-			//if (isModePlayOnce() || isModeRepeat())
-			//	((ChordActioner)this.musicActioner).setRoot(root.getValueAsInt());
+			if (isModePlayOnce() || isModeRepeat())
+				((ChordActioner)this.musicActioner).setRoot(root.getValueAsInt());
 		}
 	}
 	
@@ -73,8 +73,8 @@ public class ChordAugTask extends AbstractAugTask {
 		if (chordType.update()) {
 			if (isModeUserInput())
 				Main.eng.updateAugmenter(this.get_gui_id(), "type : " + chordType.getValue());
-			//if (isModePlayOnce() || isModeRepeat())
-			//	((ChordActioner)this.musicActioner).setChord(chordType.getValue());
+			if (isModePlayOnce() || isModeRepeat())
+				((ChordActioner)this.musicActioner).setChordType(chordType.getValue());
 		}
 	}
 	
