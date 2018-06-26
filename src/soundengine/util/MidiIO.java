@@ -3,23 +3,20 @@ package soundengine.util;
 import processing.core.PApplet;
 import themidibus.MidiBus;
 
-
 public class MidiIO {
-	
+
 	private static MidiBus myBus;
-	
-	public static void setup (PApplet p) {
-		MidiBus.list(); 
+
+	public static void setup(PApplet p) {
+		MidiBus.list();
+		// myBus = new MidiBus(p, 0, 1);
 		myBus = new MidiBus(p, 2, 1);
-		//myBus = new MidiBus(p, 2, 0);
-		
-		//Util.delay(1000);
+
 		myBus.sendTimestamps(false);
 	}
-	
 
 	public static void outputNoteOn(int channel, int pitch, int velocity) {
-		myBus.sendNoteOn(channel, pitch, velocity); 
+		myBus.sendNoteOn(channel, pitch, velocity);
 	}
 
 	public static void outputNoteOff(int channel, int pitch, int velocity) {
@@ -38,7 +35,7 @@ public class MidiIO {
 
 		myBus.sendMessage(status_byte, channel_byte, first_byte, second_byte);
 	}
-	
+
 	public static void inputNoteOn(int channel, int pitch, int velocity) {
 		System.out.println();
 		System.out.println("Note On:");

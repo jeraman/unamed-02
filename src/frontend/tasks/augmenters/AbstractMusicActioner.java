@@ -5,15 +5,13 @@ import java.io.Serializable;
 import frontend.Main;
 import soundengine.util.Util;
 
-public class NoteMaker implements Runnable, Serializable {
+public abstract class AbstractMusicActioner implements Runnable, Serializable {
 	
-	private int duration;
-	private int pitch;
-	private int velocity;
-	private boolean locked;
+	protected int duration;
+	protected int velocity;
+	protected boolean locked;
 	
-	public NoteMaker(int pitch, int velocity, int duration) {
-		this.pitch = pitch;
+	public AbstractMusicActioner(int velocity, int duration) {
 		this.velocity = velocity;
 		this.duration = duration;
 		this.locked = false;
@@ -28,15 +26,6 @@ public class NoteMaker implements Runnable, Serializable {
 			this.duration = duration;
 	}
 
-	protected int getPitch() {
-		return pitch;
-	}
-
-	protected void setPitch(int pitch) {
-		if (!locked)
-			this.pitch = pitch;
-	}
-	
 	protected int getVelocity() {
 		return velocity;
 	}
@@ -48,9 +37,8 @@ public class NoteMaker implements Runnable, Serializable {
 
 	public void noteOneAndScheduleKiller() {
 		if (!locked) {
-			System.out.println("noting on..." + pitch + " " + velocity);
 			this.locked = true;
-			Main.eng.noteOn(0, pitch, velocity);
+			noteOnInSoundEngine();
 			this.scheduleNoteKiller();
 		}
 	}
@@ -64,8 +52,12 @@ public class NoteMaker implements Runnable, Serializable {
 	public void run() {
 		Util.delay(this.duration);
 		System.out.println("stop playing!");
-		Main.eng.noteOff(0, pitch, 0);
+		noteOffInSoundEngine();
 		this.locked = false;
 	}
+
+	protected abstract void noteOnInSoundEngine();
+
+	protected abstract void noteOffInSoundEngine();
 
 }

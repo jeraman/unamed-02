@@ -28,7 +28,7 @@ public abstract class AbstractAugTask extends Task {
 	protected ComputableFloatTextfieldUI duration;
 	protected ScrollableListUI mode;
 	private AugmenterMode currentMode;
-	protected NoteMaker noteKiller;
+	protected AbstractMusicActioner musicActioner;
 	
 	private boolean wasFirstTime = false;
 
@@ -64,21 +64,21 @@ public abstract class AbstractAugTask extends Task {
 		return (this.currentMode == AugmenterMode.REPEAT);
 	}
 
-	private void setModeUserInput() {
+	protected void setModeUserInput() {
 		this.currentMode = AugmenterMode.USER_INPUT;
 		this.velocity.resetDefaults(ComputableIntegerTextfieldUIWithUserInput.userInputAsDefault, -1);
 		this.duration.resetDefaults(ComputableIntegerTextfieldUIWithUserInput.userInputAsDefault, -1);
 		addOnEngine();
 	}
 
-	private void setModePlayOnce() {
+	protected void setModePlayOnce() {
 		this.currentMode = AugmenterMode.PLAY_ONCE;
 		this.velocity.resetDefaults(ComputableFloatTextfieldUI.classDefaultText, 100);
 		this.duration.resetDefaults(ComputableFloatTextfieldUI.classDefaultText, 1000);
 		removeFromEngine();
 	}
 
-	private void setModeRepeat() {
+	protected void setModeRepeat() {
 		this.setModePlayOnce();
 		this.currentMode = AugmenterMode.REPEAT;
 	}
@@ -88,7 +88,7 @@ public abstract class AbstractAugTask extends Task {
 			if (isModeUserInput())
 				Main.eng.updateAugmenter(this.get_gui_id(), "velocity : " + velocity.getValueAsInt());
 		if (isModePlayOnce() || isModeRepeat())
-			this.noteKiller.setVelocity(velocity.getValueAsInt());
+			this.musicActioner.setVelocity(velocity.getValueAsInt());
 	}
 
 	protected void processDurationChange() {
@@ -96,7 +96,7 @@ public abstract class AbstractAugTask extends Task {
 			if (isModeUserInput())
 				Main.eng.updateAugmenter(this.get_gui_id(), "duration : " + duration.getValue());
 			if (isModePlayOnce() || isModeRepeat())
-				this.noteKiller.setDuration((int) duration.getValue());
+				this.musicActioner.setDuration((int) duration.getValue());
 		}
 	}
 
@@ -119,9 +119,9 @@ public abstract class AbstractAugTask extends Task {
 
 	protected void processModes() {
 		if (wasFirstTime && isModePlayOnce())
-			noteKiller.noteOneAndScheduleKiller();
+			musicActioner.noteOneAndScheduleKiller();
 		else if (isModeRepeat()) 
-			noteKiller.noteOneAndScheduleKiller();
+			musicActioner.noteOneAndScheduleKiller();
 	}
 
 	@Override

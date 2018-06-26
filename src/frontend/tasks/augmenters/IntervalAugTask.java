@@ -5,22 +5,23 @@ import controlP5.Group;
 import frontend.Main;
 import frontend.State;
 import frontend.tasks.Task;
+import frontend.ui.ComputableFloatTextfieldUI;
 import frontend.ui.ComputableIntegerTextfieldUI;
 import frontend.ui.ComputableIntegerTextfieldUIWithUserInput;
 import processing.core.PApplet;
 
 public class IntervalAugTask extends AbstractAugTask {
 
-	private ComputableIntegerTextfieldUIWithUserInput root;
+	private ComputableIntegerTextfieldUI root;
 	private ComputableIntegerTextfieldUI interval;
 	
 	public IntervalAugTask(PApplet p, ControlP5 cp5, String taskname) {
 		super(p, cp5, taskname);
 
-		this.root = new ComputableIntegerTextfieldUIWithUserInput();
+		this.root = new ComputableIntegerTextfieldUI(ComputableIntegerTextfieldUIWithUserInput.userInputAsDefault,-1);
 		this.interval = new ComputableIntegerTextfieldUI(5);
 		
-		this.noteKiller = new NoteMaker(this.root.getDefaultValueAsInt(), this.velocity.getDefaultValueAsInt(),(int) this.duration.getValue());
+		this.musicActioner = new IntervalActioner(this.root.getDefaultValueAsInt(), 5, this.velocity.getDefaultValueAsInt(),(int) this.duration.getValue());
 
 		addOnEngine();
 	}
@@ -28,6 +29,24 @@ public class IntervalAugTask extends AbstractAugTask {
 	@Override
 	protected String[] getDefaultParameters() {
 		return new String[] { "-1","-1", "-1", "5"};
+	}
+	
+	@Override
+	protected void setModeUserInput() {
+		this.root.resetDefaults(ComputableIntegerTextfieldUIWithUserInput.userInputAsDefault, -1);
+		super.setModeUserInput();
+	}
+
+	@Override
+	protected void setModePlayOnce() {
+		this.root.resetDefaults(ComputableFloatTextfieldUI.classDefaultText, 60);
+		super.setModePlayOnce();
+	}
+	
+	@Override
+	protected void setModeRepeat() {
+		this.root.resetDefaults(ComputableFloatTextfieldUI.classDefaultText, 60);
+		super.setModeRepeat();
 	}
 
 	@Override
@@ -40,16 +59,16 @@ public class IntervalAugTask extends AbstractAugTask {
 			if (isModeUserInput())
 				Main.eng.updateAugmenter(this.get_gui_id(), "root : " + root.getValueAsInt());
 			if (isModePlayOnce() || isModeRepeat())
-				this.noteKiller.setPitch(root.getValueAsInt());
+				((IntervalActioner)this.musicActioner).setRoot(root.getValueAsInt());
 		}
 	}
 	
 	private void processIntervalChange() {
 		if (interval.update()) {
 			if (isModeUserInput())
-				Main.eng.updateAugmenter(this.get_gui_id(), "interval : " + interval.getValueAsInt());
+				Main.eng.updateAugmenter(this.get_gui_id(), "type : " + interval.getValueAsInt());
 			if (isModePlayOnce() || isModeRepeat())
-				this.noteKiller.setPitch(interval.getValueAsInt());
+				((IntervalActioner)this.musicActioner).setInterval(root.getValueAsInt()+interval.getValueAsInt());
 		}
 	}
 	

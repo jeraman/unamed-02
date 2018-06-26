@@ -16,7 +16,7 @@ public class NoteAugTask extends AbstractAugTask {
 		super(p, cp5, taskname);
 
 		this.pitch = new ComputableIntegerTextfieldUI(60.0f);
-		this.noteKiller = new NoteMaker(this.pitch.getDefaultValueAsInt(), this.velocity.getDefaultValueAsInt(),(int) this.duration.getValue());
+		this.musicActioner = new NoteActioner(this.pitch.getDefaultValueAsInt(), this.velocity.getDefaultValueAsInt(),(int) this.duration.getValue());
 
 		addOnEngine();
 	}
@@ -30,13 +30,14 @@ public class NoteAugTask extends AbstractAugTask {
 	protected void addOnEngine() {
 		Main.eng.addAugmenter(this.get_gui_id(), "NOTE", getDefaultParameters());
 	}
+	
 
 	private void processPitchChange() {
 		if (pitch.update()) {
 			if (isModeUserInput())
 				Main.eng.updateAugmenter(this.get_gui_id(), "pitch : " + pitch.getValueAsInt());
 			if (isModePlayOnce() || isModeRepeat())
-				this.noteKiller.setPitch(pitch.getValueAsInt());
+				((NoteActioner)this.musicActioner).setPitch(pitch.getValueAsInt());
 		}
 	}
 
