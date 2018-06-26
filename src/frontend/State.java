@@ -16,6 +16,7 @@ import soundengine.effects.AdsrEffect;
 import soundengine.generators.FMGenerator;
 import controlP5.*;
 import frontend.tasks.Task;
+import frontend.tasks.augmenters.ChordAugTask;
 import frontend.tasks.augmenters.IntervalAugTask;
 import frontend.tasks.augmenters.NoteAugTask;
 import frontend.tasks.blackboard.SetBBOscillatorTask;
@@ -596,9 +597,10 @@ public class State implements Serializable {
 	}
 
 	private void init_chord_task() {
-		// TODO Auto-generated method stub
 		System.out.println("create chord task!");
-
+		String taskname = generate_random_name();
+		ChordAugTask t = new ChordAugTask(p, cp5, taskname);
+		this.add_task(t);
 	}
 
 	private void init_interval_task() {
