@@ -22,9 +22,11 @@ public class ChordActioner extends AbstractMusicActioner {
 	}
 
 	protected void setRoot(int root) {
-		if (!this.locked)
+		//if (!this.locked)
+		if (this.root != root) {
+			this.noteOffInSoundEngine();
 			this.root = root;
-		// this.noteOffInSoundEngine();
+		}
 	}
 
 	protected String getChordType() {
@@ -32,9 +34,11 @@ public class ChordActioner extends AbstractMusicActioner {
 	}
 
 	protected void setChordType(String type) {
-		if (!this.locked)
+		//if (!this.locked)
+		if (!this.type.equalsIgnoreCase(type)) {
+			this.noteOffInSoundEngine();
 			this.type = type;
-		// this.noteOffInSoundEngine();
+		}
 	}
 
 	@Override
