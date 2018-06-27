@@ -22,7 +22,7 @@ public abstract class AbstractMusicActioner implements Runnable, Serializable {
 	}
 
 	protected void setDuration(int duration) {
-		if (!locked)
+//		if (!locked)
 			this.duration = duration;
 	}
 
@@ -31,7 +31,7 @@ public abstract class AbstractMusicActioner implements Runnable, Serializable {
 	}
 
 	protected void setVelocity(int velocity) {
-		if (!locked)
+//		if (!locked)
 			this.velocity = velocity;
 	}
 

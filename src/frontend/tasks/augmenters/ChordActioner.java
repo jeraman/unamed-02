@@ -7,16 +7,16 @@ import frontend.Main;
 import soundengine.util.MusicTheory;
 
 public class ChordActioner extends AbstractMusicActioner {
-	
+
 	private int root;
 	private String type;
-	
+
 	public ChordActioner(int root, String type, int velocity, int duration) {
 		super(velocity, duration);
 		this.root = root;
 		this.type = type;
 	}
-	
+
 	protected int getRoot() {
 		return root;
 	}
@@ -24,6 +24,7 @@ public class ChordActioner extends AbstractMusicActioner {
 	protected void setRoot(int root) {
 		if (!this.locked)
 			this.root = root;
+		// this.noteOffInSoundEngine();
 	}
 
 	protected String getChordType() {
@@ -33,19 +34,22 @@ public class ChordActioner extends AbstractMusicActioner {
 	protected void setChordType(String type) {
 		if (!this.locked)
 			this.type = type;
+		// this.noteOffInSoundEngine();
 	}
 
 	@Override
 	protected void noteOnInSoundEngine() {
+		if (root == -1) return;
 		Note[] notes = MusicTheory.generateChordFromMIDI(root, velocity, type);
-		for (Note n : notes) 
+		for (Note n : notes)
 			Main.eng.noteOnWithoutAugmenters(0, n.getValue(), velocity);
 	}
 
 	@Override
 	protected void noteOffInSoundEngine() {
+		if (root == -1) return;
 		Note[] notes = MusicTheory.generateChordFromMIDI(root, velocity, type);
-		for (Note n : notes) 
+		for (Note n : notes)
 			Main.eng.noteOff(0, n.getValue(), velocity);
 	}
 

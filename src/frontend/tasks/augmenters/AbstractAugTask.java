@@ -63,11 +63,17 @@ public abstract class AbstractAugTask extends Task {
 	protected boolean isModeRepeat() {
 		return (this.currentMode == AugmenterMode.REPEAT);
 	}
+	
+	protected void resetMusicActioner() {
+		musicActioner.setVelocity(this.velocity.getDefaultValueAsInt());
+		musicActioner.setDuration((int)this.duration.getDefaultValue());
+	}
 
 	protected void setModeUserInput() {
 		this.currentMode = AugmenterMode.USER_INPUT;
 		this.velocity.resetDefaults(ComputableIntegerTextfieldUIWithUserInput.userInputAsDefault, -1);
 		this.duration.resetDefaults(ComputableIntegerTextfieldUIWithUserInput.userInputAsDefault, -1);
+		resetMusicActioner();
 		addOnEngine();
 	}
 
@@ -75,6 +81,7 @@ public abstract class AbstractAugTask extends Task {
 		this.currentMode = AugmenterMode.PLAY_ONCE;
 		this.velocity.resetDefaults(ComputableFloatTextfieldUI.classDefaultText, 100);
 		this.duration.resetDefaults(ComputableFloatTextfieldUI.classDefaultText, 1000);
+		resetMusicActioner();
 		removeFromEngine();
 	}
 

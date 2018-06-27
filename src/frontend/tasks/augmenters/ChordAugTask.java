@@ -37,6 +37,11 @@ public class ChordAugTask extends AbstractAugTask {
 		return new String[] { "-1", "-1", "-1", "maj"};
 	}
 	
+	protected void resetMusicActioner() {
+		((ChordActioner)musicActioner).setRoot(this.root.getDefaultValueAsInt());
+		super.resetMusicActioner();
+	}
+	
 	@Override
 	protected void setModeUserInput() {
 		this.root.resetDefaults(ComputableIntegerTextfieldUIWithUserInput.userInputAsDefault, -1);
