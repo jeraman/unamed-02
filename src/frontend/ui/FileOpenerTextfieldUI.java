@@ -17,12 +17,11 @@ public class FileOpenerTextfieldUI extends AbstractElementUi {
 	String filename;
 	String lastFilename;
 
-	public static final String defaultSoundFile = "123go.mp3";
 	private File file;
 	
-	public FileOpenerTextfieldUI() {
+	public FileOpenerTextfieldUI(String defaultFile) {
 		file = new File(Main.instance().dataPath(""));
-		this.filename = defaultSoundFile;
+		this.filename = defaultFile;
 		this.lastFilename = "";
 	}
 	
@@ -51,7 +50,7 @@ public class FileOpenerTextfieldUI extends AbstractElementUi {
 				.setSize(w, (int) (font_size * 1.25))
 				.setHeight(defaultHeight)
 				.setGroup(g)
-				.setText(defaultSoundFile)
+				.setText(this.filename)
 				.setAutoClear(false)
 				.setLabel(label)
 				.align(ControlP5.CENTER, ControlP5.CENTER, ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE)

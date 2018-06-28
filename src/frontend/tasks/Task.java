@@ -80,6 +80,7 @@ public abstract class Task implements Serializable {
 		return this.status;
 	}
 
+	@Deprecated
 	public void refresh() {
 		this.stop();
 	}
@@ -182,6 +183,7 @@ public abstract class Task implements Serializable {
 		return result;
 	}
 
+	
 	public void stop() {
 
 	}
@@ -201,6 +203,7 @@ public abstract class Task implements Serializable {
 		p.println("removing task " + get_gui_id());
 		cp5.getGroup(get_gui_id()).remove();
 	}
+	
 
 	//////////////////////////////
 	// gui commands

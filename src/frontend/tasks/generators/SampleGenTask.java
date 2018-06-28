@@ -20,10 +20,12 @@ public class SampleGenTask extends Task {
 	private ComputableIntegerTextfieldUIWithUserInput duration;
 	private ToggleUi loopStatus;
 	
+	private static final String defaultSoundFile = "123go.mp3";
+	
 	public SampleGenTask(PApplet p, ControlP5 cp5, String taskname) {
 		super(p, cp5, taskname);
 		
-		this.filename = new FileOpenerTextfieldUI();
+		this.filename = new FileOpenerTextfieldUI(defaultSoundFile);
 		this.pitch = new ComputableIntegerTextfieldUIWithUserInput();
 		this.velocity = new ComputableIntegerTextfieldUIWithUserInput();
 		this.duration = new ComputableIntegerTextfieldUIWithUserInput();
@@ -33,7 +35,7 @@ public class SampleGenTask extends Task {
 	}
 	
 	protected String[] getDefaultParameters(){
-		return new String[] { FileOpenerTextfieldUI.defaultSoundFile, "-1", "-1", "true", "-1"};
+		return new String[] { defaultSoundFile, "-1", "-1", "true", "-1"};
 	}
 	
 	private void processFilenameChange() {
@@ -49,7 +51,7 @@ public class SampleGenTask extends Task {
 		}
 	}
 	
-	private void processlVelocityChange() {
+	private void processVelocityChange() {
 		if (velocity.update())
 			Main.eng.updateGenerator(this.get_gui_id(), "velocity : " + velocity.getValueAsInt());
 	}
@@ -71,7 +73,7 @@ public class SampleGenTask extends Task {
 	protected void processAllParameters() {
 		this.processFilenameChange();
 		this.processPitchChange();
-		this.processlVelocityChange();
+		this.processVelocityChange();
 		this.processDurationChange();
 		this.processLoopChange();
 	}
@@ -80,26 +82,6 @@ public class SampleGenTask extends Task {
 		Main.eng.removeGenerator(this.get_gui_id());
 		super.closeTask();
 	}
-	
-//	@Override
-//	public void run() {
-//		if (!should_run())
-//			return;
-//		processAllParameters();
-//	}
-	
-//	@Override
-//	public void build(PApplet p, ControlP5 cp5) {
-//		// TODO Auto-generated method stub
-//		this.p = p;
-//		this.cp5 = cp5;
-//	}
-	
-//	@Override
-//	public CallbackListener generate_callback_enter() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
 	
 	@Override
 	public Task clone_it() {
@@ -113,12 +95,6 @@ public class SampleGenTask extends Task {
 	}
 
 
-//	@Override
-//	public void update_status() {
-//		// TODO Auto-generated method stub
-//	}
-	
-	
 	/////////////////////////////////
 	// UI config
 	public Group load_gui_elements(State s) {
