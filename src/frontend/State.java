@@ -34,7 +34,7 @@ import frontend.tasks.generators.SampleGenTask;
 import frontend.tasks.meta.DMXTask;
 import frontend.tasks.meta.OSCTask;
 import frontend.tasks.meta.ScriptingTask;
-import frontend.visuals.MultiLevelPieMenu;
+import frontend.ui.visuals.MultiLevelPieMenu;
 
 import java.util.UUID;
 

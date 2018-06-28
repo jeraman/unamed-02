@@ -8,7 +8,7 @@ import java.util.Vector;
 
 import controlP5.*;
 import frontend.tasks.Task;
-import frontend.visuals.StateMachinePreview;
+import frontend.ui.visuals.StateMachinePreview;
 
 public class StateMachine extends Task {
 
@@ -17,7 +17,6 @@ public class StateMachine extends Task {
 	 */
 	private static final long serialVersionUID = 1L;
 	State begin;
-	//State end;
 	State actual;
 	Vector<State> states;
 	String title; //this should be the name. the super name should be an id instead.
@@ -33,19 +32,12 @@ public class StateMachine extends Task {
 	public StateMachine (PApplet p, ControlP5 cp5, String name) {
 		super (p, cp5, name);
 		title   = name;
-		//begin   = new State(p, cp5, "BEGIN_" + name);
-		//end     = new State(p, cp5, "END_"+name);
 		begin   = new State(p, cp5, "BEGIN");
-		//end     = new State(p, cp5, "END");
 		states  = new Vector<State>();
 		debug = Main.instance().debug();
 		
 		brandnew = true;
-
 		actual = begin;
-
-		//sets the global variables related to this blackboard
-		//init_global_variables();
 
 		if (debug)
 			System.out.println("State_Machine " + this.name + " is inited!");
@@ -58,27 +50,8 @@ public class StateMachine extends Task {
 	}
 
 
-	/*
-  //contructor
-  public StateMachine (PApplet p, String name) {
-    super (p, name);
-    begin   = new State("BEGIN_" + name);
-    end     = new State("END_"+name);
-    states  = new Vector<State>();
-    //preview = new State_Machine_Preview(this);
-
-    actual = begin;
-
-    //sets the global variables related to this blackboard
-    init_global_variables();
-
-    if (debug)  println("State_Machine " + this.name + " is inited!");
-  }
-	 */
-	
 	void check_if_any_substatemachine_needs_to_be_reloaded_from_file () {
 		this.begin.check_if_any_substatemachine_needs_to_be_reloaded_from_file();
-		//this.end.check_if_any_substatemachine_needs_to_be_reloaded_from_file();
 		
 		for (State s : states) 
 			s.check_if_any_substatemachine_needs_to_be_reloaded_from_file();
@@ -91,11 +64,7 @@ public class StateMachine extends Task {
 		boolean there_is_file = ((Main)p).serializer.check_if_file_exists_in_sketchpath(title);
 		
 		if (there_is_file) {
-			//((ZenStates)p).is_loading = true;
-			//((ZenStates)p).cp5.setAutoDraw(false);
-			//load newtile from file
 			StateMachine loaded = ((Main)p).serializer.loadSubStateMachine(title);
-			//next step is to copy all parameters of loaded to this state machine
 			mirror(loaded);			
 		}
 	}
@@ -105,15 +74,9 @@ public class StateMachine extends Task {
 		this.cp5 = cp5;
 
 		this.begin.build(p, cp5);
-		//this.end.build(p, cp5);
 
 		for (State s : states)
 			s.build(p, cp5);
-
-		//sets the global variables related to this blackboard
-		//init_global_variables();
-
-		//load_gui_elements();
 	}
 	
 	StateMachine clone_state_machine_saved_in_file(String title) {
@@ -152,13 +115,10 @@ public class StateMachine extends Task {
 	
 	//makes the current statemachine to mirror another statemachine sm
 	void mirror (StateMachine sm) {
-		//state machine variables
 		this.title    = sm.title;
 		this.begin    = sm.begin;
-		//this.end      = sm.end;
 		this.states   = sm.states;
 		this.brandnew = false;
-		//task variables
 		this.repeat   = sm.repeat;
 		
 		reinit_id_and_load_gui_internal_elements();	
@@ -168,22 +128,18 @@ public class StateMachine extends Task {
 	//loads the ui of internal elements
 	void reinit_id_and_load_gui_internal_elements () {
 		this.begin.remove_all_gui_items();
-		//this.end.remove_all_gui_items();
 		for (State s : states) 
 			s.remove_all_gui_items();
 		
 		this.begin.reinit_id();
-		//this.end.reinit_id();
 		for (State s : states) 
 			s.reinit_id();
 		
 		this.begin.init_gui();
-		//this.end.init_gui();
 		for (State s : states) 
 			s.init_gui();
 		
 		this.begin.hide_gui();
-		//this.end.hide_gui();
 		for (State s : states) 
 			s.hide_gui();
 	}
@@ -197,17 +153,10 @@ public class StateMachine extends Task {
 	public void run () {
 		if (!should_run())
 			return;
-		
-		//debug
-		//if(name.contains("END"))
-		//p.println("im executing " + title);
 
 		this.status = Status.RUNNING;
-
 		update_actual(begin);
-
 		reset_state_timer();
-		
 		actual.run();
 		
 		if (debug)
@@ -228,12 +177,6 @@ public class StateMachine extends Task {
 		begin.reset_first_time();
 		begin.stop();
 
-		//end.reset_first_time();
-		//end.stop();
-
-		//updating the actual
-		//actual = begin;
-		//update_actual(begin);
 		update_actual(null);
 
 		//resets the stateTimer for this state machine
@@ -256,7 +199,6 @@ public class StateMachine extends Task {
 
 		//stop begin and end
 		begin.clear();
-		//end.clear();
 	}
 
 	//stops all tasks associated to this node
@@ -267,11 +209,6 @@ public class StateMachine extends Task {
 
 		//stop begin and end
 		begin.interrupt();
-		//end.interrupt();
-
-		//updating the actual
-		//actual = begin;
-		//update_actual(begin);
 		update_actual(null);
 
 		//resets the stateTimer for this state machine
@@ -286,9 +223,6 @@ public class StateMachine extends Task {
 		String n = get_formated_blackboard_title();
 		((Main)p).board.remove(n+"_timer");
 		this.title = newtitle;
-		//board.remove(this.title+"_stateTimer");
-		//this.title = newtitle.replace(" ", "_");
-		//init_global_variables();
 	}
 
 	void update_actual (State next) {
@@ -299,7 +233,6 @@ public class StateMachine extends Task {
 
 		//updating the actual
 		actual = next;
-
 		actual.is_actual = true;
 	}
 
@@ -312,17 +245,6 @@ public class StateMachine extends Task {
 		//updating the status of the actual
 		actual.update_status();
 
-		/*
-		//if this state finished. test this condition, maybe you need to overload the comparison!
-		if (actual==end) {
-			//p.println("reached an end!");
-			end.run();
-			this.status = Status.DONE;
-			if (debug)
-				System.out.println("State_Machine " + this.name +  " has reached its end and has successfully executed!");
-		}
-		*/
-
 		//if there are no states associated to this State_Machine
 		if (states.size()==0 & begin.get_number_of_connections()==0) {
 			this.status = Status.DONE;
@@ -330,8 +252,6 @@ public class StateMachine extends Task {
 				System.out.println("State_Machine " + this.name +  " is empty! Done!");
 		}
 
-		//checks if currect actual has any empty transition
-		//check_for_empty_transition();
 	}
 
 	//function called everytime there is a new input
@@ -393,19 +313,6 @@ public class StateMachine extends Task {
 
 	//add a state s to this State_Machine
 	void add_state(State s) {
-		/*
-    //check if there is already a state with the same name
-    //State result = get_state_by_name(s.get_name());
-    State result = get_state_by_id(s.get_id());
-
-    //in case there isn't
-    if (result==null) {
-      states.addElement(s);
-      System.out.println("State " + s.get_name() + " added to State_Machine " + this.name);
-    } else {
-      System.out.println("There is alrealdy a state with this same name. Please, pick another name!");
-    }
-		 */
 		brandnew = false; //this sm is no longer brandnew
 		states.addElement(s);
 		System.out.println("State " + s.get_name() + " added to State_Machine " + this.name);
@@ -423,7 +330,6 @@ public class StateMachine extends Task {
 			//remove all connections to this state
 			this.remove_all_connections_to_a_state(s);
 
-			//ControlP5 cp5 = HFSMPrototype.instance().cp5();
 			//removes its ui components
 			cp5.remove(s.get_id()+"/label");
 			cp5.remove(s.get_id()+"/acc");
@@ -460,7 +366,6 @@ public class StateMachine extends Task {
 
 		//removing all connection to a state in the begin and in the end
 		this.begin.remove_all_connections_to_a_state(dest);
-		//this.end.remove_all_connections_to_a_state(dest);
 
 		//iterates over all states
 		for (State s : states)
@@ -473,38 +378,11 @@ public class StateMachine extends Task {
 		
 		//updating all connection to a state in the begin and in the end
 		this.begin.update_all_connections_to_a_state(dest, newid);
-		//this.end.update_all_connections_to_a_state(dest, newid);
 
 		//iterates over all states
 		for (State s : states)
 			s.update_all_connections_to_a_state(dest, newid);
 	}
-	
-	
-
-	/*
-
-  //returns a state by its name. returns null if not available
-  State get_state_by_name(String name) {
-      State result = null;
-
-      if (this.begin.get_name().equalsIgnoreCase(name)) result=this.begin;
-      if (this.end.get_name().equalsIgnoreCase(name))   result=this.end;
-
-      //iterates over all states
-      for (State s : states)
-        if (s.get_name().equalsIgnoreCase(name)) result=s;
-
-      if (result!=null)
-        System.out.println("found! " + result.toString());
-      else
-        System.out.println("problem!");
-
-      //returns the proper result
-      return result;
-  }
-
-	 */
 
 	//returns a state by its unique id. returns null if not available
 	State get_state_by_id(String id) {
@@ -537,20 +415,6 @@ public class StateMachine extends Task {
 		begin.remove_task(t);
 		System.out.println("Task " + t.name + " removed from the initialization of State_Machine " + this.name);
 	}
-
-	/*
-	//add a task t to the initialization of this State_Machine
-	void add_finalization_task (Task t) {
-		end.add_task(t);
-		System.out.println("Task " + t.name + " added to the finalization of State_Machine " + this.name);
-	}
-
-	//remove a task t to the initialization of this State_Machine
-	void remove_finalization_task (Task t) {
-		end.remove_task(t);
-		System.out.println("Task " + t.name + " removed from the finalization of State_Machine " + this.name);
-	}
-	*/
 
 	//formats the title for the blackboard
 	String get_formated_blackboard_title () {
@@ -602,8 +466,6 @@ public class StateMachine extends Task {
 	public void draw() {
 		//if the Papplet wasn't loaded yet
 		if (p==null) return;
-		//else
-		//p.println(p.millis());
 
 		update_gui();
 
@@ -613,12 +475,6 @@ public class StateMachine extends Task {
 		//drawing the states begining to this state machine
 		for (State s : states)
 			s.draw();
-		//drawing the end state
-		//end.draw();
-		//end.draw_end();
-
-		//drawing all pie menus  in a layer
-		//draw_pie_menus();
 
 		//drawing the actual, if running
 		if (this.status==Status.RUNNING)
@@ -631,8 +487,6 @@ public class StateMachine extends Task {
 		//drawing the states begining to this state machine
 		for (State s : states)
 			s.draw();
-		//drawing the end state
-		//end.draw_pie();
 	}
 
 	void update_gui () {
@@ -644,7 +498,6 @@ public class StateMachine extends Task {
 		begin.hide_gui();
 		for (State s : states)
 			s.hide_gui();
-		//end.hide_gui();
 	}
 
 	void show() {
@@ -662,7 +515,6 @@ public class StateMachine extends Task {
 
 		//testing the begin & end states
 		if (this.begin.intersects_gui(test_x, test_y))  return this.begin;
-		//if (this.end.intersects_gui(test_x, test_y))    return this.end;
 
 		//iterates over the remaining states
 		for (State s : states)
@@ -681,7 +533,6 @@ public class StateMachine extends Task {
 	void reset_all_names_gui() {
 		//resets the begin and the end states
 		this.begin.reset_name();
-		//this.end.reset_name();
 
 		//iterates over the remaining states
 		for (State s : states)
@@ -697,7 +548,6 @@ public class StateMachine extends Task {
 				if (!((Group)cp5.get(get_gui_id())).isOpen()) return;
 
 				String s = theEvent.getController().getName();
-				//System.out.println(s + " was entered");
 				
 
 				if (s.equals(get_gui_id() + "/name")) {
@@ -710,11 +560,8 @@ public class StateMachine extends Task {
 					//if the name didn't change, return
 					if(text.equals(title)) return;
 					
-					//update_title(text);
 					process_title(text, title);
 				}
-
-//				check_repeat_toggle(s, theEvent);
 			}
 			
 			public void process_title(String newtitle, String oldtitle) {
@@ -743,7 +590,6 @@ public class StateMachine extends Task {
 						//if the current machine isn't brandnew
 						} else {
 							
-							//p.println("the submachine isn't brandnew and there is already a file using this name!");
 							//remove the .zen extension
 							newtitle = newtitle.replace(".zen", "");
 							//update textfield on the ui
@@ -787,52 +633,15 @@ public class StateMachine extends Task {
 	}
 
 	public Group load_gui_elements(State s) {
-		/*
-		//creating the callbacks
-		CallbackListener cb_enter = generate_callback_enter();
-		CallbackListener cb_pressed = generate_callback_open_substate();
-		//CallbackListener cb_leave = generate_callback_leave();
-		//ControlP5 cp5 = HFSMPrototype.instance().cp5();
 
-		//String g_name = s.get_name() + " " + this.get_name();
-		//this.set_gui_id(g_name);
-		String g_name = get_gui_id();
-		
-	    String textlabel = "State Machine";
-	    int font_size 	 = (int)(((ZenStates)p).get_font_size());
-	    int textwidth 	 = (int)((ZenStates)p).textWidth(textlabel);
-	    //this background is more complex to define because it has a constant value in the middle (the state machine preview)
-	    int backgroundheight = (int)(font_size* 17.5);
-	    //int backgroundheight = (int)(font_size* 10.5)+75;
-
-
-		int c1 = p.color(255, 50);
-		int c2 = p.color(255, 25);
-
-		Group g = cp5.addGroup(g_name)
-			    //.setPosition(x, y) //change that?
-			    .setHeight(font_size)
-			    .setWidth((10*((ZenStates)p).FONT_SIZE))
-			    .setBackgroundHeight(backgroundheight)
-			    .setColorBackground(p.color(255, 50)) //color of the task
-			    .setBackgroundColor(p.color(255, 25)) //color of task when openned
-			    .setLabel(textlabel)
-			    ;
-		
-		g.getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER);
-
-		int localx = 10, localy = (int)(font_size), localoffset = 3*font_size;
-		int w = g.getWidth()-(localx*2);
-		*/
-		
-		  Group g					= super.load_gui_elements(s);
+		Group g					= super.load_gui_elements(s);
 		  CallbackListener cb_enter = generate_callback_enter();
 		  CallbackListener cb_pressed = generate_callback_open_substate();
 		  String g_name			  	= this.get_gui_id();
 		  int w 					= g.getWidth()-(localx*2);
 		  
 		  textlabel 	 			= "State Machine";
-		  backgroundheight 			= (int)(font_size* 17.5);
+		  backgroundheight 			= (int)(localoffset * 5.5);
 		    
 		  g.setBackgroundHeight(backgroundheight);
 		  g.setLabel(textlabel);
@@ -854,8 +663,7 @@ public class StateMachine extends Task {
 
 		//int preview_height = font_size*5;
 		cp5.addButton(g_name+"/open_preview")
-		//.setPosition(localx, localy+preview_height+localoffset)
-		.setPosition(localx, localy+(int)(3.3*localoffset))
+		.setPosition(localx, localy+(int)(2.8*localoffset))
 		.setSize(w, (int)(font_size*1.25))
 		.setValue(0)
 		.setLabel("open preview")
@@ -863,7 +671,7 @@ public class StateMachine extends Task {
 		.setGroup(g)
 		;
 
-		createGuiToggle(localx, localy+(int)(4.3*localoffset), w, g, callbackRepeatToggle());
+		createGuiToggle(localx, localy+(int)(3.8*localoffset), w, g, callbackRepeatToggle());
 
 		return g;
 	}
@@ -891,10 +699,6 @@ public class StateMachine extends Task {
 		if (this.begin.verify_if_user_released_mouse_while_temporary_connecting())
 			connect_state_if_demanded_by_user(this.begin);
 
-		//updates the begin state
-		//if (this.end.verify_if_user_released_mouse_while_temporary_connecting())
-		//	connect_state_if_demanded_by_user(this.end);
-
 		//iterates over the remaining states
 		for (State s : states)
 			//if the mouse was released and there is a temporary connection on gui
@@ -903,15 +707,12 @@ public class StateMachine extends Task {
 				break;
 			}
 
-		//updates the last mouse position
-		//lastMousePressed = mousePressed;
 	}
 
 	void remove_all_gui_connections_to_a_state (State dest) {
 
 		//removing all connection to a state in the begin and in the end
 		this.begin.remove_all_gui_connections_to_a_state(dest);
-		//this.end.remove_all_gui_connections_to_a_state(dest);
 
 		//iterates over all states
 		for (State s : states)
@@ -922,7 +723,6 @@ public class StateMachine extends Task {
 
 		//removing all connection to a state in the begin and in the end
 		this.begin.init_all_gui_connections_to_a_state(dest);
-		//this.end.init_all_gui_connections_to_a_state(dest);
 
 		//iterates over all states
 		for (State s : states)

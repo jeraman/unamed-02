@@ -1,4 +1,4 @@
-package frontend.visuals;
+package frontend.ui.visuals;
 
 /************************************************
  ** Enum used by CircleEffectUI class ***********

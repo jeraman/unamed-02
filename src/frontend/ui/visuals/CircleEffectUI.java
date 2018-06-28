@@ -1,4 +1,4 @@
-package frontend.visuals;
+package frontend.ui.visuals;
 
 import frontend.Main;
 import frontend.StateMachine;
