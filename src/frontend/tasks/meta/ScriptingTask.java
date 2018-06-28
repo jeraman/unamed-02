@@ -1,13 +1,8 @@
 package frontend.tasks.meta;
 
-import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.script.ScriptContext;
@@ -15,17 +10,12 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import controlP5.CallbackEvent;
-import controlP5.CallbackListener;
 import controlP5.ControlP5;
 import controlP5.Group;
-import controlP5.Textfield;
 import frontend.Blackboard;
 import frontend.Main;
 import frontend.State;
-import frontend.Status;
 import frontend.tasks.Task;
-import frontend.ui.FileOpenerTextfieldUI;
 import frontend.ui.FileOpenerWithButtonUi;
 import frontend.ui.ToggleUi;
 import processing.core.PApplet;
