@@ -10,6 +10,7 @@ import frontend.Main;
 import frontend.Status;
 import processing.core.PApplet;
 
+@Deprecated
 ////////////////////////////////////////
 //implementing a task for OSC messages
 public abstract class RemoteOSCTask extends Task {

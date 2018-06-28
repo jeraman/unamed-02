@@ -4,11 +4,117 @@ package frontend.tasks.meta;
 
 import controlP5.*;
 import frontend.Expression;
+import frontend.Main;
 import frontend.State;
 import frontend.tasks.RemoteOSCTask;
+import frontend.tasks.Task;
+import frontend.tasks.generators.OscillatorGenTask;
+import frontend.ui.ComputableIntegerTextfieldUI;
+import frontend.ui.ToggleUi;
 import processing.core.PApplet;
 
 
+public class DMXTask extends Task {
+	private ComputableIntegerTextfieldUI channel;
+	private ComputableIntegerTextfieldUI intensity;
+	private ComputableIntegerTextfieldUI rate;
+	private ComputableIntegerTextfieldUI duration;
+	private ToggleUi shouldRepeat;
+
+	public DMXTask(PApplet p, ControlP5 cp5, String id) {
+		super(p, cp5, id);
+
+		this.channel = new ComputableIntegerTextfieldUI(0);
+		this.intensity = new ComputableIntegerTextfieldUI(255);
+		this.duration = new ComputableIntegerTextfieldUI(255);
+		this.rate = new ComputableIntegerTextfieldUI(255);
+		this.shouldRepeat = new ToggleUi();
+
+	}
+
+	@Override
+	protected String[] getDefaultParameters() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private void processChannelChange() {
+		if (channel.update())
+			System.out.println(this.get_gui_id() + " changes channel " + channel.getValueAsInt());
+	}
+	private void processIntensityChange() {
+		if (intensity.update())
+			System.out.println(this.get_gui_id() + " changes intensity " + intensity.getValueAsInt());
+	}
+	private void processRateChange() {
+		if (rate.update())
+			System.out.println(this.get_gui_id() + " changes rate " + rate.getValueAsInt());
+	}
+	private void processDurationChange() {
+		if (duration.update())
+			System.out.println(this.get_gui_id() + " changes duration " + duration.getValueAsInt());
+	}
+
+	protected void processAllParameters() {
+		this.processChannelChange();
+		this.processIntensityChange();
+		this.processRateChange();
+		this.processDurationChange();
+	}
+	
+	public void run() {
+		super.run();
+		
+		if (shouldRepeat.getValue())
+			sendDmxMessage();
+	}
+
+	private void sendDmxMessage() {
+		// TODO Auto-generated method stub
+		System.out.println("stub sendDmxMessage method");
+	}
+
+	@Override
+	public Task clone_it() {
+		DMXTask clone = new DMXTask(this.p, this.cp5, this.name);
+		clone.channel = this.channel;
+		clone.intensity = this.intensity;
+		clone.rate = this.rate;
+		clone.duration = this.duration;
+		return clone;
+	}
+
+	@Override
+	public void reset_gui_fields() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	/////////////////////////////////
+	// UI config
+	public Group load_gui_elements(State s) {
+		this.textlabel = "DMX Light";
+
+		String id = get_gui_id();
+		Group g = super.load_gui_elements(s);
+		int width = g.getWidth() - (localx * 2);
+
+		this.backgroundheight = (int) (localoffset * 5.2);
+		g.setBackgroundHeight(backgroundheight);
+		
+		channel.createUI(id, "channel", localx, localy + (0 * localoffset), width, g);
+		intensity.createUI(id, "intensity", localx, localy + (1 * localoffset), width, g);
+		rate.createUI(id, "rate", localx, localy + (2 * localoffset), width, g);
+		duration.createUI(id, "duration", localx, localy + (3 * localoffset), width, g);
+		shouldRepeat.createUI(id, "once - repeat", localx, localy + (4 * localoffset), width, g);
+		
+		return g;
+	}
+	
+	
+}
+
+/*
 ////////////////////////////////////////
 //implementing a task for OSC messages
 public class ControlRemoteDMXTask extends RemoteOSCTask {
@@ -76,35 +182,6 @@ public class ControlRemoteDMXTask extends RemoteOSCTask {
 
   //UI config
   public Group load_gui_elements(State s) {
-	  /*
-    CallbackListener cb_enter = generate_callback_enter();
-    //CallbackListener cb_leave = generate_callback_leave();
-
-    //this.set_gui_id(s.get_name() + " " + this.get_name());
-    String g_name = this.get_gui_id();
-    
-    String textlabel = "Control DMX";
-    int font_size 	 = (int)(((ZenStates)p).get_font_size());
-    int textwidth 	 = (int)((ZenStates)p).textWidth(textlabel);
-    int backgroundheight = (int)(font_size* 16.5);
-
-    //ControlP5 cp5 = HFSMPrototype.instance().cp5();
-
-    Group g = cp5.addGroup(g_name)
-    	    //.setPosition(x, y) //change that?
-    	    .setHeight(font_size)
-    	    .setWidth((10*((ZenStates)p).FONT_SIZE))
-    	    .setBackgroundHeight(backgroundheight)
-    	    .setColorBackground(p.color(255, 50)) //color of the task
-    	    .setBackgroundColor(p.color(255, 25)) //color of task when openned
-    	    .setLabel(textlabel)
-    	    ;
-
-
-    g.getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER);
-    
-    */
-
 	  Group g					= super.load_gui_elements(s);
 	  CallbackListener cb_enter = generate_callback_enter();
 	  String g_name			  	= this.get_gui_id();
@@ -251,3 +328,5 @@ public class ControlRemoteDMXTask extends RemoteOSCTask {
 	}
 
 }
+
+*/

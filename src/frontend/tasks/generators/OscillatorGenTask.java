@@ -64,29 +64,6 @@ public class OscillatorGenTask extends Task {
 		this.processWavetypeChange();
 	}
 
-//	@Override
-//	public void run() {
-//		if (!should_run())
-//			return;
-//
-//		processAllParameters();
-//	}
-	
-//	@Override
-//	public void build(PApplet p, ControlP5 cp5) {
-//		// TODO Auto-generated method stub
-//		this.p = p;
-//		this.cp5 = cp5;
-//	}
-
-	//	public CallbackListener generate_callback_enter() {
-//		return null;
-//	}
-	
-//	@Override
-//	public void update_status() {
-//	}
-	
 	@Override
 	public Task clone_it() {
 		OscillatorGenTask clone = new OscillatorGenTask(this.p, this.cp5, this.name);

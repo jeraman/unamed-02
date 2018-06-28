@@ -31,7 +31,7 @@ import frontend.tasks.effects.FlangerGenTask;
 import frontend.tasks.generators.FMGenTask;
 import frontend.tasks.generators.OscillatorGenTask;
 import frontend.tasks.generators.SampleGenTask;
-import frontend.tasks.meta.ControlRemoteDMXTask;
+import frontend.tasks.meta.DMXTask;
 import frontend.tasks.meta.OSCTask;
 import frontend.tasks.meta.ScriptingTask;
 import frontend.visuals.MultiLevelPieMenu;
@@ -646,7 +646,7 @@ public class State implements Serializable {
 
 	void init_control_dmx_task() {
 		String taskname = generate_random_name();
-		ControlRemoteDMXTask t = new ControlRemoteDMXTask(p, cp5, taskname);
+		DMXTask t = new DMXTask(p, cp5, taskname);
 		this.add_task(t);
 	}
 
