@@ -618,67 +618,41 @@ public class State implements Serializable {
 
 	}
 
-	
-	
-	// method that initializes a random demo osc task
-	void init_random_osc_task() {
-		String taskname = generate_random_name();
-		OSCTask t = new OSCTask(p, cp5, taskname, "/test/value", 12000, "localhost", new Object[] { 0, 12 });
-		this.add_task(t);
-		// println(selected + " " + pie.options[selected]);
-	}
-
-	// method that initializes a random demo state machine task
-	void init_random_state_machine_task() {
-		String taskname = generate_random_name();
-		StateMachine t = new StateMachine(p, cp5, taskname);
-		this.add_task(t);
-		// println(selected + " " + pie.options[selected]);
-	}
-
-	// method that initializes a random demo set balckboard task
-	void init_random_set_blackboard_task() {
-		String taskname = generate_random_name();
-		SetBBTask t = new SetBBTask(p, cp5, taskname);
-		this.add_task(t);
-		// println(selected + " " + pie.options[selected]);
-	}
-
 	void init_control_dmx_task() {
 		String taskname = generate_random_name();
 		DMXTask t = new DMXTask(p, cp5, taskname);
 		this.add_task(t);
 	}
 
-	// method that initializes a random demo osc task
 	void init_osc_task() {
 		String taskname = generate_random_name();
-		OSCTask t = new OSCTask(p, cp5, taskname, "/test/value", ((Main) p).get_remote_port(),
-				((Main) p).get_remote_ip(), new Object[] { 0 });
+		OSCTask t = new OSCTask(p, cp5, taskname);
 		this.add_task(t);
-		// println(selected + " " + pie.options[selected]);
 	}
 
-	// method that initializes a state machine task
 	void init_state_machine_task() {
 		String taskname = generate_random_name();
 		StateMachine t = new StateMachine(p, cp5, taskname);
 		this.add_task(t);
 	}
 
-	// method that initializes a scripting task
 	void init_scripting_task() {
 		String taskname = generate_random_name();
 		ScriptingTask t = new ScriptingTask(p, cp5, "example.js");
 		this.add_task(t);
 	}
 
-	// method that initializes a random demo set balckboard task
 	void init_set_blackboard_task() {
 		String taskname = generate_random_name();
 		SetBBTask t = new SetBBTask(p, cp5, taskname);
 		this.add_task(t);
-		// println(selected + " " + pie.options[selected]);
+	}
+	
+
+	void init_bb_rand_task() {
+		String taskname = generate_random_name();
+		SetBBRandomTask t = new SetBBRandomTask(p, cp5, taskname);
+		this.add_task(t);
 	}
 
 	// method that initializes a random osc balckboard var
@@ -689,13 +663,6 @@ public class State implements Serializable {
 		// println(selected + " " + pie.options[selected]);
 	}
 
-	// method that initializes a random balckboard var
-	void init_bb_rand_task() {
-		String taskname = generate_random_name();
-		SetBBRandomTask t = new SetBBRandomTask(p, cp5);
-		this.add_task(t);
-		// println(selected + " " + pie.options[selected]);
-	}
 
 	// method that initializes a ramp balckboard var
 	void init_bb_ramp_task() {

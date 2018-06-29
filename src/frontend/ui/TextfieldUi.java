@@ -33,9 +33,43 @@ public class TextfieldUi extends AbstractElementUi {
 	public String getDefaultText( ) {
 		return this.defaultText;
 	}
+
+	private void setDefaultColorOnTextfield() {
+		if (textfield != null)
+			textfield.setColorBackground(defaultColor);
+	}
 	
-	public Object evaluate() throws ScriptException {
-		return this.evaluate(new Expression(this.value));
+	private void setErrorColorOnTextfield() {
+		if (textfield != null)
+			textfield.setColorBackground(errorColor); 
+	}
+	
+	public Object evaluate() {
+		Object result = null;
+		
+		try {
+			result = this.evaluate(new Expression(this.value));
+			setDefaultColorOnTextfield();
+		} catch (ScriptException e) {
+			result = this.getDefaultText();
+			System.out.println("ScrriptExpression-related error thrown, unhandled update.");
+			this.value = this.getDefaultText();
+			setErrorColorOnTextfield();
+		}
+		return result;
+	}
+	
+	public boolean evaluateAsBoolean() {
+		boolean result = false;
+		try {
+			result = this.evaluateAsBoolean(new Expression(this.value));
+			setDefaultColorOnTextfield();
+		} catch (ScriptException e) {
+			System.out.println("ScrriptExpression-related error thrown, unhandled update.");
+			this.value = this.getDefaultText();
+			setErrorColorOnTextfield();
+		}
+		return result;
 	}
 	
 	public void setDefaultText(String newText) {

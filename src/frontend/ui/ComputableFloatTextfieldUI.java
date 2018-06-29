@@ -118,23 +118,32 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 		return super.update();
 	}
 	
+	private void setDefaultColorOnTextfield() {
+		if (textfield != null)
+			textfield.setColorBackground(defaultColor);
+	}
+	
+	private void setErrorColorOnTextfield() {
+		if (textfield != null)
+			textfield.setColorBackground(errorColor); 
+	}
+	
 	public void computeValue() {
 		if (this.isValueExpressionEquals(defaultText)) {
 			computedValue = defaultValue;
-			textfield.setColorBackground(defaultColor);
 		} else
 			try {
-				computedValue = localEvaluate(this.valueExpression);
-				textfield.setColorBackground(defaultColor); 
+				computedValue = this.evaluate();
+				setDefaultColorOnTextfield();
 			} catch (ScriptException | NumberFormatException e) {
 				System.out.println("ScrriptExpression-related error thrown, unhandled update.");
 				computedValue = defaultValue;
-				textfield.setColorBackground(errorColor); 
+				setErrorColorOnTextfield();
 			}
 	}
 	
-	public float localEvaluate (Object exp) throws ScriptException{
-		return evaluateAsFloat(exp);
+	private float evaluate () throws ScriptException {
+		return evaluateAsFloat(this.valueExpression);
 	}
 	
 	public void createUI(String id, String label, int localx, int localy, int w, Group g) { 

@@ -8,6 +8,7 @@ import frontend.Main;
 import frontend.State;
 import frontend.Status;
 import frontend.tasks.Task;
+import frontend.tasks.generators.FMGenTask;
 import frontend.ui.ComputableIntegerTextfieldUI;
 import frontend.ui.ComputableSeparableTextfieldUI;
 import frontend.ui.TextfieldUi;
@@ -27,7 +28,7 @@ public class OSCTask extends Task {
 	transient private NetAddress broadcast;
 	transient private OscP5 oscP5;
 
-	public OSCTask(PApplet p, ControlP5 cp5, String id, String message, int port, String ip, Object[] content) {
+	public OSCTask(PApplet p, ControlP5 cp5, String id) {
 		super(p, cp5, id);
 
 		this.ip = new TextfieldUi("localhost");
@@ -39,13 +40,6 @@ public class OSCTask extends Task {
 		this.broadcast = new NetAddress(this.ip.getValue(), this.port.getValueAsInt());
 
 		this.build(p, cp5);
-	}
-
-	@Deprecated
-	public OSCTask(PApplet p, ControlP5 cp5, String id, String message, int port, String ip, Object[] content,
-			boolean repeat) {
-		this(p, cp5, id, message, port, ip, content);
-		this.repeat = repeat;
 	}
 	
 	private void udpateBroadcast() {
@@ -128,7 +122,13 @@ public class OSCTask extends Task {
 
 	@Deprecated
 	public OSCTask clone_it() {
-		return new OSCTask(this.p, this.cp5, this.name, this.message.getValue(), this.port.getDefaultValueAsInt(), this.ip.getValue(), null, this.repeat);
+		OSCTask clone = new OSCTask(this.p, this.cp5, this.name);
+		clone.ip = this.ip;
+		clone.port = this.port;
+		clone.message = this.message;
+		clone.parameters = this.parameters;
+		clone.shouldRepeat = this.shouldRepeat;
+		return clone;
 	}
 	
 }
