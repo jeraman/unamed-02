@@ -19,10 +19,10 @@ import frontend.tasks.Task;
 import frontend.tasks.augmenters.ChordAugTask;
 import frontend.tasks.augmenters.IntervalAugTask;
 import frontend.tasks.augmenters.NoteAugTask;
-import frontend.tasks.blackboard.SetBBOscillatorTask;
-import frontend.tasks.blackboard.SetBBRampTask;
-import frontend.tasks.blackboard.SetBBRandomTask;
-import frontend.tasks.blackboard.SetBBTask;
+import frontend.tasks.blackboard.OscillatorBBTask;
+import frontend.tasks.blackboard.RampBBTask;
+import frontend.tasks.blackboard.RandomBBTask;
+import frontend.tasks.blackboard.DefaultBBTask;
 import frontend.tasks.effects.AdsrGenTask;
 import frontend.tasks.effects.BitChrushGenTask;
 import frontend.tasks.effects.DelayGenTask;
@@ -644,21 +644,21 @@ public class State implements Serializable {
 
 	void init_set_blackboard_task() {
 		String taskname = generate_random_name();
-		SetBBTask t = new SetBBTask(p, cp5, taskname);
+		DefaultBBTask t = new DefaultBBTask(p, cp5, taskname);
 		this.add_task(t);
 	}
 	
 
 	void init_bb_rand_task() {
 		String taskname = generate_random_name();
-		SetBBRandomTask t = new SetBBRandomTask(p, cp5, taskname);
+		RandomBBTask t = new RandomBBTask(p, cp5, taskname);
 		this.add_task(t);
 	}
 
 	// method that initializes a random osc balckboard var
 	void init_bb_osc_task() {
 		String taskname = generate_random_name();
-		SetBBOscillatorTask t = new SetBBOscillatorTask(p, cp5);
+		OscillatorBBTask t = new OscillatorBBTask(p, cp5);
 		this.add_task(t);
 		// println(selected + " " + pie.options[selected]);
 	}
@@ -667,7 +667,7 @@ public class State implements Serializable {
 	// method that initializes a ramp balckboard var
 	void init_bb_ramp_task() {
 		String taskname = generate_random_name();
-		SetBBRampTask t = new SetBBRampTask(p, cp5);
+		RampBBTask t = new RampBBTask(p, cp5, taskname);
 		this.add_task(t);
 		// println(selected + " " + pie.options[selected]);
 	}

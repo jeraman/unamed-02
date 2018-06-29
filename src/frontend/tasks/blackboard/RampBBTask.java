@@ -7,15 +7,104 @@ import frontend.Expression;
 import frontend.Main;
 import frontend.State;
 import frontend.Status;
+import frontend.ui.ComputableFloatTextfieldUI;
+import frontend.ui.TextfieldUi;
 import processing.core.PApplet;
 
 
-public class SetBBRampTask extends SetBBTask {
+public class RampBBTask extends AbstractBBTask {
+	private ComputableFloatTextfieldUI origin; 
+	private ComputableFloatTextfieldUI destination; 
+	private ComputableFloatTextfieldUI duration; 
+	
+	public RampBBTask (PApplet p, ControlP5 cp5, String taskname) {
+		super(p, cp5, taskname);
+		this.origin = new ComputableFloatTextfieldUI(0f);
+		this.destination = new ComputableFloatTextfieldUI(1f);
+		this.duration = new ComputableFloatTextfieldUI(1f);
+		this.value = new TextfieldUi("");
+	}
+	
+	private void updateValue() {
+		float delta = origin.getValue() - destination.getValue();
+		float absDelta = Math.abs(delta);
+		float dest = destination.getValue();
+		float orig = origin.getValue();
+		float dur = Math.abs(duration.getValue());
+		
+		if (dest > orig)
+			this.value = new TextfieldUi(absDelta + " * math.abs(("+timer+"/"+ dur+") % 1) + " + orig);
+		else
+			this.value = new TextfieldUi("(" + absDelta + " - (" + absDelta + " * math.abs(("+timer+"/"+dur+") % 1))) + " + (int)(orig-delta) );
+	}
+	
+	private void processOriginChange() {
+		origin.update();
+		updateValue();
+	}
+	
+	private void processDestinationChange() {
+		destination.update();
+		updateValue();
+	}
+	
+	private void processDurationChange() {
+		duration.update();
+		updateValue();
+	}
+	
+	@Override
+	protected void processAllParameters() {
+		super.processAllParameters();
+		processOriginChange();
+		processDestinationChange();
+		processDurationChange();
+	}
+	
+	/////////////////////////////////
+	// UI config
+	public Group load_gui_elements(State s) {
+		this.textlabel = "Ramp Variable";
+
+		String id = get_gui_id();
+		Group g = super.load_gui_elements(s);
+		int width = g.getWidth() - (localx * 2);
+
+		this.backgroundheight = (int) (localoffset * 5.5);
+		g.setBackgroundHeight(backgroundheight);
+
+		variableName.createUI(id, "name", localx, localy + (0 * localoffset), width, g);
+		origin.createUI(id, "origin", localx, localy + (1 * localoffset), width, g);
+		destination.createUI(id, "destination", localx, localy + (2 * localoffset), width, g);
+		duration.createUI(id, "duration", localx, localy + (3 * localoffset), width, g);
+		shouldRepeat.createUI(id, "once - repeat", localx, localy + (4 * localoffset), width, g);
+
+		return g;
+	}
+	
+	public RampBBTask clone_it() {
+		RampBBTask clone = new RampBBTask(this.p, this.cp5, this.name);
+
+		clone.variableName = this.variableName;
+		clone.origin = this.origin;
+		clone.destination = this.destination;
+		clone.duration = this.duration;
+		clone.shouldRepeat = this.shouldRepeat;
+		clone.value = this.value;
+		clone.timerMilestone = this.timerMilestone;
+		clone.timer = this.timer;
+
+		return clone;
+	}
+}
+
+/*
+public class RampBBTask extends DefaultBBTask {
   protected Object duration;
   protected Object amplitude;
   protected boolean is_up;
 
-  public SetBBRampTask (PApplet p, ControlP5 cp5) {
+  public RampBBTask (PApplet p, ControlP5 cp5) {
     super(p, cp5, ("ramp_" + (int)p.random(0, 100)), new Expression("1"));
 
     this.is_up = true;
@@ -25,8 +114,8 @@ public class SetBBRampTask extends SetBBTask {
   }
   
   //clone function
-  public SetBBRampTask clone_it() {
-	  SetBBRampTask clone = new SetBBRampTask(this.p, this.cp5);
+  public RampBBTask clone_it() {
+	  RampBBTask clone = new RampBBTask(this.p, this.cp5);
 	  
 	  clone.variableName	= this.variableName;
 	  clone.duration 		= this.duration;
@@ -58,12 +147,6 @@ public class SetBBRampTask extends SetBBTask {
 
     Expression ne;
     
-    //String rootTimer = "$" + ((ZenStates)p).canvas.root.get_formated_blackboard_title() + "_timer";
-    //p.print(variableName + " timer: " + timer);
-	//p.println(" - is executing for the first time? " + first_time);
-    	
-    //if (is_up) ne = new Expression(amp_val+"*(("+rootTimer+"/"+dur_val+") % 1)");
-    //else       ne = new Expression("math.abs("+amp_val+"-("+amp_val+"*(("+rootTimer+"/"+dur_val+") % 1)))");
     if (is_up) ne = new Expression(amp_val+"*math.abs(("+timer+"/"+dur_val+") % 1)");
     else       ne = new Expression("math.abs("+amp_val+"-("+amp_val+"*(("+timer+"/"+dur_val+") % 1)))");
 
@@ -90,36 +173,7 @@ public class SetBBRampTask extends SetBBTask {
 
   //UI config
   public Group load_gui_elements(State s) {
-	  /*
-    CallbackListener cb_enter = generate_callback_enter();
-    //CallbackListener cb_leave = generate_callback_leave();
 
-    //this.set_gui_id(s.get_name() + " " + this.get_name());
-    String g_name = this.get_gui_id();
-    
-    String textlabel = "Ramp variable";
-    int font_size 	 = (int)(((ZenStates)p).get_font_size());
-    int textwidth 	 = (int)((ZenStates)p).textWidth(textlabel);
-    int backgroundheight = (int)(font_size* 16.5);
-
-    //ControlP5 cp5 = HFSMPrototype.instance().cp5();
-
-    Group g = cp5.addGroup(g_name)
-    	    //.setPosition(x, y) //change that?
-    	    .setHeight(font_size)
-    	    .setWidth((10*((ZenStates)p).FONT_SIZE))
-    	    .setBackgroundHeight(backgroundheight)
-    	    .setColorBackground(p.color(255, 50)) //color of the task
-    	    .setBackgroundColor(p.color(255, 25)) //color of task when openned
-    	    .setLabel(textlabel)
-    	    ;
-
-
-    g.getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER);
-
-    int localx = 10, localy = (int)(font_size), localoffset = 3*font_size;
-    int w = g.getWidth()-(localx*2);
-    */
 	  Group g					= super.load_gui_elements(s);
 	  CallbackListener cb_enter = generate_callback_enter();
 	  String g_name			  	= this.get_gui_id();
@@ -254,3 +308,4 @@ public class SetBBRampTask extends SetBBTask {
   }
 
 }
+*/

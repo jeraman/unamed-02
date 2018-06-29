@@ -9,12 +9,12 @@ import frontend.ui.TextfieldUi;
 import processing.core.PApplet;
 
 
-public class SetBBRandomTask extends AbstractBBTask {
+public class RandomBBTask extends AbstractBBTask {
 
 	private ComputableFloatTextfieldUI min;
 	private ComputableFloatTextfieldUI max;
 	
-	public SetBBRandomTask(PApplet p, ControlP5 cp5, String taskname) {
+	public RandomBBTask(PApplet p, ControlP5 cp5, String taskname) {
 		super(p, cp5, taskname);
 		this.min = new ComputableFloatTextfieldUI(0f);
 		this.max = new ComputableFloatTextfieldUI(1f);
@@ -62,8 +62,8 @@ public class SetBBRandomTask extends AbstractBBTask {
 		return g;
 	}
 	
-	public SetBBRandomTask clone_it() {
-		  SetBBRandomTask clone = new SetBBRandomTask(this.p, this.cp5, this.name);
+	public RandomBBTask clone_it() {
+		  RandomBBTask clone = new RandomBBTask(this.p, this.cp5, this.name);
 		  
 		  clone.variableName	= this.variableName;
 		  clone.min 			= this.min;
@@ -71,7 +71,6 @@ public class SetBBRandomTask extends AbstractBBTask {
 		  clone.value 			= this.value;
 		  clone.timerMilestone 	= this.timerMilestone;
 		  clone.timer          	= this.timer;
-		  clone.repeat			= this.repeat;
 		  
 		  return clone;
 	  }

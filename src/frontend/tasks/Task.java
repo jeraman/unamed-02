@@ -9,7 +9,7 @@ import frontend.Main;
 import frontend.State;
 import frontend.StateMachine;
 import frontend.Status;
-import frontend.tasks.blackboard.SetBBTask;
+import frontend.tasks.blackboard.DefaultBBTask;
 import frontend.tasks.meta.OSCTask;
 import frontend.ui.ComputableFloatTextfieldUI;
 import frontend.ui.ComputableFloatTextfieldUIWithUserInput;
@@ -98,7 +98,7 @@ public abstract class Task implements Serializable {
 	public String get_prefix() {
 		String result = "[TASK]";
 
-		if (this instanceof SetBBTask)
+		if (this instanceof DefaultBBTask)
 			result = "[B_B]";
 		if (this instanceof OSCTask)
 			result = "[OSC]";

@@ -16,16 +16,16 @@ import processing.core.PApplet;
 import soundengine.util.Util;
 
 
-public class SetBBTask extends AbstractBBTask {
+public class DefaultBBTask extends AbstractBBTask {
 
-	public SetBBTask(PApplet p, ControlP5 cp5, String taskname) {
+	public DefaultBBTask(PApplet p, ControlP5 cp5, String taskname) {
 		super(p, cp5, taskname);
 		this.value = new TextfieldUi("0");
 	}
 	
 	@Override
 	public Task clone_it() {
-		SetBBTask clone = new SetBBTask(this.p, this.cp5, this.name);
+		DefaultBBTask clone = new DefaultBBTask(this.p, this.cp5, this.name);
 		clone.variableName = this.variableName;
 		clone.value = this.value;
 		clone.timer = this.timer;

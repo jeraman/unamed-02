@@ -8,11 +8,11 @@ import frontend.State;
 import frontend.Status;
 import processing.core.PApplet;
 
-public class SetBBOscillatorTask extends SetBBTask {
+public class OscillatorBBTask extends DefaultBBTask {
 	private Object frequency;
 	private Object amplitude;
 
-	public SetBBOscillatorTask(PApplet p, ControlP5 cp5) {
+	public OscillatorBBTask(PApplet p, ControlP5 cp5) {
 		super(p, cp5, ("osc_" + (int) p.random(0, 100)), new Expression("1"));
 
 		update_frequency("1");
@@ -21,8 +21,8 @@ public class SetBBOscillatorTask extends SetBBTask {
 	}
 
 	// clone function
-	public SetBBOscillatorTask clone_it() {
-		SetBBOscillatorTask clone = new SetBBOscillatorTask(this.p, this.cp5);
+	public OscillatorBBTask clone_it() {
+		OscillatorBBTask clone = new OscillatorBBTask(this.p, this.cp5);
 
 		clone.variableName = this.variableName;
 		clone.frequency = this.frequency;
