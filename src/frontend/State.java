@@ -658,7 +658,7 @@ public class State implements Serializable {
 	// method that initializes a random osc balckboard var
 	void init_bb_osc_task() {
 		String taskname = generate_random_name();
-		OscillatorBBTask t = new OscillatorBBTask(p, cp5);
+		OscillatorBBTask t = new OscillatorBBTask(p, cp5, taskname);
 		this.add_task(t);
 		// println(selected + " " + pie.options[selected]);
 	}

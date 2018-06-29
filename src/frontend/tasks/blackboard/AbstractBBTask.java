@@ -47,22 +47,19 @@ abstract class AbstractBBTask extends Task {
 	public void run() {
 		
 		boolean isFirstCycle  = this.isFirstCycle();
+
+		if (first_time)
+			reset_timer();
 		
 		super.run();	
 
 		if (shouldRepeat.getValue() || isFirstCycle) {
-			updateTimerAndResetWhenNecessary();
+			updateTimer();
 			updateVariable();
 		}
 		
 	}
 
-	private void updateTimerAndResetWhenNecessary() {
-		if (first_time)
-			reset_timer();
-		updateTimer();
-	}
-		
 	void updateTimer() {
 		this.timer = ((float) Util.millis() / 1000f) - timerMilestone;
 	}
