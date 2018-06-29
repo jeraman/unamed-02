@@ -82,9 +82,9 @@ public class OSCTask extends Task {
 	}
 
 	public void run() {
+		boolean wasFirstTime = first_time;
 		super.run();
-		
-		if (shouldRepeat.getValue())
+		if (shouldRepeat.getValue() || wasFirstTime)
 			sendMessage();
 	}
 	

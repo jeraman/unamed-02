@@ -13,6 +13,7 @@ import frontend.tasks.generators.OscillatorGenTask;
 import frontend.ui.TextfieldUi;
 import frontend.ui.ToggleUi;
 import processing.core.PApplet;
+import soundengine.util.Util;
 
 
 public class SetBBTask extends Task {
@@ -53,9 +54,9 @@ public class SetBBTask extends Task {
 	}
 	
 	public void run() {
-		super.run();
-		
-		if (shouldRepeat.getValue())
+		boolean wasFirstTime = first_time;
+		super.run();	
+		if (shouldRepeat.getValue() || wasFirstTime)
 			updateVariable();
 	}
 	
@@ -68,11 +69,11 @@ public class SetBBTask extends Task {
 	}
 	
 	void update_timer() {
-		this.timer = ((float) p.millis() / 1000f) - timerMilestone;
+		this.timer = ((float) Util.millis() / 1000f) - timerMilestone;
 	}
 
 	void reset_timer() {
-		this.timerMilestone = (float) p.millis() / 1000f;
+		this.timerMilestone = (float) Util.millis() / 1000f;
 		this.timer = 0;
 	}
 

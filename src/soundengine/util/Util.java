@@ -73,4 +73,8 @@ public class Util {
 		}
 	}
 	
+	public static int millis() {
+		return Main.instance().millis();
+	}
+	
 }

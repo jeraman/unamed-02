@@ -50,9 +50,9 @@ public class ScriptingTask extends Task {
 
 	@Override
 	public void run() {
+		boolean wasFirstTime = first_time;
 		super.run();
-
-		if (shouldRepeat.getValue())
+		if (shouldRepeat.getValue() || wasFirstTime)
 			evaluateScript();
 	}
 
