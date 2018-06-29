@@ -42,22 +42,28 @@ abstract class AbstractBBTask extends Task {
 		processValueChange();
 	}
 	
-	public void run() {
-		boolean wasFirstTime = first_time;
-		super.run();	
-		if (shouldRepeat.getValue() || wasFirstTime)
-			updateVariable();
-	}
+	protected abstract boolean isFirstCycle();
 	
-	public boolean should_run() {
+	public void run() {
+		
+		boolean isFirstCycle  = this.isFirstCycle();
+		
+		super.run();	
+
+		if (shouldRepeat.getValue() || isFirstCycle) {
+			updateTimerAndResetWhenNecessary();
+			updateVariable();
+		}
+		
+	}
+
+	private void updateTimerAndResetWhenNecessary() {
 		if (first_time)
 			reset_timer();
-		boolean should_run = super.should_run();
-		update_timer();
-		return should_run;
+		updateTimer();
 	}
-	
-	void update_timer() {
+		
+	void updateTimer() {
 		this.timer = ((float) Util.millis() / 1000f) - timerMilestone;
 	}
 
@@ -67,7 +73,7 @@ abstract class AbstractBBTask extends Task {
 	}
 
 	public void updateVariable() {
-		System.out.println("updating variable: " + value.evaluate());
+		//System.out.println("updating variable: " + value.evaluate());
 		Blackboard board = Main.instance().board();
 		board.put(variableName.getValue(), value.evaluate());
 	}

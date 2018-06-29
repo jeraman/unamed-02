@@ -165,6 +165,7 @@ public abstract class Task implements Serializable {
 	public boolean should_run() {
 
 		boolean result = true;
+		
 		// checkes if this should be executed only once
 		if (!repeat) {
 			// if this is the first time, go on
@@ -176,14 +177,12 @@ public abstract class Task implements Serializable {
 				this.status = Status.DONE;
 			}
 		} else
-		// if this is the first time, go on
-		if (first_time)
-			first_time = false;
+			if (first_time)
+				first_time = false;
 
 		return result;
 	}
 
-	
 	public void stop() {
 
 	}
@@ -196,14 +195,15 @@ public abstract class Task implements Serializable {
 	}
 
 	protected abstract String[] getDefaultParameters();
+
 	protected abstract void processAllParameters();
+
 	public abstract Task clone_it();
 
 	public void closeTask() {
 		p.println("removing task " + get_gui_id());
 		cp5.getGroup(get_gui_id()).remove();
 	}
-	
 
 	//////////////////////////////
 	// gui commands
@@ -301,8 +301,8 @@ public abstract class Task implements Serializable {
 	}
 
 	// abstract CallbackListener generate_callback_leave(){}
-//	@Deprecated
-//	public abstract CallbackListener generate_callback_enter();
+	// @Deprecated
+	// public abstract CallbackListener generate_callback_enter();
 	public CallbackListener generate_callback_enter() {
 		return null;
 	}
@@ -311,7 +311,7 @@ public abstract class Task implements Serializable {
 	public abstract void reset_gui_fields();
 
 	@Deprecated
-//	public abstract void build(PApplet p, ControlP5 cp5);
+	// public abstract void build(PApplet p, ControlP5 cp5);
 	public void build(PApplet p, ControlP5 cp5) {
 		// TODO Auto-generated method stub
 		this.p = p;
@@ -319,5 +319,6 @@ public abstract class Task implements Serializable {
 	}
 
 	@Deprecated
-	public void update_status(){}
+	public void update_status() {
+	}
 }

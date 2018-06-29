@@ -32,6 +32,10 @@ public class DefaultBBTask extends AbstractBBTask {
 		clone.timerMilestone = this.timerMilestone;
 		return clone;
 	}
+	
+	public boolean isFirstCycle() {
+		return first_time;
+	}
 
 	/////////////////////////////////
 	// UI config

@@ -72,6 +72,19 @@ public class TextfieldUi extends AbstractElementUi {
 		return result;
 	}
 	
+	public float evaluateAsFloat() {
+		float result = 0;
+		try {
+			result = this.evaluateAsFloat(new Expression(this.value));
+			setDefaultColorOnTextfield();
+		} catch (ScriptException e) {
+			System.out.println("ScrriptExpression-related error thrown, unhandled update.");
+			this.value = this.getDefaultText();
+			setErrorColorOnTextfield();
+		}
+		return result;
+	}
+	
 	public void setDefaultText(String newText) {
 		this.defaultText = newText;
 		

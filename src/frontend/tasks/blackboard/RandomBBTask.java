@@ -35,6 +35,10 @@ public class RandomBBTask extends AbstractBBTask {
 		updateValue();
 	}
 	
+	protected boolean isFirstCycle() {
+		return first_time;
+	}
+	
 	@Override
 	protected void processAllParameters() {
 		super.processAllParameters();
