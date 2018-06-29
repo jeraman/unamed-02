@@ -30,12 +30,12 @@ public class OscillatorBBTask extends AbstractBBTask {
 	
 	protected boolean isFirstCycle() {
 		float period = 1f/frequency.getValue();
-		
 		float remainder = timer % period;
-		
-		boolean result =  ( remainder > 0.1);
+		float threshold = (1f/(30f*period));
+		boolean result =  ( remainder > threshold || timer <= threshold);
 		System.out.println("period: " + period);
 		System.out.println("timer: " + timer);
+		System.out.println("threshold: " + threshold);
 		System.out.println("remainder: " + remainder);
 		System.out.println("done? " + result);
 		return result || first_time;
