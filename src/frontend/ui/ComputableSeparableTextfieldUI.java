@@ -23,7 +23,7 @@ public class ComputableSeparableTextfieldUI extends TextfieldUi {
 			args = new Object[content.length];
 			
 			for (int i = 0; i < args.length; i++) {
-					args[i] = this.evaluate_value(content[i]);
+					args[i] = this.evaluate(content[i]);
 					if (args[i] instanceof Double)
 						args[i] = ((Double) args[i]).floatValue();
 			}

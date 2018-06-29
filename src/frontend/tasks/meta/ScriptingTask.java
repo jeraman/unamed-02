@@ -44,13 +44,8 @@ public class ScriptingTask extends Task {
 		setContext();
 	}
 
-	public ScriptingTask(PApplet p, ControlP5 cp5, String taskname, boolean repeat) {
-		this(p, cp5, taskname);
-		this.repeat = repeat;
-	}
-
 	public Task clone_it() {
-		return new ScriptingTask(p, cp5, name, this.repeat);
+		return new ScriptingTask(p, cp5, name);
 	}
 
 	@Override
@@ -63,8 +58,7 @@ public class ScriptingTask extends Task {
 
 	@Override
 	public void build(PApplet p, ControlP5 cp5) {
-		this.p = p;
-		this.cp5 = cp5;
+		super.build(p, cp5);
 		loadScript();
 		setContext();
 	}

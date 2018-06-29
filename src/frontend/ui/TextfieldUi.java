@@ -1,10 +1,13 @@
 package frontend.ui;
 
+import javax.script.ScriptException;
+
 import controlP5.CallbackEvent;
 import controlP5.CallbackListener;
 import controlP5.ControlP5;
 import controlP5.Group;
 import controlP5.Textfield;
+import frontend.Expression;
 
 public class TextfieldUi extends AbstractElementUi {
 
@@ -29,6 +32,10 @@ public class TextfieldUi extends AbstractElementUi {
 	
 	public String getDefaultText( ) {
 		return this.defaultText;
+	}
+	
+	public Object evaluate() throws ScriptException {
+		return this.evaluate(new Expression(this.value));
 	}
 	
 	public void setDefaultText(String newText) {

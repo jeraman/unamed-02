@@ -661,7 +661,6 @@ public class StateMachine extends Task {
 		smp = new StateMachinePreview( (Main)p, this, localx, localy+localoffset);
 		g.addCanvas((controlP5.Canvas)smp);
 
-		//int preview_height = font_size*5;
 		cp5.addButton(g_name+"/open_preview")
 		.setPosition(localx, localy+(int)(2.8*localoffset))
 		.setSize(w, (int)(font_size*1.25))

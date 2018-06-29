@@ -76,8 +76,7 @@ public class OSCTask extends Task {
 	}
 	
 	public void build(PApplet p, ControlP5 cp5) {
-		this.p = p;
-		this.cp5 = cp5;
+		super.build(p, cp5);
 		this.broadcast = new NetAddress(ip.getValue(), port.getValueAsInt());
 		this.oscP5 = Main.instance().oscP5();
 	}

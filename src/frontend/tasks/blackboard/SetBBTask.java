@@ -1,5 +1,7 @@
 package frontend.tasks.blackboard;
 
+import javax.script.ScriptException;
+
 import controlP5.*;
 import frontend.Blackboard;
 import frontend.Expression;
@@ -7,8 +9,127 @@ import frontend.Main;
 import frontend.State;
 import frontend.Status;
 import frontend.tasks.Task;
+import frontend.tasks.generators.OscillatorGenTask;
+import frontend.ui.TextfieldUi;
+import frontend.ui.ToggleUi;
 import processing.core.PApplet;
 
+
+public class SetBBTask extends Task {
+
+	private TextfieldUi variableName;
+	private TextfieldUi value;
+	private ToggleUi shouldRepeat;
+	float timer;
+	float timerMilestone;
+	
+	public SetBBTask(PApplet p, ControlP5 cp5, String taskname) {
+		super(p, cp5, taskname);
+		
+		this.variableName = new TextfieldUi(taskname);
+		this.value = new TextfieldUi("0");
+		this.shouldRepeat = new ToggleUi();
+		
+		this.timerMilestone = 0;
+		this.timer = 0;
+	}
+	
+	private void processNameChange() {
+		variableName.update();
+		//if (variableName.update())
+		//	updateVariableName();
+	}
+	
+	private void processValueChange() {
+		value.update();
+		//if (value.update())
+		//	updateValueName();
+	}
+
+	@Override
+	protected void processAllParameters() {
+		processNameChange();
+		processValueChange();
+	}
+	
+	public void run() {
+		super.run();
+		
+		if (shouldRepeat.getValue())
+			updateVariable();
+	}
+	
+	public boolean should_run() {
+		if (first_time)
+			reset_timer();
+		boolean should_run = super.should_run();
+		update_timer();
+		return should_run;
+	}
+	
+	void update_timer() {
+		this.timer = ((float) p.millis() / 1000f) - timerMilestone;
+	}
+
+	void reset_timer() {
+		this.timerMilestone = (float) p.millis() / 1000f;
+		this.timer = 0;
+	}
+
+	public void updateVariable() {
+		try {
+			System.out.println("updating variable: " + value.evaluate());
+			Blackboard board = Main.instance().board();
+			board.put(variableName.getValue(), value.evaluate());
+		} catch (ScriptException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public Task clone_it() {
+		SetBBTask clone = new SetBBTask(this.p, this.cp5, this.name);
+		clone.variableName = this.variableName;
+		clone.value = this.value;
+		clone.timer = this.timer;
+		clone.timerMilestone = this.timerMilestone;
+		return clone;
+	}
+
+	/////////////////////////////////
+	// UI config
+	public Group load_gui_elements(State s) {
+		this.textlabel = "Blackboard Variable";
+		
+		String id = get_gui_id();
+		Group g = super.load_gui_elements(s);
+		int width = g.getWidth() - (localx * 2);
+		
+		this.backgroundheight = (int) (localoffset * 3.5);
+		g.setBackgroundHeight(backgroundheight);
+
+		variableName.createUI(id, "frequency", localx, localy + (0 * localoffset), width, g);
+		value.createUI(id, "amplitude", localx, localy + (1 * localoffset), width, g);
+		shouldRepeat.createUI(id, "once - repeat", localx, localy + (2 * localoffset), width, g);
+		
+		return g;
+	}
+	
+	
+	@Override
+	protected String[] getDefaultParameters() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void reset_gui_fields() {
+		// TODO Auto-generated method stub
+		
+	}
+}
+
+/*
 public class SetBBTask extends Task {
 
 	Object value;
@@ -200,3 +321,4 @@ public class SetBBTask extends Task {
 	}
 
 }
+*/

@@ -639,7 +639,7 @@ public class State implements Serializable {
 	// method that initializes a random demo set balckboard task
 	void init_random_set_blackboard_task() {
 		String taskname = generate_random_name();
-		SetBBTask t = new SetBBTask(p, cp5, taskname, 0);
+		SetBBTask t = new SetBBTask(p, cp5, taskname);
 		this.add_task(t);
 		// println(selected + " " + pie.options[selected]);
 	}
@@ -676,7 +676,7 @@ public class State implements Serializable {
 	// method that initializes a random demo set balckboard task
 	void init_set_blackboard_task() {
 		String taskname = generate_random_name();
-		SetBBTask t = new SetBBTask(p, cp5, taskname, 0);
+		SetBBTask t = new SetBBTask(p, cp5, taskname);
 		this.add_task(t);
 		// println(selected + " " + pie.options[selected]);
 	}

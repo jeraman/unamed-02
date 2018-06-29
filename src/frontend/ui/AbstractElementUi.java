@@ -51,11 +51,11 @@ public abstract class AbstractElementUi implements Serializable {
 	}
 
 	public String evaluateAsString(Object o) throws ScriptException {
-		return this.evaluate_value(o).toString();
+		return this.evaluate(o).toString();
 	}
 
 	// function that tries to evaluates the value (if necessary) and returns the real value
-	public Object evaluate_value(Object o) throws ScriptException {
+	public Object evaluate(Object o) throws ScriptException {
 		Object ret = o;
 		Blackboard board = Main.instance().board();
 
