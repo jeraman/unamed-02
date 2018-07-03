@@ -1151,7 +1151,8 @@ public class State implements Serializable {
 			// if (c.get_next_state().get_name() == this.get_name())
 			// draw_connection_to_self(c);
 			// else
-			draw_connection(c);
+			if (c.get_next_state().get_name() != this.get_name())
+				draw_connection(c);
 		}
 	}
 
@@ -1234,26 +1235,6 @@ public class State implements Serializable {
 		c.set_gui_position((int) newx - x_offset, (int) newy - 30);
 	}
 
-	void draw_connection_to_self(Connection c) {
-		// line color
-		p.stroke(50);
-		// the wieght of the line
-		p.strokeWeight(size / 10);
-		// draws the lines
-		p.line(x, y, x - 100, y - 100);
-		p.line(x, y, x + 100, y - 100);
-		p.line(x - 100, y - 100, x + 100, y - 100);
-		// draw the arrow
-		p.line(x - 5, y - 100, x + 5, y - 90);
-		p.line(x - 5, y - 100, x + 5, y - 110);
-		// draw the input
-		p.fill(180);
-		// textAlign(CENTER, CENTER);
-		// text("[ "+priority+" ] : " + c.get_expression().toString(), x,
-		// y-125);
-		int x_offset = (int) c.get_label_width() / 2;
-		c.set_gui_position(x - x_offset, y - 125);
-	}
 
 	void draw_pie() {
 		pie.draw();

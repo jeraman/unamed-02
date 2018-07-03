@@ -62,7 +62,14 @@ public class ConnectionTextfieldUi extends TextfieldUi {
 	}
 
 	public int getLabelWidth() {
-		return (int) (width + (Main.instance().textWidth(value) * 1.3));
+		String currentText;
+		
+		if (textfield != null)
+			currentText = textfield.getText().trim();
+		else
+			currentText = value;
+			
+		return (int) (width + (Main.instance().textWidth(currentText)));
 	}
 	
 	protected void resizeTextfieldWidth() {
@@ -75,12 +82,11 @@ public class ConnectionTextfieldUi extends TextfieldUi {
 	}
 
 	public void createUI(String id) {
-		
 		this.textfield = cp5.addTextfield(id + "/condition").setText(value).setColorValue(whiteColor)
 				.setColorBackground(defaultBackgroundConnectionColor)
 				.setColorForeground(defaultBackgroundConnectionColor)
 				.setColorValue(whiteColor)
-				.setWidth(width)
+				.setWidth(getLabelWidth())
 				.setHeight(15)
 				.setFocus(false)
 				.onEnter(generate_callback_textfield_enter()) 
@@ -125,6 +131,7 @@ public class ConnectionTextfieldUi extends TextfieldUi {
 					textfield.setText(content);
 				}
 		
+				System.out.println("getLabelWidth " + getLabelWidth());
 				resizeTextfieldWidth();
 				setValue(content);	
 				evaluateAsBoolean();
