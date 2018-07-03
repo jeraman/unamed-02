@@ -165,6 +165,7 @@ public class StateMachine extends Task {
 	
 	public void start() {
 		System.out.println("starting a statemachine " + this);
+		this.status = Status.RUNNING;
 		begin.start();
 	}
 

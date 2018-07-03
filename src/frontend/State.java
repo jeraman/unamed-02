@@ -178,10 +178,11 @@ public class State implements Serializable {
 	void start() {
 		for (Task t : tasks)
 			t.start();
+		
 		this.status = Status.RUNNING;
 
 		if (debug)
-			System.out.println("startinh all the " + tasks.size() + " tasks from state " + this.name);
+			System.out.println("starting all the " + tasks.size() + " tasks from state " + this.name);
 	}
 
 	void run() {
@@ -224,12 +225,6 @@ public class State implements Serializable {
 			System.out.println("interrupting all tasks from state " + this.name);
 	}
 
-	@Deprecated
-	// if it's entering a state, you need to refresh it
-	void refresh() {
-		for (Task t : tasks)
-			t.refresh();
-	}
 
 	// in case there are statemachine inside this state, this machine should be
 	// saved to file
@@ -245,54 +240,11 @@ public class State implements Serializable {
 			t.reset_first_time();
 	}
 
-	@Deprecated
-	// only refreshes and reruns completed tasks
-	void refresh_and_run_completed_tasks() {
-		for (Task t : tasks)
-			if (t.get_status() == Status.DONE || t.get_status() == Status.INACTIVE) {
-				t.refresh();
-				t.run();
-			}
-	}
-
 	// gets the current status of this state
 	Status get_status() {
 		return this.status;
 	}
 
-	// updates the status of this state
-	void update_status() {
-
-		// if there are no tasks, the state is done
-		if (tasks.size() == 0)
-			this.status = Status.DONE;
-
-		// updates the status first
-		for (Task t : tasks)
-			t.update_status();
-
-		// gets the status of the tasks associated to this state and updates
-		// accordingly
-		for (Task t : tasks) {
-			Status temporary_status = t.get_status();
-			// updates accordingly
-			if (temporary_status == Status.INACTIVE) {
-				this.status = Status.INACTIVE;
-				break;
-			}
-
-			if (temporary_status == Status.RUNNING) {
-				this.status = Status.RUNNING;
-				// if this is a State_Machine
-				// if (t instanceof State_Machine)
-
-				break;
-			}
-
-			if (temporary_status == Status.DONE)
-				this.status = Status.DONE;
-		}
-	}
 
 	// function called everytime there is a new input
 	State tick() {
@@ -307,21 +259,12 @@ public class State implements Serializable {
 		// if (this.status==Status.DONE)
 		my_return = this.change_state();
 
-		// else //not ready yet...
-		// println("State " + this.name + " is not ready to change!");
-
 		return my_return;
 	}
 
 	// tries to change the current state. returns the next state if it's time to
 	// change
 	State change_state() {
-
-		// if it' not done yet, not ready to change
-		// if (this.status!=Status.DONE) {
-		// println("State " + this.name + " is not ready to change!");
-		// return null;
-		// }
 
 		// if done, looks for the next state
 		State next_state = null;
@@ -344,10 +287,6 @@ public class State implements Serializable {
 					next_state.reset_first_time();
 					// runs the next state
 					next_state.run();
-
-					// if (next_state.get_name().equals("END_ROOT"))
-					// System.out.println("State was " + this.name + " . Now it
-					// is changing to " + next_state.name);
 
 					break;
 				}
@@ -540,10 +479,13 @@ public class State implements Serializable {
 
 	/////////////////////////////
 	// tasks
+	
 	private void init_sample_task() {
 		System.out.println("create sample task!");
 		String taskname = generate_random_name();
 		SampleGenTask t = new SampleGenTask(p, cp5, taskname);
+		if (this.status == Status.RUNNING)
+			t.start();
 		this.add_task(t);
 	}
 
@@ -557,6 +499,8 @@ public class State implements Serializable {
 		System.out.println("create fm synth task!");
 		String taskname = generate_random_name();
 		FMGenTask t = new FMGenTask(p, cp5, taskname);
+		if (this.status == Status.RUNNING)
+			t.start();
 		this.add_task(t);
 	}
 
@@ -564,6 +508,8 @@ public class State implements Serializable {
 		System.out.println("create oscillator task!");
 		String taskname = generate_random_name();
 		OscillatorGenTask t = new OscillatorGenTask(p, cp5, taskname);
+		if (this.status == Status.RUNNING)
+			t.start();
 		this.add_task(t);
 	}
 	
@@ -571,6 +517,8 @@ public class State implements Serializable {
 		System.out.println("create filter task!");
 		String taskname = generate_random_name();
 		FilterFxTask t = new FilterFxTask(p, cp5, taskname);
+		if (this.status == Status.RUNNING)
+			t.start();
 		this.add_task(t);
 	}
 
@@ -586,6 +534,8 @@ public class State implements Serializable {
 		System.out.println("create adsr task!");
 		String taskname = generate_random_name();
 		AdsrFxTask t = new AdsrFxTask(p, cp5, taskname);
+		if (this.status == Status.RUNNING)
+			t.start();
 		this.add_task(t);
 	}
 
@@ -593,6 +543,8 @@ public class State implements Serializable {
 		System.out.println("create flanger task!");
 		String taskname = generate_random_name();
 		FlangerFxTask t = new FlangerFxTask(p, cp5, taskname);
+		if (this.status == Status.RUNNING)
+			t.start();
 		this.add_task(t);
 	}
 
@@ -600,6 +552,8 @@ public class State implements Serializable {
 		System.out.println("create delay task!");
 		String taskname = generate_random_name();
 		DelayFxTask t = new DelayFxTask(p, cp5, taskname);
+		if (this.status == Status.RUNNING)
+			t.start();
 		this.add_task(t);
 	}
 
@@ -607,6 +561,8 @@ public class State implements Serializable {
 		System.out.println("create chord task!");
 		String taskname = generate_random_name();
 		ChordAugTask t = new ChordAugTask(p, cp5, taskname);
+		if (this.status == Status.RUNNING)
+			t.start();
 		this.add_task(t);
 	}
 
@@ -614,6 +570,8 @@ public class State implements Serializable {
 		System.out.println("create interval task!");
 		String taskname = generate_random_name();
 		IntervalAugTask t = new IntervalAugTask(p, cp5, taskname);
+		if (this.status == Status.RUNNING)
+			t.start();
 		this.add_task(t);
 	}
 
@@ -621,6 +579,8 @@ public class State implements Serializable {
 		System.out.println("create note task!");
 		String taskname = generate_random_name();
 		NoteAugTask t = new NoteAugTask(p, cp5, taskname);
+		if (this.status == Status.RUNNING)
+			t.start();
 		this.add_task(t);
 
 	}
@@ -628,6 +588,8 @@ public class State implements Serializable {
 	void init_control_dmx_task() {
 		String taskname = generate_random_name();
 		DMXTask t = new DMXTask(p, cp5, taskname);
+		if (this.status == Status.RUNNING)
+			t.start();
 		this.add_task(t);
 	}
 
@@ -640,6 +602,8 @@ public class State implements Serializable {
 	void init_state_machine_task() {
 		String taskname = generate_random_name();
 		StateMachine t = new StateMachine(p, cp5, taskname);
+		if (this.status == Status.RUNNING)
+			t.start();
 		this.add_task(t);
 	}
 
@@ -659,6 +623,8 @@ public class State implements Serializable {
 	void init_bb_rand_task() {
 		String taskname = generate_random_name();
 		RandomBBTask t = new RandomBBTask(p, cp5, taskname);
+		if (this.status == Status.RUNNING)
+			t.start();
 		this.add_task(t);
 	}
 
@@ -666,6 +632,8 @@ public class State implements Serializable {
 	void init_bb_osc_task() {
 		String taskname = generate_random_name();
 		OscillatorBBTask t = new OscillatorBBTask(p, cp5, taskname);
+		if (this.status == Status.RUNNING)
+			t.start();
 		this.add_task(t);
 		// println(selected + " " + pie.options[selected]);
 	}
@@ -675,12 +643,62 @@ public class State implements Serializable {
 	void init_bb_ramp_task() {
 		String taskname = generate_random_name();
 		RampBBTask t = new RampBBTask(p, cp5, taskname);
+		if (this.status == Status.RUNNING)
+			t.start();
 		this.add_task(t);
 		// println(selected + " " + pie.options[selected]);
 	}
 
 	int get_number_of_connections() {
 		return connections.size();
+	}
+	
+
+	@Deprecated
+	// if it's entering a state, you need to refresh it
+	void refresh() {
+		for (Task t : tasks)
+			t.refresh();
+	}
+	
+	// updates the status of this state
+	@Deprecated
+	void update_status() {
+
+//		// if there are no tasks, the state is done
+//		if (tasks.size() == 0)
+//			this.status = Status.DONE;
+//
+//		// gets the status of the tasks associated to this state and updates accordingly
+//		for (Task t : tasks) {
+//			Status temporary_status = t.get_status();
+//			// updates accordingly
+//			if (temporary_status == Status.INACTIVE) {
+//				this.status = Status.INACTIVE;
+//				break;
+//			}
+//
+//			if (temporary_status == Status.RUNNING) {
+//				this.status = Status.RUNNING;
+//				// if this is a State_Machine
+//				// if (t instanceof State_Machine)
+//
+//				break;
+//			}
+//
+//			if (temporary_status == Status.DONE)
+//				this.status = Status.DONE;
+//		}
+	}
+	
+	@Deprecated
+	// only refreshes and reruns completed tasks
+	void refresh_and_run_completed_tasks() {
+		for (Task t : tasks)
+			if (t.get_status() == Status.DONE || t.get_status() == Status.INACTIVE) {
+				t.refresh();
+				t.run();
+			}
 	}
 
 	/*******************************************
