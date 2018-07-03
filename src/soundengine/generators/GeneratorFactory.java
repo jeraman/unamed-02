@@ -104,17 +104,17 @@ public class GeneratorFactory {
 	}
 
 	//Oscillator Factory
-	public static AbstractGenerator noteOnOscillatorGen(int pitch, int velocity, String waveform, int duration) {
-		AbstractGenerator gen = new OscillatorGenerator(pitch, velocity, waveform, duration);
+	public static AbstractGenerator noteOnOscillatorGen(float freq, float amp, String waveform, int duration) {
+		AbstractGenerator gen = new OscillatorGenerator(freq, amp, waveform, duration);
 		return gen;
 	}
 	
 	public static AbstractGenerator noteOnOscillatorGen(String[] parameters) {
-		int pitch = Integer.parseInt(parameters[0]);
-		int velocity = Integer.parseInt(parameters[1]);
+		float freq = Float.parseFloat(parameters[0]);
+		float amp = Float.parseFloat(parameters[1]);
 		String waveform = parameters[2];
 		int duration = Integer.parseInt(parameters[3]);
-		return noteOnOscillatorGen(pitch, velocity, waveform, duration);
+		return noteOnOscillatorGen(freq, amp, waveform, duration);
 	}
 	
 	

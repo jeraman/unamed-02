@@ -11,6 +11,7 @@ import frontend.State;
 import frontend.tasks.Task;
 import frontend.ui.ComputableFloatTextfieldUI;
 import frontend.ui.ComputableFloatTextfieldUIWithUserInput;
+import frontend.ui.ComputableIntegerTextfieldUIWithUserInput;
 import frontend.ui.ScrollableListUI;
 import processing.core.PApplet;
 
@@ -21,7 +22,7 @@ public class OscillatorGenTask extends AbstractGenTask {
 
 	private ComputableFloatTextfieldUIWithUserInput frequency;
 	private ComputableFloatTextfieldUIWithUserInput amplitude;
-	private ComputableFloatTextfieldUIWithUserInput duration;
+	private ComputableIntegerTextfieldUIWithUserInput duration;
 	private ScrollableListUI wavetype;
 	
 	public OscillatorGenTask(PApplet p, ControlP5 cp5, String taskname) {
@@ -29,7 +30,7 @@ public class OscillatorGenTask extends AbstractGenTask {
 		
 		this.frequency = new ComputableFloatTextfieldUIWithUserInput();
 		this.amplitude = new ComputableFloatTextfieldUIWithUserInput();
-		this.duration = new ComputableFloatTextfieldUIWithUserInput();
+		this.duration = new ComputableIntegerTextfieldUIWithUserInput();
 		this.wavetype = new ScrollableListUI(list, 3);
 
 //		this.addToEngine();
@@ -40,7 +41,12 @@ public class OscillatorGenTask extends AbstractGenTask {
 	}
 	
 	protected String[] getDefaultParameters(){
-		return new String[] { "-1", "-1", "SINE", "-1"};
+		//return new String[] { "-1", "-1", "SINE", "-1"};
+		return new String[] { this.frequency.getValue()+"", 
+				 this.amplitude.getValue()+"", 
+				 this.wavetype.getValue()+"",
+				 this.duration.getValueAsInt()+""
+				 };
 	}
 	
 	private void processFrequencyChange() {

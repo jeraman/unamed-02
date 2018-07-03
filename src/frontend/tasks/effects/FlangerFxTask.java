@@ -44,7 +44,15 @@ public class FlangerFxTask extends AbstractFxTask {
 	}
 
 	protected String[] getDefaultParameters() {
-		return new String[] { "1", "0.5", "1", "0.5", "0.5", "0.5" };
+		//return new String[] { "1", "0.5", "1", "0.5", "0.5", "0.5" };
+		return new String[] { 
+				 this.delayLength.getValue()+"", 
+				 this.lfoRate.getValue()+"", 
+				 this.delayDepth.getValue()+"",
+				 this.feedbackAmplitude.getValue()+"",
+				 this.dryAmplitude.getValue()+"", 
+				 this.wetAmplitude.getValue()+""
+				 };
 	}
 
 	private void processDelayLengthChange() {

@@ -30,7 +30,13 @@ public class DelayFxTask extends AbstractFxTask {
 	}
 	
 	protected String[] getDefaultParameters(){
-		return new String[] { "0.02", "1", "true", "true" };
+		//return new String[] { "0.02", "1", "true", "true" };
+		return new String[] { 
+				 this.delayTime.getValue()+"", 
+				 this.amplitudeFactor.getValue()+"", 
+				 "true",
+				 "true"
+				 };
 	}
 	
 	private void processDelayTimeChange() {

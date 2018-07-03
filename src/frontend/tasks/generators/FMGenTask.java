@@ -11,6 +11,7 @@ import frontend.State;
 import frontend.tasks.Task;
 import frontend.ui.ComputableFloatTextfieldUI;
 import frontend.ui.ComputableFloatTextfieldUIWithUserInput;
+import frontend.ui.ComputableIntegerTextfieldUIWithUserInput;
 import frontend.ui.ScrollableListUI;
 import processing.core.PApplet;
 
@@ -22,7 +23,7 @@ public class FMGenTask extends AbstractGenTask {
 	private ComputableFloatTextfieldUI modFreq;
 	private ComputableFloatTextfieldUI modAmp;
 	private ScrollableListUI modWavetype;
-	private ComputableFloatTextfieldUIWithUserInput duration;
+	private ComputableIntegerTextfieldUIWithUserInput duration;
 	
 	public FMGenTask(PApplet p, ControlP5 cp5, String taskname) {
 		super(p, cp5, taskname);
@@ -32,7 +33,7 @@ public class FMGenTask extends AbstractGenTask {
 		this.modFreq = new ComputableFloatTextfieldUI(30f);
 		this.modAmp = new ComputableFloatTextfieldUI(75f);
 		this.modWavetype = new ScrollableListUI(OscillatorGenTask.list, 2);
-		this.duration = new ComputableFloatTextfieldUIWithUserInput();
+		this.duration = new ComputableIntegerTextfieldUIWithUserInput();
 		
 //		this.addToEngine();
 	}
@@ -42,7 +43,15 @@ public class FMGenTask extends AbstractGenTask {
 	}
 	
 	protected String[] getDefaultParameters(){
-		return new String[] { "-1", "-1", "SINE", "30", "75.", "SAW", "-1"};
+		//return new String[] { "-1", "-1", "SINE", "30", "75.", "SAW", "-1"};
+		return new String[] { this.frequency.getValue()+"", 
+							 this.amplitude.getValue()+"", 
+							 this.carrierWavetype.getValue()+"",
+							 this.modFreq.getValue()+"",
+							 this.modFreq.getValue()+"", 
+							 this.modWavetype.getValue()+"",
+							 this.duration.getValueAsInt()+""
+							 };
 	}
 	
 	private void processFrequencyChange() {

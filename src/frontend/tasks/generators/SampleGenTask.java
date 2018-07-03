@@ -39,7 +39,14 @@ public class SampleGenTask extends AbstractGenTask {
 	}
 	
 	protected String[] getDefaultParameters(){
-		return new String[] { defaultSoundFile, "-1", "-1", "true", "-1"};
+		//return new String[] { defaultSoundFile, "-1", "-1", "true", "-1"};
+		return new String[] { 
+				 this.filename.getValue()+"", 
+				 this.pitch.getValueAsInt()+"", 
+				 this.velocity.getValueAsInt()+"", 
+				 this.loopStatus.getValue()+"",
+				 this.duration.getValueAsInt()+""
+				 };
 	}
 	
 	private void processFilenameChange() {

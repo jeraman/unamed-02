@@ -37,7 +37,12 @@ public class FilterFxTask  extends AbstractFxTask {
 
 	@Override
 	protected String[] getDefaultParameters() {
-		return new String[]{ "300", "150", "BP"};
+		//return new String[]{ "300", "150", "BP"};
+		return new String[] { 
+				 this.centerFreq.getValue()+"", 
+				 this.resonance.getValue()+"", 
+				 this.type.getValue()+"" 
+				 };
 	}
 	
 	private void processCenterFrequencyChange() {

@@ -25,7 +25,10 @@ public class BitChrushFxTask  extends AbstractFxTask {
 
 	@Override
 	protected String[] getDefaultParameters() {
-		return new String[] { "5"};
+		//return new String[] { "5"};
+		return new String[] { 
+				 this.resolution.getValueAsInt()+""
+				 };
 	}
 
 	private void processResolutionChange() {
