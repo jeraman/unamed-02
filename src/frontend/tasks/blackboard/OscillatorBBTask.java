@@ -1,5 +1,7 @@
 package frontend.tasks.blackboard;
 
+import java.text.DecimalFormat;
+
 import controlP5.*;
 import frontend.Blackboard;
 import frontend.Expression;
@@ -22,22 +24,44 @@ public class OscillatorBBTask extends AbstractBBTask {
 		this.value = new TextfieldUi("0");
 	}
 
-	private void updateValue() {
+	private float getSinValue() {
 		float freq_val = frequency.getValue();
 		float amp_val = amplitude.getValue();
-		this.value = new TextfieldUi(amp_val + "*math.sin(" + timer + "*2*math.PI*" + freq_val + ")");
+		return (float) (amp_val*Math.sin(timer*2*Math.PI*freq_val));	
 	}
+	
+	private void updateValue() {
+		float freq_val = frequency.getValue();
+	    DecimalFormat form = new DecimalFormat("0.00");
+	    
+		float amp_val = amplitude.getValue();
+		this.value = new TextfieldUi(amp_val + "*math.sin(" + form.format(timer)+ "*2*math.PI*" + form.format(freq_val) + ")");
+		System.out.println("freq_val: " + freq_val);
+		System.out.println("exp: " + value.getValue());
+		System.out.println("result: " + value.evaluateAsFloat());
+		
+		float javaresult = (float) (amp_val*Math.sin(timer*2*Math.PI*freq_val));
+		
+		System.out.println("java result: " +  javaresult);
+		
+	}
+	
+//	public void updateVariable() {
+//		System.out.println("local update variable!");
+//		Blackboard board = Main.instance().board();
+//		board.put(variableName.getValue(), getSinValue());
+//	}
 	
 	protected boolean isFirstCycle() {
 		float period = 1f/frequency.getValue();
 		float remainder = timer % period;
 		float threshold = (1f/(30f*period));
 		boolean result =  ( remainder > threshold || timer <= threshold);
-		System.out.println("period: " + period);
-		System.out.println("timer: " + timer);
-		System.out.println("threshold: " + threshold);
-		System.out.println("remainder: " + remainder);
-		System.out.println("done? " + result);
+//		System.out.println("period: " + period);
+//		System.out.println("timer: " + timer);
+//		System.out.println("threshold: " + threshold);
+//		System.out.println("remainder: " + remainder);
+//		System.out.println("done? " + result);
 		return result || first_time;
 	}	
 	

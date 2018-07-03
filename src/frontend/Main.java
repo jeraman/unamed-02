@@ -272,9 +272,9 @@ public class Main extends PApplet {
 
 			switch (keyCode) {
 			// in case the key it's shift
-			case 16:
-				canvas.process_shift_key();
-				break;
+			//case 16:
+			//	canvas.process_shift_key();
+			//	break;
 			// if alt key was pressed
 			case 18:
 				canvas.process_copy();
