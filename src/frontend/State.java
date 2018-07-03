@@ -23,11 +23,11 @@ import frontend.tasks.blackboard.OscillatorBBTask;
 import frontend.tasks.blackboard.RampBBTask;
 import frontend.tasks.blackboard.RandomBBTask;
 import frontend.tasks.blackboard.DefaultBBTask;
-import frontend.tasks.effects.AdsrGenTask;
-import frontend.tasks.effects.BitChrushGenTask;
-import frontend.tasks.effects.DelayGenTask;
-import frontend.tasks.effects.FilterGenTask;
-import frontend.tasks.effects.FlangerGenTask;
+import frontend.tasks.effects.AdsrFxTask;
+import frontend.tasks.effects.BitChrushFxTask;
+import frontend.tasks.effects.DelayFxTask;
+import frontend.tasks.effects.FilterFxTask;
+import frontend.tasks.effects.FlangerFxTask;
 import frontend.tasks.generators.FMGenTask;
 import frontend.tasks.generators.OscillatorGenTask;
 import frontend.tasks.generators.SampleGenTask;
@@ -174,22 +174,26 @@ public class State implements Serializable {
 				((StateMachine) t).reload_from_file();
 	}
 
-	// run all tasks associated to this node
+	
+	void start() {
+		for (Task t : tasks)
+			t.start();
+		this.status = Status.RUNNING;
+
+		if (debug)
+			System.out.println("startinh all the " + tasks.size() + " tasks from state " + this.name);
+	}
+
 	void run() {
 		for (Task t : tasks)
 			t.run();
-
-		this.status = Status.RUNNING;
-
 		if (debug)
 			System.out.println("running all the " + tasks.size() + " tasks from state " + this.name);
 	}
 
-	// stops all tasks associated to this node
 	void stop() {
 		for (Task t : tasks)
 			t.stop();
-
 		this.status = Status.INACTIVE;
 
 		if (debug)
@@ -220,6 +224,7 @@ public class State implements Serializable {
 			System.out.println("interrupting all tasks from state " + this.name);
 	}
 
+	@Deprecated
 	// if it's entering a state, you need to refresh it
 	void refresh() {
 		for (Task t : tasks)
@@ -240,6 +245,7 @@ public class State implements Serializable {
 			t.reset_first_time();
 	}
 
+	@Deprecated
 	// only refreshes and reruns completed tasks
 	void refresh_and_run_completed_tasks() {
 		for (Task t : tasks)
@@ -332,7 +338,8 @@ public class State implements Serializable {
 					// interrupts current activities that are still going on
 					this.interrupt();
 					// refresh the next state
-					next_state.refresh();
+					//next_state.refresh();
+					next_state.start();
 					// reset_first_time
 					next_state.reset_first_time();
 					// runs the next state
@@ -563,14 +570,14 @@ public class State implements Serializable {
 	private void init_filter_task() {
 		System.out.println("create filter task!");
 		String taskname = generate_random_name();
-		FilterGenTask t = new FilterGenTask(p, cp5, taskname);
+		FilterFxTask t = new FilterFxTask(p, cp5, taskname);
 		this.add_task(t);
 	}
 
 	private void init_bitchrush_task() {
 		System.out.println("create bitchrush task!");
 		String taskname = generate_random_name();
-		BitChrushGenTask t = new BitChrushGenTask(p, cp5, taskname);
+		BitChrushFxTask t = new BitChrushFxTask(p, cp5, taskname);
 		this.add_task(t);
 
 	}
@@ -578,21 +585,21 @@ public class State implements Serializable {
 	private void init_adsr_task() {
 		System.out.println("create adsr task!");
 		String taskname = generate_random_name();
-		AdsrGenTask t = new AdsrGenTask(p, cp5, taskname);
+		AdsrFxTask t = new AdsrFxTask(p, cp5, taskname);
 		this.add_task(t);
 	}
 
 	private void init_flanger_task() {
 		System.out.println("create flanger task!");
 		String taskname = generate_random_name();
-		FlangerGenTask t = new FlangerGenTask(p, cp5, taskname);
+		FlangerFxTask t = new FlangerFxTask(p, cp5, taskname);
 		this.add_task(t);
 	}
 
 	private void init_delay_task() {
 		System.out.println("create delay task!");
 		String taskname = generate_random_name();
-		DelayGenTask t = new DelayGenTask(p, cp5, taskname);
+		DelayFxTask t = new DelayFxTask(p, cp5, taskname);
 		this.add_task(t);
 	}
 

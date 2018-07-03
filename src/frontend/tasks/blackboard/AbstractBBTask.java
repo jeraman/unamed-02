@@ -29,6 +29,18 @@ abstract class AbstractBBTask extends Task {
 		this.timer = 0;
 	}
 	
+	protected abstract boolean isFirstCycle();
+	
+	
+	public void start() {
+		System.out.println("starting the following AbstractBBTask: " + this);
+	}
+	
+	public void stop() {
+		System.out.println("stopping the following AbstractBBTask: " + this);
+	}
+
+	
 	private void processNameChange() {
 		variableName.update();
 	}
@@ -41,8 +53,6 @@ abstract class AbstractBBTask extends Task {
 		processNameChange();
 		processValueChange();
 	}
-	
-	protected abstract boolean isFirstCycle();
 	
 	public void run() {
 		
@@ -86,5 +96,4 @@ abstract class AbstractBBTask extends Task {
 		// TODO Auto-generated method stub
 		
 	}
-
 }

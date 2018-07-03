@@ -23,7 +23,7 @@ public class IntervalAugTask extends AbstractAugTask {
 		
 		this.musicActioner = new IntervalActioner(this.root.getDefaultValueAsInt(), 5, this.velocity.getDefaultValueAsInt(),(int) this.duration.getValue());
 
-		addOnEngine();
+//		addOnEngine();
 	}
 	
 	@Override

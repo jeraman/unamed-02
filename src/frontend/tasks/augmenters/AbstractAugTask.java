@@ -124,6 +124,14 @@ public abstract class AbstractAugTask extends Task {
 		processModes();
 	}
 
+	public void start() {
+		this.addOnEngine();
+	}
+	
+	public void stop() {
+		this.removeFromEngine();
+	}
+	
 	protected void processModes() {
 		if (wasFirstTime && isModePlayOnce())
 			musicActioner.noteOneAndScheduleKiller();

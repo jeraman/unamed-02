@@ -162,11 +162,14 @@ public class StateMachine extends Task {
 		if (debug)
 			System.out.println("running the State_Machine " + this.title + ". actual is " + actual.get_name());
 	}
+	
+	public void start() {
+		System.out.println("starting a statemachine " + this);
+		begin.start();
+	}
 
 	//stops all tasks associated to this node
 	public void stop() {
-		super.stop();
-
 		//stopping all states...
 		for (State s : states) {
 			s.reset_first_time();

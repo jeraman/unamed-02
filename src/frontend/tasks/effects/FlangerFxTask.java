@@ -9,7 +9,7 @@ import frontend.tasks.Task;
 import frontend.ui.ComputableFloatTextfieldUI;
 import processing.core.PApplet;
 
-public class FlangerGenTask extends Task {
+public class FlangerFxTask extends AbstractFxTask {
 
 	private ComputableFloatTextfieldUI delayLength; // delay length in
 													// milliseconds ( clamped to
@@ -27,7 +27,7 @@ public class FlangerGenTask extends Task {
 	private ComputableFloatTextfieldUI wetAmplitude; // amount of wet signal (
 														// clamped to [0,1] )
 
-	public FlangerGenTask(PApplet p, ControlP5 cp5, String taskname) {
+	public FlangerFxTask(PApplet p, ControlP5 cp5, String taskname) {
 		super(p, cp5, taskname);
 		this.delayLength = new ComputableFloatTextfieldUI(1f);
 		this.lfoRate = new ComputableFloatTextfieldUI(0.5f);
@@ -36,6 +36,10 @@ public class FlangerGenTask extends Task {
 		this.dryAmplitude = new ComputableFloatTextfieldUI(0.5f);
 		this.wetAmplitude = new ComputableFloatTextfieldUI(0.5f);
 
+//		this.addToEngine();
+	}
+	
+	public void addToEngine() {
 		Main.eng.addEffect(this.get_gui_id(), "FLANGER", getDefaultParameters());
 	}
 
@@ -85,7 +89,7 @@ public class FlangerGenTask extends Task {
 
 	@Override
 	public Task clone_it() {
-		FlangerGenTask clone = new FlangerGenTask(this.p, this.cp5, this.name);
+		FlangerFxTask clone = new FlangerFxTask(this.p, this.cp5, this.name);
 		clone.delayLength = this.delayLength;
 		clone.lfoRate = this.lfoRate;
 		clone.delayDepth = this.delayDepth;
@@ -117,16 +121,4 @@ public class FlangerGenTask extends Task {
 		return g;
 	}
 	
-	/////////////////////////////////////
-	// methods to be carried to super or to be deleted
-	public void closeTask() {
-		Main.eng.removeEffect(this.get_gui_id());
-		super.closeTask();
-	}
-
-	@Override
-	public void reset_gui_fields() {
-		// TODO Auto-generated method stub
-
-	}
 }

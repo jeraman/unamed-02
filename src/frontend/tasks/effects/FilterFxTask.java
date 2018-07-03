@@ -14,7 +14,7 @@ import frontend.ui.ComputableFloatTextfieldUIWithUserInput;
 import frontend.ui.ScrollableListUI;
 import processing.core.PApplet;
 
-public class FilterGenTask  extends Task {
+public class FilterFxTask  extends AbstractFxTask {
 
 	protected static final List<String> list = Arrays.asList("Low Pass", "High Pass", "Band Pass");
 	
@@ -22,12 +22,16 @@ public class FilterGenTask  extends Task {
 	private ComputableFloatTextfieldUI resonance;
 	private ScrollableListUI type;
 	
-	public FilterGenTask(PApplet p, ControlP5 cp5, String taskname) {
+	public FilterFxTask(PApplet p, ControlP5 cp5, String taskname) {
 		super(p, cp5, taskname);
 		this.centerFreq = new ComputableFloatTextfieldUI(300f);
 		this.resonance = new ComputableFloatTextfieldUI(150f);
 		this.type = new ScrollableListUI(list, 0);
-		
+
+//		this.addToEngine();
+	}
+	
+	public void addToEngine() {
 		Main.eng.addEffect(this.get_gui_id(), "MOOGFILTER", getDefaultParameters());
 	}
 
@@ -73,7 +77,7 @@ public class FilterGenTask  extends Task {
 
 	@Override
 	public Task clone_it() {
-		FilterGenTask clone = new FilterGenTask(this.p, this.cp5, this.name);
+		FilterFxTask clone = new FilterFxTask(this.p, this.cp5, this.name);
 		clone.centerFreq = this.centerFreq;
 		clone.resonance = this.resonance;
 		clone.type = this.type;
@@ -97,19 +101,6 @@ public class FilterGenTask  extends Task {
 		type.createUI(id, "type", localx, localy + (0 * localoffset), width, g);
 
 		return g;
-	}
-
-	/////////////////////////////////////
-	// methods to be carried to super or to be deleted
-	public void closeTask() {
-		Main.eng.removeGenerator(this.get_gui_id());
-		super.closeTask();
-	}
-
-	@Override
-	public void reset_gui_fields() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

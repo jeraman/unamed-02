@@ -21,7 +21,7 @@ import frontend.ui.ToggleUi;
 import processing.core.PApplet;
 
 
-public class ScriptingTask extends Task {
+public class ScriptingTask extends AbstractMetaTask {
 
 	private static final long serialVersionUID = 1L;
 	private transient static ScriptEngine engine;
@@ -33,7 +33,6 @@ public class ScriptingTask extends Task {
 	
 	private static final String defaultScriptFile = "example.js";
 
-	
 	public ScriptingTask(PApplet p, ControlP5 cp5, String taskname) {
 		super(p, cp5, taskname);
 		
@@ -131,23 +130,4 @@ public class ScriptingTask extends Task {
 		return g;
 	}
 	
-	
-	@Override
-	public void reset_gui_fields() {
-//		String g_name = this.get_gui_id();
-//		String nv;
-//
-//		// if this group is not open, returns...
-//		if (!((Group) cp5.get(get_gui_id())).isOpen())
-//			return;
-//
-//		nv = ((Textfield) cp5.get(g_name + "/filename")).getText();
-//		update_name(nv);
-	}
-	
-	
-	protected String[] getDefaultParameters(){
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

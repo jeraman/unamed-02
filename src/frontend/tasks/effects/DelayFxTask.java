@@ -11,17 +11,21 @@ import frontend.ui.ComputableFloatTextfieldUI;
 import frontend.ui.ComputableFloatTextfieldUIWithUserInput;
 import processing.core.PApplet;
 
-public class DelayGenTask extends Task {
+public class DelayFxTask extends AbstractFxTask {
 	
 	private ComputableFloatTextfieldUI delayTime;
 	private ComputableFloatTextfieldUI amplitudeFactor;
 	
-	public DelayGenTask(PApplet p, ControlP5 cp5, String taskname) {
+	public DelayFxTask(PApplet p, ControlP5 cp5, String taskname) {
 		super(p, cp5, taskname);
 		
 		this.delayTime = new ComputableFloatTextfieldUI(0.02f);
 		this.amplitudeFactor = new ComputableFloatTextfieldUI(1f);
-		
+
+//		this.addToEngine();
+	}
+	
+	public void addToEngine() {
 		Main.eng.addEffect(this.get_gui_id(), "DELAY", getDefaultParameters());
 	}
 	
@@ -45,7 +49,7 @@ public class DelayGenTask extends Task {
 
 	@Override
 	public Task clone_it() {
-		DelayGenTask clone = new DelayGenTask(this.p, this.cp5, this.name);
+		DelayFxTask clone = new DelayFxTask(this.p, this.cp5, this.name);
 		clone.delayTime = this.delayTime;
 		clone.amplitudeFactor = this.amplitudeFactor;
 		return clone;
@@ -69,22 +73,4 @@ public class DelayGenTask extends Task {
 		return g;
 	}
 	
-	/////////////////////////////////////
-	// methods to be carried to super or to be deleted
-	public void closeTask() {
-		Main.eng.removeEffect(this.get_gui_id());
-		super.closeTask();
-	}
-	
-	@Override
-	public void reset_gui_fields() {
-		// TODO Auto-generated method stub	
-	}
-
-//	@Override
-//	public void update_status() {
-//		// TODO Auto-generated method stub
-//		
-//	}
-
 }

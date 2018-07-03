@@ -8,7 +8,7 @@ import frontend.tasks.Task;
 import frontend.ui.ComputableFloatTextfieldUI;
 import processing.core.PApplet;
 
-public class AdsrGenTask extends Task {
+public class AdsrFxTask extends AbstractFxTask {
 	
 	private ComputableFloatTextfieldUI maxAmp; 
 	private ComputableFloatTextfieldUI attTime; 
@@ -19,7 +19,7 @@ public class AdsrGenTask extends Task {
 	private ComputableFloatTextfieldUI aftAmp;
 	
 	
-	public AdsrGenTask(PApplet p, ControlP5 cp5, String taskname) {
+	public AdsrFxTask(PApplet p, ControlP5 cp5, String taskname) {
 		super(p, cp5, taskname);
 		this.maxAmp = new ComputableFloatTextfieldUI(1f);
 		this.attTime = new ComputableFloatTextfieldUI(0.1f);;
@@ -29,6 +29,10 @@ public class AdsrGenTask extends Task {
 		this.befAmp = new ComputableFloatTextfieldUI(0f);;
 		this.aftAmp = new ComputableFloatTextfieldUI(0f);;
 		
+//		this.addToEngine();
+	}
+	
+	public void addToEngine() {
 		Main.eng.addEffect(this.get_gui_id(), "ADSR", getDefaultParameters());
 	}
 	
@@ -79,7 +83,7 @@ public class AdsrGenTask extends Task {
 	
 	@Override
 	public Task clone_it() {
-		AdsrGenTask clone = new AdsrGenTask(this.p, this.cp5, this.name);
+		AdsrFxTask clone = new AdsrFxTask(this.p, this.cp5, this.name);
 		clone.maxAmp = this.maxAmp;
 		clone.attTime = this.attTime;
 		clone.decTime = this.decTime;
@@ -88,13 +92,6 @@ public class AdsrGenTask extends Task {
 		clone.befAmp = this.befAmp;
 		clone.aftAmp = this.aftAmp;
 		return clone;
-	}
-	
-	/////////////////////////////////////
-	// methods to be carried to super or to be deleted
-	public void closeTask() {
-		Main.eng.removeEffect(this.get_gui_id());
-		super.closeTask();
 	}
 	
 	/////////////////////////////////
@@ -118,12 +115,6 @@ public class AdsrGenTask extends Task {
 		aftAmp.createUI(id, "Amplitude after", localx, localy + (6 * localoffset), width, g);
 
 		return g;
-	}
-
-	@Override
-	public void reset_gui_fields() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

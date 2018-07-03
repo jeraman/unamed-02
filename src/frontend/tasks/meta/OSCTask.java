@@ -15,7 +15,7 @@ import frontend.ui.TextfieldUi;
 import frontend.ui.ToggleUi;
 import processing.core.PApplet;
 
-public class OSCTask extends Task {
+public class OSCTask extends AbstractMetaTask {
 
 	private TextfieldUi ip;
 	private TextfieldUi message;
@@ -64,11 +64,6 @@ public class OSCTask extends Task {
 		parameters.update();
 	}
 
-	protected String[] getDefaultParameters() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	public void build(PApplet p, ControlP5 cp5) {
 		super.build(p, cp5);
 		this.broadcast = new NetAddress(ip.getValue(), port.getValueAsInt());
@@ -94,7 +89,7 @@ public class OSCTask extends Task {
 		om.add(args);
 		return om;
 	}
-
+	
 	public Group load_gui_elements(State s) {
 
 		this.textlabel = "OSC Message";
@@ -115,11 +110,6 @@ public class OSCTask extends Task {
 	}
 	
 	
-	@Override
-	public void reset_gui_fields() {
-
-	}
-
 	@Deprecated
 	public OSCTask clone_it() {
 		OSCTask clone = new OSCTask(this.p, this.cp5, this.name);

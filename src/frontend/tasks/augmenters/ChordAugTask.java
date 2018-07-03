@@ -29,7 +29,7 @@ public class ChordAugTask extends AbstractAugTask {
 		
 		this.musicActioner = new ChordActioner(this.root.getDefaultValueAsInt(), "maj", this.velocity.getDefaultValueAsInt(),(int) this.duration.getValue());
 
-		addOnEngine();
+//		addOnEngine();
 	}
 	
 	@Override

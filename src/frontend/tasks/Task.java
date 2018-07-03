@@ -82,7 +82,7 @@ public abstract class Task implements Serializable {
 
 	@Deprecated
 	public void refresh() {
-		this.stop();
+		//this.stop();
 	}
 
 	public void reset_first_time() {
@@ -183,10 +183,6 @@ public abstract class Task implements Serializable {
 		return result;
 	}
 
-	public void stop() {
-
-	}
-
 	// these method should be reimplemented
 	public void run() {
 		if (!should_run())
@@ -197,6 +193,10 @@ public abstract class Task implements Serializable {
 	protected abstract String[] getDefaultParameters();
 
 	protected abstract void processAllParameters();
+	
+	public abstract void start();
+	
+	public abstract void stop();
 
 	public abstract Task clone_it();
 

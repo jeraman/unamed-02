@@ -12,7 +12,7 @@ import frontend.ui.FileOpenerTextfieldUI;
 import frontend.ui.ToggleUi;
 import processing.core.PApplet;
 
-public class SampleGenTask extends Task {
+public class SampleGenTask extends AbstractGenTask {
 	
 	private FileOpenerTextfieldUI filename;
 	private ComputableIntegerTextfieldUIWithUserInput pitch;
@@ -31,6 +31,10 @@ public class SampleGenTask extends Task {
 		this.duration = new ComputableIntegerTextfieldUIWithUserInput();
 		this.loopStatus = new ToggleUi();
 		
+//		this.addToEngine();
+	}
+	
+	public void addToEngine() {
 		Main.eng.addGenerator(this.get_gui_id(), "SAMPLE", getDefaultParameters());
 	}
 	
@@ -78,11 +82,6 @@ public class SampleGenTask extends Task {
 		this.processLoopChange();
 	}
 	
-	public void closeTask() {
-		Main.eng.removeGenerator(this.get_gui_id());
-		super.closeTask();
-	}
-	
 	@Override
 	public Task clone_it() {
 		SampleGenTask clone = new SampleGenTask(this.p, this.cp5, this.name);
@@ -119,19 +118,19 @@ public class SampleGenTask extends Task {
 	}
 
 	
-
-	@Override
-	public void reset_gui_fields() {
-		String g_name = this.get_gui_id();
-		String nv;
-		// if this group is not open, returns...
-		if (!((Group) cp5.get(get_gui_id())).isOpen())
-			return;
-
-		pitch.updateValueExpression();
-		velocity.updateValueExpression();
-		duration.updateValueExpression();
-	}
+//
+//	@Override
+//	public void reset_gui_fields() {
+//		String g_name = this.get_gui_id();
+//		String nv;
+//		// if this group is not open, returns...
+//		if (!((Group) cp5.get(get_gui_id())).isOpen())
+//			return;
+//
+//		pitch.updateValueExpression();
+//		velocity.updateValueExpression();
+//		duration.updateValueExpression();
+//	}
 
 	
 }

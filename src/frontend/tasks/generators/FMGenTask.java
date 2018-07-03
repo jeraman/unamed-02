@@ -14,7 +14,7 @@ import frontend.ui.ComputableFloatTextfieldUIWithUserInput;
 import frontend.ui.ScrollableListUI;
 import processing.core.PApplet;
 
-public class FMGenTask extends Task {
+public class FMGenTask extends AbstractGenTask {
 	
 	private ComputableFloatTextfieldUIWithUserInput frequency;
 	private ComputableFloatTextfieldUIWithUserInput amplitude;
@@ -34,6 +34,10 @@ public class FMGenTask extends Task {
 		this.modWavetype = new ScrollableListUI(OscillatorGenTask.list, 2);
 		this.duration = new ComputableFloatTextfieldUIWithUserInput();
 		
+//		this.addToEngine();
+	}
+	
+	public void addToEngine() {
 		Main.eng.addGenerator(this.get_gui_id(), "FM", getDefaultParameters());
 	}
 	
@@ -83,27 +87,6 @@ public class FMGenTask extends Task {
 		this.processModWavetypeChange();
 		this.processDurationChange();
 	}
-	
-//	@Override
-//	public void run() {
-//		if (!should_run())
-//			return;
-//		processAllParameters();
-//	}
-	
-//	@Override
-//	public void build(PApplet p, ControlP5 cp5) {
-//		// TODO Auto-generated method stub
-//		this.p = p;
-//		this.cp5 = cp5;
-//	}
-	
-//	@Override
-//	public CallbackListener generate_callback_enter() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-	
 
 	@Override
 	public Task clone_it() {
@@ -143,31 +126,21 @@ public class FMGenTask extends Task {
 		return g;
 	}
 
-	/////////////////////////////////////////
-	//can be copied to the superclass
-	public void closeTask() {
-		Main.eng.removeGenerator(this.get_gui_id());
-		super.closeTask();
-	}
 	
 //	@Override
-//	public void update_status() {
+//	public void reset_gui_fields() {
+//		// TODO Auto-generated method stub
+//		String g_name = this.get_gui_id();
+//		String nv;
+//		// if this group is not open, returns...
+//		if (!((Group) cp5.get(get_gui_id())).isOpen())
+//			return;
+//
+//		frequency.updateValueExpression();
+//		amplitude.updateValueExpression();
+//		this.modFreq.updateValueExpression();
+//		this.modAmp.updateValueExpression();
+//		duration.updateValueExpression();
 //	}
-	
-	@Override
-	public void reset_gui_fields() {
-		// TODO Auto-generated method stub
-		String g_name = this.get_gui_id();
-		String nv;
-		// if this group is not open, returns...
-		if (!((Group) cp5.get(get_gui_id())).isOpen())
-			return;
-
-		frequency.updateValueExpression();
-		amplitude.updateValueExpression();
-		this.modFreq.updateValueExpression();
-		this.modAmp.updateValueExpression();
-		duration.updateValueExpression();
-	}
 
 }

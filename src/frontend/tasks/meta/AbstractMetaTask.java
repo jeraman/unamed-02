@@ -1,0 +1,30 @@
+package frontend.tasks.meta;
+
+import controlP5.ControlP5;
+import frontend.tasks.Task;
+import processing.core.PApplet;
+
+abstract class AbstractMetaTask extends Task {
+
+	public AbstractMetaTask(PApplet p, ControlP5 cp5, String taskname) {
+		super(p, cp5, taskname);
+	}
+	
+	@Override
+	protected String[] getDefaultParameters() {
+		return null;
+	}
+
+	public void start() {
+		System.out.println("starting the following MetaTask: " + this);
+	}
+
+	public void stop() {
+		System.out.println("stopping the following DMX task " + this);
+	}
+	
+	@Override
+	public void reset_gui_fields() {
+	}
+	
+}

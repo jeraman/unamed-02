@@ -9,13 +9,17 @@ import frontend.ui.ComputableFloatTextfieldUI;
 import frontend.ui.ComputableIntegerTextfieldUI;
 import processing.core.PApplet;
 
-public class BitChrushGenTask  extends Task {
+public class BitChrushFxTask  extends AbstractFxTask {
 
 	private ComputableIntegerTextfieldUI resolution; 
 	
-	public BitChrushGenTask(PApplet p, ControlP5 cp5, String taskname) {
+	public BitChrushFxTask(PApplet p, ControlP5 cp5, String taskname) {
 		super(p, cp5, taskname);
 		this.resolution = new ComputableIntegerTextfieldUI(5);
+//		this.addToEngine();
+	}
+	
+	public void addToEngine() {
 		Main.eng.addEffect(this.get_gui_id(), "BITCHRUSH", getDefaultParameters());
 	}
 
@@ -36,7 +40,7 @@ public class BitChrushGenTask  extends Task {
 
 	@Override
 	public Task clone_it() {
-		BitChrushGenTask clone = new BitChrushGenTask(this.p, this.cp5, this.name);
+		BitChrushFxTask clone = new BitChrushFxTask(this.p, this.cp5, this.name);
 		clone.resolution = this.resolution;
 		return clone;
 	}
@@ -58,17 +62,4 @@ public class BitChrushGenTask  extends Task {
 		return g;
 	}
 	
-	/////////////////////////////////////
-	// methods to be carried to super or to be deleted
-	public void closeTask() {
-		Main.eng.removeEffect(this.get_gui_id());
-		super.closeTask();
-	}
-
-	@Override
-	public void reset_gui_fields() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

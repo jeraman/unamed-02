@@ -14,7 +14,7 @@ import frontend.ui.ComputableFloatTextfieldUIWithUserInput;
 import frontend.ui.ScrollableListUI;
 import processing.core.PApplet;
 
-public class OscillatorGenTask extends Task {
+public class OscillatorGenTask extends AbstractGenTask {
 
 	protected static final List<String> list = Arrays.asList("PHASOR", "QUATERPULSE", "SAW", "SINE", "SQUARE",
 			"TRIANGLE");
@@ -32,6 +32,10 @@ public class OscillatorGenTask extends Task {
 		this.duration = new ComputableFloatTextfieldUIWithUserInput();
 		this.wavetype = new ScrollableListUI(list, 3);
 
+//		this.addToEngine();
+	}
+	
+	public void addToEngine() {
 		Main.eng.addGenerator(this.get_gui_id(), "OSCILLATOR", getDefaultParameters());
 	}
 	
@@ -93,25 +97,18 @@ public class OscillatorGenTask extends Task {
 		
 		return g;
 	}
-	
-	/////////////////////////////////////
-	//methods to be carried to super or to be deleted	
-	public void closeTask() {
-		Main.eng.removeGenerator(this.get_gui_id());
-		super.closeTask();
-	}
 
 
-	@Override
-	public void reset_gui_fields() {
-		String g_name = this.get_gui_id();
-		String nv;
-		// if this group is not open, returns...
-		if (!((Group) cp5.get(get_gui_id())).isOpen())
-			return;
-
-		frequency.updateValueExpression();
-		amplitude.updateValueExpression();
-		duration.updateValueExpression();
-	}
+//	@Override
+//	public void reset_gui_fields() {
+//		String g_name = this.get_gui_id();
+//		String nv;
+//		// if this group is not open, returns...
+//		if (!((Group) cp5.get(get_gui_id())).isOpen())
+//			return;
+//
+//		frequency.updateValueExpression();
+//		amplitude.updateValueExpression();
+//		duration.updateValueExpression();
+//	}
 }

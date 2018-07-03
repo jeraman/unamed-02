@@ -130,8 +130,9 @@ public class MainCanvas {
 	}
 
 	//runs the root (not the current exhibited sm)
-	void run() {
+	void start() {
 		is_running = true;
+		root.start();
 		root.run();
 	}
 
@@ -346,7 +347,7 @@ public class MainCanvas {
 	void button_play() {
 		if (p.is_loading) return;
 		p.println("b_play pressed");
-		run();
+		this.start();
 		//p.canvas.run();
 	}
 
