@@ -26,6 +26,7 @@ public class TextfieldUi extends AbstractElementUi {
 		return this.value;
 	}
 	
+	
 	public void setValue(String value) {
 		this.value = value;
 	}
@@ -34,12 +35,12 @@ public class TextfieldUi extends AbstractElementUi {
 		return this.defaultText;
 	}
 
-	private void setDefaultColorOnTextfield() {
+	protected void setDefaultColorOnTextfield() {
 		if (textfield != null)
-			textfield.setColorBackground(defaultColor);
+			textfield.setColorBackground(defaultTaskColor);
 	}
 	
-	private void setErrorColorOnTextfield() {
+	protected void setErrorColorOnTextfield() {
 		if (textfield != null)
 			textfield.setColorBackground(errorColor); 
 	}
@@ -121,7 +122,7 @@ public class TextfieldUi extends AbstractElementUi {
 		.onReleaseOutside(callbackPressEnterOrOutside()));
 	}
 	
-	private CallbackListener callbackEmptyWhenUsingUserInput() {
+	protected CallbackListener callbackEmptyWhenUsingUserInput() {
 		return new CallbackListener() {
 			public void controlEvent(CallbackEvent theEvent) {
 
@@ -133,7 +134,7 @@ public class TextfieldUi extends AbstractElementUi {
 		};
 	}
 	
-	public CallbackListener callbackPressEnterOrOutside() {
+	protected CallbackListener callbackPressEnterOrOutside() {
 		return new CallbackListener() {
 			public void controlEvent(CallbackEvent theEvent) {
 				String content = theEvent.getController().getValueLabel().getText();

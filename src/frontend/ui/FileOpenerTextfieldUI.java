@@ -75,7 +75,7 @@ public class FileOpenerTextfieldUI extends AbstractElementUi {
 			System.out.println("User selected " + "\n name: " + selection.getName()+ "\n path: " + selection.getAbsolutePath());
 			this.setFilename(selection.getName());
 			this.textfield.setText(selection.getName());
-			textfield.setColorBackground(defaultColor); 
+			textfield.setColorBackground(defaultTaskColor); 
 		 }
 		this.textfield.setFocus(false);
 	}

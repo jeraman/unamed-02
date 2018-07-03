@@ -121,7 +121,7 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 	
 	private void setDefaultColorOnTextfield() {
 		if (textfield != null)
-			textfield.setColorBackground(defaultColor);
+			textfield.setColorBackground(defaultTaskColor);
 	}
 	
 	private void setErrorColorOnTextfield() {
