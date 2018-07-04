@@ -157,35 +157,6 @@ public abstract class Task implements Serializable {
 
 	//////////////////////////////
 	// gui commands
-	@Deprecated
-	protected void check_repeat_toggle(String s, CallbackEvent theEvent) {
-		System.out.println("repeat callback!");
-
-		float value = theEvent.getController().getValue();
-
-		if (value == 0.0) {
-			this.repeat = false; // once
-			this.first_time = true;
-		} else
-			this.repeat = true; // repeat
-	}
-
-	@Deprecated
-	protected CallbackListener callbackRepeatToggle() {
-		return new CallbackListener() {
-			public void controlEvent(CallbackEvent theEvent) {
-				check_repeat_toggle(theEvent.getController().getName(), theEvent);
-			}
-		};
-	}
-	
-	@Deprecated
-	protected void createGuiToggle(int x, int y, int w, Group g, CallbackListener callback) {
-		cp5.addToggle(get_gui_id() + "/repeat").setPosition(x, y).setSize(w, (int) (font_size * 1.25)).setGroup(g)
-				.setMode(ControlP5.SWITCH).setLabel("repeat -  once").setValue(this.repeat).onChange(callback)
-				.onReleaseOutside(callback).getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE);
-	}
-	
 
 	public Group load_gui_elements(State s) {
 		setup_ui_variables();

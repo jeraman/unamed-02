@@ -11,10 +11,18 @@ public abstract class AbstractMusicActioner implements Runnable, Serializable {
 	protected int velocity;
 	protected boolean locked;
 	
+	protected volatile boolean needToTerminate;
+	
+	private int timerMilestone;
+
+	private Thread myStopThread;
+	
 	public AbstractMusicActioner(int velocity, int duration) {
 		this.velocity = velocity;
 		this.duration = duration;
 		this.locked = false;
+		this.needToTerminate = false;
+		myStopThread = null;
 	}
 	
 	protected int getDuration() {
@@ -34,8 +42,20 @@ public abstract class AbstractMusicActioner implements Runnable, Serializable {
 //		if (!locked)
 			this.velocity = velocity;
 	}
+	
+	protected void start() {
+		this.needToTerminate = false;
+	}
+	
+	protected void terminate() {
+		this.needToTerminate = true;
+	}
+	
+	private void resetTimer() {
+		this.timerMilestone = Util.millis();
+	}
 
-	public void noteOneAndScheduleKiller() {
+	public void noteOnAndScheduleKiller() {
 		if (!locked) {
 			this.locked = true;
 			noteOnInSoundEngine();
@@ -45,15 +65,31 @@ public abstract class AbstractMusicActioner implements Runnable, Serializable {
 	
 	private void scheduleNoteKiller() {
 		Runnable r = this;
-		new Thread(r).start();
+		this.resetTimer();
+		myStopThread = new Thread(r);
+		myStopThread.start();
+	}
+	
+	private void waitForDurationOrStop() {
+		while ((Util.millis() - this.timerMilestone) < duration && !needToTerminate){
+//			System.out.println(needToTerminate);
+		}
 	}
 
 	@Override
 	public void run() {
-		Util.delay(this.duration);
+		waitForDurationOrStop();
 		System.out.println("stop playing!");
 		noteOffInSoundEngine();
 		this.locked = false;
+		this.needToTerminate = false;
+		
+		try {
+			myStopThread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	protected abstract void noteOnInSoundEngine();

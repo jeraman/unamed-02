@@ -128,18 +128,21 @@ public abstract class AbstractAugTask extends Task {
 	public void start() {
 //		this.status = Status.RUNNING;
 		this.addOnEngine();
+		this.musicActioner.start();
 	}
 	
 	public void stop() {
 //		this.status = Status.DONE;
 		this.removeFromEngine();
+		System.out.println("calling terminate!");
+		this.musicActioner.terminate();
 	}
 	
 	protected void processModes() {
 		if (wasFirstTime && isModePlayOnce())
-			musicActioner.noteOneAndScheduleKiller();
+			musicActioner.noteOnAndScheduleKiller();
 		else if (isModeRepeat()) 
-			musicActioner.noteOneAndScheduleKiller();
+			musicActioner.noteOnAndScheduleKiller();
 	}
 
 	@Override
