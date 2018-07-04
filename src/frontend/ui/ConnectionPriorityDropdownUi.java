@@ -4,14 +4,14 @@ import controlP5.CallbackEvent;
 import controlP5.CallbackListener;
 import controlP5.DropdownList;
 import controlP5.Group;
-import frontend.State;
+import frontend.core.State;
 
 public class ConnectionPriorityDropdownUi extends AbstractElementUi {
 
 	private int value;
 	private int lastValue;
-	private DropdownList dropdownlist;
 	private State parent;
+	transient private DropdownList dropdownlist;
 	
 	public ConnectionPriorityDropdownUi(int priority, State parent) {
 		this.value = priority;

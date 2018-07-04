@@ -1,8 +1,8 @@
 package frontend.tasks.blackboard;
 
 import controlP5.ControlP5;
-import frontend.Blackboard;
 import frontend.Main;
+import frontend.core.Blackboard;
 import frontend.tasks.Task;
 import frontend.ui.TextfieldUi;
 import frontend.ui.ToggleUi;

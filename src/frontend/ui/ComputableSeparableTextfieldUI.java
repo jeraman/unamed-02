@@ -5,7 +5,7 @@ import javax.script.ScriptException;
 import controlP5.CallbackEvent;
 import controlP5.CallbackListener;
 import controlP5.Group;
-import frontend.Expression;
+import frontend.core.Expression;
 
 public class ComputableSeparableTextfieldUI extends TextfieldUi {
 

@@ -7,7 +7,7 @@ import controlP5.CallbackListener;
 import controlP5.ControlP5;
 import controlP5.Group;
 import controlP5.Textfield;
-import frontend.Expression;
+import frontend.core.Expression;
 
 public class TextfieldUi extends AbstractElementUi {
 

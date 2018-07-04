@@ -1,4 +1,4 @@
-package frontend;
+package frontend.core;
 /************************************************
  ** Basic movement status for a state
  ************************************************

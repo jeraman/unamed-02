@@ -1,4 +1,4 @@
-package frontend;
+package frontend.core;
 /************************************************
 ** Class representing the blackboard ***********
 ************************************************
@@ -16,6 +16,8 @@ import processing.core.PApplet;
 import java.util.regex.*;
 
 import javax.script.ScriptException;
+
+import frontend.Main;
 
 import java.util.*;
 import java.util.Collection;
@@ -68,7 +70,7 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
       //put("stateTimer", 0);
   }
 
-  void update_global_variables() {
+  public void update_global_variables() {
     //if the blackboard wasn't loaded yet
     if (p==null) return;
 
@@ -148,7 +150,7 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
   */
 
   //draws both the header and the items
-  void draw() {
+  public void draw() {
     //if the blackboard wasn't loaded yet
     if (p==null) return;
     draw_header_gui();
@@ -235,7 +237,7 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 
 
   //adding input osc support to the blackboard
-  void oscEvent(OscMessage msg) {
+  public void oscEvent(OscMessage msg) {
     if (debug) {
       System.out.print("### received an osc message.");
       System.out.print(" addrpattern: "+msg.addrPattern());

@@ -1,7 +1,7 @@
 package frontend.ui.visuals;
 
 import frontend.Main;
-import frontend.StateMachine;
+import frontend.core.StateMachine;
 
 /************************************************
  ** UI Effect for opening and closing a certain *

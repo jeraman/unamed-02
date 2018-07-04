@@ -1,4 +1,4 @@
-package frontend;
+package frontend.core;
 
 /************************************************
  ** Class used to interpret expressions developed by Sofian
@@ -6,7 +6,10 @@ package frontend;
 
 
  import javax.script.*;
- import java.io.Serializable;
+
+import frontend.Main;
+
+import java.io.Serializable;
  import processing.core.PApplet;
 
 /// Expression class which allows to compute javascript-style expressions with variables from the blackboard.

@@ -1,4 +1,4 @@
-package frontend;
+package frontend.core;
 
 
 import processing.core.PApplet;
@@ -7,6 +7,7 @@ import java.util.UUID;
 import java.util.Vector;
 
 import controlP5.*;
+import frontend.Main;
 import frontend.tasks.Task;
 import frontend.ui.visuals.StateMachinePreview;
 
@@ -583,13 +584,13 @@ public class StateMachine extends Task {
 							
 							//p.print("we jsut loaded a sm from file! name: " + loaded.title);
 							((Main)p).is_loading = true;
-							((Main)p).cp5.setAutoDraw(false);
+							cp5.setAutoDraw(false);
 							//load newtile from file
 							StateMachine loaded = ((Main)p).serializer.loadSubStateMachine(newtitle);
 							//next step is to copy all parameters of loaded to this state machine
 							mirror(loaded);
 							((Main)p).is_loading = false;
-							((Main)p).cp5.setAutoDraw(true);
+							cp5.setAutoDraw(true);
 						
 						//if the current machine isn't brandnew
 						} else {

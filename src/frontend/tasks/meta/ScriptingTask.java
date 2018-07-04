@@ -12,9 +12,9 @@ import javax.script.ScriptException;
 
 import controlP5.ControlP5;
 import controlP5.Group;
-import frontend.Blackboard;
 import frontend.Main;
-import frontend.State;
+import frontend.core.Blackboard;
+import frontend.core.State;
 import frontend.tasks.Task;
 import frontend.ui.FileOpenerWithButtonUi;
 import frontend.ui.ToggleUi;

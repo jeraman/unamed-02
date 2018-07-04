@@ -1,9 +1,11 @@
-package frontend;
+package frontend.core;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
+import frontend.Main;
 
 
 /******************************************************
@@ -67,7 +69,7 @@ public class Serializer {
 		p.println(p.sketchPath());
 	}
 
-	void autosave() {
+	public void autosave() {
 		int time_elapsed = p.abs(p.minute()-timestamp);
 
 		if (time_elapsed > autosavetime) {
@@ -140,7 +142,7 @@ public class Serializer {
 			
 			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
 			result = (StateMachine) ois.readObject();
-			result.build(p, p.cp5);
+			result.build(p, Main.instance().cp5());
 			p.println("loading any new substatemachine");
 			result.check_if_any_substatemachine_needs_to_be_reloaded_from_file();
 			ois.close();
@@ -169,7 +171,7 @@ public class Serializer {
 		try {	
 			p.is_loading = true;
 			p.canvas.hide();
-			p.cp5.setAutoDraw(false);
+			Main.instance().cp5().setAutoDraw(false);
 
 			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
 			
@@ -197,7 +199,7 @@ public class Serializer {
 		}
 
 		p.board.reset();
-		p.cp5.setAutoDraw(true);
+		Main.instance().cp5().setAutoDraw(true);
 		p.is_loading = false;
 		p.canvas.show();
 		p.println("done loading!");

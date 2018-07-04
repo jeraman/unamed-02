@@ -20,30 +20,34 @@ import javax.script.*;
 
 import controlP5.*;
 import ddf.minim.*;
+import frontend.core.Blackboard;
+import frontend.core.Expression;
+import frontend.core.MainCanvas;
+import frontend.core.Serializer;
 import frontend.ui.*;
 
 
 public class Main extends PApplet {
 
 	public MainCanvas canvas;
-	Blackboard board;
-	Serializer serializer;
+	public Blackboard board;
+	public Serializer serializer;
 	public static SoundEngine eng;
 
 	OscP5 oscP5; // my osc variables
 	ControlP5 cp5; // my controlP5 variable for gui
 
 	// system's default port for receiveing osc messages
-	String SERVER_IP;
-	int SERVER_PORT;
-	int OSC_RECV_PORT;
-	int STATE_CIRCLE_SIZE;
+	public String SERVER_IP;
+	public int SERVER_PORT;
+	public int OSC_RECV_PORT;
+	public int STATE_CIRCLE_SIZE;
 	public int FONT_SIZE;
 
-	boolean debug = false;
-	boolean keyReleased = false;
-	boolean mouseRightButtonReleased = false;
-	boolean is_loading = false;
+	public boolean debug = false;
+	public boolean keyReleased = false;
+	public boolean mouseRightButtonReleased = false;
+	public boolean is_loading = false;
 
 	public static void main(String[] args) {
 		PApplet.main("frontend.Main");

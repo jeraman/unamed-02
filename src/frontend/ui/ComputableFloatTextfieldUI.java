@@ -7,9 +7,9 @@ import controlP5.CallbackListener;
 import controlP5.ControlP5;
 import controlP5.Group;
 import controlP5.Textfield;
-import frontend.Blackboard;
-import frontend.Expression;
 import frontend.Main;
+import frontend.core.Blackboard;
+import frontend.core.Expression;
 import frontend.tasks.Task;
 
 

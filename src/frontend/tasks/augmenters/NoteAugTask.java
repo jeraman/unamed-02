@@ -3,7 +3,7 @@ package frontend.tasks.augmenters;
 import controlP5.ControlP5;
 import controlP5.Group;
 import frontend.Main;
-import frontend.State;
+import frontend.core.State;
 import frontend.tasks.Task;
 import frontend.ui.ComputableIntegerTextfieldUI;
 import processing.core.PApplet;

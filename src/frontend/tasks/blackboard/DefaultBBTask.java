@@ -3,11 +3,11 @@ package frontend.tasks.blackboard;
 import javax.script.ScriptException;
 
 import controlP5.*;
-import frontend.Blackboard;
-import frontend.Expression;
 import frontend.Main;
-import frontend.State;
-import frontend.Status;
+import frontend.core.Blackboard;
+import frontend.core.Expression;
+import frontend.core.State;
+import frontend.core.Status;
 import frontend.tasks.Task;
 import frontend.tasks.generators.OscillatorGenTask;
 import frontend.ui.TextfieldUi;

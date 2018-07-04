@@ -3,7 +3,7 @@ package frontend.tasks.blackboard;
 
 
 import controlP5.*;
-import frontend.State;
+import frontend.core.State;
 import frontend.ui.ComputableFloatTextfieldUI;
 import frontend.ui.TextfieldUi;
 import processing.core.PApplet;

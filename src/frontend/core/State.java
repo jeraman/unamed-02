@@ -1,4 +1,4 @@
-package frontend;
+package frontend.core;
 /************************************************
  ** Class representing a state in the HFSM
  ************************************************
@@ -15,6 +15,7 @@ import soundengine.augmenters.IntervalAugmenter;
 import soundengine.effects.AdsrEffect;
 import soundengine.generators.FMGenerator;
 import controlP5.*;
+import frontend.Main;
 import frontend.tasks.Task;
 import frontend.tasks.augmenters.ChordAugTask;
 import frontend.tasks.augmenters.IntervalAugTask;

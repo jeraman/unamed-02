@@ -3,11 +3,11 @@ package frontend.tasks.blackboard;
 import java.text.DecimalFormat;
 
 import controlP5.*;
-import frontend.Blackboard;
-import frontend.Expression;
 import frontend.Main;
-import frontend.State;
-import frontend.Status;
+import frontend.core.Blackboard;
+import frontend.core.Expression;
+import frontend.core.State;
+import frontend.core.Status;
 import frontend.ui.ComputableFloatTextfieldUI;
 import frontend.ui.TextfieldUi;
 import processing.core.PApplet;

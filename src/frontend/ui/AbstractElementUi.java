@@ -7,9 +7,9 @@ import javax.script.ScriptException;
 import controlP5.ControlP5;
 import controlP5.ControlP5Constants;
 import controlP5.Group;
-import frontend.Blackboard;
-import frontend.Expression;
 import frontend.Main;
+import frontend.core.Blackboard;
+import frontend.core.Expression;
 import processing.core.PApplet;
 
 public abstract class AbstractElementUi implements Serializable {

@@ -1,4 +1,4 @@
-package frontend;
+package frontend.core;
 /************************************************
  ** Class representing a conection between two states in the HFSM
  ************************************************
@@ -11,6 +11,7 @@ import processing.core.PApplet;
 
 import javax.script.*;
 import controlP5.*;
+import frontend.Main;
 import frontend.ui.ConnectionPriorityDropdownUi;
 import frontend.ui.ConnectionTextfieldUi;
 
@@ -133,7 +134,6 @@ public class Connection implements Serializable {
 		
 		priority.show();
 		condition.show();
-		
 	}
 
 	int get_label_width() {

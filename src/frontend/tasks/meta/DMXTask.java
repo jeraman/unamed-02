@@ -3,9 +3,9 @@ package frontend.tasks.meta;
 
 
 import controlP5.*;
-import frontend.Expression;
 import frontend.Main;
-import frontend.State;
+import frontend.core.Expression;
+import frontend.core.State;
 import frontend.tasks.Task;
 import frontend.tasks.generators.OscillatorGenTask;
 import frontend.ui.ComputableIntegerTextfieldUI;

@@ -1,4 +1,4 @@
-package frontend;
+package frontend.core;
 /************************************************
  ** My canvas class! ****************************
  ************************************************
@@ -7,6 +7,7 @@ package frontend;
  ************************************************/
 
 import controlP5.*;
+import frontend.Main;
 import netP5.NetAddress;
 import oscP5.OscMessage;
 
@@ -34,7 +35,7 @@ public class MainCanvas {
 		setup();
 	}
 	
-	boolean is_running () {
+	public boolean is_running () {
 		return is_running;
 	}
 
@@ -73,7 +74,7 @@ public class MainCanvas {
 	}
 
 	//draw method
-	void draw(){
+	public void draw(){
 
 		//executes the hfsm
 		root.tick();
@@ -188,7 +189,7 @@ public class MainCanvas {
 	}
 
 	//processes the multiple interpretations of the '+' key
-	void process_plus_key_pressed() {
+	public void process_plus_key_pressed() {
 
 		//reinit any name the user was trying to change it
 		//root.reset_all_names_gui();
@@ -209,7 +210,7 @@ public class MainCanvas {
 	}
 
 	//processes the multiple interpretations of the '-' key
-	void process_minus_key_pressed() {
+	public void process_minus_key_pressed() {
 
 		//reinit any name the user was trying to change it
 		//root.reset_all_names_gui();
@@ -230,7 +231,7 @@ public class MainCanvas {
 			remove_state();
 	}
 	
-	void process_right_mouse_button() {
+	public void process_right_mouse_button() {
 		//looks for someone to intersect
 		State result = sm_stack.lastElement().intersects_gui(p.mouseX, p.mouseY);
 
@@ -264,7 +265,7 @@ public class MainCanvas {
 		start_dragging_connection();
 	}
 	
-	void start_dragging_connection () {
+	public void start_dragging_connection () {
 		//verifies if the mouse intersects a state
 		State result = sm_stack.lastElement().intersects_gui(p.mouseX, p.mouseY);
 		
@@ -344,33 +345,33 @@ public class MainCanvas {
 
 
 	//callback functions
-	void button_play() {
+	public void button_play() {
 		if (p.is_loading) return;
 		p.println("b_play pressed");
 		this.start();
 		//p.canvas.run();
 	}
 
-	void button_stop() {
+	public void button_stop() {
 		if (p.is_loading) return;
 		p.println("b_stop pressed");
 		stop();
 		//p.canvas.stop();
 	}
 	
-	void button_save() {
+	public void button_save() {
 		if (p.is_loading) return;
 		p.println("b_save pressed");
 		stop();
 		save();
 	}
 	
-	void save() {
+	public void save() {
 		p.serializer.save();
 		root.save();
 	}
 
-	void button_load() {
+	public void button_load() {
 		if (p.is_loading) return;
 		p.println("b_load pressed");
 		load();
