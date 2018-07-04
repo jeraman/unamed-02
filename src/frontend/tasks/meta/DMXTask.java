@@ -11,6 +11,7 @@ import frontend.tasks.generators.OscillatorGenTask;
 import frontend.ui.ComputableIntegerTextfieldUI;
 import frontend.ui.ToggleUi;
 import processing.core.PApplet;
+import soundengine.SoundEngine;
 
 
 public class DMXTask extends AbstractMetaTask {
@@ -20,8 +21,8 @@ public class DMXTask extends AbstractMetaTask {
 	private ComputableIntegerTextfieldUI duration;
 	private ToggleUi shouldRepeat;
 
-	public DMXTask(PApplet p, ControlP5 cp5, String id) {
-		super(p, cp5, id);
+	public DMXTask(PApplet p, ControlP5 cp5, String id, SoundEngine eng) {
+		super(p, cp5, id, eng);
 
 		this.channel = new ComputableIntegerTextfieldUI(0);
 		this.intensity = new ComputableIntegerTextfieldUI(255);
@@ -69,7 +70,7 @@ public class DMXTask extends AbstractMetaTask {
 
 	@Override
 	public Task clone_it() {
-		DMXTask clone = new DMXTask(this.p, this.cp5, this.name);
+		DMXTask clone = new DMXTask(this.p, this.cp5, this.name, this.eng);
 		clone.channel = this.channel;
 		clone.intensity = this.intensity;
 		clone.rate = this.rate;

@@ -8,19 +8,20 @@ import frontend.tasks.Task;
 import frontend.ui.ComputableFloatTextfieldUI;
 import frontend.ui.ComputableIntegerTextfieldUI;
 import processing.core.PApplet;
+import soundengine.SoundEngine;
 
 public class BitChrushFxTask  extends AbstractFxTask {
 
 	private ComputableIntegerTextfieldUI resolution; 
 	
-	public BitChrushFxTask(PApplet p, ControlP5 cp5, String taskname) {
-		super(p, cp5, taskname);
+	public BitChrushFxTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
+		super(p, cp5, taskname, eng);
 		this.resolution = new ComputableIntegerTextfieldUI(5);
 //		this.addToEngine();
 	}
 	
 	public void addToEngine() {
-		Main.eng.addEffect(this.get_gui_id(), "BITCHRUSH", getDefaultParameters());
+		this.eng.addEffect(this.get_gui_id(), "BITCHRUSH", getDefaultParameters());
 	}
 
 	@Override
@@ -33,7 +34,7 @@ public class BitChrushFxTask  extends AbstractFxTask {
 
 	private void processResolutionChange() {
 		if (resolution.update())
-			Main.eng.updateEffect(this.get_gui_id(), "resolution : " + resolution.getValueAsInt());
+			this.eng.updateEffect(this.get_gui_id(), "resolution : " + resolution.getValueAsInt());
 	}
 	
 	@Override
@@ -43,7 +44,7 @@ public class BitChrushFxTask  extends AbstractFxTask {
 
 	@Override
 	public Task clone_it() {
-		BitChrushFxTask clone = new BitChrushFxTask(this.p, this.cp5, this.name);
+		BitChrushFxTask clone = new BitChrushFxTask(this.p, this.cp5, this.name, this.eng);
 		clone.resolution = this.resolution;
 		return clone;
 	}

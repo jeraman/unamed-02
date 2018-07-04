@@ -13,6 +13,7 @@ import frontend.ui.ComputableIntegerTextfieldUI;
 import frontend.ui.ComputableIntegerTextfieldUIWithUserInput;
 import frontend.ui.ScrollableListUI;
 import processing.core.PApplet;
+import soundengine.SoundEngine;
 
 public class ChordAugTask extends AbstractAugTask {
 	
@@ -21,13 +22,13 @@ public class ChordAugTask extends AbstractAugTask {
 	private ComputableIntegerTextfieldUI root;
 	private ScrollableListUI chordType;
 	
-	public ChordAugTask(PApplet p, ControlP5 cp5, String taskname) {
-		super(p, cp5, taskname);
+	public ChordAugTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
+		super(p, cp5, taskname, eng);
 
 		this.root = new ComputableIntegerTextfieldUI(ComputableIntegerTextfieldUIWithUserInput.userInputAsDefault,-1);
 		this.chordType = new ScrollableListUI(list, 0);
 		
-		this.musicActioner = new ChordActioner(this.root.getDefaultValueAsInt(), "maj", this.velocity.getDefaultValueAsInt(),(int) this.duration.getValue());
+		this.musicActioner = new ChordActioner(this.root.getDefaultValueAsInt(), "maj", this.velocity.getDefaultValueAsInt(),(int) this.duration.getValue(), eng);
 
 //		addOnEngine();
 	}
@@ -62,13 +63,13 @@ public class ChordAugTask extends AbstractAugTask {
 
 	@Override
 	protected void addOnEngine() {
-		Main.eng.addAugmenter(this.get_gui_id(), "CHORD", getDefaultParameters());
+		this.eng.addAugmenter(this.get_gui_id(), "CHORD", getDefaultParameters());
 	}
 	
 	private void processRootChange() {
 		if (root.update()) {
 			if (isModeUserInput())
-				Main.eng.updateAugmenter(this.get_gui_id(), "root : " + root.getValueAsInt());
+				this.eng.updateAugmenter(this.get_gui_id(), "root : " + root.getValueAsInt());
 			if (isModePlayOnce() || isModeRepeat())
 				((ChordActioner)this.musicActioner).setRoot(root.getValueAsInt());
 		}
@@ -77,7 +78,7 @@ public class ChordAugTask extends AbstractAugTask {
 	private void processChordTypeChange() {
 		if (chordType.update()) {
 			if (isModeUserInput())
-				Main.eng.updateAugmenter(this.get_gui_id(), "type : " + chordType.getValue());
+				this.eng.updateAugmenter(this.get_gui_id(), "type : " + chordType.getValue());
 			if (isModePlayOnce() || isModeRepeat())
 				((ChordActioner)this.musicActioner).setChordType(chordType.getValue());
 		}
@@ -114,7 +115,7 @@ public class ChordAugTask extends AbstractAugTask {
 
 	@Override
 	public Task clone_it() {
-		ChordAugTask clone = new ChordAugTask(this.p, this.cp5, this.name);
+		ChordAugTask clone = new ChordAugTask(this.p, this.cp5, this.name, this.eng);
 		clone.root = this.root;
 		clone.chordType = this.chordType;
 		clone.velocity = this.velocity;

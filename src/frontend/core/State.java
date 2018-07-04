@@ -11,6 +11,7 @@ package frontend.core;
 import java.util.*;
 import java.io.Serializable;
 import processing.core.PApplet;
+import soundengine.SoundEngine;
 import soundengine.augmenters.IntervalAugmenter;
 import soundengine.effects.AdsrEffect;
 import soundengine.generators.FMGenerator;
@@ -61,8 +62,9 @@ public class State implements Serializable {
 	private final int size;// = 50;
 	private final float arrow_scale_offset = 1.25f;
 	private String id;
-	// accordion that stores the tasks
 
+	private SoundEngine eng;
+	
 	// gui elements
 	// transient private PieMenu pie;
 	transient private MultiLevelPieMenu pie;
@@ -72,7 +74,7 @@ public class State implements Serializable {
 	transient private ControlP5 cp5;
 
 	// constructor
-	public State(PApplet p, ControlP5 cp5, String name) {
+	public State(PApplet p, ControlP5 cp5, String name, SoundEngine eng) {
 		this.p = p;
 		this.cp5 = cp5;
 		this.size = ((Main) p).get_state_circle_size();
@@ -85,6 +87,7 @@ public class State implements Serializable {
 		this.movement_status = MovementStatus.FREE;
 		this.debug = Main.instance().debug();
 		this.id = UUID.randomUUID().toString();
+		this.eng = eng;
 
 		init_gui();
 		hide_gui();
@@ -96,8 +99,8 @@ public class State implements Serializable {
 	}
 
 	// constructor
-	public State(PApplet p, ControlP5 cp5, String name, int x, int y) {
-		this(p, cp5, name);
+	public State(PApplet p, ControlP5 cp5, String name, SoundEngine eng, int x, int y) {
+		this(p, cp5, name, eng);
 		this.x = x;
 		this.y = y;
 		pie.set_position(x, y);
@@ -147,7 +150,7 @@ public class State implements Serializable {
 
 	State clone_it() {
 		// cloning the simple attributes of this state
-		State clone = new State(p, cp5, name);
+		State clone = new State(p, cp5, name, eng);
 
 		// moving to the same position as this one
 		clone.set_position_gui(this.x, this.y);
@@ -484,7 +487,7 @@ public class State implements Serializable {
 	private void init_sample_task() {
 		System.out.println("create sample task!");
 		String taskname = generate_random_name();
-		SampleGenTask t = new SampleGenTask(p, cp5, taskname);
+		SampleGenTask t = new SampleGenTask(p, cp5, taskname, this.eng);
 		if (this.status == Status.RUNNING)
 			t.start();
 		this.add_task(t);
@@ -499,7 +502,7 @@ public class State implements Serializable {
 	private void init_fm_synth_task() {
 		System.out.println("create fm synth task!");
 		String taskname = generate_random_name();
-		FMGenTask t = new FMGenTask(p, cp5, taskname);
+		FMGenTask t = new FMGenTask(p, cp5, taskname, this.eng);
 		if (this.status == Status.RUNNING)
 			t.start();
 		this.add_task(t);
@@ -508,7 +511,7 @@ public class State implements Serializable {
 	private void init_oscillator_task() {
 		System.out.println("create oscillator task!");
 		String taskname = generate_random_name();
-		OscillatorGenTask t = new OscillatorGenTask(p, cp5, taskname);
+		OscillatorGenTask t = new OscillatorGenTask(p, cp5, taskname, this.eng);
 		if (this.status == Status.RUNNING)
 			t.start();
 		this.add_task(t);
@@ -517,7 +520,7 @@ public class State implements Serializable {
 	private void init_filter_task() {
 		System.out.println("create filter task!");
 		String taskname = generate_random_name();
-		FilterFxTask t = new FilterFxTask(p, cp5, taskname);
+		FilterFxTask t = new FilterFxTask(p, cp5, taskname, this.eng);
 		if (this.status == Status.RUNNING)
 			t.start();
 		this.add_task(t);
@@ -526,7 +529,7 @@ public class State implements Serializable {
 	private void init_bitchrush_task() {
 		System.out.println("create bitchrush task!");
 		String taskname = generate_random_name();
-		BitChrushFxTask t = new BitChrushFxTask(p, cp5, taskname);
+		BitChrushFxTask t = new BitChrushFxTask(p, cp5, taskname, this.eng);
 		this.add_task(t);
 
 	}
@@ -534,7 +537,7 @@ public class State implements Serializable {
 	private void init_adsr_task() {
 		System.out.println("create adsr task!");
 		String taskname = generate_random_name();
-		AdsrFxTask t = new AdsrFxTask(p, cp5, taskname);
+		AdsrFxTask t = new AdsrFxTask(p, cp5, taskname, this.eng);
 		if (this.status == Status.RUNNING)
 			t.start();
 		this.add_task(t);
@@ -543,7 +546,7 @@ public class State implements Serializable {
 	private void init_flanger_task() {
 		System.out.println("create flanger task!");
 		String taskname = generate_random_name();
-		FlangerFxTask t = new FlangerFxTask(p, cp5, taskname);
+		FlangerFxTask t = new FlangerFxTask(p, cp5, taskname, this.eng);
 		if (this.status == Status.RUNNING)
 			t.start();
 		this.add_task(t);
@@ -552,7 +555,7 @@ public class State implements Serializable {
 	private void init_delay_task() {
 		System.out.println("create delay task!");
 		String taskname = generate_random_name();
-		DelayFxTask t = new DelayFxTask(p, cp5, taskname);
+		DelayFxTask t = new DelayFxTask(p, cp5, taskname, this.eng);
 		if (this.status == Status.RUNNING)
 			t.start();
 		this.add_task(t);
@@ -561,7 +564,7 @@ public class State implements Serializable {
 	private void init_chord_task() {
 		System.out.println("create chord task!");
 		String taskname = generate_random_name();
-		ChordAugTask t = new ChordAugTask(p, cp5, taskname);
+		ChordAugTask t = new ChordAugTask(p, cp5, taskname, this.eng);
 		if (this.status == Status.RUNNING)
 			t.start();
 		this.add_task(t);
@@ -570,7 +573,7 @@ public class State implements Serializable {
 	private void init_interval_task() {
 		System.out.println("create interval task!");
 		String taskname = generate_random_name();
-		IntervalAugTask t = new IntervalAugTask(p, cp5, taskname);
+		IntervalAugTask t = new IntervalAugTask(p, cp5, taskname, this.eng);
 		if (this.status == Status.RUNNING)
 			t.start();
 		this.add_task(t);
@@ -579,7 +582,7 @@ public class State implements Serializable {
 	private void init_note_task() {
 		System.out.println("create note task!");
 		String taskname = generate_random_name();
-		NoteAugTask t = new NoteAugTask(p, cp5, taskname);
+		NoteAugTask t = new NoteAugTask(p, cp5, taskname, this.eng);
 		if (this.status == Status.RUNNING)
 			t.start();
 		this.add_task(t);
@@ -588,7 +591,7 @@ public class State implements Serializable {
 
 	void init_control_dmx_task() {
 		String taskname = generate_random_name();
-		DMXTask t = new DMXTask(p, cp5, taskname);
+		DMXTask t = new DMXTask(p, cp5, taskname, this.eng);
 		if (this.status == Status.RUNNING)
 			t.start();
 		this.add_task(t);
@@ -596,7 +599,7 @@ public class State implements Serializable {
 
 	void init_osc_task() {
 		String taskname = generate_random_name();
-		OSCTask t = new OSCTask(p, cp5, taskname);
+		OSCTask t = new OSCTask(p, cp5, taskname, this.eng);
 		this.add_task(t);
 	}
 
@@ -610,20 +613,20 @@ public class State implements Serializable {
 
 	void init_scripting_task() {
 		String taskname = generate_random_name();
-		ScriptingTask t = new ScriptingTask(p, cp5, "example.js");
+		ScriptingTask t = new ScriptingTask(p, cp5, "example.js", this.eng);
 		this.add_task(t);
 	}
 
 	void init_set_blackboard_task() {
 		String taskname = generate_random_name();
-		DefaultBBTask t = new DefaultBBTask(p, cp5, taskname);
+		DefaultBBTask t = new DefaultBBTask(p, cp5, taskname, this.eng);
 		this.add_task(t);
 	}
 	
 
 	void init_bb_rand_task() {
 		String taskname = generate_random_name();
-		RandomBBTask t = new RandomBBTask(p, cp5, taskname);
+		RandomBBTask t = new RandomBBTask(p, cp5, taskname, this.eng);
 		if (this.status == Status.RUNNING)
 			t.start();
 		this.add_task(t);
@@ -632,7 +635,7 @@ public class State implements Serializable {
 	// method that initializes a random osc balckboard var
 	void init_bb_osc_task() {
 		String taskname = generate_random_name();
-		OscillatorBBTask t = new OscillatorBBTask(p, cp5, taskname);
+		OscillatorBBTask t = new OscillatorBBTask(p, cp5, taskname, this.eng);
 		if (this.status == Status.RUNNING)
 			t.start();
 		this.add_task(t);
@@ -643,7 +646,7 @@ public class State implements Serializable {
 	// method that initializes a ramp balckboard var
 	void init_bb_ramp_task() {
 		String taskname = generate_random_name();
-		RampBBTask t = new RampBBTask(p, cp5, taskname);
+		RampBBTask t = new RampBBTask(p, cp5, taskname, this.eng);
 		if (this.status == Status.RUNNING)
 			t.start();
 		this.add_task(t);

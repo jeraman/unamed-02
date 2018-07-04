@@ -129,7 +129,7 @@ public class MultipleSoundEngines extends PApplet {
 
 	private void processAug1() {
 		if (!isAug1Active)
-			eng1.addAugmenter("1", "NOTE", new String[] { "60", "-1" });
+			eng1.addAugmenter("1", "NOTE", new String[] { "60", "-1","-1" });
 		else
 			eng1.removeAugmenter("1");
 		isAug1Active = !isAug1Active;
@@ -139,7 +139,7 @@ public class MultipleSoundEngines extends PApplet {
 
 	private void processAug2() {
 		if (!isAug2Active)
-			eng2.addAugmenter("2", "INTERVAL", new String[] { "60", "127", "-1", "12" });
+			eng2.addAugmenter("2", "INTERVAL", new String[] { "-1", "127", "-1", "12" });
 		else
 			eng2.removeAugmenter("2");
 		isAug2Active = !isAug2Active;

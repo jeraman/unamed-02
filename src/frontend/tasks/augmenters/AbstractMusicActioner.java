@@ -3,6 +3,7 @@ package frontend.tasks.augmenters;
 import java.io.Serializable;
 
 import frontend.Main;
+import soundengine.SoundEngine;
 import soundengine.util.Util;
 
 public abstract class AbstractMusicActioner implements Runnable, Serializable {
@@ -10,6 +11,7 @@ public abstract class AbstractMusicActioner implements Runnable, Serializable {
 	protected int duration;
 	protected int velocity;
 	protected boolean locked;
+	protected SoundEngine eng;
 	
 	protected volatile boolean needToTerminate;
 	
@@ -17,11 +19,12 @@ public abstract class AbstractMusicActioner implements Runnable, Serializable {
 
 	private Thread myStopThread;
 	
-	public AbstractMusicActioner(int velocity, int duration) {
+	public AbstractMusicActioner(int velocity, int duration, SoundEngine eng) {
 		this.velocity = velocity;
 		this.duration = duration;
 		this.locked = false;
 		this.needToTerminate = false;
+		this.eng = eng;
 		myStopThread = null;
 	}
 	

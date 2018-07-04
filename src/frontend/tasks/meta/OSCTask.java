@@ -14,6 +14,7 @@ import frontend.ui.ComputableSeparableTextfieldUI;
 import frontend.ui.TextfieldUi;
 import frontend.ui.ToggleUi;
 import processing.core.PApplet;
+import soundengine.SoundEngine;
 
 public class OSCTask extends AbstractMetaTask {
 
@@ -28,8 +29,8 @@ public class OSCTask extends AbstractMetaTask {
 	transient private NetAddress broadcast;
 	transient private OscP5 oscP5;
 
-	public OSCTask(PApplet p, ControlP5 cp5, String id) {
-		super(p, cp5, id);
+	public OSCTask(PApplet p, ControlP5 cp5, String id, SoundEngine eng) {
+		super(p, cp5, id, eng);
 
 		this.ip = new TextfieldUi("localhost");
 		this.message = new TextfieldUi("/test/value");
@@ -112,7 +113,7 @@ public class OSCTask extends AbstractMetaTask {
 	
 	@Deprecated
 	public OSCTask clone_it() {
-		OSCTask clone = new OSCTask(this.p, this.cp5, this.name);
+		OSCTask clone = new OSCTask(this.p, this.cp5, this.name, this.eng);
 		clone.ip = this.ip;
 		clone.port = this.port;
 		clone.message = this.message;

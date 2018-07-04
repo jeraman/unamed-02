@@ -19,6 +19,7 @@ import frontend.tasks.Task;
 import frontend.ui.FileOpenerWithButtonUi;
 import frontend.ui.ToggleUi;
 import processing.core.PApplet;
+import soundengine.SoundEngine;
 
 
 public class ScriptingTask extends AbstractMetaTask {
@@ -33,8 +34,8 @@ public class ScriptingTask extends AbstractMetaTask {
 	
 	private static final String defaultScriptFile = "example.js";
 
-	public ScriptingTask(PApplet p, ControlP5 cp5, String taskname) {
-		super(p, cp5, taskname);
+	public ScriptingTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
+		super(p, cp5, taskname, eng);
 		
 		this.filename = new FileOpenerWithButtonUi(defaultScriptFile);
 		this.shouldRepeat = new ToggleUi();
@@ -44,7 +45,7 @@ public class ScriptingTask extends AbstractMetaTask {
 	}
 
 	public Task clone_it() {
-		return new ScriptingTask(p, cp5, name);
+		return new ScriptingTask(p, cp5, this.name, this.eng);
 	}
 
 	@Override

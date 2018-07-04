@@ -15,6 +15,7 @@ import frontend.ui.ComputableIntegerTextfieldUI;
 import frontend.ui.ComputableIntegerTextfieldUIWithUserInput;
 import frontend.ui.ScrollableListUI;
 import processing.core.PApplet;
+import soundengine.SoundEngine;
 
 /**
  * Abstract class implementing all functionalities to be used by AugmenterTasks (ie. Note, Interval, and Chord)
@@ -33,8 +34,8 @@ public abstract class AbstractAugTask extends Task {
 	
 	private boolean wasFirstTime = false;
 
-	public AbstractAugTask(PApplet p, ControlP5 cp5, String taskname) {
-		super(p, cp5, taskname);
+	public AbstractAugTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
+		super(p, cp5, taskname, eng);
 
 		this.velocity = new ComputableIntegerTextfieldUI(ComputableIntegerTextfieldUIWithUserInput.userInputAsDefault,-1);
 		this.duration = new ComputableFloatTextfieldUI(ComputableFloatTextfieldUIWithUserInput.userInputAsDefault,-1.0f);
@@ -50,7 +51,7 @@ public abstract class AbstractAugTask extends Task {
 	public abstract Task clone_it();
 	
 	protected void removeFromEngine() {
-		Main.eng.removeAugmenter(this.get_gui_id());
+		this.eng.removeAugmenter(this.get_gui_id());
 	}
 	
 	protected boolean isModeUserInput() {
@@ -94,7 +95,7 @@ public abstract class AbstractAugTask extends Task {
 	protected void processVelocityChange() {
 		if (velocity.update())
 			if (isModeUserInput())
-				Main.eng.updateAugmenter(this.get_gui_id(), "velocity : " + velocity.getValueAsInt());
+				this.eng.updateAugmenter(this.get_gui_id(), "velocity : " + velocity.getValueAsInt());
 		if (isModePlayOnce() || isModeRepeat())
 			this.musicActioner.setVelocity(velocity.getValueAsInt());
 	}
@@ -102,7 +103,7 @@ public abstract class AbstractAugTask extends Task {
 	protected void processDurationChange() {
 		if (duration.update()) {
 			if (isModeUserInput())
-				Main.eng.updateAugmenter(this.get_gui_id(), "duration : " + duration.getValue());
+				this.eng.updateAugmenter(this.get_gui_id(), "duration : " + duration.getValue());
 			if (isModePlayOnce() || isModeRepeat())
 				this.musicActioner.setDuration((int) duration.getValue());
 		}
@@ -169,7 +170,7 @@ public abstract class AbstractAugTask extends Task {
 	/////////////////////////////////////
 	// methods to be carried to super or to be deleted
 	public void closeTask() {
-		Main.eng.removeAugmenter(this.get_gui_id());
+		this.eng.removeAugmenter(this.get_gui_id());
 		super.closeTask();
 	}
 

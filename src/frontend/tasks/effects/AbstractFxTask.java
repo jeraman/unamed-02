@@ -5,17 +5,18 @@ import frontend.Main;
 import frontend.core.Status;
 import frontend.tasks.Task;
 import processing.core.PApplet;
+import soundengine.SoundEngine;
 
 abstract class AbstractFxTask extends Task {
 	
-	public AbstractFxTask(PApplet p, ControlP5 cp5, String taskname) {
-		super(p, cp5, taskname);
+	public AbstractFxTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
+		super(p, cp5, taskname, eng);
 	}
 	
 	public abstract void addToEngine();
 
 	public void removeFromEngine() {
-		Main.eng.removeEffect(this.get_gui_id());
+		this.eng.removeEffect(this.get_gui_id());
 	}
 
 	public void closeTask() {

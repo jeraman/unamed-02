@@ -14,6 +14,7 @@ import frontend.ui.ComputableFloatTextfieldUIWithUserInput;
 import frontend.ui.ComputableIntegerTextfieldUIWithUserInput;
 import frontend.ui.ScrollableListUI;
 import processing.core.PApplet;
+import soundengine.SoundEngine;
 
 public class FMGenTask extends AbstractGenTask {
 	
@@ -25,8 +26,8 @@ public class FMGenTask extends AbstractGenTask {
 	private ScrollableListUI modWavetype;
 	private ComputableIntegerTextfieldUIWithUserInput duration;
 	
-	public FMGenTask(PApplet p, ControlP5 cp5, String taskname) {
-		super(p, cp5, taskname);
+	public FMGenTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
+		super(p, cp5, taskname, eng);
 		this.frequency = new ComputableFloatTextfieldUIWithUserInput();
 		this.amplitude = new ComputableFloatTextfieldUIWithUserInput();
 		this.carrierWavetype = new ScrollableListUI(OscillatorGenTask.list, 3);
@@ -39,7 +40,7 @@ public class FMGenTask extends AbstractGenTask {
 	}
 	
 	public void addToEngine() {
-		Main.eng.addGenerator(this.get_gui_id(), "FM", getDefaultParameters());
+		this.eng.addGenerator(this.get_gui_id(), "FM", getDefaultParameters());
 	}
 	
 	protected String[] getDefaultParameters(){
@@ -56,35 +57,35 @@ public class FMGenTask extends AbstractGenTask {
 	
 	private void processFrequencyChange() {
 		if (frequency.update())
-			Main.eng.updateGenerator(this.get_gui_id(), "carrierFreq : " + frequency.getValue());
+			this.eng.updateGenerator(this.get_gui_id(), "carrierFreq : " + frequency.getValue());
 	}
 	private void processAmplitudeChange() {
 		if (amplitude.update())
-			Main.eng.updateGenerator(this.get_gui_id(), "carrierAmp : " + amplitude.getValue());
+			this.eng.updateGenerator(this.get_gui_id(), "carrierAmp : " + amplitude.getValue());
 	}
 			
 	private void processWavetypeChange() {
 		if (carrierWavetype.update())
-			Main.eng.updateGenerator(this.get_gui_id(), "carrierWave : " + carrierWavetype.getValue());
+			this.eng.updateGenerator(this.get_gui_id(), "carrierWave : " + carrierWavetype.getValue());
 	}
 	
 	private void processModFrequencyChange() {
 		if (modFreq.update())
-			Main.eng.updateGenerator(this.get_gui_id(), "modFreq : " + modFreq.getValue());
+			this.eng.updateGenerator(this.get_gui_id(), "modFreq : " + modFreq.getValue());
 	}
 	private void processModAmplitudeChange() {
 		if (modAmp.update())
-			Main.eng.updateGenerator(this.get_gui_id(), "modAmp : " + modAmp.getValue());
+			this.eng.updateGenerator(this.get_gui_id(), "modAmp : " + modAmp.getValue());
 	}
 			
 	private void processModWavetypeChange() {
 		if (modWavetype.update())
-			Main.eng.updateGenerator(this.get_gui_id(), "modWave : " + modWavetype.getValue());
+			this.eng.updateGenerator(this.get_gui_id(), "modWave : " + modWavetype.getValue());
 	}
 
 	private void processDurationChange() {
 		if (duration.update())
-			Main.eng.updateGenerator(this.get_gui_id(), "duration : " + duration.getValue());
+			this.eng.updateGenerator(this.get_gui_id(), "duration : " + duration.getValue());
 	}
 
 	protected void processAllParameters() {
@@ -99,7 +100,7 @@ public class FMGenTask extends AbstractGenTask {
 
 	@Override
 	public Task clone_it() {
-		FMGenTask clone = new FMGenTask(this.p, this.cp5, this.name);
+		FMGenTask clone = new FMGenTask(this.p, this.cp5, this.name, this.eng);
 		clone.frequency = this.frequency;
 		clone.amplitude = this.amplitude;
 		clone.carrierWavetype = this.carrierWavetype;

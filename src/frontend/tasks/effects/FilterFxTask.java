@@ -13,6 +13,7 @@ import frontend.ui.ComputableFloatTextfieldUI;
 import frontend.ui.ComputableFloatTextfieldUIWithUserInput;
 import frontend.ui.ScrollableListUI;
 import processing.core.PApplet;
+import soundengine.SoundEngine;
 
 public class FilterFxTask  extends AbstractFxTask {
 
@@ -22,8 +23,8 @@ public class FilterFxTask  extends AbstractFxTask {
 	private ComputableFloatTextfieldUI resonance;
 	private ScrollableListUI type;
 	
-	public FilterFxTask(PApplet p, ControlP5 cp5, String taskname) {
-		super(p, cp5, taskname);
+	public FilterFxTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
+		super(p, cp5, taskname, eng);
 		this.centerFreq = new ComputableFloatTextfieldUI(300f);
 		this.resonance = new ComputableFloatTextfieldUI(150f);
 		this.type = new ScrollableListUI(list, 0);
@@ -32,7 +33,7 @@ public class FilterFxTask  extends AbstractFxTask {
 	}
 	
 	public void addToEngine() {
-		Main.eng.addEffect(this.get_gui_id(), "MOOGFILTER", getDefaultParameters());
+		this.eng.addEffect(this.get_gui_id(), "MOOGFILTER", getDefaultParameters());
 	}
 
 	@Override
@@ -47,17 +48,17 @@ public class FilterFxTask  extends AbstractFxTask {
 	
 	private void processCenterFrequencyChange() {
 		if (centerFreq.update())
-			Main.eng.updateEffect(this.get_gui_id(), "centerFreq : " + centerFreq.getValue());
+			this.eng.updateEffect(this.get_gui_id(), "centerFreq : " + centerFreq.getValue());
 	}
 	
 	private void processResonanceChange() {
 		if (resonance.update())
-			Main.eng.updateEffect(this.get_gui_id(), "resonance : " + resonance.getValue());
+			this.eng.updateEffect(this.get_gui_id(), "resonance : " + resonance.getValue());
 	}
 	
 	private void processTypeChange() {
 		if (type.update())
-			Main.eng.updateEffect(this.get_gui_id(), "filterType : " + convertTypeValue());
+			this.eng.updateEffect(this.get_gui_id(), "filterType : " + convertTypeValue());
 	}
 	
 	private String convertTypeValue() {
@@ -82,7 +83,7 @@ public class FilterFxTask  extends AbstractFxTask {
 
 	@Override
 	public Task clone_it() {
-		FilterFxTask clone = new FilterFxTask(this.p, this.cp5, this.name);
+		FilterFxTask clone = new FilterFxTask(this.p, this.cp5, this.name, this.eng);
 		clone.centerFreq = this.centerFreq;
 		clone.resonance = this.resonance;
 		clone.type = this.type;

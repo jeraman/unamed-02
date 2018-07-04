@@ -8,6 +8,7 @@ import frontend.core.State;
 import frontend.tasks.Task;
 import frontend.ui.ComputableFloatTextfieldUI;
 import processing.core.PApplet;
+import soundengine.SoundEngine;
 
 public class FlangerFxTask extends AbstractFxTask {
 
@@ -27,8 +28,8 @@ public class FlangerFxTask extends AbstractFxTask {
 	private ComputableFloatTextfieldUI wetAmplitude; // amount of wet signal (
 														// clamped to [0,1] )
 
-	public FlangerFxTask(PApplet p, ControlP5 cp5, String taskname) {
-		super(p, cp5, taskname);
+	public FlangerFxTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
+		super(p, cp5, taskname, eng);
 		this.delayLength = new ComputableFloatTextfieldUI(1f);
 		this.lfoRate = new ComputableFloatTextfieldUI(0.5f);
 		this.delayDepth = new ComputableFloatTextfieldUI(1f);
@@ -40,7 +41,7 @@ public class FlangerFxTask extends AbstractFxTask {
 	}
 	
 	public void addToEngine() {
-		Main.eng.addEffect(this.get_gui_id(), "FLANGER", getDefaultParameters());
+		this.eng.addEffect(this.get_gui_id(), "FLANGER", getDefaultParameters());
 	}
 
 	protected String[] getDefaultParameters() {
@@ -57,32 +58,32 @@ public class FlangerFxTask extends AbstractFxTask {
 
 	private void processDelayLengthChange() {
 		if (delayLength.update())
-			Main.eng.updateEffect(this.get_gui_id(), "delayLength : " + delayLength.getValue());
+			this.eng.updateEffect(this.get_gui_id(), "delayLength : " + delayLength.getValue());
 	}
 
 	private void processLfoRateChange() {
 		if (lfoRate.update())
-			Main.eng.updateEffect(this.get_gui_id(), "lfoRate : " + lfoRate.getValue());
+			this.eng.updateEffect(this.get_gui_id(), "lfoRate : " + lfoRate.getValue());
 	}
 
 	private void processDelayDepthChange() {
 		if (delayDepth.update())
-			Main.eng.updateEffect(this.get_gui_id(), "delayDepth : " + delayDepth.getValue());
+			this.eng.updateEffect(this.get_gui_id(), "delayDepth : " + delayDepth.getValue());
 	}
 
 	private void processFeedbackChange() {
 		if (feedbackAmplitude.update())
-			Main.eng.updateEffect(this.get_gui_id(), "feedbackAmplitude : " + feedbackAmplitude.getValue());
+			this.eng.updateEffect(this.get_gui_id(), "feedbackAmplitude : " + feedbackAmplitude.getValue());
 	}
 
 	private void processDryChange() {
 		if (dryAmplitude.update())
-			Main.eng.updateEffect(this.get_gui_id(), "dryAmplitude : " + dryAmplitude.getValue());
+			this.eng.updateEffect(this.get_gui_id(), "dryAmplitude : " + dryAmplitude.getValue());
 	}
 
 	private void processWetChange() {
 		if (wetAmplitude.update())
-			Main.eng.updateEffect(this.get_gui_id(), "wetAmplitude : " + wetAmplitude.getValue());
+			this.eng.updateEffect(this.get_gui_id(), "wetAmplitude : " + wetAmplitude.getValue());
 	}
 
 	@Override
@@ -97,7 +98,7 @@ public class FlangerFxTask extends AbstractFxTask {
 
 	@Override
 	public Task clone_it() {
-		FlangerFxTask clone = new FlangerFxTask(this.p, this.cp5, this.name);
+		FlangerFxTask clone = new FlangerFxTask(this.p, this.cp5, this.name, this.eng);
 		clone.delayLength = this.delayLength;
 		clone.lfoRate = this.lfoRate;
 		clone.delayDepth = this.delayDepth;

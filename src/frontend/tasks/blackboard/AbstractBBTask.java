@@ -8,6 +8,7 @@ import frontend.tasks.Task;
 import frontend.ui.TextfieldUi;
 import frontend.ui.ToggleUi;
 import processing.core.PApplet;
+import soundengine.SoundEngine;
 import soundengine.util.Util;
 
 
@@ -20,8 +21,8 @@ abstract class AbstractBBTask extends Task {
 	float timer;
 	float timerMilestone;
 	
-	public AbstractBBTask(PApplet p, ControlP5 cp5, String taskname) {
-		super(p, cp5, taskname);
+	public AbstractBBTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
+		super(p, cp5, taskname, eng);
 		
 		this.variableName = new TextfieldUi(taskname);
 		this.shouldRepeat = new ToggleUi();

@@ -11,6 +11,7 @@ import frontend.ui.ComputableIntegerTextfieldUIWithUserInput;
 import frontend.ui.FileOpenerTextfieldUI;
 import frontend.ui.ToggleUi;
 import processing.core.PApplet;
+import soundengine.SoundEngine;
 
 public class SampleGenTask extends AbstractGenTask {
 	
@@ -22,8 +23,8 @@ public class SampleGenTask extends AbstractGenTask {
 	
 	private static final String defaultSoundFile = "123go.mp3";
 	
-	public SampleGenTask(PApplet p, ControlP5 cp5, String taskname) {
-		super(p, cp5, taskname);
+	public SampleGenTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
+		super(p, cp5, taskname, eng);
 		
 		this.filename = new FileOpenerTextfieldUI(defaultSoundFile);
 		this.pitch = new ComputableIntegerTextfieldUIWithUserInput();
@@ -35,7 +36,7 @@ public class SampleGenTask extends AbstractGenTask {
 	}
 	
 	public void addToEngine() {
-		Main.eng.addGenerator(this.get_gui_id(), "SAMPLE", getDefaultParameters());
+		this.eng.addGenerator(this.get_gui_id(), "SAMPLE", getDefaultParameters());
 	}
 	
 	protected String[] getDefaultParameters(){
@@ -52,32 +53,32 @@ public class SampleGenTask extends AbstractGenTask {
 	private void processFilenameChange() {
 		if (filename.update()) {
 			System.out.println("update filename " + filename.getValue());
-			Main.eng.updateGenerator(this.get_gui_id(), "filename : " + filename.getValue());
+			this.eng.updateGenerator(this.get_gui_id(), "filename : " + filename.getValue());
 		}
 	}
 	private void processPitchChange() {
 		if (pitch.update()) {
 			System.out.println("update pitch " + pitch.getValueAsInt());
-			Main.eng.updateGenerator(this.get_gui_id(), "pitch : " + pitch.getValueAsInt());
+			this.eng.updateGenerator(this.get_gui_id(), "pitch : " + pitch.getValueAsInt());
 		}
 	}
 	
 	private void processVelocityChange() {
 		if (velocity.update())
-			Main.eng.updateGenerator(this.get_gui_id(), "velocity : " + velocity.getValueAsInt());
+			this.eng.updateGenerator(this.get_gui_id(), "velocity : " + velocity.getValueAsInt());
 	}
 	
 	private void processDurationChange() {
 		if (duration.update()) {
 			System.out.println("update duration " + duration.getValueAsInt());
-			Main.eng.updateGenerator(this.get_gui_id(), "duration : " + duration.getValueAsInt());
+			this.eng.updateGenerator(this.get_gui_id(), "duration : " + duration.getValueAsInt());
 		}
 	}
 	
 	private void processLoopChange() {
 		if (loopStatus.update()) {
 			System.out.println("update loop " + duration.getValue());
-			Main.eng.updateGenerator(this.get_gui_id(), "loop : " + loopStatus.getValue());
+			this.eng.updateGenerator(this.get_gui_id(), "loop : " + loopStatus.getValue());
 		}
 	}
 	
@@ -91,7 +92,7 @@ public class SampleGenTask extends AbstractGenTask {
 	
 	@Override
 	public Task clone_it() {
-		SampleGenTask clone = new SampleGenTask(this.p, this.cp5, this.name);
+		SampleGenTask clone = new SampleGenTask(this.p, this.cp5, this.name, this.eng);
 		clone.pitch = this.pitch;
 		clone.velocity = this.velocity;
 		clone.duration = this.duration;

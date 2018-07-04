@@ -10,6 +10,7 @@ import frontend.core.Status;
 import frontend.ui.ComputableFloatTextfieldUI;
 import frontend.ui.TextfieldUi;
 import processing.core.PApplet;
+import soundengine.SoundEngine;
 
 
 public class RampBBTask extends AbstractBBTask {
@@ -17,8 +18,8 @@ public class RampBBTask extends AbstractBBTask {
 	private ComputableFloatTextfieldUI destination; 
 	private ComputableFloatTextfieldUI duration; 
 	
-	public RampBBTask (PApplet p, ControlP5 cp5, String taskname) {
-		super(p, cp5, taskname);
+	public RampBBTask (PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
+		super(p, cp5, taskname, eng);
 		this.origin = new ComputableFloatTextfieldUI(0f);
 		this.destination = new ComputableFloatTextfieldUI(1f);
 		this.duration = new ComputableFloatTextfieldUI(1f);
@@ -94,7 +95,7 @@ public class RampBBTask extends AbstractBBTask {
 	}
 	
 	public RampBBTask clone_it() {
-		RampBBTask clone = new RampBBTask(this.p, this.cp5, this.name);
+		RampBBTask clone = new RampBBTask(this.p, this.cp5, this.name, this.eng);
 
 		clone.variableName = this.variableName;
 		clone.origin = this.origin;

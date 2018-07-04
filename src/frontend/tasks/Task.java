@@ -2,6 +2,7 @@ package frontend.tasks;
 
 import java.io.Serializable;
 import processing.core.PApplet;
+import soundengine.SoundEngine;
 import controlP5.*;
 import frontend.Main;
 import frontend.core.Blackboard;
@@ -36,6 +37,8 @@ public abstract class Task implements Serializable {
 	protected int localoffset;// = 3*font_size;
 	protected int localx;// = 10;
 	protected int localy;// = (int)(font_size);
+	
+	public SoundEngine eng;
 
 	@Deprecated
 	static protected int font_size;// = (int)(((ZenStates)p).get_font_size());
@@ -46,7 +49,7 @@ public abstract class Task implements Serializable {
 	@Deprecated
 	transient protected ControlP5 cp5;
 
-	public Task(PApplet p, ControlP5 cp5, String taskname) {
+	public Task(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
 		this.p = p;
 		this.cp5 = cp5;
 		this.name = taskname;
@@ -54,6 +57,7 @@ public abstract class Task implements Serializable {
 		this.status = Status.INACTIVE;
 		this.group_gui_id = UUID.randomUUID().toString();
 		this.first_time = true;
+		this.eng = eng;
 
 		if (((Main) p).debug())
 			System.out.println("task " + this.toString() + " created!");

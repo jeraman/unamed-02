@@ -15,7 +15,7 @@ import java.util.Vector;
 
 public class MainCanvas {
 
-	public StateMachine  	   root; 	 //my basic state machine
+	public StateMachine  root; 	 //my basic state machine
 	Vector<StateMachine> sm_stack; //a stack of sm used for allowing hierarchy
 
 	transient private Main p;
@@ -87,6 +87,14 @@ public class MainCanvas {
 		sm_stack.lastElement().draw();
 		draw_names();
 	}
+	
+	public void noteOn(int channel, int pitch, int velocity) {
+		this.root.noteOn(channel, pitch, velocity);
+	}
+
+	public void noteOff(int channel, int pitch, int velocity) {
+		this.root.noteOff(channel, pitch, velocity);
+	}
 
 	void draw_names() {
 		p.fill(255);
@@ -102,7 +110,7 @@ public class MainCanvas {
 	//creates a new state and adds its to the root state machine
 	void create_state() {
 		System.out.println("creates a state");
-		State newState = new State(p, cp5, "NEW_STATE_" + ((int)p.random(0, 10)), p.mouseX, p.mouseY);
+		State newState = new State(p, cp5, "NEW_STATE_" + ((int)p.random(0, 10)), this.root.eng, p.mouseX, p.mouseY);
 		//root.add_state(newState);
 		this.add_state(newState);
 	}

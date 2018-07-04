@@ -11,14 +11,15 @@ import frontend.core.Status;
 import frontend.ui.ComputableFloatTextfieldUI;
 import frontend.ui.TextfieldUi;
 import processing.core.PApplet;
+import soundengine.SoundEngine;
 
 public class OscillatorBBTask extends AbstractBBTask {
 
 	private ComputableFloatTextfieldUI frequency;
 	private ComputableFloatTextfieldUI amplitude;
 
-	public OscillatorBBTask(PApplet p, ControlP5 cp5, String taskname) {
-		super(p, cp5, taskname);
+	public OscillatorBBTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
+		super(p, cp5, taskname, eng);
 		this.frequency = new ComputableFloatTextfieldUI(01);
 		this.amplitude = new ComputableFloatTextfieldUI(1f);
 		this.value = new TextfieldUi("0");
@@ -102,7 +103,7 @@ public class OscillatorBBTask extends AbstractBBTask {
 	}
 
 	public OscillatorBBTask clone_it() {
-		OscillatorBBTask clone = new OscillatorBBTask(this.p, this.cp5, this.name);
+		OscillatorBBTask clone = new OscillatorBBTask(this.p, this.cp5, this.name, this.eng);
 
 		clone.variableName = this.variableName;
 		clone.frequency = this.frequency;

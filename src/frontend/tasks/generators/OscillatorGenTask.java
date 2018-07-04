@@ -14,6 +14,7 @@ import frontend.ui.ComputableFloatTextfieldUIWithUserInput;
 import frontend.ui.ComputableIntegerTextfieldUIWithUserInput;
 import frontend.ui.ScrollableListUI;
 import processing.core.PApplet;
+import soundengine.SoundEngine;
 
 public class OscillatorGenTask extends AbstractGenTask {
 
@@ -25,8 +26,8 @@ public class OscillatorGenTask extends AbstractGenTask {
 	private ComputableIntegerTextfieldUIWithUserInput duration;
 	private ScrollableListUI wavetype;
 	
-	public OscillatorGenTask(PApplet p, ControlP5 cp5, String taskname) {
-		super(p, cp5, taskname);
+	public OscillatorGenTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
+		super(p, cp5, taskname, eng);
 		
 		this.frequency = new ComputableFloatTextfieldUIWithUserInput();
 		this.amplitude = new ComputableFloatTextfieldUIWithUserInput();
@@ -37,7 +38,7 @@ public class OscillatorGenTask extends AbstractGenTask {
 	}
 	
 	public void addToEngine() {
-		Main.eng.addGenerator(this.get_gui_id(), "OSCILLATOR", getDefaultParameters());
+		this.eng.addGenerator(this.get_gui_id(), "OSCILLATOR", getDefaultParameters());
 	}
 	
 	protected String[] getDefaultParameters(){
@@ -51,20 +52,20 @@ public class OscillatorGenTask extends AbstractGenTask {
 	
 	private void processFrequencyChange() {
 		if (frequency.update())
-			Main.eng.updateGenerator(this.get_gui_id(), "frequency : " + frequency.getValue());
+			this.eng.updateGenerator(this.get_gui_id(), "frequency : " + frequency.getValue());
 	}
 	private void processAmplitudeChange() {
 		if (amplitude.update())
-			Main.eng.updateGenerator(this.get_gui_id(), "amplitude : " + amplitude.getValue());
+			this.eng.updateGenerator(this.get_gui_id(), "amplitude : " + amplitude.getValue());
 	}
 	private void processDurationChange() {
 		if (duration.update())
-			Main.eng.updateGenerator(this.get_gui_id(), "duration : " + duration.getValue());
+			this.eng.updateGenerator(this.get_gui_id(), "duration : " + duration.getValue());
 	}
 			
 	private void processWavetypeChange() {
 		if (wavetype.update())
-			Main.eng.updateGenerator(this.get_gui_id(), "waveform : " + wavetype.getValue());
+			this.eng.updateGenerator(this.get_gui_id(), "waveform : " + wavetype.getValue());
 	}
 
 	protected void processAllParameters() {
@@ -76,7 +77,7 @@ public class OscillatorGenTask extends AbstractGenTask {
 
 	@Override
 	public Task clone_it() {
-		OscillatorGenTask clone = new OscillatorGenTask(this.p, this.cp5, this.name);
+		OscillatorGenTask clone = new OscillatorGenTask(this.p, this.cp5, this.name, this.eng);
 		clone.frequency = this.frequency;
 		clone.amplitude = this.amplitude;
 		clone.duration = this.duration;

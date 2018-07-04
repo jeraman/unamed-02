@@ -1,14 +1,15 @@
 package frontend.tasks.augmenters;
 
 import frontend.Main;
+import soundengine.SoundEngine;
 
 public class IntervalActioner extends AbstractMusicActioner {
 
 	private int root;
 	private int interval;
 
-	public IntervalActioner(int root, int interval, int velocity, int duration) {
-		super(velocity, duration);
+	public IntervalActioner(int root, int interval, int velocity, int duration, SoundEngine eng) {
+		super(velocity, duration, eng);
 		this.root = root;
 		this.interval = interval;
 	}
@@ -33,14 +34,14 @@ public class IntervalActioner extends AbstractMusicActioner {
 
 	@Override
 	protected void noteOnInSoundEngine() {
-		Main.eng.noteOnWithoutAugmenters(0, root, velocity);
-		Main.eng.noteOnWithoutAugmenters(0, root + interval, velocity);
+		this.eng.noteOnWithoutAugmenters(0, root, velocity);
+		this.eng.noteOnWithoutAugmenters(0, root + interval, velocity);
 	}
 
 	@Override
 	protected void noteOffInSoundEngine() {
-		Main.eng.noteOff(0, root, velocity);
-		Main.eng.noteOff(0, root + interval, velocity);
+		this.eng.noteOff(0, root, velocity);
+		this.eng.noteOff(0, root + interval, velocity);
 	}
 
 }

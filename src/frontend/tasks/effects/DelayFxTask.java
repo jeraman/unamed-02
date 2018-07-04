@@ -10,14 +10,15 @@ import frontend.tasks.generators.FMGenTask;
 import frontend.ui.ComputableFloatTextfieldUI;
 import frontend.ui.ComputableFloatTextfieldUIWithUserInput;
 import processing.core.PApplet;
+import soundengine.SoundEngine;
 
 public class DelayFxTask extends AbstractFxTask {
 	
 	private ComputableFloatTextfieldUI delayTime;
 	private ComputableFloatTextfieldUI amplitudeFactor;
 	
-	public DelayFxTask(PApplet p, ControlP5 cp5, String taskname) {
-		super(p, cp5, taskname);
+	public DelayFxTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
+		super(p, cp5, taskname, eng);
 		
 		this.delayTime = new ComputableFloatTextfieldUI(0.02f);
 		this.amplitudeFactor = new ComputableFloatTextfieldUI(1f);
@@ -26,7 +27,7 @@ public class DelayFxTask extends AbstractFxTask {
 	}
 	
 	public void addToEngine() {
-		Main.eng.addEffect(this.get_gui_id(), "DELAY", getDefaultParameters());
+		this.eng.addEffect(this.get_gui_id(), "DELAY", getDefaultParameters());
 	}
 	
 	protected String[] getDefaultParameters(){
@@ -41,11 +42,11 @@ public class DelayFxTask extends AbstractFxTask {
 	
 	private void processDelayTimeChange() {
 		if (delayTime.update())
-			Main.eng.updateEffect(this.get_gui_id(), "delayTime : " + delayTime.getValue());
+			this.eng.updateEffect(this.get_gui_id(), "delayTime : " + delayTime.getValue());
 	}
 	private void processAmplitudeChange() {
 		if (amplitudeFactor.update())
-			Main.eng.updateEffect(this.get_gui_id(), "amplitudeFactor : " + amplitudeFactor.getValue());
+			this.eng.updateEffect(this.get_gui_id(), "amplitudeFactor : " + amplitudeFactor.getValue());
 	}
 	
 	protected void processAllParameters() {
@@ -55,7 +56,7 @@ public class DelayFxTask extends AbstractFxTask {
 
 	@Override
 	public Task clone_it() {
-		DelayFxTask clone = new DelayFxTask(this.p, this.cp5, this.name);
+		DelayFxTask clone = new DelayFxTask(this.p, this.cp5, this.name, this.eng);
 		clone.delayTime = this.delayTime;
 		clone.amplitudeFactor = this.amplitudeFactor;
 		return clone;

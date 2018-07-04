@@ -7,6 +7,7 @@ import frontend.core.State;
 import frontend.ui.ComputableFloatTextfieldUI;
 import frontend.ui.TextfieldUi;
 import processing.core.PApplet;
+import soundengine.SoundEngine;
 
 
 public class RandomBBTask extends AbstractBBTask {
@@ -14,8 +15,8 @@ public class RandomBBTask extends AbstractBBTask {
 	private ComputableFloatTextfieldUI min;
 	private ComputableFloatTextfieldUI max;
 	
-	public RandomBBTask(PApplet p, ControlP5 cp5, String taskname) {
-		super(p, cp5, taskname);
+	public RandomBBTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
+		super(p, cp5, taskname, eng);
 		this.min = new ComputableFloatTextfieldUI(0f);
 		this.max = new ComputableFloatTextfieldUI(1f);
 		this.value = new TextfieldUi("math.random()");
@@ -67,7 +68,7 @@ public class RandomBBTask extends AbstractBBTask {
 	}
 	
 	public RandomBBTask clone_it() {
-		  RandomBBTask clone = new RandomBBTask(this.p, this.cp5, this.name);
+		  RandomBBTask clone = new RandomBBTask(this.p, this.cp5, this.name, this.eng);
 		  
 		  clone.variableName	= this.variableName;
 		  clone.min 			= this.min;

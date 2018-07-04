@@ -3,14 +3,15 @@ package frontend.tasks.augmenters;
 import java.io.Serializable;
 
 import frontend.Main;
+import soundengine.SoundEngine;
 import soundengine.util.Util;
 
 public class NoteActioner extends AbstractMusicActioner {
 	
 	private int pitch;
 	
-	public NoteActioner(int pitch, int velocity, int duration) {
-		super(velocity, duration);
+	public NoteActioner(int pitch, int velocity, int duration, SoundEngine eng) {
+		super(velocity, duration, eng);
 		this.pitch = pitch;
 	}
 	
@@ -24,11 +25,11 @@ public class NoteActioner extends AbstractMusicActioner {
 	}
 	
 	protected void noteOnInSoundEngine() {
-		Main.eng.noteOnWithoutAugmenters(0, pitch, velocity);
+		this.eng.noteOnWithoutAugmenters(0, pitch, velocity);
 	}
 
 	protected void noteOffInSoundEngine() {
-		Main.eng.noteOff(0, pitch, 0);
+		this.eng.noteOff(0, pitch, 0);
 	}
 
 }

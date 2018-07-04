@@ -1,6 +1,5 @@
 package frontend;
 
-
 /************************************************
  ** My main!
  ************************************************
@@ -26,16 +25,16 @@ import frontend.core.MainCanvas;
 import frontend.core.Serializer;
 import frontend.ui.*;
 
-
 public class Main extends PApplet {
 
 	public MainCanvas canvas;
 	public Blackboard board;
 	public Serializer serializer;
-	public static SoundEngine eng;
+	// public static SoundEngine eng;
 
-	OscP5 oscP5; // my osc variables
-	ControlP5 cp5; // my controlP5 variable for gui
+	private static OscP5 oscP5; // my osc variables
+	private static ControlP5 cp5; // my controlP5 variable for gui
+	private static Minim minim;
 
 	// system's default port for receiveing osc messages
 	public String SERVER_IP;
@@ -55,13 +54,13 @@ public class Main extends PApplet {
 
 	public void settings() {
 		// fullScreen();
-		 size(800, 600);
+		size(800, 600);
 	}
 
 	public void setup() {
 		setupUtil();
 		setupAudio();
-		
+
 		this.serializer = new Serializer(this);
 		is_loading = true;
 		background(0);
@@ -69,21 +68,22 @@ public class Main extends PApplet {
 		inst = this;
 		board = new Blackboard(this);
 		canvas = new MainCanvas(this, cp5);
-		
+
 		AbstractElementUi.setup(cp5, this);
 
 		setup_expression_loading_bug();
 
-		//this link covers changing font size:
-		//https://www.kasperkamperman.com/blog/processing-code/controlp5-library-example2/
-		//also here for the origins of the bug
-		//https://forum.processing.org/one/topic/controlp5-blurry-text.html
-		
-//		PFont pfont = createFont("Arial",15,true); // use true/false for smooth/no-smooth
-//		ControlFont font = new ControlFont(pfont,12);
-//		cp5.setFont(font);
-//		textFont(pfont);
-		
+		// this link covers changing font size:
+		// https://www.kasperkamperman.com/blog/processing-code/controlp5-library-example2/
+		// also here for the origins of the bug
+		// https://forum.processing.org/one/topic/controlp5-blurry-text.html
+
+		// PFont pfont = createFont("Arial",15,true); // use true/false for
+		// smooth/no-smooth
+		// ControlFont font = new ControlFont(pfont,12);
+		// cp5.setFont(font);
+		// textFont(pfont);
+
 		textFont(cp5.getFont().getFont());
 		textSize(FONT_SIZE);
 
@@ -92,10 +92,10 @@ public class Main extends PApplet {
 
 		is_loading = false;
 	}
-	
+
 	void setupAudio() {
-		Minim minim = new Minim(this);
-		eng = new SoundEngine(minim);
+		this.minim = new Minim(this);
+		// eng = new SoundEngine(minim);
 		MidiIO.setup(this);
 	}
 
@@ -134,14 +134,16 @@ public class Main extends PApplet {
 
 		serializer.autosave();
 	}
-	
 
 	public void noteOn(int channel, int pitch, int velocity) {
-		eng.noteOn(channel, pitch, velocity);
+		// eng.noteOn(channel, pitch, velocity);
+		canvas.noteOn(channel, pitch, velocity);
+
 	}
 
 	public void noteOff(int channel, int pitch, int velocity) {
-		eng.noteOff(channel, pitch, velocity);
+		// eng.noteOff(channel, pitch, velocity);
+		canvas.noteOff(channel, pitch, velocity);
 	}
 
 	//////////////////////////////////////
@@ -165,7 +167,6 @@ public class Main extends PApplet {
 		cp5 = new ControlP5(this);
 		cp5.setFont(cp5.getFont().getFont(), FONT_SIZE);
 	}
-
 
 	// rounds a float to two decimals for the gui
 	// retrieved from:
@@ -221,7 +222,7 @@ public class Main extends PApplet {
 
 	public void keyPressed() {
 		if (debug)
-			 println("keyCode: " + keyCode + " key: " + key);
+			println("keyCode: " + keyCode + " key: " + key);
 
 		// if is loading an open patch, do not draw anything
 		if (is_loading)
@@ -276,9 +277,9 @@ public class Main extends PApplet {
 
 			switch (keyCode) {
 			// in case the key it's shift
-			//case 16:
-			//	canvas.process_shift_key();
-			//	break;
+			// case 16:
+			// canvas.process_shift_key();
+			// break;
 			// if alt key was pressed
 			case 18:
 				canvas.process_copy();
@@ -317,12 +318,16 @@ public class Main extends PApplet {
 	// the following code was taken from Sofians' prototype
 	// the goal is to allow serialization
 
-	public OscP5 oscP5() {
+	public static OscP5 oscP5() {
 		return oscP5;
 	}
 
-	public ControlP5 cp5() {
+	public static ControlP5 cp5() {
 		return cp5;
+	}
+
+	public static Minim minim() {
+		return minim;
 	}
 
 	public Blackboard board() {
@@ -332,10 +337,10 @@ public class Main extends PApplet {
 	public MainCanvas canvas() {
 		return canvas;
 	}
-	
-	public SoundEngine soundEngine() {
-		return eng;
-	}
+
+	//public SoundEngine soundEngine() {
+	//	return eng;
+	//}
 
 	public boolean debug() {
 		return debug;

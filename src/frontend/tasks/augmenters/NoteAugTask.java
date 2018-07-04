@@ -7,16 +7,17 @@ import frontend.core.State;
 import frontend.tasks.Task;
 import frontend.ui.ComputableIntegerTextfieldUI;
 import processing.core.PApplet;
+import soundengine.SoundEngine;
 
 public class NoteAugTask extends AbstractAugTask {
 	
 	private ComputableIntegerTextfieldUI pitch;
 	
-	public NoteAugTask(PApplet p, ControlP5 cp5, String taskname) {
-		super(p, cp5, taskname);
+	public NoteAugTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
+		super(p, cp5, taskname, eng);
 
 		this.pitch = new ComputableIntegerTextfieldUI(60.0f);
-		this.musicActioner = new NoteActioner(this.pitch.getDefaultValueAsInt(), this.velocity.getDefaultValueAsInt(),(int) this.duration.getValue());
+		this.musicActioner = new NoteActioner(this.pitch.getDefaultValueAsInt(), this.velocity.getDefaultValueAsInt(),(int) this.duration.getValue(), eng);
 
 //		addOnEngine();
 	}
@@ -28,14 +29,14 @@ public class NoteAugTask extends AbstractAugTask {
 
 	@Override
 	protected void addOnEngine() {
-		Main.eng.addAugmenter(this.get_gui_id(), "NOTE", getDefaultParameters());
+		this.eng.addAugmenter(this.get_gui_id(), "NOTE", getDefaultParameters());
 	}
 	
 
 	private void processPitchChange() {
 		if (pitch.update()) {
 			if (isModeUserInput())
-				Main.eng.updateAugmenter(this.get_gui_id(), "pitch : " + pitch.getValueAsInt());
+				this.eng.updateAugmenter(this.get_gui_id(), "pitch : " + pitch.getValueAsInt());
 			if (isModePlayOnce() || isModeRepeat())
 				((NoteActioner)this.musicActioner).setPitch(pitch.getValueAsInt());
 		}
@@ -68,7 +69,7 @@ public class NoteAugTask extends AbstractAugTask {
 
 	@Override
 	public Task clone_it() {
-		NoteAugTask clone = new NoteAugTask(this.p, this.cp5, this.name);
+		NoteAugTask clone = new NoteAugTask(this.p, this.cp5, this.name, this.eng);
 		clone.pitch = this.pitch;
 		clone.velocity = this.velocity;
 		clone.duration = this.duration;

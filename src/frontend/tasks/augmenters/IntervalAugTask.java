@@ -9,19 +9,20 @@ import frontend.ui.ComputableFloatTextfieldUI;
 import frontend.ui.ComputableIntegerTextfieldUI;
 import frontend.ui.ComputableIntegerTextfieldUIWithUserInput;
 import processing.core.PApplet;
+import soundengine.SoundEngine;
 
 public class IntervalAugTask extends AbstractAugTask {
 
 	private ComputableIntegerTextfieldUI root;
 	private ComputableIntegerTextfieldUI interval;
 	
-	public IntervalAugTask(PApplet p, ControlP5 cp5, String taskname) {
-		super(p, cp5, taskname);
+	public IntervalAugTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
+		super(p, cp5, taskname, eng);
 
 		this.root = new ComputableIntegerTextfieldUI(ComputableIntegerTextfieldUIWithUserInput.userInputAsDefault,-1);
 		this.interval = new ComputableIntegerTextfieldUI(5);
 		
-		this.musicActioner = new IntervalActioner(this.root.getDefaultValueAsInt(), 5, this.velocity.getDefaultValueAsInt(),(int) this.duration.getValue());
+		this.musicActioner = new IntervalActioner(this.root.getDefaultValueAsInt(), 5, this.velocity.getDefaultValueAsInt(),(int) this.duration.getValue(), eng);
 
 //		addOnEngine();
 	}
@@ -51,13 +52,13 @@ public class IntervalAugTask extends AbstractAugTask {
 
 	@Override
 	protected void addOnEngine() {
-		Main.eng.addAugmenter(this.get_gui_id(), "INTERVAL", getDefaultParameters());
+		this.eng.addAugmenter(this.get_gui_id(), "INTERVAL", getDefaultParameters());
 	}
 	
 	private void processRootChange() {
 		if (root.update()) {
 			if (isModeUserInput())
-				Main.eng.updateAugmenter(this.get_gui_id(), "root : " + root.getValueAsInt());
+				this.eng.updateAugmenter(this.get_gui_id(), "root : " + root.getValueAsInt());
 			if (isModePlayOnce() || isModeRepeat())
 				((IntervalActioner)this.musicActioner).setRoot(root.getValueAsInt());
 		}
@@ -66,7 +67,7 @@ public class IntervalAugTask extends AbstractAugTask {
 	private void processIntervalChange() {
 		if (interval.update()) {
 			if (isModeUserInput())
-				Main.eng.updateAugmenter(this.get_gui_id(), "type : " + interval.getValueAsInt());
+				this.eng.updateAugmenter(this.get_gui_id(), "type : " + interval.getValueAsInt());
 			if (isModePlayOnce() || isModeRepeat())
 				((IntervalActioner)this.musicActioner).setInterval(root.getValueAsInt()+interval.getValueAsInt());
 		}
@@ -102,7 +103,7 @@ public class IntervalAugTask extends AbstractAugTask {
 
 	@Override
 	public Task clone_it() {
-		IntervalAugTask clone = new IntervalAugTask(this.p, this.cp5, this.name);
+		IntervalAugTask clone = new IntervalAugTask(this.p, this.cp5, this.name, this.eng);
 		clone.root = this.root;
 		clone.interval = this.interval;
 		clone.velocity = this.velocity;

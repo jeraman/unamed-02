@@ -2,6 +2,7 @@ package frontend.core;
 
 
 import processing.core.PApplet;
+import soundengine.SoundEngine;
 
 import java.util.UUID;
 import java.util.Vector;
@@ -17,29 +18,29 @@ public class StateMachine extends Task {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	State begin;
-	State actual;
-	Vector<State> states;
-	String title; //this should be the name. the super name should be an id instead.
+	private State begin;
+	private State actual;
+	private Vector<State> states;
+	protected String title; //this should be the name. the super name should be an id instead.
 
-	float stateTimerMilestone = 0;
-	float stateTimer          = 0;
+	private float stateTimerMilestone = 0;
+	private float stateTimer          = 0;
 	public boolean debug;
-	boolean brandnew; //has the user added  any state or task added to this state machine?
+	private boolean brandnew; //has the user added  any state or task added to this state machine?
 
-	transient StateMachinePreview smp;
+	private transient StateMachinePreview smp;
 
 	//contructor
 	public StateMachine (PApplet p, ControlP5 cp5, String name) {
-		super (p, cp5, name);
+		super (p, cp5, name, new SoundEngine(Main.minim()));
 		title   = name;
-		begin   = new State(p, cp5, "BEGIN");
+		begin   = new State(p, cp5, "BEGIN", this.eng);
 		states  = new Vector<State>();
 		debug = Main.instance().debug();
 		
 		brandnew = true;
 		actual = begin;
-
+		
 		if (debug)
 			System.out.println("State_Machine " + this.name + " is inited!");
 	}
@@ -314,6 +315,14 @@ public class StateMachine extends Task {
 	
 	boolean is_brandnew() {
 		return brandnew;
+	}
+	
+	public void noteOn(int channel, int pitch, int velocity) {
+		this.eng.noteOn(channel, pitch, velocity);
+	}
+
+	public void noteOff(int channel, int pitch, int velocity) {
+		this.eng.noteOff(channel, pitch, velocity);
 	}
 
 	//add a state s to this State_Machine

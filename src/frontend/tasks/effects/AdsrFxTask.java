@@ -7,6 +7,7 @@ import frontend.core.State;
 import frontend.tasks.Task;
 import frontend.ui.ComputableFloatTextfieldUI;
 import processing.core.PApplet;
+import soundengine.SoundEngine;
 
 public class AdsrFxTask extends AbstractFxTask {
 	
@@ -19,8 +20,8 @@ public class AdsrFxTask extends AbstractFxTask {
 	private ComputableFloatTextfieldUI aftAmp;
 	
 	
-	public AdsrFxTask(PApplet p, ControlP5 cp5, String taskname) {
-		super(p, cp5, taskname);
+	public AdsrFxTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
+		super(p, cp5, taskname, eng);
 		this.maxAmp = new ComputableFloatTextfieldUI(1f);
 		this.attTime = new ComputableFloatTextfieldUI(0.1f);;
 		this.decTime = new ComputableFloatTextfieldUI(0.5f);;
@@ -33,7 +34,7 @@ public class AdsrFxTask extends AbstractFxTask {
 	}
 	
 	public void addToEngine() {
-		Main.eng.addEffect(this.get_gui_id(), "ADSR", getDefaultParameters());
+		this.eng.addEffect(this.get_gui_id(), "ADSR", getDefaultParameters());
 	}
 	
 	protected String[] getDefaultParameters(){
@@ -51,32 +52,32 @@ public class AdsrFxTask extends AbstractFxTask {
 	
 	private void processMaxAmpChange() {
 		if (maxAmp.update())
-			Main.eng.updateEffect(this.get_gui_id(), "maxAmp : " + maxAmp.getValue());
+			this.eng.updateEffect(this.get_gui_id(), "maxAmp : " + maxAmp.getValue());
 	}
 	
 	private void processAttTimeChange() {
 		if (attTime.update())
-			Main.eng.updateEffect(this.get_gui_id(), "attTime : " + attTime.getValue());
+			this.eng.updateEffect(this.get_gui_id(), "attTime : " + attTime.getValue());
 	}
 	private void processDecTimeChange() {
 		if (decTime.update())
-			Main.eng.updateEffect(this.get_gui_id(), "decTime : " + decTime.getValue());
+			this.eng.updateEffect(this.get_gui_id(), "decTime : " + decTime.getValue());
 	}
 	private void processSusLvlChange() {
 		if (susLvl.update())
-			Main.eng.updateEffect(this.get_gui_id(), "susLvl : " + susLvl.getValue());
+			this.eng.updateEffect(this.get_gui_id(), "susLvl : " + susLvl.getValue());
 	}
 	private void processRelTimeChange() {
 		if (relTime.update())
-			Main.eng.updateEffect(this.get_gui_id(), "relTime : " + relTime.getValue());
+			this.eng.updateEffect(this.get_gui_id(), "relTime : " + relTime.getValue());
 	}
 	private void processBefAmpChange() {
 		if (befAmp.update())
-			Main.eng.updateEffect(this.get_gui_id(), "befAmp : " + befAmp.getValue());
+			this.eng.updateEffect(this.get_gui_id(), "befAmp : " + befAmp.getValue());
 	}
 	private void processAftAmpChange() {
 		if (aftAmp.update())
-			Main.eng.updateEffect(this.get_gui_id(), "aftAmp : " + aftAmp.getValue());
+			this.eng.updateEffect(this.get_gui_id(), "aftAmp : " + aftAmp.getValue());
 	}
 	
 	@Override
@@ -92,7 +93,7 @@ public class AdsrFxTask extends AbstractFxTask {
 	
 	@Override
 	public Task clone_it() {
-		AdsrFxTask clone = new AdsrFxTask(this.p, this.cp5, this.name);
+		AdsrFxTask clone = new AdsrFxTask(this.p, this.cp5, this.name, this.eng);
 		clone.maxAmp = this.maxAmp;
 		clone.attTime = this.attTime;
 		clone.decTime = this.decTime;

@@ -13,19 +13,20 @@ import frontend.tasks.generators.OscillatorGenTask;
 import frontend.ui.TextfieldUi;
 import frontend.ui.ToggleUi;
 import processing.core.PApplet;
+import soundengine.SoundEngine;
 import soundengine.util.Util;
 
 
 public class DefaultBBTask extends AbstractBBTask {
 
-	public DefaultBBTask(PApplet p, ControlP5 cp5, String taskname) {
-		super(p, cp5, taskname);
+	public DefaultBBTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
+		super(p, cp5, taskname, eng);
 		this.value = new TextfieldUi("0");
 	}
 	
 	@Override
 	public Task clone_it() {
-		DefaultBBTask clone = new DefaultBBTask(this.p, this.cp5, this.name);
+		DefaultBBTask clone = new DefaultBBTask(this.p, this.cp5, this.name, this.eng);
 		clone.variableName = this.variableName;
 		clone.value = this.value;
 		clone.timer = this.timer;
