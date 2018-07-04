@@ -646,7 +646,7 @@ public class StateMachine extends Task {
 		  int w 					= g.getWidth()-(localx*2);
 		  
 		  textlabel 	 			= "State Machine";
-		  backgroundheight 			= (int)(localoffset * 5.5);
+		  backgroundheight 			= (int)(localoffset * 3.8);
 		    
 		  g.setBackgroundHeight(backgroundheight);
 		  g.setLabel(textlabel);
@@ -675,7 +675,7 @@ public class StateMachine extends Task {
 		.setGroup(g)
 		;
 
-		createGuiToggle(localx, localy+(int)(3.8*localoffset), w, g, callbackRepeatToggle());
+		//createGuiToggle(localx, localy+(int)(3.8*localoffset), w, g, callbackRepeatToggle());
 
 		return g;
 	}

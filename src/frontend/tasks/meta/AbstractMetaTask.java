@@ -1,6 +1,7 @@
 package frontend.tasks.meta;
 
 import controlP5.ControlP5;
+import frontend.core.Status;
 import frontend.tasks.Task;
 import processing.core.PApplet;
 
@@ -16,10 +17,12 @@ abstract class AbstractMetaTask extends Task {
 	}
 
 	public void start() {
+		this.status = Status.RUNNING;
 		System.out.println("starting the following MetaTask: " + this);
 	}
 
 	public void stop() {
+		this.status = Status.DONE;
 		System.out.println("stopping the following DMX task " + this);
 	}
 	

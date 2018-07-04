@@ -3,6 +3,7 @@ package frontend.tasks.blackboard;
 import controlP5.ControlP5;
 import frontend.Main;
 import frontend.core.Blackboard;
+import frontend.core.Status;
 import frontend.tasks.Task;
 import frontend.ui.TextfieldUi;
 import frontend.ui.ToggleUi;
@@ -33,10 +34,12 @@ abstract class AbstractBBTask extends Task {
 	
 	
 	public void start() {
+//		this.status = Status.RUNNING;
 		System.out.println("starting the following AbstractBBTask: " + this);
 	}
 	
 	public void stop() {
+//		this.status = Status.DONE;
 		System.out.println("stopping the following AbstractBBTask: " + this);
 	}
 
@@ -82,7 +85,7 @@ abstract class AbstractBBTask extends Task {
 	public void updateVariable() {
 		//System.out.println("updating variable: " + value.evaluate());
 		Blackboard board = Main.instance().board();
-		board.put(variableName.getValue(), value.evaluate());
+		board.put(variableName.getValue(), value.evaluateAsFloat());
 	}
 	
 	@Override

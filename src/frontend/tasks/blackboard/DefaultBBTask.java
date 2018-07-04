@@ -33,6 +33,11 @@ public class DefaultBBTask extends AbstractBBTask {
 		return clone;
 	}
 	
+	public void updateVariable() {
+		Blackboard board = Main.instance().board();
+		board.put(variableName.getValue(), value.evaluate());
+	}
+	
 	public boolean isFirstCycle() {
 		return first_time;
 	}

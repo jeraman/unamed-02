@@ -37,23 +37,29 @@ public class ConnectionPriorityDropdownUi extends AbstractElementUi {
 	}
 	
 	public void remove() {
-		this.dropdownlist.remove();
+		if (dropdownlist != null)
+			this.dropdownlist.remove();
 	}
-	
+
 	public void hide() {
-		this.dropdownlist.hide();
+		if (dropdownlist != null)
+			this.dropdownlist.hide();
 	}
-	
+
 	public void show() {
-		this.dropdownlist.show();
+		if (dropdownlist != null)
+			this.dropdownlist.show();
 	}
-	
+
 	public void setPosition(int newx, int newy) {
-		this.dropdownlist.setPosition(newx, newy);
+		if (dropdownlist != null)
+			this.dropdownlist.setPosition(newx, newy);
 	}
 	
 	public boolean isMouseOver() {
-		return this.dropdownlist.isMouseOver();
+		if (dropdownlist != null) 
+			return this.dropdownlist.isMouseOver();
+		else return false;
 	}
 
 	@Override

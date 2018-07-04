@@ -14,9 +14,12 @@ public class ConnectionTextfieldUi extends TextfieldUi {
 
 	private static final String classDefaultText = "true";
 	public static final int width = 20;
-	private int currentBackgroundColor; 
-	
+	private int currentBackgroundColor;
 
+	
+	public ConnectionTextfieldUi() {
+		this(classDefaultText);
+	}
 	public ConnectionTextfieldUi(String defaultText) {
 		super(defaultText);
 	}
@@ -28,7 +31,7 @@ public class ConnectionTextfieldUi extends TextfieldUi {
 			textfield.setColorForeground(currentBackgroundColor);
 		}
 	}
-	
+
 	protected void setErrorColorOnTextfield() {
 		if (textfield != null) {
 			currentBackgroundColor = errorColor;
@@ -42,36 +45,43 @@ public class ConnectionTextfieldUi extends TextfieldUi {
 	}
 
 	public void remove() {
-		this.textfield.remove();
+		if (textfield != null)
+			this.textfield.remove();
 	}
 
 	public void hide() {
-		this.textfield.hide();
+		if (textfield != null)
+			this.textfield.hide();
 	}
 
 	public void show() {
-		this.textfield.show();
+		if (textfield != null)
+			this.textfield.show();
 	}
 
 	public void setPosition(int x, int y) {
-		this.textfield.setPosition(x + width, y);
+		if (textfield != null)
+			this.textfield.setPosition(x + width, y);
 	}
 
 	public boolean isMouseOver() {
-		return this.textfield.isMouseOver();
+		if (textfield != null)
+			return this.textfield.isMouseOver();
+		else
+			return false;
 	}
 
 	public int getLabelWidth() {
 		String currentText;
-		
+
 		if (textfield != null)
 			currentText = textfield.getText().trim();
 		else
 			currentText = value;
-			
+
 		return (int) (width + (Main.instance().textWidth(currentText)));
 	}
-	
+
 	protected void resizeTextfieldWidth() {
 		textfield.setWidth(getLabelWidth());
 	}
@@ -84,18 +94,11 @@ public class ConnectionTextfieldUi extends TextfieldUi {
 	public void createUI(String id) {
 		this.textfield = cp5.addTextfield(id + "/condition").setText(value).setColorValue(whiteColor)
 				.setColorBackground(defaultBackgroundConnectionColor)
-				.setColorForeground(defaultBackgroundConnectionColor)
-				.setColorValue(whiteColor)
-				.setWidth(getLabelWidth())
-				.setHeight(15)
-				.setFocus(false)
-				.onEnter(generate_callback_textfield_enter()) 
-				.onLeave(generate_callback_textfield_leave()) 
-				.onClick(callbackEmptyWhenUsingUserInput())
-				.onChange(callbackPressEnterOrOutside())
-				.onReleaseOutside(callbackPressEnterOrOutside())
-				.setAutoClear(false)
-				.setLabel("");
+				.setColorForeground(defaultBackgroundConnectionColor).setColorValue(whiteColor)
+				.setWidth(getLabelWidth()).setHeight(15).setFocus(false).onEnter(generate_callback_textfield_enter())
+				.onLeave(generate_callback_textfield_leave()).onClick(callbackEmptyWhenUsingUserInput())
+				.onChange(callbackPressEnterOrOutside()).onReleaseOutside(callbackPressEnterOrOutside())
+				.setAutoClear(false).setLabel("");
 	}
 
 	CallbackListener generate_callback_textfield_enter() {
@@ -115,25 +118,26 @@ public class ConnectionTextfieldUi extends TextfieldUi {
 			}
 		};
 	}
-	
+
 	protected CallbackListener callbackPressEnterOrOutside() {
 		return new CallbackListener() {
 			public void controlEvent(CallbackEvent theEvent) {
 				String content = theEvent.getController().getValueLabel().getText();
-				
-				//if there parameter should be controlled via user input, do nothing
+
+				// if there parameter should be controlled via user input, do
+				// nothing
 				if (content.trim().equals(defaultText))
 					return;
-				
-				//if user deleted the text, sets user input as default value
+
+				// if user deleted the text, sets user input as default value
 				if (content.trim().equals("")) {
 					content = defaultText;
 					textfield.setText(content);
 				}
-		
+
 				System.out.println("getLabelWidth " + getLabelWidth());
 				resizeTextfieldWidth();
-				setValue(content);	
+				setValue(content);
 				evaluateAsBoolean();
 			}
 		};

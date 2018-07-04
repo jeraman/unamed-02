@@ -2,6 +2,7 @@ package frontend.tasks.generators;
 
 import controlP5.ControlP5;
 import frontend.Main;
+import frontend.core.Status;
 import frontend.tasks.Task;
 import processing.core.PApplet;
 
@@ -23,10 +24,12 @@ abstract class AbstractGenTask extends Task {
 	}
 	
 	public void start() {
+//		this.status = Status.RUNNING;
 		this.addToEngine();
 	}
 	
 	public void stop() {
+//		this.status = Status.DONE;
 		this.removeFromEngine();
 	}
 	

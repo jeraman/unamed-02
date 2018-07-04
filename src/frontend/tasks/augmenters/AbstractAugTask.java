@@ -7,6 +7,7 @@ import controlP5.ControlP5;
 import controlP5.Group;
 import frontend.Main;
 import frontend.core.State;
+import frontend.core.Status;
 import frontend.tasks.Task;
 import frontend.ui.ComputableFloatTextfieldUI;
 import frontend.ui.ComputableFloatTextfieldUIWithUserInput;
@@ -125,10 +126,12 @@ public abstract class AbstractAugTask extends Task {
 	}
 
 	public void start() {
+//		this.status = Status.RUNNING;
 		this.addOnEngine();
 	}
 	
 	public void stop() {
+//		this.status = Status.DONE;
 		this.removeFromEngine();
 	}
 	

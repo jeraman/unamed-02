@@ -22,12 +22,6 @@ public class TestParameterUpdateOnSoundEngine extends PApplet {
 		MidiIO.setup(this);
 	}
 
-	public void update() {
-	}
-
-	public void stop() {
-	}
-
 	public void draw() {
 		background(0);
 	}

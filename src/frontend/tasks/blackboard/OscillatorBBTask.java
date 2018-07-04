@@ -36,13 +36,12 @@ public class OscillatorBBTask extends AbstractBBTask {
 	    
 		float amp_val = amplitude.getValue();
 		this.value = new TextfieldUi(amp_val + "*math.sin(" + form.format(timer)+ "*2*math.PI*" + form.format(freq_val) + ")");
-		System.out.println("freq_val: " + freq_val);
-		System.out.println("exp: " + value.getValue());
-		System.out.println("result: " + value.evaluateAsFloat());
+//		System.out.println("freq_val: " + freq_val);
+//		System.out.println("exp: " + value.getValue());
+//		System.out.println("result: " + value.evaluateAsFloat());
+//		float javaresult = (float) (amp_val*Math.sin(timer*2*Math.PI*freq_val));
+//		System.out.println("java result: " +  javaresult);
 		
-		float javaresult = (float) (amp_val*Math.sin(timer*2*Math.PI*freq_val));
-		
-		System.out.println("java result: " +  javaresult);
 		
 	}
 	

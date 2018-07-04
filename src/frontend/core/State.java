@@ -666,11 +666,11 @@ public class State implements Serializable {
 	@Deprecated
 	void update_status() {
 
-//		// if there are no tasks, the state is done
+		// if there are no tasks, the state is done
 //		if (tasks.size() == 0)
 //			this.status = Status.DONE;
-//
-//		// gets the status of the tasks associated to this state and updates accordingly
+
+		// gets the status of the tasks associated to this state and updates accordingly
 //		for (Task t : tasks) {
 //			Status temporary_status = t.get_status();
 //			// updates accordingly
