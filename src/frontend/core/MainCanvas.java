@@ -110,7 +110,7 @@ public class MainCanvas {
 	//creates a new state and adds its to the root state machine
 	void create_state() {
 		System.out.println("creates a state");
-		State newState = new State(p, cp5, "NEW_STATE_" + ((int)p.random(0, 10)), this.root.eng, p.mouseX, p.mouseY);
+		State newState = new State(p, cp5, "NEW_STATE_" + ((int)p.random(0, 10)), this.sm_stack.lastElement().eng, p.mouseX, p.mouseY);
 		//root.add_state(newState);
 		this.add_state(newState);
 	}

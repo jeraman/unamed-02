@@ -77,7 +77,7 @@ public class SampleGenTask extends AbstractGenTask {
 	
 	private void processLoopChange() {
 		if (loopStatus.update()) {
-			System.out.println("update loop " + duration.getValue());
+			System.out.println("update loop " + loopStatus.getValue());
 			this.eng.updateGenerator(this.get_gui_id(), "loop : " + loopStatus.getValue());
 		}
 	}

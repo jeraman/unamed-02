@@ -30,7 +30,6 @@ public class Main extends PApplet {
 	public MainCanvas canvas;
 	public Blackboard board;
 	public Serializer serializer;
-	// public static SoundEngine eng;
 
 	private static OscP5 oscP5; // my osc variables
 	private static ControlP5 cp5; // my controlP5 variable for gui
@@ -95,7 +94,6 @@ public class Main extends PApplet {
 
 	void setupAudio() {
 		this.minim = new Minim(this);
-		// eng = new SoundEngine(minim);
 		MidiIO.setup(this);
 	}
 
@@ -337,10 +335,6 @@ public class Main extends PApplet {
 	public MainCanvas canvas() {
 		return canvas;
 	}
-
-	//public SoundEngine soundEngine() {
-	//	return eng;
-	//}
 
 	public boolean debug() {
 		return debug;

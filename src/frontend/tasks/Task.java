@@ -153,10 +153,14 @@ public abstract class Task implements Serializable {
 	public abstract void stop();
 
 	public abstract Task clone_it();
+	
+	public void removeElementUi() {
+		System.out.println("removing task " + get_gui_id());
+		cp5.getGroup(get_gui_id()).remove();
+	}
 
 	public void closeTask() {
-		p.println("removing task " + get_gui_id());
-		cp5.getGroup(get_gui_id()).remove();
+		removeElementUi();
 	}
 
 	//////////////////////////////
