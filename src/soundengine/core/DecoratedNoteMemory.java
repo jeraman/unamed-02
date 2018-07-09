@@ -73,8 +73,6 @@ public class DecoratedNoteMemory {
 	public synchronized boolean isQueuedToBeDeleted (int note) {
 		return removalLine.contains(note);
 	}
-	
-	
 
 	private synchronized void controlsNumberOfConcurrentNotes() {
 		if (isBiggerThanNoteLimit())

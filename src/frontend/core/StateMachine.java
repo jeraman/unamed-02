@@ -319,10 +319,12 @@ public class StateMachine extends Task {
 	
 	public void noteOn(int channel, int pitch, int velocity) {
 		this.eng.noteOn(channel, pitch, velocity);
+		this.actual.forwardNoteOnToSubStateMachines(channel, pitch, velocity);
 	}
 
 	public void noteOff(int channel, int pitch, int velocity) {
 		this.eng.noteOff(channel, pitch, velocity);
+		this.actual.forwardNoteOffToSubStateMachines(channel, pitch, velocity);
 	}
 
 	//add a state s to this State_Machine

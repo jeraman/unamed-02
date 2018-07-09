@@ -704,6 +704,18 @@ public class State implements Serializable {
 				t.run();
 			}
 	}
+	
+	public void forwardNoteOnToSubStateMachines(int channel, int pitch, int velocity) {
+		for (Task t : tasks)
+			if (t instanceof StateMachine)
+				((StateMachine)t).noteOn(channel, pitch, velocity);
+	}
+
+	public void forwardNoteOffToSubStateMachines(int channel, int pitch, int velocity) {
+		for (Task t : tasks)
+			if (t instanceof StateMachine)
+				((StateMachine)t).noteOff(channel, pitch, velocity);
+	}
 
 	/*******************************************
 	 ** GUI FUNCTIONS ***************************
@@ -1494,5 +1506,4 @@ public class State implements Serializable {
 				c.init_gui_items();
 		}
 	}
-
 }
