@@ -161,6 +161,7 @@ public abstract class Task implements Serializable {
 
 	public void closeTask() {
 		removeElementUi();
+		this.stop();
 	}
 
 	//////////////////////////////

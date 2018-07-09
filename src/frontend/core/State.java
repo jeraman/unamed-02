@@ -1043,8 +1043,8 @@ public class State implements Serializable {
 			return;
 		}
 		
-		//t.closeTask();
-		t.removeElementUi();
+		t.closeTask();
+		//t.removeElementUi();
 		//cp5.getGroup(t.get_gui_id()).remove();
 		// cp5.getGroup(this.name + " " + t.get_name()).remove();
 	}
