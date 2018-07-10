@@ -40,8 +40,13 @@ public class TempoControl {
 	public void updateMusicalTime() {
 		this.ui.updateMusicalTime();
 	}
+	
+	public void updatePosition() {
+		this.ui.updatePosition();
+	}
 
 	public void update() {
+		this.updatePosition();
 		if(this.shouldUpdate) {
 			this.updateElapsedTime();
 			this.updateMusicalTime();		

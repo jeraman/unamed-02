@@ -6,6 +6,8 @@ import processing.core.PApplet;
 import java.util.regex.*;
 import javax.script.ScriptException;
 import frontend.Main;
+import frontend.ui.AbstractElementUi;
+
 import java.util.*;
 import java.math.BigDecimal;
 import oscP5.*;
@@ -206,7 +208,7 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 
 		// header
 		p.noStroke();
-		p.fill(255, 50);
+		p.fill(AbstractElementUi.blackboardBackgroundColor);
 		p.rectMode(p.CENTER);
 //		p.rect(posx, posy, mywidth, myheight);
 //		p.rect(posx + xoffset, posy, mywidth, myheight);
@@ -214,7 +216,7 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 		p.rect(posx , posy, mywidth, myheight);
 		p.rect(posx + 1 + mywidth, posy, mywidth-1, myheight);
 
-		p.fill(200);
+		p.fill(AbstractElementUi.whiteColor);
 		p.textAlign(p.CENTER, p.CENTER);
 
 		String type_name = var_value.getClass().getName();

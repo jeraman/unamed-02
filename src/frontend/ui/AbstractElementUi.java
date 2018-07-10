@@ -19,14 +19,14 @@ public abstract class AbstractElementUi implements Serializable {
 	transient protected static ControlP5 cp5;
 	
 	protected static final String userInputAsDefault = "(USER INPUT)";
-	protected static final int defaultTaskColor = ControlP5Constants.THEME_CP52014.getBackground();
-	protected static final int connectionBackgroundColor = Main.instance().color(0, 0, 0, 50);
-	protected static final int connectionForegroundColor = Main.instance().color(0, 116, 217, 200);
-	protected static final int blackboardBackgroundColor = Main.instance().color(255, 50);
-	protected static final int blackboardForegroundColor = Main.instance().color(255, 100);
-	protected static final int blackboardHeaderColor = Main.instance().color(255, 200);
-	protected static final int blackboardHeaderTextColor = Main.instance().color(50);
-	protected static final int whiteColor = Main.instance().color(255, 255);
+	public static final int defaultTaskColor = ControlP5Constants.THEME_CP52014.getBackground();
+	public static final int connectionBackgroundColor = Main.instance().color(0, 0, 0, 50);
+	public static final int connectionForegroundColor = Main.instance().color(0, 116, 217, 200);
+	public static final int blackboardBackgroundColor = Main.instance().color(255, 50);
+	public static final int blackboardForegroundColor = Main.instance().color(255, 100);
+	public static final int blackboardHeaderColor = Main.instance().color(255, 200);
+	public static final int blackboardHeaderTextColor = Main.instance().color(50);
+	public static final int whiteColor = Main.instance().color(255, 255);
 	protected static final int errorColor = ControlP5Constants.THEME_RED.getBackground();
 	protected static final int defaultHeight = 15;
 	protected static int font_size;
