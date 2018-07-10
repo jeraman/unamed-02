@@ -106,7 +106,7 @@ class Metro extends AbstractTimeMeter {
 
 	public void start() {
 		this.currentBar = 0;
-		this.currentBeat = 0;
+		this.currentBeat = 3;
 		this.currentNoteCount = 0;
 
 		super.start();
@@ -116,6 +116,11 @@ class Metro extends AbstractTimeMeter {
 	public void run() {
 
 		while (this.isAlive()) {
+			if (currentBeat == 3) 
+				playBar1();
+			
+			playBars234();
+			
 			int time = (int) 60 * 1000 / this.bpm;
 			
 			float mult = this.globalNoteValue/4f;
@@ -123,10 +128,6 @@ class Metro extends AbstractTimeMeter {
 			
 			Util.delay(adaptedTime);
 
-			playBars234();
-			
-			if (currentBeat == 0) 
-				playBar1();
 		}
 	}
 
@@ -134,16 +135,15 @@ class Metro extends AbstractTimeMeter {
 		currentBar = currentBar + 1;
 		
 		if (shouldSound) {
-			sample.setGain(-10);
+			sample.setGain(-5);
 			sample.trigger();
 		}
 	}
 
 	private void playBars234() {
 		currentBeat = (currentBeat + 1) % globalBeat;
-
 		if (shouldSound) {
-			sample.setGain(-20);
+			sample.setGain(-25);
 			sample.trigger();
 		}
 	}
