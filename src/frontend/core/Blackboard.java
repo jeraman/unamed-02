@@ -46,12 +46,12 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 		// init_global_variables();
 	}
 
-	public int getMywidth() {
-		return mywidth;
+	public int getWidth() {
+		return mywidth*3;
 	}
 
-	public int getMyheight() {
-		return myheight;
+	public int getHeight() {
+		return myheight*(this.size()+3);
 	}
 
 	public int getX() {

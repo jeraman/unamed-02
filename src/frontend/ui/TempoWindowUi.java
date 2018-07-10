@@ -65,9 +65,9 @@ public class TempoWindowUi extends AbstractElementUi {
 	}
 	
 	public void createUi() {
-		int width = Main.instance().board().getMywidth()*3;
+		int width = Main.instance().board().getWidth();
 		int x = Main.instance().board().getX()-30;
-		int y = Main.instance().board().getY() + 170;
+		int y = Main.instance().board().getY() + Main.instance().board().getHeight();
 		
 		g = cp5.addGroup("tempo")
 				.setPosition(250, 100).setWidth(width)
