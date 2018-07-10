@@ -57,18 +57,16 @@ public class Main extends PApplet {
 	}
 
 	public void setup() {
+		inst = this;
 		setupUtil();
 		setupAudio();
-
+		AbstractElementUi.setup(cp5, this);
 		this.serializer = new Serializer(this);
 		is_loading = true;
 		background(0);
 		smooth();
-		inst = this;
 		board = new Blackboard(this);
 		canvas = new MainCanvas(this, cp5);
-
-		AbstractElementUi.setup(cp5, this);
 
 		setup_expression_loading_bug();
 

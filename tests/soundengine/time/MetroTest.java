@@ -28,7 +28,7 @@ public class MetroTest extends PApplet {
 	public void setup() {
 		background(0);
 		new SoundEngine(new Minim(this));
-		tm = new TimeManager(120, 4, 4);
+		tm = new TimeManager(120, 7, 3);
 	}
 
 	public void keyPressed() {

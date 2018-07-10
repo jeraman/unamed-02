@@ -15,8 +15,10 @@ import java.util.Vector;
 
 public class MainCanvas {
 
-	public StateMachine  root; 	 //my basic state machine
-	Vector<StateMachine> sm_stack; //a stack of sm used for allowing hierarchy
+	public StateMachine root; // my basic state machine
+	Vector<StateMachine> sm_stack; // a stack of sm used for allowing hierarchy
+
+	private TempoControl timeCounter;
 
 	transient private Main p;
 	transient private ControlP5 cp5;
@@ -24,18 +26,19 @@ public class MainCanvas {
 
 	private boolean is_running;
 
-	//contructor
-	public MainCanvas (Main p, ControlP5 cp5) {
+	// contructor
+	public MainCanvas(Main p, ControlP5 cp5) {
 		this.p = p;
 		this.cp5 = cp5;
-		is_running = false;
-		
-		init_buttons();
 
+		is_running = false;
+		init_buttons();
 		setup();
+		this.timeCounter = new TempoControl();
+		this.timeCounter.createUi(p.width / 2, p.height / 2);
 	}
-	
-	public boolean is_running () {
+
+	public boolean is_running() {
 		return is_running;
 	}
 
@@ -45,49 +48,50 @@ public class MainCanvas {
 		this.cp5 = cp5;
 		root.build(p, cp5);
 		this.init_buttons();
-		//root.show();
+		// root.show();
 	}
 
-	//init my variables
-	void setup(){
+	// init my variables
+	void setup() {
 
-		//ControlP5 cp5 = HFSMPrototype.instance().cp5();
+		// ControlP5 cp5 = HFSMPrototype.instance().cp5();
 
-		root      = new StateMachine(this.p, cp5, "unsaved file");
-		sm_stack  = new Vector<StateMachine>();
+		root = new StateMachine(this.p, cp5, "unsaved file");
+		sm_stack = new Vector<StateMachine>();
 		sm_stack.add(root);
 
 		root.show();
-		
+
 		close_preview.hide();
 	}
-	
-	//initting a new root
-	void setup(StateMachine newsm){
-		root      = newsm;
+
+	// initting a new root
+	void setup(StateMachine newsm) {
+		root = newsm;
 		root.build(p, cp5);
-		sm_stack  = new Vector<StateMachine>();
+		sm_stack = new Vector<StateMachine>();
 		sm_stack.add(newsm);
 
 		root.show();
 		close_preview.hide();
 	}
 
-	//draw method
-	public void draw(){
+	// draw method
+	public void draw() {
 
-		//executes the hfsm
+		this.updateTime();
+		// executes the hfsm
 		root.tick();
-		//sm_stack.lastElement().tick();
+		// sm_stack.lastElement().tick();
 
-		//drawing the root
-		//root.show();
-		//root.draw();
-		//sm_stack.lastElement().show();
+		// drawing the root
+		// root.show();
+		// root.draw();
+		// sm_stack.lastElement().show();
 		sm_stack.lastElement().draw();
 		draw_names();
 	}
-	
+
 	public void noteOn(int channel, int pitch, int velocity) {
 		this.root.noteOn(channel, pitch, velocity);
 	}
@@ -99,62 +103,70 @@ public class MainCanvas {
 	void draw_names() {
 		p.fill(255);
 		p.textAlign(p.LEFT);
-		String text = root.title.toUpperCase() +" (ROOT)";	
-		
-		for (int i = 1; i < sm_stack.size(); i++) 
+		String text = root.title.toUpperCase() + " (ROOT)";
+
+		for (int i = 1; i < sm_stack.size(); i++)
 			text += "   >   " + (sm_stack.get(i).title).toUpperCase();
-		
+
 		p.text(text, 20, 20);
 	}
 
-	//creates a new state and adds its to the root state machine
+	// creates a new state and adds its to the root state machine
 	void create_state() {
 		System.out.println("creates a state");
-		State newState = new State(p, cp5, "NEW_STATE_" + ((int)p.random(0, 10)), this.sm_stack.lastElement().eng, p.mouseX, p.mouseY);
-		//root.add_state(newState);
+		State newState = new State(p, cp5, "NEW_STATE_" + ((int) p.random(0, 10)), this.sm_stack.lastElement().eng,
+				p.mouseX, p.mouseY);
+		// root.add_state(newState);
 		this.add_state(newState);
 	}
-	
+
 	void add_state(State newState) {
 		newState.show_gui();
 		sm_stack.lastElement().add_state(newState);
 		newState.connect_anything_else_to_self();
 	}
 
-	//gets the state where the mouse is hoving and removes it form the root state machine
+	// gets the state where the mouse is hoving and removes it form the root
+	// state machine
 	void remove_state() {
 		System.out.println("remove a state");
-		//root.remove_state(p.mouseX, p.mouseY);
+		// root.remove_state(p.mouseX, p.mouseY);
 		sm_stack.lastElement().remove_state(p.mouseX, p.mouseY);
 	}
-	
-	StateMachine get_actual_statemachine () {
+
+	StateMachine get_actual_statemachine() {
 		return sm_stack.lastElement();
 	}
 
-	//clears the root (not the current exhibited sm)
+	// clears the root (not the current exhibited sm)
 	void clear() {
-		//root.clear();
+		// root.clear();
 		sm_stack.lastElement().clear();
 	}
 
-	//runs the root (not the current exhibited sm)
+	// runs the root (not the current exhibited sm)
 	void start() {
 		is_running = true;
 		root.start();
 		root.run();
+		timeCounter.start();
 	}
 
-	//stops the root (not the current exhibited sm)
+	// stops the root (not the current exhibited sm)
 	void stop() {
 		is_running = false;
 		stop_server();
 		root.stop();
 		Blackboard board = Main.instance().board();
 		board.reset();
+		timeCounter.stop();
 	}
 	
-	//sends a osc message to stop all media in the server
+	private void updateTime() {
+		this.timeCounter.update();
+	}
+
+	// sends a osc message to stop all media in the server
 	void stop_server() {
 		OscMessage om = new OscMessage("/stop");
 		NetAddress na = new NetAddress(p.SERVER_IP, p.SERVER_PORT);
@@ -163,186 +175,158 @@ public class MainCanvas {
 	}
 
 	public void push_root(StateMachine new_sm) {
-		//hiding the current state machine
+		// hiding the current state machine
 		this.sm_stack.lastElement().hide();
-		//pusing the sm to be exhibited as of now
+		// pusing the sm to be exhibited as of now
 		this.sm_stack.add(new_sm);
-		//shows the new state machine
+		// shows the new state machine
 		this.sm_stack.lastElement().show();
 		this.close_preview.show();
 	}
-	
+
 	void show() {
 		sm_stack.lastElement().show();
 	}
-	
+
 	void hide() {
 		sm_stack.lastElement().hide();
 	}
 
 	void pop_root() {
-		//in case there's only the root, nevermind poping
-		if (this.sm_stack.size() == 1) return;
-		//plays the pop animation
+		// in case there's only the root, nevermind poping
+		if (this.sm_stack.size() == 1)
+			return;
+		// plays the pop animation
 		sm_stack.lastElement().close();
-		//otherwise, hides the current state machine
+		// otherwise, hides the current state machine
 		this.sm_stack.lastElement().hide();
-		//pops the last element
+		// pops the last element
 		this.sm_stack.remove(this.sm_stack.lastElement());
-		//shows the new state machine
+		// shows the new state machine
 		this.sm_stack.lastElement().show();
-		//in case this is the root, hides the button again
-		if (this.sm_stack.size() == 1) 
+		// in case this is the root, hides the button again
+		if (this.sm_stack.size() == 1)
 			this.close_preview.hide();
 	}
 
-	//processes the multiple interpretations of the '+' key
+	// processes the multiple interpretations of the '+' key
 	public void process_plus_key_pressed() {
 
-		//reinit any name the user was trying to change it
-		//root.reset_all_names_gui();
+		// reinit any name the user was trying to change it
+		// root.reset_all_names_gui();
 		sm_stack.lastElement().reset_all_names_gui();
 
-		//verifies if the mouse intersects a state
-		//State result = root.intersects_gui(p.mouseX, p.mouseY);
+		// verifies if the mouse intersects a state
+		// State result = root.intersects_gui(p.mouseX, p.mouseY);
 		State result = sm_stack.lastElement().intersects_gui(p.mouseX, p.mouseY);
 
-		//if it does not, creates a new state
-		if (result==null)
+		// if it does not, creates a new state
+		if (result == null)
 			create_state();
-		//otherwise, opens the pie menu
+		// otherwise, opens the pie menu
 		else
-			//shows the pie
+			// shows the pie
 			result.show_pie();
 
 	}
 
-	//processes the multiple interpretations of the '-' key
+	// processes the multiple interpretations of the '-' key
 	public void process_minus_key_pressed() {
 
-		//reinit any name the user was trying to change it
-		//root.reset_all_names_gui();
+		// reinit any name the user was trying to change it
+		// root.reset_all_names_gui();
 		sm_stack.lastElement().reset_all_names_gui();
 
-		//verifies if the mouse intersects a state
-		//State result = root.intersects_gui(p.mouseX, p.mouseY);
+		// verifies if the mouse intersects a state
+		// State result = root.intersects_gui(p.mouseX, p.mouseY);
 		State result = sm_stack.lastElement().intersects_gui(p.mouseX, p.mouseY);
 
-		//if it intersects no one, return
-		if (result==null) return;
+		// if it intersects no one, return
+		if (result == null)
+			return;
 
-		//first tries to close the pie menu
+		// first tries to close the pie menu
 		if (result.is_pie_menu_open())
 			result.hide_pie();
-		//otherwise, removes the state
+		// otherwise, removes the state
 		else
 			remove_state();
 	}
-	
+
 	public void process_right_mouse_button() {
-		//looks for someone to intersect
+		// looks for someone to intersect
 		State result = sm_stack.lastElement().intersects_gui(p.mouseX, p.mouseY);
 
-		//if intersected someone
-		if (result!=null)
-			//shows the pie
+		// if intersected someone
+		if (result != null)
+			// shows the pie
 			result.show_or_hide_pie();
 	}
-	
 
 	public void process_copy() {
 		p.println("copying!");
-		
-		//verifies if the mouse intersects a state
+
+		// verifies if the mouse intersects a state
 		State result = sm_stack.lastElement().intersects_gui(p.mouseX, p.mouseY);
-		
-		//if it intersects no one, return
-		if (result==null) return;
-		
-		//clonning the intersected state
+
+		// if it intersects no one, return
+		if (result == null)
+			return;
+
+		// clonning the intersected state
 		State newState = result.clone_it();
-		//adding the new tstae to the state machine
+		// adding the new tstae to the state machine
 		add_state(newState);
-		//sets the new state to drag
+		// sets the new state to drag
 		newState.start_gui_dragging();
-		
+
 	}
 
-	//processes ui in case the shfit key was pressed
+	// processes ui in case the shfit key was pressed
 	void process_shift_key() {
 		start_dragging_connection();
 	}
-	
-	public void start_dragging_connection () {
-		//verifies if the mouse intersects a state
+
+	public void start_dragging_connection() {
+		// verifies if the mouse intersects a state
 		State result = sm_stack.lastElement().intersects_gui(p.mouseX, p.mouseY);
-		
-		//if it does not...
-		if (result!=null) {
-			//close pie menu
+
+		// if it does not...
+		if (result != null) {
+			// close pie menu
 			result.hide_pie();
-			//starts dragging
+			// starts dragging
 			result.freeze_movement_and_trigger_connection();
 		}
 	}
 
-
 	void init_buttons() {
-		int w = 4* p.FONT_SIZE;
+		int w = 4 * p.FONT_SIZE;
 		int h = w;
 		int offset = 5;
-		//int x = 20; //p.width/2;
-		int x = (p.width/2)-2*(w+offset);
-		int y = p.height-(h)-(h/4);
-
+		// int x = 20; //p.width/2;
+		int x = (p.width / 2) - 2 * (w + offset);
+		int y = p.height - (h) - (h / 4);
 
 		int back = p.color(255, 255, 255, 50);
 		int font = p.color(50);
 
 		CallbackListener cb_click = generate_callback_click();
 
-		cp5.addButton("button_play")
-		.setValue(128)
-		.setPosition(x, y)
-		.setColorBackground(back)
-		.setWidth(w)
-		.setHeight(h)
-		.onPress(cb_click)
-		.setLabel("play")
-		;
+		cp5.addButton("button_play").setValue(128).setPosition(x, y).setColorBackground(back).setWidth(w).setHeight(h)
+				.onPress(cb_click).setLabel("play");
 
+		cp5.addButton("button_stop").setValue(128).setPosition(x + w + offset, y).setColorBackground(back).setWidth(w)
+				.setHeight(h).onPress(cb_click).setLabel("stop");
 
-		cp5.addButton("button_stop")
-		.setValue(128)
-		.setPosition(x+w+offset, y)
-		.setColorBackground(back)
-		.setWidth(w)
-		.setHeight(h)
-		.onPress(cb_click)
-		.setLabel("stop")
-		;
+		// don't know why, but using b_save, button_saving generate problems in
+		// cp5
+		cp5.addButton("button_save").setValue(128).setPosition(x + (2 * w) + (2 * offset), y).setColorBackground(back)
+				.setWidth(w).setHeight(h).onPress(cb_click).setLabel("save");
 
-		//don't know why, but using b_save, button_saving generate problems in cp5
-		cp5.addButton("button_save")
-		.setValue(128)
-		.setPosition(x+(2*w)+(2*offset), y)
-		.setColorBackground(back)
-		.setWidth(w)
-		.setHeight(h)
-		.onPress(cb_click)
-		.setLabel("save")
-		;
+		cp5.addButton("button_load").setValue(128).setPosition(x + (3 * w) + (3 * offset), y).setColorBackground(back)
+				.setWidth(w).setHeight(h).onPress(cb_click).setLabel("load");
 
-		cp5.addButton("button_load")
-		.setValue(128)
-		.setPosition(x+(3*w)+(3*offset), y)
-		.setColorBackground(back)
-		.setWidth(w)
-		.setHeight(h)
-		.onPress(cb_click)
-		.setLabel("load")
-		;
-		
 		close_preview = new Button(cp5, "close_preview");
 		close_preview.setValue(128);
 		close_preview.setPosition(20, 40);
@@ -351,50 +335,52 @@ public class MainCanvas {
 		close_preview.onPress(generate_callback_close());
 	}
 
-
-	//callback functions
+	// callback functions
 	public void button_play() {
-		if (p.is_loading) return;
+		if (p.is_loading)
+			return;
 		p.println("b_play pressed");
 		this.start();
-		//p.canvas.run();
+		// p.canvas.run();
 	}
 
 	public void button_stop() {
-		if (p.is_loading) return;
+		if (p.is_loading)
+			return;
 		p.println("b_stop pressed");
 		stop();
-		//p.canvas.stop();
+		// p.canvas.stop();
 	}
-	
+
 	public void button_save() {
-		if (p.is_loading) return;
+		if (p.is_loading)
+			return;
 		p.println("b_save pressed");
 		stop();
 		save();
 	}
-	
+
 	public void save() {
 		p.serializer.save();
 		root.save();
 	}
 
 	public void button_load() {
-		if (p.is_loading) return;
+		if (p.is_loading)
+			return;
 		p.println("b_load pressed");
 		load();
 	}
-	
+
 	void load() {
 		stop();
 		p.serializer.load();
 	}
 
-	
 	CallbackListener generate_callback_close() {
 		return new CallbackListener() {
 			public void controlEvent(CallbackEvent theEvent) {
-				//close the current open state machine
+				// close the current open state machine
 				pop_root();
 				p.println("should close it!!!!");
 			}
@@ -407,10 +393,14 @@ public class MainCanvas {
 
 				String s = theEvent.getController().getName();
 
-				if (s.equals("button_play")) button_play();
-				if (s.equals("button_stop")) button_stop();
-				if (s.equals("button_save")) button_save();
-				if (s.equals("button_load")) button_load();
+				if (s.equals("button_play"))
+					button_play();
+				if (s.equals("button_stop"))
+					button_stop();
+				if (s.equals("button_save"))
+					button_save();
+				if (s.equals("button_load"))
+					button_load();
 			}
 		};
 	}

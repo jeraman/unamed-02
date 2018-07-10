@@ -48,7 +48,7 @@ public class TimeManager {
 	}
 
 	public int getGlobalBeat() {
-		return m.getCurrentBeat();
+		return m.getGlobalBeat();
 	}
 
 	public void setGlobalBeat(int globalBeat) {

@@ -1,6 +1,7 @@
 package soundengine.time;
 
 import ddf.minim.AudioSample;
+import frontend.Main;
 import soundengine.SoundEngine;
 import soundengine.util.Util;
 
