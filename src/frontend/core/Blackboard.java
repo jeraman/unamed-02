@@ -1,57 +1,46 @@
 package frontend.core;
-/************************************************
-** Class representing the blackboard ***********
-************************************************
-** jeraman.info, Oct. 11 2016 ******************
-************************************************
-** UPDATE: part of this code (support to expressions,
-** and the ConcurrentHashMap)was written by Sofian
-** and incorporated by him into the original code.
-************************************************/
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.io.Serializable;
 import processing.core.PApplet;
-
 import java.util.regex.*;
-
 import javax.script.ScriptException;
-
 import frontend.Main;
-
 import java.util.*;
-import java.util.Collection;
 import java.math.BigDecimal;
-import java.text.NumberFormat;
 import oscP5.*;
 
-/// Blackboard class.
+/**
+ * Stores global variables to be used anywhere in the system.
+ * 
+ * @author jeraman.info
+ * @date Oct. 11 2016
+ *
+ * @update part of this code (support to expressions, and the ConcurrentHashMap)
+ *         was written by Sofian and incorporated by him into the original code.
+ */
 public class Blackboard extends ConcurrentHashMap<String, Object> implements Serializable {
-	private int mywidth;// = 60;
-	private int myheight;// = 20;
+	private int mywidth;
+	private int myheight;
 	private int x;
 	private int y;
 	private boolean debug = false;
 
 	transient private PApplet p;
 
-	// contructor
 	public Blackboard(PApplet p) {
-		// this.x = width-(mywidth*3)-20;
-		// this.x = width-(mywidth*3)-20;
 		this.mywidth = 6 * ((Main) p).get_font_size();
 		this.myheight = 2 * ((Main) p).get_font_size();
 
 		this.build(p);
-		// init_global_variables();
 	}
 
 	public int getWidth() {
-		return mywidth*3;
+		return mywidth * 3;
 	}
 
 	public int getHeight() {
-		return myheight*(this.size()+3);
+		return myheight * (this.size() + 3);
 	}
 
 	public int getX() {
@@ -71,7 +60,6 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 				.println("@TODO [BLACKBOARD] verify what sorts of things needs to be initialize when loaded from file");
 		this.p = p;
 		init_global_variables();
-		// set_gui_position(p.width-(mywidth*3)-2, 20);
 		this.x = ((Main) p).width - (int) (mywidth * 2.8);// -myheight;
 		this.y = myheight;
 	}
@@ -82,8 +70,6 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 		put("mousePressed", p.mousePressed);
 		put("key", p.key);
 		put("keyPressed", p.keyPressed);
-		// put("keyCode", p.keyCode);
-		// put("stateTimer", 0);
 	}
 
 	public void update_global_variables() {
@@ -200,12 +186,6 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 			drawItem(val, this.get(val), x, y + (myheight * (i + 1)) + i + 1, mywidth, myheight);
 			i++;
 		}
-
-		/*
-		 * for (ConcurrentHashMap.Entry<String, Object> element : entrySet()) {
-		 * if (!blacklisted(element)) { drawItem(element, x,
-		 * y+(myheight*(i+1))+i+1, mywidth, myheight); i++; } }
-		 */
 	}
 
 	// list of memory items that should not be displyed to the use
@@ -219,19 +199,20 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 			return false;
 	}
 
-	// void drawItem(ConcurrentHashMap.Entry<String, Object> element, int posx,
-	// int posy, int mywidth, int myheight) {
 	void drawItem(String var_name, Object var_value, int posx, int posy, int mywidth, int myheight) {
-		int xoffset = mywidth + 1;
-		// if the blackboard wasn't loaded yet
+		int xoffset = mywidth;
+		posx += xoffset/4;
+		mywidth = this.getWidth()/2;
 
 		// header
 		p.noStroke();
 		p.fill(255, 50);
 		p.rectMode(p.CENTER);
-		p.rect(posx, posy, mywidth, myheight);
-		p.rect(posx + xoffset, posy, mywidth, myheight);
-		p.rect(posx + xoffset + xoffset, posy, mywidth, myheight);
+//		p.rect(posx, posy, mywidth, myheight);
+//		p.rect(posx + xoffset, posy, mywidth, myheight);
+//		p.rect(posx + xoffset + xoffset, posy, mywidth, myheight);
+		p.rect(posx , posy, mywidth, myheight);
+		p.rect(posx + 1 + mywidth, posy, mywidth-1, myheight);
 
 		p.fill(200);
 		p.textAlign(p.CENTER, p.CENTER);
@@ -246,9 +227,11 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 		if (var_value instanceof Double)
 			value_string = round((float) ((double) var_value), 2).toString();
 
-		p.text(type_name.replace("java.lang.", ""), posx, posy);
-		p.text(var_name, posx + xoffset, posy);
-		p.text(value_string, posx + xoffset + xoffset + 5, posy);
+		//p.text(type_name.replace("java.lang.", ""), posx, posy);
+//		p.text(var_name, posx + xoffset, posy);
+//		p.text(value_string, posx + xoffset + xoffset + 5, posy);
+		p.text(var_name, posx , posy);
+		p.text(value_string, posx + mywidth + 5, posy);
 	}
 
 	// adding input osc support to the blackboard

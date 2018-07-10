@@ -41,7 +41,7 @@ public abstract class Task implements Serializable {
 	public SoundEngine eng;
 
 	@Deprecated
-	static protected int font_size;// = (int)(((ZenStates)p).get_font_size());
+	public static int font_size;// = (int)(((ZenStates)p).get_font_size());
 
 	// transient variables
 	@Deprecated

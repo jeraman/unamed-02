@@ -130,7 +130,6 @@ class Metro extends AbstractTimeMeter {
 				Util.delay(adaptedTime/globalNoteValue);
 				currentNoteCount++;
 			}
-
 		}
 	}
 
