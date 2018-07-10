@@ -29,8 +29,8 @@ public class TempoControl {
 		this.shouldUpdate = false;
 	}
 	
-	public void createUi(int x, int y) {
-		ui.createUi(x, y);
+	public void createUi() {
+		ui.createUi();
 	}
 	
 	public void updateElapsedTime() {

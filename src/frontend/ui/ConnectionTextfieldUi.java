@@ -26,7 +26,7 @@ public class ConnectionTextfieldUi extends TextfieldUi {
 
 	protected void setDefaultColorOnTextfield() {
 		if (textfield != null) {
-			currentBackgroundColor = defaultBackgroundConnectionColor;
+			currentBackgroundColor = connectionBackgroundColor;
 			textfield.setColorBackground(currentBackgroundColor);
 			textfield.setColorForeground(currentBackgroundColor);
 		}
@@ -93,8 +93,8 @@ public class ConnectionTextfieldUi extends TextfieldUi {
 
 	public void createUI(String id) {
 		this.textfield = cp5.addTextfield(id + "/condition").setText(value).setColorValue(whiteColor)
-				.setColorBackground(defaultBackgroundConnectionColor)
-				.setColorForeground(defaultBackgroundConnectionColor).setColorValue(whiteColor)
+				.setColorBackground(connectionBackgroundColor)
+				.setColorForeground(connectionBackgroundColor).setColorValue(whiteColor)
 				.setWidth(getLabelWidth()).setHeight(15).setFocus(false).onEnter(generate_callback_textfield_enter())
 				.onLeave(generate_callback_textfield_leave()).onClick(callbackEmptyWhenUsingUserInput())
 				.onChange(callbackPressEnterOrOutside()).onReleaseOutside(callbackPressEnterOrOutside())
@@ -104,8 +104,8 @@ public class ConnectionTextfieldUi extends TextfieldUi {
 	CallbackListener generate_callback_textfield_enter() {
 		return new CallbackListener() {
 			public void controlEvent(CallbackEvent theEvent) {
-				textfield.setColorBackground(defaultForegroundConnectionColor);
-				textfield.setColorForeground(defaultForegroundConnectionColor);
+				textfield.setColorBackground(connectionForegroundColor);
+				textfield.setColorForeground(connectionForegroundColor);
 			}
 		};
 	}

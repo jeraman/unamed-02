@@ -35,7 +35,7 @@ public class MainCanvas {
 		init_buttons();
 		setup();
 		this.timeCounter = new TempoControl();
-		this.timeCounter.createUi(p.width / 2, p.height / 2);
+		this.timeCounter.createUi();
 	}
 
 	public boolean is_running() {

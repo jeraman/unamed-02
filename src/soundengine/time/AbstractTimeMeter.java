@@ -30,6 +30,7 @@ abstract class AbstractTimeMeter implements Runnable {
 	}
 	
 	public void stop() {
+		if (!this.alive) return;
 		this.setAlive(false);
 		try {
 			this.counter.join(0);

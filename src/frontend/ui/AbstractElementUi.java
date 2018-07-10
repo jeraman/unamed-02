@@ -20,8 +20,12 @@ public abstract class AbstractElementUi implements Serializable {
 	
 	protected static final String userInputAsDefault = "(USER INPUT)";
 	protected static final int defaultTaskColor = ControlP5Constants.THEME_CP52014.getBackground();
-	protected static final int defaultBackgroundConnectionColor = Main.instance().color(0, 0, 0, 50);
-	protected static final int defaultForegroundConnectionColor = Main.instance().color(0, 116, 217, 200);
+	protected static final int connectionBackgroundColor = Main.instance().color(0, 0, 0, 50);
+	protected static final int connectionForegroundColor = Main.instance().color(0, 116, 217, 200);
+	protected static final int blackboardBackgroundColor = Main.instance().color(255, 50);
+	protected static final int blackboardForegroundColor = Main.instance().color(255, 100);
+	protected static final int blackboardHeaderColor = Main.instance().color(255, 200);
+	protected static final int blackboardHeaderTextColor = Main.instance().color(50);
 	protected static final int whiteColor = Main.instance().color(255, 255);
 	protected static final int errorColor = ControlP5Constants.THEME_RED.getBackground();
 	protected static final int defaultHeight = 15;
