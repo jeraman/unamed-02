@@ -38,12 +38,22 @@ public class Expression implements Serializable {
       try {
         // Load library for math operations.
         java.util.Scanner s = new java.util.Scanner(new java.net.URL("file://" + p.dataPath("math.js")).openStream()).useDelimiter("\\A");
+        engine.put("A4", "A4");
         engine.eval(s.hasNext() ? s.next() : "");
       }
       catch (Exception e) {
         System.out.println(e);
       }
     }
+  }
+  
+  public static void addToEngine(String name) {
+	  addToEngine(name, name);
+  }
+  
+  public static void addToEngine(String name, Object value) {
+	  if (engine != null)
+		  engine.put(name, value);
   }
 
   /// Computes expression using blackboard and returns result.

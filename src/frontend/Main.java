@@ -299,6 +299,13 @@ public class Main extends PApplet {
 		// returns the result
 		return result;
 	}
+	
+	public String whatUserIsPlaying() {
+		if (canvas != null)
+			return this.canvas.whatUserIsPlaying();
+		else
+			return "";
+	}
 
 	///////////////////////////////////////////////////
 	// the following code was taken from Sofians' prototype

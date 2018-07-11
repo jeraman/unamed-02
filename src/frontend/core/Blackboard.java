@@ -72,6 +72,8 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 		put("mousePressed", p.mousePressed);
 		put("key", p.key);
 		put("keyPressed", p.keyPressed);
+		
+		initKeyboardVariables();
 	}
 
 	public void update_global_variables() {
@@ -85,6 +87,62 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 		replace("key", p.key);
 		replace("keyCode", p.keyCode);
 		replace("keyPressed", p.keyPressed);
+		
+		updateKeyboardVariables();
+	}
+	
+	private void initKeyboardVariables() {
+		String playing = Main.instance().whatUserIsPlaying();
+		put("playing", playing);
+		String[] details = processPlaying(playing);
+		put("note", details[0]);
+//		put(details[0], details[0]);
+		put("interval", details[1]);
+//		put(details[1], details[1]);
+		put("chord", details[2]);
+//		put(details[2], details[2]);
+	}
+	
+	private void updateKeyboardVariables() {
+		String playing = Main.instance().whatUserIsPlaying();
+		replace("playing", playing);
+		String[] details = processPlaying(playing);
+		replace("note", details[0]);
+//		replace(details[0], details[0]);
+		replace("interval", details[1]);
+//		replace(details[1], details[1]);
+		replace("chord", details[2]);
+//		replace(details[2], details[2]);
+	}
+	
+	private String[] processPlaying(String playing) {
+		if (playing.contains("note"))
+			return processNote(playing.substring("note:".length()));
+		else if (playing.contains("interval"))
+			return processInterval(playing.substring("interval:".length()));
+		else if (playing.contains("chord"))
+			return processChord(playing.substring("chord:".length()));
+		else
+			return processNothing();
+	}
+
+	private String[] processNote(String playing) {
+		playing = "\"" + playing + "\"";
+		return new String[]{playing, "\"none\"", "\"none\""};
+	}
+	
+	private String[] processInterval(String playing) {
+		playing = "\"" + playing + "\"";
+		return new String[]{"\"none\"", playing, "\"none\""};
+	}
+	
+	private String[] processChord(String playing) {
+		playing = "\"" + playing + "\"";
+		return new String[]{"\"none\"", "\"none\"", playing};
+	}
+	
+	private String[] processNothing() {
+		return new String[]{"\"none\"", "\"none\"", "\"none\""};
 	}
 
 	void reset() {
@@ -92,11 +150,11 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 		this.init_global_variables();
 	}
 
-	/**
-	 * Replaces variable names in expression with pattern "$varName" or
-	 * "${varName}" with values corresponding to these variables from the
-	 * blackboard.
-	 */
+	
+//	  Replaces variable names in expression with pattern "$varName" or
+//	  "${varName}" with values corresponding to these variables from the
+//	  blackboard.
+	 
 	String processExpression(String expr) {
 
 		// does not support strings
@@ -107,7 +165,6 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 																	// code-highlight
 																	// issues in
 																	// Atom
-
 		// does not suppor 3 bb variables
 		// Pattern pattern1 = Pattern.compile("([^\\\\]\\$(\\w+))");
 		// Pattern pattern2 = Pattern.compile("([^\\\\]\\$\\{(\\w+)\\})"); //"
@@ -185,18 +242,22 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 		Collections.sort(ordered);
 
 		for (String val : ordered) {
-			drawItem(val, this.get(val), x, y + (myheight * (i + 1)) + i + 1, mywidth, myheight);
-			i++;
+			if (!this.blacklisted(val)) {
+				drawItem(val, this.get(val), x, y + (myheight * (i + 1)) + i + 1, mywidth, myheight);
+				i++;
+			}
 		}
 	}
 
 	// list of memory items that should not be displyed to the use
-	boolean blacklisted(ConcurrentHashMap.Entry<String, Object> element) {
-		String varname = element.getKey().toString();
-		if ((varname.contains("frequency") && varname.length() > 25)
-				|| (varname.contains("amplitude") && varname.length() > 25))
+	boolean blacklisted(String varname) {
+		//String varname = element.getKey().toString();
+		//if ((varname.contains("frequency") && varname.length() > 25)
+		//		|| (varname.contains("amplitude") && varname.length() > 25)
+		
+		if (varname.equals("note") || varname.equals("interval") || varname.equals("chord"))
 			// add a new item here
-			return false;// true;
+			return true;
 		else
 			return false;
 	}

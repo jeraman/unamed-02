@@ -213,4 +213,8 @@ public class SoundEngine implements SoundEngineFacade {
 		n.noteOff();
 		this.cleanOldObservers();
 	}
+	
+	public String whatUserIsPlaying() {
+		return this.memory.identifyWhatUserIsPlaying();
+	}
 }

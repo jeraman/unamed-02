@@ -99,6 +99,10 @@ public class MainCanvas {
 	public void noteOff(int channel, int pitch, int velocity) {
 		this.root.noteOff(channel, pitch, velocity);
 	}
+	
+	public String whatUserIsPlaying() {
+		return this.root.whatUserIsPlaying();
+	}
 
 	void draw_names() {
 		p.fill(255);

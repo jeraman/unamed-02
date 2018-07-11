@@ -57,8 +57,6 @@ public class StateMachine extends Task {
 		
 		for (State s : states) 
 			s.check_if_any_substatemachine_needs_to_be_reloaded_from_file();
-		
-
 	}
 	
 	void reload_from_file () {
@@ -223,6 +221,10 @@ public class StateMachine extends Task {
 		this.status = Status.DONE;
 		if (debug)
 			System.out.println("iterrupting State_Machine" + this.name);
+	}
+	
+	public String whatUserIsPlaying() {
+		return this.eng.whatUserIsPlaying();
 	}
 
 	void update_title(String newtitle) {		

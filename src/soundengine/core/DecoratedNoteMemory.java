@@ -136,19 +136,19 @@ public class DecoratedNoteMemory {
 		String text;
 
 		if (size == 0) // if no notes are being played
-			text = "no notes";
+			text = "nothing";
 		else if (size == 1) // if one note
-			text = "note: " + MusicTheory.noteFromMIDI(memory.get(0).getPitch());
+			text = "note:" + MusicTheory.noteFromMIDI(memory.get(0).getPitch());
 		else if (size == 2) // if an interval
-			text = "interval: " + MusicTheory.identifyIntervalFromMIDI(memory.get(0).getPitch(), memory.get(1).getPitch());
+			text = "interval:" + MusicTheory.identifyIntervalFromMIDI(memory.get(0).getPitch(), memory.get(1).getPitch());
 		else { // if a chord
 			int[] notes = this.getNoteArray();
 			Chord c = MusicTheory.identifyChordFromMIDI(notes);
 
 			if (c != null)
-				text = "chord: " + c;
+				text = "chord:" + c;
 			else
-				text = "intervals: " + MusicTheory.identifyIntervalFromMIDI(notes);
+				text = "intervals:" + MusicTheory.identifyIntervalFromMIDI(notes);
 		}
 		
 		return text;
