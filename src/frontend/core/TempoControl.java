@@ -33,6 +33,34 @@ public class TempoControl {
 		ui.createUi();
 	}
 	
+	public float getTime() {
+		return this.tm.getElapsedTime();
+	}
+	
+	public float getSeconds() {
+		return (this.tm.getElapsedTime()%60);
+	}
+	
+	public int getMinutes() {
+		return (int) (this.tm.getElapsedTime()/60f);
+	}
+	
+	public int getBeat() {
+		return this.tm.getCurrentBeat();
+	}
+	
+	public int getBar() {
+		return this.tm.getCurrentBar();
+	}
+	
+	public int getNoteCount() {
+		return this.tm.getCurrentNoteCount();
+	}
+	
+	public int getBPM() {
+		return this.tm.getBpm();
+	}
+	
 	public void updateElapsedTime() {
 		this.ui.updateElapsedTime();
 	}

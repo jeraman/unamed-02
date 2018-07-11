@@ -69,7 +69,7 @@ public abstract class AbstractElementUi implements Serializable {
 		// If added an expression, process it and save result in blackboard.
 		if (o instanceof Expression)
 			ret = ((Expression) o).eval(board);
-
+		
 		return ret;
 	}
 	

@@ -65,15 +65,30 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 		this.x = ((Main) p).width - (int) (mywidth * 2.8);// -myheight;
 		this.y = myheight;
 	}
+	
+	public Object put (String key, Object value) {
+		//Expression.addToEngine(key, value);
+		return super.put(key, value);
+	}
+	
+	public Object replace (String key, Object value) {
+		//Expression.replaceInEngine(key, value);
+		return super.replace(key, value);
+	}
+	
+	public Object remove (String key) {
+		//Expression.removeFromEngine(key);
+		return super.remove(key);
+	}
 
-	void init_global_variables() {
-		put("mouseX", (float) p.mouseX / p.width);
-		put("mouseY", (float) p.mouseY / p.height);
-		put("mousePressed", p.mousePressed);
-		put("key", p.key);
-		put("keyPressed", p.keyPressed);
-		
-		initKeyboardVariables();
+	private void init_global_variables() {
+		this.put("mouseX", (float) p.mouseX / p.width);
+		this.put("mouseY", (float) p.mouseY / p.height);
+		this.put("mousePressed", p.mousePressed);
+		this.put("key", p.key);
+		this.put("keyPressed", p.keyPressed);
+		this.initKeyboardVariables();
+		this.initTempoVariables();
 	}
 
 	public void update_global_variables() {
@@ -81,43 +96,57 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 		if (p == null)
 			return;
 
-		replace("mouseX", (float) p.mouseX / p.width);
-		replace("mouseY", (float) p.mouseY / p.height);
-		replace("mousePressed", p.mousePressed);
-		replace("key", p.key);
-		replace("keyCode", p.keyCode);
-		replace("keyPressed", p.keyPressed);
-		
-		updateKeyboardVariables();
+		this.replace("mouseX", (float) p.mouseX / p.width);
+		this.replace("mouseY", (float) p.mouseY / p.height);
+		this.replace("mousePressed", p.mousePressed);
+		this.replace("key", p.key);
+		this.replace("keyPressed", p.keyPressed);
+		this.updateKeyboardVariables();
+		this.updateTempoVariables();
 	}
 	
 	private void initKeyboardVariables() {
 		String playing = Main.instance().whatUserIsPlaying();
-		put("playing", playing);
+		this.put("playing", playing);
 		String[] details = processPlaying(playing);
-		put("note", details[0]);
-//		put(details[0], details[0]);
-		put("interval", details[1]);
-//		put(details[1], details[1]);
-		put("chord", details[2]);
-//		put(details[2], details[2]);
+		this.put("note", (String)details[0]);
+		this.put("interval", (String)details[1]);
+		this.put("chord", (String)details[2]);
 	}
 	
 	private void updateKeyboardVariables() {
 		String playing = Main.instance().whatUserIsPlaying();
-		replace("playing", playing);
+		this.replace("playing", playing);
 		String[] details = processPlaying(playing);
-		replace("note", details[0]);
-//		replace(details[0], details[0]);
-		replace("interval", details[1]);
-//		replace(details[1], details[1]);
-		replace("chord", details[2]);
-//		replace(details[2], details[2]);
+		this.replace("note", (String)details[0]);
+		this.replace("interval", (String)details[1]);
+		this.replace("chord", (String)details[2]);
+	}
+	
+	private void initTempoVariables() {
+		this.put("beat", Main.instance().getBeat());
+		this.put("bar", Main.instance().getBar());
+		this.put("noteCount", Main.instance().getNoteCount());
+		this.put("bpm", Main.instance().getBPM());
+		this.put("time", Main.instance().getTime());
+		this.put("seconds", Main.instance().getSeconds());
+		this.put("minutes", Main.instance().getMinutes());
+	}
+	
+	private void updateTempoVariables() {
+		this.replace("beat", Main.instance().getBeat());
+		this.replace("bar", Main.instance().getBar());
+		this.replace("noteCount", Main.instance().getNoteCount());
+		this.replace("time", Main.instance().getTime());
+		this.replace("seconds", Main.instance().getSeconds());
+		this.replace("minutes", Main.instance().getMinutes());
 	}
 	
 	private String[] processPlaying(String playing) {
 		if (playing.contains("note"))
 			return processNote(playing.substring("note:".length()));
+		else if (playing.contains("intervals"))
+			return processInterval(playing.substring("intervals:".length()));
 		else if (playing.contains("interval"))
 			return processInterval(playing.substring("interval:".length()));
 		else if (playing.contains("chord"))
@@ -257,7 +286,7 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 		
 		if (varname.equals("note") || varname.equals("interval") || varname.equals("chord"))
 			// add a new item here
-			return true;
+			return false;//true;
 		else
 			return false;
 	}

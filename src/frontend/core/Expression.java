@@ -10,7 +10,9 @@ package frontend.core;
 import frontend.Main;
 
 import java.io.Serializable;
- import processing.core.PApplet;
+import java.util.Iterator;
+
+import processing.core.PApplet;
 
 /// Expression class which allows to compute javascript-style expressions with variables from the blackboard.
 public class Expression implements Serializable {
@@ -38,7 +40,6 @@ public class Expression implements Serializable {
       try {
         // Load library for math operations.
         java.util.Scanner s = new java.util.Scanner(new java.net.URL("file://" + p.dataPath("math.js")).openStream()).useDelimiter("\\A");
-        engine.put("A4", "A4");
         engine.eval(s.hasNext() ? s.next() : "");
       }
       catch (Exception e) {
@@ -47,23 +48,54 @@ public class Expression implements Serializable {
     }
   }
   
-  public static void addToEngine(String name) {
-	  addToEngine(name, name);
-  }
-  
   public static void addToEngine(String name, Object value) {
 	  if (engine != null)
 		  engine.put(name, value);
   }
+  
+  public static void replaceInEngine(String name, Object value) {
+	  if (engine != null) {
+//		  Bindings b = engine.getBindings(ScriptContext.ENGINE_SCOPE);
+//		  b.replace(name, value);
+		  engine.put(name, value);
+	  }
+  }
+  
+  public static void removeFromEngine(String name) {
+	  if (engine != null) {
+//		  Bindings b = engine.getBindings(ScriptContext.ENGINE_SCOPE);
+//		  b.remove(name);
+			try {
+				engine.eval("delete " + name);
+			} catch (ScriptException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	  }
+  }
 
-  /// Computes expression using blackboard and returns result.
+	/// Computes expression using blackboard and returns result.
 	public Object eval(Blackboard agent) throws ScriptException {
-    //System.out.println("eval an expression " + toString());
-    //@TODO DEBUGGING INFO
-    if (agent==null) System.out.println("agent " + agent);
-    if (expression==null) System.out.println("expression " + expression);
-    if (engine==null) System.out.println("engine " + engine);
-    return engine.eval(agent.processExpression(expression));
+		// System.out.println("eval an expression " + toString());
+		// @TODO DEBUGGING INFO
+		if (agent == null)
+			System.out.println("agent " + agent);
+		if (expression == null)
+			System.out.println("expression " + expression);
+		if (engine == null)
+			System.out.println("engine " + engine);
+		
+//		Bindings b = engine.getBindings(ScriptContext.ENGINE_SCOPE);
+//		System.out.println(b.size());
+//		System.out.println(engine.getBindings(ScriptContext.ENGINE_SCOPE));
+//		System.out.println(b.values());
+//		Iterator i2 = b.keySet().iterator();
+//		for (Iterator iterator = b.values().iterator(); iterator.hasNext();) {
+//			  System.out.println(i2.next()+ " " + iterator.next()); 
+//			}
+//		System.out.println(b.keySet());
+		
+		return engine.eval(agent.processExpression(expression));
 	}
 
   public String toString() {

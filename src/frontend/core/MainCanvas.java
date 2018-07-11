@@ -103,6 +103,32 @@ public class MainCanvas {
 	public String whatUserIsPlaying() {
 		return this.root.whatUserIsPlaying();
 	}
+	
+	public int getBeat() {
+		return this.timeCounter.getBeat();
+	}
+	
+	public int getBar() {
+		return this.timeCounter.getBar();
+	}
+	
+	public int getNoteCount() {
+		return this.timeCounter.getNoteCount();
+	}
+	
+	public int getBPM() {
+		return this.timeCounter.getBPM();
+	}
+	
+	public float getTime() {
+		return this.timeCounter.getTime();
+	}
+	public float getSeconds() {
+		return this.timeCounter.getSeconds();
+	}
+	public int getMinutes() {
+		return this.timeCounter.getMinutes();
+	}
 
 	void draw_names() {
 		p.fill(255);

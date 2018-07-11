@@ -307,6 +307,53 @@ public class Main extends PApplet {
 			return "";
 	}
 
+	public int getBeat() {
+		if (canvas != null)
+			return this.canvas.getBeat();
+		else
+			return -1;
+	}
+
+	public int getBar() {
+		if (canvas != null)
+			return this.canvas.getBar();
+		else
+			return -1;
+	}
+
+	public int getNoteCount() {
+		if (canvas != null)
+			return this.canvas.getNoteCount();
+		else
+			return -1;
+	}
+
+	public int getBPM() {
+		if (canvas != null)
+			return this.canvas.getBPM();
+		else
+			return -1;
+	}
+	
+	public float getTime() {
+		if (canvas != null)
+			return this.canvas.getTime();
+		else
+			return -1;
+	}
+	public float getSeconds() {
+		if (canvas != null)
+			return this.canvas.getSeconds();
+		else
+			return -1;
+	}
+	public int getMinutes() {
+		if (canvas != null)
+			return this.canvas.getMinutes();
+		else
+			return -1;
+	}
+
 	///////////////////////////////////////////////////
 	// the following code was taken from Sofians' prototype
 	// the goal is to allow serialization
