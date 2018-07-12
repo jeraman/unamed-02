@@ -292,8 +292,10 @@ public class Main extends PApplet {
 	}
 
 	public void mouseReleased() {
-		if (mouseButton == RIGHT)
+		if (mouseButton == RIGHT) {
 			mouseRightButtonReleased = true;
+			canvas.closeConnectionAttempt();
+		}
 	}
 
 	// checks if the user released the key minus

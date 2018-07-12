@@ -25,6 +25,7 @@ public class MainCanvas {
 	transient private Button close_preview;
 
 	private boolean is_running;
+	private boolean isTryingToConnect;
 
 	// contructor
 	public MainCanvas(Main p, ControlP5 cp5) {
@@ -37,6 +38,8 @@ public class MainCanvas {
 		this.timeCounter = new TempoControl();
 		this.timeCounter.createUi();
 		//Main.instance().board.createUi();
+		
+		this.isTryingToConnect = false;
 	}
 
 	public boolean is_running() {
@@ -335,13 +338,22 @@ public class MainCanvas {
 	void process_shift_key() {
 		start_dragging_connection();
 	}
+	
+	private void startConnectionAttempt() {
+		this.isTryingToConnect = true;
+	}
+	
+	public void closeConnectionAttempt() {
+		this.isTryingToConnect = false;
+	}
 
 	public void start_dragging_connection() {
 		// verifies if the mouse intersects a state
 		State result = sm_stack.lastElement().intersects_gui(p.mouseX, p.mouseY);
 
 		// if it does not...
-		if (result != null) {
+		if (result != null && !isTryingToConnect) {
+			this.startConnectionAttempt();
 			// close pie menu
 			result.hide_pie();
 			// starts dragging

@@ -1173,17 +1173,16 @@ public class State implements Serializable {
 		}
 	}
 
-	boolean there_is_a_temporary_connection_on_gui() {
+	public boolean hasTemporaryConnectionOnGui() {
 		return (this.movement_status == MovementStatus.FREEZED);
 	}
 
 	boolean verify_if_user_released_mouse_while_temporary_connecting() {
-		return (there_is_a_temporary_connection_on_gui() && Main.instance().mouseRightButtonReleased);
+		return (hasTemporaryConnectionOnGui() && Main.instance().mouseRightButtonReleased);
 	}
 
 	void draw_temp_connection() {
-		// if this state is freezed
-		if (there_is_a_temporary_connection_on_gui()) {
+		if (hasTemporaryConnectionOnGui()) {
 			draw_generic_connection(p.mouseX, p.mouseY, connections.size() + 1, "true");
 		}
 	}
