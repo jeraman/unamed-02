@@ -3,6 +3,7 @@ package frontend.core;
 
 import processing.core.PApplet;
 import soundengine.SoundEngine;
+import soundengine.util.Util;
 
 import java.util.UUID;
 import java.util.Vector;
@@ -244,8 +245,8 @@ public class StateMachine extends Task {
 	}
 
 	void update_title(String newtitle) {		
-		String n = get_formated_blackboard_title();
-		((Main)p).board.remove(n+"_timer");
+		//String n = get_formated_blackboard_title();
+		//((Main)p).board.remove(n+"_timer");
 		this.title = newtitle;
 	}
 
@@ -451,39 +452,31 @@ public class StateMachine extends Task {
 	}
 
 	//formats the title for the blackboard
-	String get_formated_blackboard_title () {
-		String n = this.title.replace(".", "_");
-		n = n.replace(" ", "_");
-		return n;
-	}
+//	String get_formated_blackboard_title () {
+//		String n = this.title.replace(".", "_");
+//		n = n.replace(" ", "_");
+//		return n;
+//	}
 
 	//inits the global variables related to this blackboard
 	void init_global_variables() {
-		String n = get_formated_blackboard_title();
-		Main.instance().board.put(n+"_timer", 0);
+//		String n = get_formated_blackboard_title();
+//		Main.instance().board.put(n+"_timer", 0);
 	}
 	
 	//updates the global variable related to this blackboard
 	void update_global_variables() {
 		update_state_timer();
-		String n = get_formated_blackboard_title();
-		Main.instance().board.put(n+"_timer", this.stateTimer);
-		//println("update variable " + this.stateTimer);
+//		String n = get_formated_blackboard_title();
+//		Main.instance().board.put(n+"_timer", this.stateTimer);
 	}
 
-	//updates the stateTimer variable related to this state machine
 	void update_state_timer() {
-		//if the PApplet wasn't loaded yet
-		if (p==null) return;
-		this.stateTimer = ((float)p.millis()/1000f)-stateTimerMilestone;
+		this.stateTimer = ((float)Util.millis()/1000f)-stateTimerMilestone;
 	}
 
-	//resets the stateTimer variable related to this state machine
 	void reset_state_timer() {
-		//if the PApplet wasn't loaded yet
-		if (p==null) return;
-
-		this.stateTimerMilestone = (float)p.millis()/1000f;
+		this.stateTimerMilestone = (float)Util.millis()/1000f;
 		this.stateTimer          = 0;
 		update_global_variables();
 	}
