@@ -3,6 +3,8 @@ package frontend.core;
 import java.util.concurrent.ConcurrentHashMap;
 import java.io.Serializable;
 import processing.core.PApplet;
+import soundengine.util.MidiIO;
+
 import java.util.regex.*;
 import javax.script.ScriptException;
 import frontend.Main;
@@ -145,6 +147,13 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 		this.put("keyPressed", Main.instance().thereIsKeyDown());
 		this.put("keyReleased", Main.instance().thereIsKeyReleased());
 		this.put("numKeyPresses", Main.instance().numberOfKeyPressed());
+		initKeyboardCC();
+		
+	}
+	
+	private void initKeyboardCC() {
+		for (int i = 0; i < 16; i++)
+			this.put("cc"+(i+1), MidiIO.getCCValue(i));
 	}
 	
 	private void updateKeyboardVariables() {
@@ -159,6 +168,12 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 		this.replace("keyPressed", Main.instance().thereIsKeyDown());
 		this.replace("keyReleased", Main.instance().thereIsKeyReleased());
 		this.replace("numKeyPresses", Main.instance().numberOfKeyPressed());
+		updateKeyboardCC();
+	}
+	
+	private void updateKeyboardCC() {
+		for (int i = 0; i < 16; i++)
+			this.replace("cc"+(i+1), MidiIO.getCCValue(i));
 	}
 	
 	

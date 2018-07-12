@@ -133,16 +133,18 @@ public class Main extends PApplet {
 	}
 
 	public void noteOn(int channel, int pitch, int velocity) {
-		// eng.noteOn(channel, pitch, velocity);
 		canvas.noteOn(channel, pitch, velocity);
 
 	}
 
 	public void noteOff(int channel, int pitch, int velocity) {
-		// eng.noteOff(channel, pitch, velocity);
 		canvas.noteOff(channel, pitch, velocity);
 	}
-
+	
+	public void controllerChange(int channel, int number, int value) {
+		MidiIO.inputControllerChange(channel, number, value);
+	}
+	
 	//////////////////////////////////////
 	// UTIL FUNCTIONS
 

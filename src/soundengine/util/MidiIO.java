@@ -6,13 +6,14 @@ import themidibus.MidiBus;
 public class MidiIO {
 
 	private static MidiBus myBus;
+	private static int[] ccValues;
 
 	public static void setup(PApplet p) {
 		MidiBus.list();
 		// myBus = new MidiBus(p, 0, 1);
 		myBus = new MidiBus(p, 2, 1);
-
 		myBus.sendTimestamps(false);
+		ccValues = new int[16];
 	}
 
 	public static void outputNoteOn(int channel, int pitch, int velocity) {
@@ -56,13 +57,20 @@ public class MidiIO {
 
 	}
 
-	public static void inputControllerChange(int channel, int number, int value) {
-		System.out.println();
-		System.out.println("Controller Change:");
-		System.out.println("--------");
-		System.out.println("Channel:" + channel);
-		System.out.println("Number:" + number);
-		System.out.println("Value:" + value);
+	public static int getCCValue (int index) {
+		return ccValues[index];
 	}
+	
+	public static void inputControllerChange(int channel, int number, int value) {
+//		System.out.println();
+//		System.out.println("Controller Change:");
+//		System.out.println("--------");
+//		System.out.println("Channel:" + channel);
+//		System.out.println("Number:" + number);
+//		System.out.println("Value:" + value);
+		
+		ccValues[number-1] = value;
+	}
+	
 
 }
