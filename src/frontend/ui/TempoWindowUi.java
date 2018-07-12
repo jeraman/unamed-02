@@ -102,6 +102,13 @@ public class TempoWindowUi extends AbstractElementUi {
 		barContent = cp5.addTextlabel("tempo/bars/counter").setText("00 : 00 : 00")
 				.setPosition(xpos + xOffset, 2 * ypos + 2)
 				.setGroup(g);
+		
+//		cp5.addSpacer("tempo/spacer")
+//			.setPosition(xpos + xOffset, 2 * ypos + 2 + 10)
+//			.setColorBackground(blackboardHeaderTextColor)
+//			.setGroup(g);
+//		;
+		
 		signatureLabel = cp5.addTextlabel("tempo/signature/label").setText("Signature:                          / ")
 				.setPosition(xpos, (2 * ypos) + yOffset).setGroup(g);
 		signatureBar = cp5.addNumberbox("tempo/signature/bar")

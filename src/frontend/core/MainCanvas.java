@@ -36,6 +36,7 @@ public class MainCanvas {
 		setup();
 		this.timeCounter = new TempoControl();
 		this.timeCounter.createUi();
+		//Main.instance().board.createUi();
 	}
 
 	public boolean is_running() {

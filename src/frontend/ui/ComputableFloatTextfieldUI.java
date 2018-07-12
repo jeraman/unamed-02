@@ -165,7 +165,7 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 	private CallbackListener callbackEmptyWhenUsingUserInput() {
 		return new CallbackListener() {
 			public void controlEvent(CallbackEvent theEvent) {
-
+				theEvent.getController().bringToFront();
 				String content = theEvent.getController().getValueLabel().getText();
 
 				if (content.trim().equals(defaultText))

@@ -77,6 +77,7 @@ public class ConnectionPriorityDropdownUi extends AbstractElementUi {
 				.setOpen(false)
 				.setValue(this.value)
 				.setLabel(this.value + "")
+				.onClick(toFront)
 				.onChange(generate_callback_dropdown());
 		
 		init_dropdown_list(parent.get_number_of_connections() - 1);
@@ -87,6 +88,13 @@ public class ConnectionPriorityDropdownUi extends AbstractElementUi {
 			this.dropdownlist.addItem(i + "", i);
 		}
 	}
+	
+	CallbackListener toFront = new CallbackListener() {
+		public void controlEvent(CallbackEvent theEvent) {
+			theEvent.getController().bringToFront();
+			//((DropdownList)theEvent.getController()).open();
+		}
+	};
 	
 	CallbackListener generate_callback_dropdown() {
 		return new CallbackListener() {

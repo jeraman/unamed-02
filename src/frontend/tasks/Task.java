@@ -179,7 +179,7 @@ public abstract class Task implements Serializable {
 
 		g.setLabel(textlabel);
 		g.getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER);
-
+	
 		return g;
 	}
 

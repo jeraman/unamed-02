@@ -104,11 +104,11 @@ public class ChordAugTask extends AbstractAugTask {
 		this.backgroundheight = (int) (localoffset * 5.5);
 		g.setBackgroundHeight(backgroundheight);
 		int miniOffsetDueToScrollList = 5;
-		root.createUI(id, "root", localx, localy + (0 * localoffset), width, g);
-		velocity.createUI(id, "velocity", localx, localy + miniOffsetDueToScrollList + (2 * localoffset), width, g);
-		duration.createUI(id, "duration", localx, localy + miniOffsetDueToScrollList + (3 * localoffset), width, g);
-		mode.createUI(id, "          mode", localx, localy + miniOffsetDueToScrollList + (4 * localoffset), width, g);
-		chordType.createUI(id, "type", localx, localy + (1 * localoffset), width, g);
+		mode.createUI(id, "          mode", localx, localy + (0 * localoffset), width, g);
+		root.createUI(id, "root", localx, localy + miniOffsetDueToScrollList+ (1 * localoffset), width, g);
+		chordType.createUI(id, "type", localx, localy + miniOffsetDueToScrollList + (2 * localoffset), width, g);
+		velocity.createUI(id, "velocity", localx, localy + (2*miniOffsetDueToScrollList) + (3 * localoffset), width, g);
+		duration.createUI(id, "duration", localx, localy + (2*miniOffsetDueToScrollList) + (4 * localoffset), width, g);
 
 		return g;
 	}

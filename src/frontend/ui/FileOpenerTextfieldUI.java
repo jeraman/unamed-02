@@ -87,6 +87,7 @@ public class FileOpenerTextfieldUI extends AbstractElementUi {
 	private CallbackListener callback() {
 		return new CallbackListener() {
 			public void controlEvent(CallbackEvent theEvent) {
+				theEvent.getController().bringToFront();
 				System.out.println("open file!");
 				openFileDialog();
 			}

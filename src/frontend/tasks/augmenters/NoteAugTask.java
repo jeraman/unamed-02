@@ -59,10 +59,11 @@ public class NoteAugTask extends AbstractAugTask {
 
 		this.backgroundheight = (int) (localoffset * 4.5);
 		g.setBackgroundHeight(backgroundheight);
-		pitch.createUI(id, "pitch", localx, localy + (0 * localoffset), width, g);
-		velocity.createUI(id, "velocity", localx, localy + (1 * localoffset), width, g);
-		duration.createUI(id, "duration", localx, localy + (2 * localoffset), width, g);
-		mode.createUI(id, "          mode", localx, localy + (3 * localoffset), width, g);
+		int miniOffsetDueToScrollList = 5;
+		mode.createUI(id, "          mode", localx, localy + (0 * localoffset), width, g);
+		pitch.createUI(id, "pitch", localx, localy + miniOffsetDueToScrollList + (1 * localoffset), width, g);
+		velocity.createUI(id, "velocity", localx, localy + miniOffsetDueToScrollList  + (2 * localoffset), width, g);
+		duration.createUI(id, "duration", localx, localy + miniOffsetDueToScrollList + (3 * localoffset), width, g);
 
 		return g;
 	}

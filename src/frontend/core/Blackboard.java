@@ -55,6 +55,10 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 	void set_debug(boolean b) {
 		this.debug = b;
 	}
+	
+	public void createUi() {
+		ui.createUi();
+	}
 
 	public void build(PApplet p) {
 		System.out.println("@TODO [BLACKBOARD] verify what sorts of things needs to be initialize when loaded from file");
@@ -100,6 +104,12 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 		this.put("mousePressed", p.mousePressed);
 		this.put("pcKey", "\""+p.key+"\"");
 		this.put("pcKeyPressed", p.keyPressed);
+		
+		// this.ui.addToBlacklist("mouseX");
+		// this.ui.addToBlacklist("mouseY");
+		this.ui.addToBlacklist("mousePressed");
+		this.ui.addToBlacklist("pcKey");
+		this.ui.addToBlacklist("pcKeyPressed");
 	}
 	
 	private void updatePcVariables() {
@@ -118,11 +128,16 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 		this.put("time", Main.instance().getTime());
 		this.put("seconds", Main.instance().getSeconds());
 		this.put("minutes", Main.instance().getMinutes());
+		
+		this.ui.addToBlacklist("bpm");
+		this.ui.addToBlacklist("seconds");
+		this.ui.addToBlacklist("minutes");
 	}
 	
 	private void updateTempoVariables() {
 		this.replace("beat", Main.instance().getBeat());
 		this.replace("bar", Main.instance().getBar());
+		this.replace("bpm", Main.instance().getBPM());
 		this.replace("noteCount", Main.instance().getNoteCount());
 		this.replace("time", Main.instance().getTime());
 		this.replace("seconds", Main.instance().getSeconds());
@@ -142,11 +157,18 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 		this.put("numKeyPresses", Main.instance().numberOfKeyPressed());
 		initKeyboardCC();
 		
+		this.ui.addToBlacklist("note");
+		this.ui.addToBlacklist("interval");
+		this.ui.addToBlacklist("chord");
+		this.ui.addToBlacklist("keyReleased");
+		this.ui.addToBlacklist("numKeyPresses");
 	}
 	
 	private void initKeyboardCC() {
-		for (int i = 0; i < 16; i++)
+		for (int i = 0; i < 16; i++) {
 			this.put("cc"+(i+1), MidiIO.getCCValue(i));
+			this.ui.addToBlacklist("cc"+(i+1));
+		}
 	}
 	
 	private void updateKeyboardVariables() {
@@ -261,21 +283,14 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 			System.out.println("final expression: " + expr);
 
 		return expr;
-		// return expr.replaceAll("\\\\\\$", "$");
 	}
 
-	/////////////////
-	// gui methods
-
-	// draws both the header and the items
 	public void draw() {
-		// if the blackboard wasn't loaded yet
 		if (p == null)
 			return;
 		ui.draw();
 	}
 
-	// adding input osc support to the blackboard
 	public void oscEvent(OscMessage msg) {
 		if (debug) {
 			System.out.print("### received an osc message.");
@@ -283,43 +298,28 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 			System.out.print(" typetag: " + msg.typetag());
 		}
 
-		// gets the name
 		String name = msg.addrPattern();
-		// processing the address
 		name = name.substring(1, name.length());
 		name = name.replace("/", "_");
 
 		String typetag = msg.typetag();
 		int typetag_size = typetag.length();
 
-		p.println(msg.typetag());
-
 		for (int i = 0; i < typetag_size; i++) {
-
-			// value will be stored in this variable
 			Object value = null;
 
-			// checks for the right data type
-
-			// if (typetag.charAt(i).equals("i")) //integer
 			if (typetag.charAt(i) == 'i')// integer
 				value = msg.get(i).intValue();
-			// else if (msg.checkTypetag("f")) //float
 			if (typetag.charAt(i) == 'f')// float
 				value = msg.get(i).floatValue();
-			// else if (msg.checkTypetag("d")) //double
 			if (typetag.charAt(i) == 'd')// double
 				value = msg.get(i).doubleValue();
-			// else if (msg.checkTypetag("s")) //string
 			if (typetag.charAt(i) == 's')// string
 				value = msg.get(i).stringValue();
-			// else if (msg.checkTypetag("b")) //boolean
 			if (typetag.charAt(i) == 'b')// boolean
 				value = msg.get(i).booleanValue();
-			// else if (msg.checkTypetag("l")) //long
 			if (typetag.charAt(i) == 'l')// long
 				value = msg.get(i).longValue();
-			// else if (msg.checkTypetag("c")) //char
 			if (typetag.charAt(i) == 'c')// char
 				value = msg.get(i).charValue();
 

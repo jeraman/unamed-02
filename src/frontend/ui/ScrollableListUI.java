@@ -77,9 +77,18 @@ public class ScrollableListUI extends AbstractElementUi {
 				.setBarHeight(20)
 				.setItemHeight(20)
 				.align(ControlP5.CENTER, ControlP5.CENTER, ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE)
-				.onChange(callback())
 				.setType(ControlP5.DROPDOWN)
-				.addItems(options);
+				.addItems(options)
+				.onClick(toFront)
+				.onChange(callback());
 	}
+	
+	CallbackListener toFront = new CallbackListener() {
+		public void controlEvent(CallbackEvent theEvent) {
+			theEvent.getController().bringToFront();
+			//((DropdownList)theEvent.getController()).open();
+		}
+	};
+	
 
 }

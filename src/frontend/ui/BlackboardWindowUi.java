@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import controlP5.Canvas;
 import controlP5.Group;
+import controlP5.ListBox;
+import controlP5.ListBox.ListBoxView;
 import frontend.Main;
 import frontend.core.Blackboard;
 import oscP5.OscMessage;
@@ -13,6 +16,9 @@ import processing.core.PApplet;
 import soundengine.util.Util;
 
 public class BlackboardWindowUi extends AbstractElementUi implements Serializable {
+	
+	private transient Group g;
+	
 	private int mywidth;
 	private int myheight;
 	private int x;
@@ -20,13 +26,24 @@ public class BlackboardWindowUi extends AbstractElementUi implements Serializabl
 	private int numberOfItems;
 	private transient PApplet p;
 	private Blackboard bb;
+	private ArrayList<String> blacklisted;
 	
 	public BlackboardWindowUi (Blackboard bb, PApplet p) {
-		this.mywidth = 6 * font_size;//((Main) p).get_font_size();
+		this.mywidth = 6 * font_size;
 		this.myheight = 2 * font_size;
 		this.numberOfItems = 0;
 		this.bb = bb;
 		this.build(p);
+		this.blacklisted = new ArrayList<String>();
+	}
+	
+	public void addToBlacklist(String item) {
+		this.blacklisted.add(item);
+	}
+	
+	public void setPosition(int x, int y) {
+		if (g != null)
+			g.setPosition(x, y);
 	}
 	
 	public int getWidth() {
@@ -94,17 +111,8 @@ public class BlackboardWindowUi extends AbstractElementUi implements Serializabl
 		this.numberOfItems = i;
 	}
 
-	// list of memory items that should not be displyed to the use
-	boolean blacklisted(String varname) {
-		// String varname = element.getKey().toString();
-		// if ((varname.contains("frequency") && varname.length() > 25)
-		// || (varname.contains("amplitude") && varname.length() > 25)
-
-		if (varname.equals("note") || varname.equals("interval") || varname.equals("chord"))
-			// add a new item here
-			return false;// true;
-		else
-			return false;
+	private boolean blacklisted(String varname) {
+		return this.blacklisted.contains(varname);
 	}
 
 	void drawItem(String var_name, Object var_value, int posx, int posy, int mywidth, int myheight) {
@@ -112,13 +120,9 @@ public class BlackboardWindowUi extends AbstractElementUi implements Serializabl
 		posx += xoffset / 4;
 		mywidth = this.getWidth() / 2;
 
-		// header
 		p.noStroke();
 		p.fill(AbstractElementUi.blackboardBackgroundColor);
 		p.rectMode(p.CENTER);
-		// p.rect(posx, posy, mywidth, myheight);
-		// p.rect(posx + xoffset, posy, mywidth, myheight);
-		// p.rect(posx + xoffset + xoffset, posy, mywidth, myheight);
 		p.rect(posx, posy, mywidth, myheight);
 		p.rect(posx + 1 + mywidth, posy, mywidth - 1, myheight);
 
@@ -135,66 +139,68 @@ public class BlackboardWindowUi extends AbstractElementUi implements Serializabl
 		if (var_value instanceof Double)
 			value_string = Util.round((float) ((double) var_value), 2).toString();
 
-		// p.text(type_name.replace("java.lang.", ""), posx, posy);
-		// p.text(var_name, posx + xoffset, posy);
-		// p.text(value_string, posx + xoffset + xoffset + 5, posy);
 		p.text(var_name, posx, posy);
 		p.text(value_string, posx + mywidth + 5, posy);
 	}
+	
+	public void createUi() {
+		g = cp5.addGroup("blackboard")
+				.setPosition(250, 100)
+				.setWidth(this.getWidth())
+				.activateEvent(true)
+				.setHeight(20)
+				.setBackgroundColor(blackboardBackgroundColor)
+				.setColorBackground(blackboardHeaderColor)
+				.setBackgroundHeight(250)
+				.setMoveable(true)
+				.setVisible(true)
+				.setLabel("BLACKBOARD");
+		
+		cp5.addTextlabel("test")
+		.setText("Time: ")
+		.setPosition(0, 400)
+		.setGroup(g);
+		
+		g.getCaptionLabel().align(cp5.CENTER, cp5.CENTER);
+		g.getCaptionLabel().setColor(blackboardHeaderTextColor);
 
-	// adding input osc support to the blackboard
-	public void oscEvent(OscMessage msg) {
-		if (bb.debug) {
-			System.out.print("### received an osc message.");
-			System.out.print(" addrpattern: " + msg.addrPattern());
-			System.out.print(" typetag: " + msg.typetag());
+		//option 1 - using list box. the problem is that i was not able to create two rows as required by the blackboard
+		// ListBox lb = cp5.addListBox("listbox")
+		// .setPosition(10, 10)
+		// .setItemHeight(23)
+		// .setBarHeight(0)
+		// .setBackgroundColor(blackboardBackgroundColor)
+		// .setColorBackground(blackboardBackgroundColor)
+		// .open()
+		// .setWidth(this.getWidth()-20)
+		// .setGroup(g);
+		//
+		// experimental_draw_bb_items(lb);
+		
+		//option 3 - using cp5's canvas. the problem is using scrolling
+		// MyCanvas cc = new MyCanvas();
+		// cc.pre(); // use cc.post(); to draw on top of existing controllers.
+		// cp5.addCanvas(cc); // add the canvas to cp5		
+		
+		this.setPosition(p.width/2, p.height/2);
+	}
+	
+	
+	void experimental_draw_bb_items(ListBox lb ) {
+		draw_header_gui();
+		int i = 0;
+
+		List<String> ordered = new ArrayList<String>(bb.keySet());
+		Collections.sort(ordered);
+
+		for (String val : ordered) {
+			if (!this.blacklisted(val)) {
+				lb.addItem(val + " - " + bb.get(val), i);
+				i++;
+			}
 		}
 
-		// gets the name
-		String name = msg.addrPattern();
-		// processing the address
-		name = name.substring(1, name.length());
-		name = name.replace("/", "_");
-
-		String typetag = msg.typetag();
-		int typetag_size = typetag.length();
-
-		p.println(msg.typetag());
-
-		for (int i = 0; i < typetag_size; i++) {
-
-			// value will be stored in this variable
-			Object value = null;
-
-			// checks for the right data type
-
-			// if (typetag.charAt(i).equals("i")) //integer
-			if (typetag.charAt(i) == 'i')// integer
-				value = msg.get(i).intValue();
-			// else if (msg.checkTypetag("f")) //float
-			if (typetag.charAt(i) == 'f')// float
-				value = msg.get(i).floatValue();
-			// else if (msg.checkTypetag("d")) //double
-			if (typetag.charAt(i) == 'd')// double
-				value = msg.get(i).doubleValue();
-			// else if (msg.checkTypetag("s")) //string
-			if (typetag.charAt(i) == 's')// string
-				value = msg.get(i).stringValue();
-			// else if (msg.checkTypetag("b")) //boolean
-			if (typetag.charAt(i) == 'b')// boolean
-				value = msg.get(i).booleanValue();
-			// else if (msg.checkTypetag("l")) //long
-			if (typetag.charAt(i) == 'l')// long
-				value = msg.get(i).longValue();
-			// else if (msg.checkTypetag("c")) //char
-			if (typetag.charAt(i) == 'c')// char
-				value = msg.get(i).charValue();
-
-			if (!bb.containsKey(name + "_" + i))
-				bb.put(name + "_" + i, value);
-			else
-				bb.replace(name + "_" + i, value);
-		}
+		this.numberOfItems = i;
 	}
 
 	@Deprecated
