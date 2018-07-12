@@ -218,7 +218,7 @@ public class LiveInputGeneratorExtendingOscil extends Oscil implements AbstractG
 	}
 	
 	@Override
-	public void attach(GeneratorObserver observer) {
+	public synchronized void attach(GeneratorObserver observer) {
 		this.observers.add((LiveInputGeneratorObserver)observer);
 	}
 
@@ -281,10 +281,12 @@ public class LiveInputGeneratorExtendingOscil extends Oscil implements AbstractG
 		new LiveInputGeneratorObserver(this, clone);
 	}
 	
-	public void unlinkOldObservers () {
+	public synchronized void unlinkOldObservers () {
+		synchronized (observers) {
 		for (int i = observers.size()-1; i >= 0; i--)
 			if (observers.get(i).isClosed())
 				this.observers.remove(i);
+		}
 	}
 
 	public boolean isClosed() {
@@ -294,7 +296,7 @@ public class LiveInputGeneratorExtendingOscil extends Oscil implements AbstractG
 			return false;
 	}
 
-	public void close() {
+	public synchronized void close() {
 		// super.close();
 		// this.vocode = null;
 		// this.mod = null;

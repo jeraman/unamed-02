@@ -120,30 +120,36 @@ public class FlangerEffect extends Flanger implements AbstractEffect {
 	
 	
 	@Override
-	public void attach(EffectObserver observer) {
+	public synchronized void attach(EffectObserver observer) {
 		this.observers.add((FlangerEffectObserver)observer);
 	}
 
 	@Override
-	public void notifyAllObservers() {
+	public synchronized void notifyAllObservers() {
+		synchronized (observers) {
 		for (EffectObserver observer : observers)
 			observer.update();
+		}
 	}
 	
 	@Override
-	public void notifyAllObservers(String updatedParameter) {
+	public synchronized void notifyAllObservers(String updatedParameter) {
+		synchronized (observers) {
 		for (EffectObserver observer : observers)
 			observer.update(updatedParameter);
+		}
+	}
+
+	public synchronized void unlinkOldObservers() {
+		synchronized (observers) {
+		for (int i = observers.size() - 1; i >= 0; i--)
+			if (observers.get(i).isClosed())
+				this.observers.remove(i);
+		}
 	}
 	
 	private void linkClonedObserver(FlangerEffect clone) {
 		new FlangerEffectObserver(this, clone);
-	}
-
-	public void unlinkOldObservers() {
-		for (int i = observers.size() - 1; i >= 0; i--)
-			if (observers.get(i).isClosed())
-				this.observers.remove(i);
 	}
 	
 	@Override

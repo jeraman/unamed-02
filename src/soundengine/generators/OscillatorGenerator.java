@@ -220,10 +220,12 @@ public class OscillatorGenerator extends Oscil implements AbstractGenerator, Run
 		new OscillatorGeneratorObserver(this, clone);
 	}
 
-	public void unlinkOldObservers() {
+	public synchronized void unlinkOldObservers() {
+		synchronized (observers) {
 		for (int i = observers.size() - 1; i >= 0; i--)
 			if (observers.get(i).isClosed())
 				this.observers.remove(i);
+		}
 	}
 
 	public boolean isClosed() {
@@ -234,8 +236,7 @@ public class OscillatorGenerator extends Oscil implements AbstractGenerator, Run
 	}
 
 	@Override
-	public void close() {
-		// TODO Auto-generated method stub
+	public synchronized void close() {
 		this.waveform = null;
 		this.patched = null;
 		this.observers.clear();
@@ -243,7 +244,7 @@ public class OscillatorGenerator extends Oscil implements AbstractGenerator, Run
 	}
 
 	@Override
-	public void attach(GeneratorObserver observer) {
+	public synchronized void attach(GeneratorObserver observer) {
 		this.observers.add((OscillatorGeneratorObserver) observer);
 	}
 

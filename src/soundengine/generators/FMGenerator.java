@@ -222,7 +222,7 @@ public class FMGenerator extends Oscil implements AbstractGenerator, Runnable {
 	}
 
 	@Override
-	public void attach(GeneratorObserver observer) {
+	public synchronized void attach(GeneratorObserver observer) {
 		this.observers.add((FMGeneratorObserver) observer);
 	}
 
@@ -294,10 +294,12 @@ public class FMGenerator extends Oscil implements AbstractGenerator, Runnable {
 		new FMGeneratorObserver(this, clone);
 	}
 
-	public void unlinkOldObservers() {
+	public synchronized void unlinkOldObservers() {
+		synchronized (observers) {
 		for (int i = observers.size() - 1; i >= 0; i--)
 			if (observers.get(i).isClosed())
 				this.observers.remove(i);
+		}
 	}
 
 	public boolean isClosed() {
@@ -308,7 +310,7 @@ public class FMGenerator extends Oscil implements AbstractGenerator, Runnable {
 	}
 
 	@Override
-	public void close() {
+	public synchronized void close() {
 		this.fm = null;
 		this.carrierWave = null;
 		this.modWave = null;

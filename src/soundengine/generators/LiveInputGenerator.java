@@ -288,7 +288,7 @@ public class LiveInputGenerator extends Oscil implements AbstractGenerator, Runn
 	}
 	
 	@Override
-	public void attach(GeneratorObserver observer) {
+	public synchronized void attach(GeneratorObserver observer) {
 		this.observers.add((LiveInputGeneratorObserver)observer);
 	}
 
@@ -351,10 +351,12 @@ public class LiveInputGenerator extends Oscil implements AbstractGenerator, Runn
 		new LiveInputGeneratorObserver(this, clone);
 	}
 	
-	public void unlinkOldObservers () {
+	public synchronized void unlinkOldObservers () {
+		synchronized (observers) {
 		for (int i = observers.size()-1; i >= 0; i--)
 			if (observers.get(i).isClosed())
 				this.observers.remove(i);
+		}
 	}
 
 	public boolean isClosed() {
@@ -364,7 +366,7 @@ public class LiveInputGenerator extends Oscil implements AbstractGenerator, Runn
 			return false;
 	}
 
-	public void close() {
+	public synchronized void close() {
 		this.observers.clear();
 		this.observers = null;
 	}

@@ -50,30 +50,36 @@ public class LowPassFilterEffect extends LowPassFS implements AbstractEffect {
 	}
 	
 	@Override
-	public void attach(EffectObserver observer) {
+	public synchronized void attach(EffectObserver observer) {
 		this.observers.add((LowPassFilterEffectObserver)observer);
 	}
 
 	@Override
-	public void notifyAllObservers() {
+	public synchronized void notifyAllObservers() {
+		synchronized (observers) {
 		for (EffectObserver observer : observers)
 			observer.update();
+		}
 	}
 	
 	@Override
-	public void notifyAllObservers(String updatedParameter) {
+	public synchronized void notifyAllObservers(String updatedParameter) {
+		synchronized (observers) {
 		for (EffectObserver observer : observers)
 			observer.update(updatedParameter);
+		}
 	}
 	
 	private void linkClonedObserver(LowPassFilterEffect clone) {
 		new LowPassFilterEffectObserver(this, clone);
 	}
 
-	public void unlinkOldObservers() {
+	public synchronized void unlinkOldObservers() {
+		synchronized (observers) {
 		for (int i = observers.size() - 1; i >= 0; i--)
 			if (observers.get(i).isClosed())
 				this.observers.remove(i);
+		}
 	}
 	
 	@Override

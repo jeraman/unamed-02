@@ -306,9 +306,11 @@ public class SampleFileGenerator extends ModifiedSampler implements AbstractGene
 	}
 	
 	public synchronized void unlinkOldObservers () {
+		synchronized (observers) {
 		for (int i = observers.size()-1; i >= 0; i--)
 			if (observers.get(i).isClosed())
 				this.observers.remove(i);
+		}
 	}
 
 	public boolean isClosed() {
@@ -318,7 +320,7 @@ public class SampleFileGenerator extends ModifiedSampler implements AbstractGene
 			return false;
 	}
 	
-	public void close() {
+	public synchronized void close() {
 		this.patched = null;
 		this.observers.clear();
 		this.observers = null;
