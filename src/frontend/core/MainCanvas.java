@@ -104,6 +104,22 @@ public class MainCanvas {
 		return this.root.whatUserIsPlaying();
 	}
 	
+	public String getLastPlayedNote() {
+		return this.root.getLastPlayedNote();
+	}
+	
+	public boolean thereIsKeyDown() {
+		return this.root.thereIsKeyDown();
+	}
+	
+	public boolean thereIsKeyReleased() {
+		return this.root.thereIsKeyReleased();
+	}
+	
+	public int numberOfKeyPressed() {
+		return this.root.numberOfKeyPressed();
+	}
+	
 	public int getBeat() {
 		return this.timeCounter.getBeat();
 	}
@@ -123,9 +139,11 @@ public class MainCanvas {
 	public float getTime() {
 		return this.timeCounter.getTime();
 	}
+	
 	public float getSeconds() {
 		return this.timeCounter.getSeconds();
 	}
+	
 	public int getMinutes() {
 		return this.timeCounter.getMinutes();
 	}

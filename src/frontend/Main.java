@@ -52,8 +52,9 @@ public class Main extends PApplet {
 	}
 
 	public void settings() {
-		// fullScreen();
-		size(800, 600);
+		// fullScreen(1);
+		// size(800, 600);
+		 size(1024, 768);
 	}
 
 	public void setup() {
@@ -306,6 +307,34 @@ public class Main extends PApplet {
 		else
 			return "";
 	}
+	
+	public boolean thereIsKeyDown() {
+		if (canvas != null)
+			return this.canvas.thereIsKeyDown();
+		else
+			return false;
+	}
+	
+	public boolean thereIsKeyReleased() {
+		if (canvas != null)
+			return this.canvas.thereIsKeyReleased();
+		else
+			return false;
+	}
+	
+	public int numberOfKeyPressed() {
+		if (canvas != null)
+			return this.canvas.numberOfKeyPressed();
+		else
+			return 0;
+	}
+	
+	public String getLastPlayedNote() {
+		if (canvas != null)
+			return this.canvas.getLastPlayedNote();
+		else
+			return "";
+	}
 
 	public int getBeat() {
 		if (canvas != null)
@@ -341,18 +370,22 @@ public class Main extends PApplet {
 		else
 			return -1;
 	}
+	
 	public float getSeconds() {
 		if (canvas != null)
 			return this.canvas.getSeconds();
 		else
 			return -1;
 	}
+	
 	public int getMinutes() {
 		if (canvas != null)
 			return this.canvas.getMinutes();
 		else
 			return -1;
 	}
+	
+	
 
 	///////////////////////////////////////////////////
 	// the following code was taken from Sofians' prototype

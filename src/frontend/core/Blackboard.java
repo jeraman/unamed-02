@@ -27,13 +27,15 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 	private int x;
 	private int y;
 	private boolean debug = false;
+	
+	private String lastPlayedNote;
 
 	transient private PApplet p;
 
 	public Blackboard(PApplet p) {
 		this.mywidth = 6 * ((Main) p).get_font_size();
 		this.myheight = 2 * ((Main) p).get_font_size();
-
+		this.lastPlayedNote = "";
 		this.build(p);
 	}
 
@@ -82,11 +84,7 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 	}
 
 	private void init_global_variables() {
-		this.put("mouseX", (float) p.mouseX / p.width);
-		this.put("mouseY", (float) p.mouseY / p.height);
-		this.put("mousePressed", p.mousePressed);
-		this.put("key", p.key);
-		this.put("keyPressed", p.keyPressed);
+		this.initPcVariables();
 		this.initKeyboardVariables();
 		this.initTempoVariables();
 	}
@@ -95,32 +93,26 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 		// if the blackboard wasn't loaded yet
 		if (p == null)
 			return;
-
-		this.replace("mouseX", (float) p.mouseX / p.width);
-		this.replace("mouseY", (float) p.mouseY / p.height);
-		this.replace("mousePressed", p.mousePressed);
-		this.replace("key", p.key);
-		this.replace("keyPressed", p.keyPressed);
+		
+		this.updatePcVariables();
 		this.updateKeyboardVariables();
 		this.updateTempoVariables();
 	}
 	
-	private void initKeyboardVariables() {
-		String playing = Main.instance().whatUserIsPlaying();
-		this.put("playing", playing);
-		String[] details = processPlaying(playing);
-		this.put("note", (String)details[0]);
-		this.put("interval", (String)details[1]);
-		this.put("chord", (String)details[2]);
+	private void initPcVariables() {
+		this.put("mouseX", (float) p.mouseX / p.width);
+		this.put("mouseY", (float) p.mouseY / p.height);
+		this.put("mousePressed", p.mousePressed);
+		this.put("pcKey", "\""+p.key+"\"");
+		this.put("pcKeyPressed", p.keyPressed);
 	}
 	
-	private void updateKeyboardVariables() {
-		String playing = Main.instance().whatUserIsPlaying();
-		this.replace("playing", playing);
-		String[] details = processPlaying(playing);
-		this.replace("note", (String)details[0]);
-		this.replace("interval", (String)details[1]);
-		this.replace("chord", (String)details[2]);
+	private void updatePcVariables() {
+		this.replace("mouseX", (float) p.mouseX / p.width);
+		this.replace("mouseY", (float) p.mouseY / p.height);
+		this.replace("mousePressed", p.mousePressed);
+		this.replace("pcKey", "\""+p.key+"\"");
+		this.replace("pcKeyPressed", p.keyPressed);
 	}
 	
 	private void initTempoVariables() {
@@ -141,6 +133,34 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 		this.replace("seconds", Main.instance().getSeconds());
 		this.replace("minutes", Main.instance().getMinutes());
 	}
+	
+	private void initKeyboardVariables() {
+		String playing = Main.instance().whatUserIsPlaying();
+		this.put("playing", playing);
+		String[] details = processPlaying(playing);
+		this.put("note", details[0]);
+		this.put("interval", details[1]);
+		this.put("chord", details[2]);
+		this.put("key", Main.instance().getLastPlayedNote());
+		this.put("keyPressed", Main.instance().thereIsKeyDown());
+		this.put("keyReleased", Main.instance().thereIsKeyReleased());
+		this.put("numKeyPresses", Main.instance().numberOfKeyPressed());
+	}
+	
+	private void updateKeyboardVariables() {
+		String playing = Main.instance().whatUserIsPlaying();
+		this.replace("playing", playing);
+		String[] details = processPlaying(playing);
+		this.replace("note", details[0]);
+		this.replace("interval", details[1]);
+		this.replace("chord", details[2]);
+		String lastNote =  "\"" + Main.instance().getLastPlayedNote() + "\"";
+		this.replace("key", lastNote);
+		this.replace("keyPressed", Main.instance().thereIsKeyDown());
+		this.replace("keyReleased", Main.instance().thereIsKeyReleased());
+		this.replace("numKeyPresses", Main.instance().numberOfKeyPressed());
+	}
+	
 	
 	private String[] processPlaying(String playing) {
 		if (playing.contains("note"))

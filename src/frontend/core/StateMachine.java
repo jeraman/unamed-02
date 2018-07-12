@@ -226,6 +226,22 @@ public class StateMachine extends Task {
 	public String whatUserIsPlaying() {
 		return this.eng.whatUserIsPlaying();
 	}
+	
+	public String getLastPlayedNote() {
+		return this.eng.getLastPlayedNote();
+	}
+	
+	public boolean thereIsKeyDown() {
+		return this.eng.thereIsKeyDown();
+	}
+	
+	public boolean thereIsKeyReleased() {
+		return this.eng.thereIsKeyReleased();
+	}
+	
+	public int numberOfKeyPressed() {
+		return this.eng.numberOfKeyPressed();
+	}
 
 	void update_title(String newtitle) {		
 		String n = get_formated_blackboard_title();

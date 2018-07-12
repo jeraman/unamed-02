@@ -217,4 +217,20 @@ public class SoundEngine implements SoundEngineFacade {
 	public String whatUserIsPlaying() {
 		return this.memory.identifyWhatUserIsPlaying();
 	}
+	
+	public String getLastPlayedNote() {
+		return this.memory.getLastPlayedNote();
+	}
+	
+	public boolean thereIsKeyDown() {
+		return this.memory.thereIsKeyDown();
+	}
+	
+	public boolean thereIsKeyReleased() {
+		return this.memory.thereIsKeyReleased();
+	}
+	
+	public int numberOfKeyPressed() {
+		return this.memory.size();
+	}
 }

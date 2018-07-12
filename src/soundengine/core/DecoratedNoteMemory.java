@@ -10,12 +10,14 @@ import soundengine.util.MusicTheory;
 public class DecoratedNoteMemory {
 	private ArrayList<DecoratedNote> memory;
 	private ArrayList<Integer> removalLine;
+	private String lastNote;
 	
 	private static final int CONCURRENT_NOTES_LIMIT = 5;
 
 	public DecoratedNoteMemory() {
 		memory = new ArrayList<DecoratedNote>();
 		removalLine = new ArrayList<Integer>();
+		lastNote = "";
 	}
 	
 //	public synchronized void put(int channel, int note, int velocity) {
@@ -30,12 +32,15 @@ public class DecoratedNoteMemory {
 	public synchronized void put (DecoratedNote aug) {		
 		controlsNumberOfConcurrentNotes();
 		memory.add(aug);
+		this.updateLastNote();
 	}
 
 	public synchronized DecoratedNote remove(int note) {
 		int noteIndex = getElementIndex(note);
 		DecoratedNote result = null;
 
+		this.updateLastNote();
+		
 		if (noteIndex < 0) {
 			System.out.println("adding: " + note +  " to the removal line");
 			System.out.println("memory.size(): " + memory.size());
@@ -43,20 +48,20 @@ public class DecoratedNoteMemory {
 			
 			if (!isQueuedToBeDeleted(note))
 				removalLine.add(note);
-			
 			return null;
 		}
-
 		else 
 			result = memory.remove(noteIndex);
 		
 		return result;
 	}
 	
+	@Deprecated
 	public synchronized void update() {
 		tryToClearMemory();
 	}
 	
+	@Deprecated
 	public synchronized void tryToClearMemory() {
 		for (int note:removalLine) 
 			this.removeAndNoteOff(note);
@@ -131,6 +136,23 @@ public class DecoratedNoteMemory {
 			return memory.get(noteIndex);
 	}
 
+	private synchronized void updateLastNote() {
+		if (memory.size() > 0)
+			this.lastNote = MusicTheory.noteFromMIDI(memory.get(memory.size()-1).getPitch());
+	}
+	
+	public String getLastPlayedNote() {
+		return this.lastNote;
+	}
+	
+	public boolean thereIsKeyDown() {
+		return (memory.size() > 0);
+	}
+	
+	public boolean thereIsKeyReleased() {
+		return !this.thereIsKeyDown();
+	}
+	
 	public synchronized String identifyWhatUserIsPlaying() {
 		int size = memory.size();
 		String text;
