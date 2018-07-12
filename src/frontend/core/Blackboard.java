@@ -4,11 +4,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.io.Serializable;
 import processing.core.PApplet;
 import soundengine.util.MidiIO;
+import soundengine.util.Util;
 
 import java.util.regex.*;
 import javax.script.ScriptException;
 import frontend.Main;
 import frontend.ui.AbstractElementUi;
+import frontend.ui.BlackboardWindowUi;
 
 import java.util.*;
 import java.math.BigDecimal;
@@ -24,50 +26,41 @@ import oscP5.*;
  *         was written by Sofian and incorporated by him into the original code.
  */
 public class Blackboard extends ConcurrentHashMap<String, Object> implements Serializable {
-	private int mywidth;
-	private int myheight;
-	private int x;
-	private int y;
-	private boolean debug = false;
+	public boolean debug = false;
 	
-	private String lastPlayedNote;
-
+	private BlackboardWindowUi ui;
 	transient private PApplet p;
-
+	
 	public Blackboard(PApplet p) {
-		this.mywidth = 6 * ((Main) p).get_font_size();
-		this.myheight = 2 * ((Main) p).get_font_size();
-		this.lastPlayedNote = "";
+		this.ui = new BlackboardWindowUi(this, p);
 		this.build(p);
 	}
 
 	public int getWidth() {
-		return mywidth * 3;
+		return ui.getWidth();
 	}
 
 	public int getHeight() {
-		return myheight * (this.size() + 3);
+		return ui.getHeight();
 	}
 
 	public int getX() {
-		return x;
+		return ui.getX();
 	}
 
 	public int getY() {
-		return y;
+		return ui.getY();
 	}
 
 	void set_debug(boolean b) {
 		this.debug = b;
 	}
 
-	void build(PApplet p) {
-		System.out
-				.println("@TODO [BLACKBOARD] verify what sorts of things needs to be initialize when loaded from file");
+	public void build(PApplet p) {
+		System.out.println("@TODO [BLACKBOARD] verify what sorts of things needs to be initialize when loaded from file");
 		this.p = p;
 		init_global_variables();
-		this.x = ((Main) p).width - (int) (mywidth * 2.8);// -myheight;
-		this.y = myheight;
+		this.ui.build(p);
 	}
 	
 	public Object put (String key, Object value) {
@@ -279,86 +272,7 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 		// if the blackboard wasn't loaded yet
 		if (p == null)
 			return;
-		draw_header_gui();
-		draw_bb_items();
-	}
-
-	// draws the header
-	void draw_header_gui() {
-
-		p.noStroke();
-		p.fill(255, 200);
-		p.rectMode(p.CENTER);
-		p.rect(x + mywidth, y, (mywidth * 3), myheight);
-		p.rectMode(p.CORNERS);
-
-		p.fill(50);
-		p.textAlign(p.CENTER, p.CENTER);
-		p.text("BLACKBOARD", x + mywidth, y);
-	}
-
-	// draws the items
-	void draw_bb_items() {
-		draw_header_gui();
-		int i = 0;
-
-		List<String> ordered = new ArrayList<String>(this.keySet());
-		Collections.sort(ordered);
-
-		for (String val : ordered) {
-			if (!this.blacklisted(val)) {
-				drawItem(val, this.get(val), x, y + (myheight * (i + 1)) + i + 1, mywidth, myheight);
-				i++;
-			}
-		}
-	}
-
-	// list of memory items that should not be displyed to the use
-	boolean blacklisted(String varname) {
-		//String varname = element.getKey().toString();
-		//if ((varname.contains("frequency") && varname.length() > 25)
-		//		|| (varname.contains("amplitude") && varname.length() > 25)
-		
-		if (varname.equals("note") || varname.equals("interval") || varname.equals("chord"))
-			// add a new item here
-			return false;//true;
-		else
-			return false;
-	}
-
-	void drawItem(String var_name, Object var_value, int posx, int posy, int mywidth, int myheight) {
-		int xoffset = mywidth;
-		posx += xoffset/4;
-		mywidth = this.getWidth()/2;
-
-		// header
-		p.noStroke();
-		p.fill(AbstractElementUi.blackboardBackgroundColor);
-		p.rectMode(p.CENTER);
-//		p.rect(posx, posy, mywidth, myheight);
-//		p.rect(posx + xoffset, posy, mywidth, myheight);
-//		p.rect(posx + xoffset + xoffset, posy, mywidth, myheight);
-		p.rect(posx , posy, mywidth, myheight);
-		p.rect(posx + 1 + mywidth, posy, mywidth-1, myheight);
-
-		p.fill(AbstractElementUi.whiteColor);
-		p.textAlign(p.CENTER, p.CENTER);
-
-		String type_name = var_value.getClass().getName();
-		// Object value = element.getValue();
-		String value_string = var_value.toString();
-
-		// in case it's a float, only exhibits two decimal points.
-		if (var_value instanceof Float)
-			value_string = round((float) var_value, 2).toString();
-		if (var_value instanceof Double)
-			value_string = round((float) ((double) var_value), 2).toString();
-
-		//p.text(type_name.replace("java.lang.", ""), posx, posy);
-//		p.text(var_name, posx + xoffset, posy);
-//		p.text(value_string, posx + xoffset + xoffset + 5, posy);
-		p.text(var_name, posx , posy);
-		p.text(value_string, posx + mywidth + 5, posy);
+		ui.draw();
 	}
 
 	// adding input osc support to the blackboard
@@ -414,12 +328,6 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 			else
 				replace(name + "_" + i, value);
 		}
-	}
-
-	public BigDecimal round(float d, int decimalPlace) {
-		BigDecimal bd = new BigDecimal(Float.toString(d));
-		bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
-		return bd;
 	}
 
 }
