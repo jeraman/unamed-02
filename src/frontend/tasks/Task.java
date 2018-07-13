@@ -38,7 +38,7 @@ public abstract class Task implements Serializable {
 	protected int localx;// = 10;
 	protected int localy;// = (int)(font_size);
 	
-	public SoundEngine eng;
+	transient public SoundEngine eng;
 
 	@Deprecated
 	public static int font_size;// = (int)(((ZenStates)p).get_font_size());

@@ -1,5 +1,6 @@
 package soundengine.core;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import org.jfugue.theory.Chord;
 import org.jfugue.theory.Note;

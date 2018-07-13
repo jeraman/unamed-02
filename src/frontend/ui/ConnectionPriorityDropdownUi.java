@@ -1,16 +1,25 @@
 package frontend.ui;
 
+import java.io.Serializable;
+
 import controlP5.CallbackEvent;
 import controlP5.CallbackListener;
 import controlP5.DropdownList;
 import controlP5.Group;
 import frontend.core.State;
 
-public class ConnectionPriorityDropdownUi extends AbstractElementUi {
+/**
+ * Ui component to store connections priority.
+ * @author jeraman.info
+ *
+ */
+
+public class ConnectionPriorityDropdownUi extends AbstractElementUi  {
 
 	private int value;
 	private int lastValue;
 	private State parent;
+	
 	transient private DropdownList dropdownlist;
 	
 	public ConnectionPriorityDropdownUi(int priority, State parent) {
@@ -77,7 +86,7 @@ public class ConnectionPriorityDropdownUi extends AbstractElementUi {
 				.setOpen(false)
 				.setValue(this.value)
 				.setLabel(this.value + "")
-				.onClick(toFront)
+				.onClick(toFront())
 				.onChange(generate_callback_dropdown());
 		
 		init_dropdown_list(parent.get_number_of_connections() - 1);
@@ -89,12 +98,13 @@ public class ConnectionPriorityDropdownUi extends AbstractElementUi {
 		}
 	}
 	
-	CallbackListener toFront = new CallbackListener() {
-		public void controlEvent(CallbackEvent theEvent) {
-			theEvent.getController().bringToFront();
-			//((DropdownList)theEvent.getController()).open();
-		}
-	};
+	CallbackListener toFront() {
+		return new CallbackListener() {
+			public void controlEvent(CallbackEvent theEvent) {
+				theEvent.getController().bringToFront();
+			}
+		};
+	}
 	
 	CallbackListener generate_callback_dropdown() {
 		return new CallbackListener() {
@@ -104,4 +114,5 @@ public class ConnectionPriorityDropdownUi extends AbstractElementUi {
 			}
 		};
 	}
+
 }

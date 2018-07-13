@@ -1,12 +1,14 @@
 package frontend.core;
 
+import java.io.Serializable;
+
 import frontend.ui.TempoWindowUi;
 import soundengine.time.TimeManager;
 
-public class TempoControl {
+public class TempoControl implements Serializable {
 
-	TempoWindowUi ui;
-	TimeManager tm;
+	private TempoWindowUi ui;
+	private TimeManager tm;
 	
 	private static final int defaultBPM = 120;
 	private static final int defaultBeat = 4;

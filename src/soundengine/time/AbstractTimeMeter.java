@@ -1,11 +1,13 @@
 package soundengine.time;
 
+import java.io.Serializable;
+
 /**
  * Abstract class used by metro and timer.
  * @author jeronimo
  *
  */
-abstract class AbstractTimeMeter implements Runnable {
+abstract class AbstractTimeMeter implements Runnable, Serializable {
 	
 	private Thread counter;
 	private boolean alive;

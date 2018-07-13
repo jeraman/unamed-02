@@ -15,7 +15,7 @@ import oscP5.OscMessage;
 import processing.core.PApplet;
 import soundengine.util.Util;
 
-public class BlackboardWindowUi extends AbstractElementUi implements Serializable {
+public class BlackboardWindowUi extends AbstractElementUi {
 	
 	private transient Group g;
 	
@@ -24,9 +24,10 @@ public class BlackboardWindowUi extends AbstractElementUi implements Serializabl
 	private int x;
 	private int y;
 	private int numberOfItems;
-	private transient PApplet p;
 	private Blackboard bb;
 	private ArrayList<String> blacklisted;
+
+	transient private PApplet p;
 	
 	public BlackboardWindowUi (Blackboard bb, PApplet p) {
 		this.mywidth = 6 * font_size;

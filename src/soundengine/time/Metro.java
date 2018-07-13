@@ -1,5 +1,7 @@
 package soundengine.time;
 
+import java.io.Serializable;
+
 import ddf.minim.AudioSample;
 import frontend.Main;
 import soundengine.SoundEngine;
@@ -12,7 +14,7 @@ import soundengine.util.Util;
  * @author jeraman.info
  *
  */
-class Metro extends AbstractTimeMeter {
+class Metro extends AbstractTimeMeter implements Serializable {
 
 	private int bpm;
 	private int currentBar;

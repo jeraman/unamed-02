@@ -16,7 +16,6 @@ public class ConnectionTextfieldUi extends TextfieldUi {
 	public static final int width = 20;
 	private int currentBackgroundColor;
 
-	
 	public ConnectionTextfieldUi() {
 		this(classDefaultText);
 	}
@@ -92,13 +91,21 @@ public class ConnectionTextfieldUi extends TextfieldUi {
 	}
 
 	public void createUI(String id) {
-		this.textfield = cp5.addTextfield(id + "/condition").setText(value).setColorValue(whiteColor)
+		this.textfield = cp5.addTextfield(id + "/condition")
+				.setText(value)
+				.setColorValue(whiteColor)
 				.setColorBackground(connectionBackgroundColor)
-				.setColorForeground(connectionBackgroundColor).setColorValue(whiteColor)
-				.setWidth(getLabelWidth()).setHeight(15).setFocus(false).onEnter(generate_callback_textfield_enter())
-				.onLeave(generate_callback_textfield_leave()).onClick(callbackEmptyWhenUsingUserInput())
-				.onChange(callbackPressEnterOrOutside()).onReleaseOutside(callbackPressEnterOrOutside())
-				.setAutoClear(false).setLabel("");
+				.setColorForeground(connectionBackgroundColor)
+				.setColorValue(whiteColor)
+				.setWidth(getLabelWidth())
+				.setHeight(15).setFocus(false)
+				.onEnter(generate_callback_textfield_enter())
+				.onLeave(generate_callback_textfield_leave())
+				.onClick(callbackEmptyWhenUsingUserInput())
+				.onChange(callbackPressEnterOrOutside())
+				.onReleaseOutside(callbackPressEnterOrOutside())
+				.setAutoClear(false)
+				.setLabel("");
 	}
 
 	CallbackListener generate_callback_textfield_enter() {

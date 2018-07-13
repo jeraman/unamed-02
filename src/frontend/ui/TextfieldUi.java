@@ -14,6 +14,7 @@ public class TextfieldUi extends AbstractElementUi {
 	protected String defaultText;
 	protected String value;
 	private String lastValue;
+	
 	transient protected Textfield textfield;
 	
 	public TextfieldUi(String defaultText) {
@@ -25,7 +26,6 @@ public class TextfieldUi extends AbstractElementUi {
 	public String getValue( ) {
 		return this.value;
 	}
-	
 	
 	public void setValue(String value) {
 		this.value = value;

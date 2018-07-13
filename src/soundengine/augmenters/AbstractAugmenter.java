@@ -1,5 +1,7 @@
 package soundengine.augmenters;
 
+import java.io.Serializable;
+
 import org.jfugue.theory.Note;
 
 import soundengine.util.Util;

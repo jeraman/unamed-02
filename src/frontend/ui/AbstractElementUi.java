@@ -19,21 +19,37 @@ public abstract class AbstractElementUi implements Serializable {
 	transient protected static ControlP5 cp5;
 	
 	protected static final String userInputAsDefault = "(USER INPUT)";
-	public static final int defaultTaskColor = ControlP5Constants.THEME_CP52014.getBackground();
-	public static final int connectionBackgroundColor = Main.instance().color(0, 0, 0, 50);
-	public static final int connectionForegroundColor = Main.instance().color(0, 116, 217, 200);
-	public static final int blackboardBackgroundColor = Main.instance().color(255, 50);
-	public static final int blackboardForegroundColor = Main.instance().color(255, 100);
-	public static final int blackboardHeaderColor = Main.instance().color(255, 200);
-	public static final int blackboardHeaderTextColor = Main.instance().color(50);
-	public static final int whiteColor = Main.instance().color(255, 255);
-	protected static final int errorColor = ControlP5Constants.THEME_RED.getBackground();
-	protected static final int defaultHeight = 15;
+	public static int defaultTaskColor;// = ControlP5Constants.THEME_CP52014.getBackground();
+	public static int connectionBackgroundColor;// = Main.instance().color(0, 0, 0, 50);
+	public static int connectionForegroundColor;// = Main.instance().color(0, 116, 217, 200);
+	public static int blackboardBackgroundColor;// = Main.instance().color(255, 50);
+	public static int blackboardForegroundColor;// = Main.instance().color(255, 100);
+	public static int blackboardHeaderColor;// = Main.instance().color(255, 200);
+	public static int blackboardHeaderTextColor;// = Main.instance().color(50);
+	public static int whiteColor;// = Main.instance().color(255, 255);
+	
+	protected static int errorColor;// = ControlP5Constants.THEME_RED.getBackground();
+	protected static int defaultHeight;// = 15;
 	protected static int font_size;
 	
 	public static void setup(ControlP5 cp5, PApplet p) {
 		AbstractElementUi.cp5 = cp5;
-		font_size = (int)(((Main)p).get_font_size());
+		initConstants();
+	}
+	
+	private static void initConstants() {
+		defaultTaskColor = ControlP5Constants.THEME_CP52014.getBackground();
+		connectionBackgroundColor = Main.instance().color(0, 0, 0, 50);
+		connectionForegroundColor = Main.instance().color(0, 116, 217, 200);
+		blackboardBackgroundColor = Main.instance().color(255, 50);
+		blackboardForegroundColor = Main.instance().color(255, 100);
+		blackboardHeaderColor = Main.instance().color(255, 200);
+		blackboardHeaderTextColor = Main.instance().color(50);
+		whiteColor = Main.instance().color(255, 255);
+		errorColor = ControlP5Constants.THEME_RED.getBackground();
+		defaultHeight = 15;
+		
+		font_size = Main.instance().get_font_size();
 	}
 	
 	public boolean update() {

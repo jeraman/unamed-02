@@ -1,20 +1,9 @@
 package frontend.core;
-/************************************************
- ** Class representing a state in the HFSM
- ************************************************
- ** jeraman.info, Sep. 30 2016 ******************
- ************************************************
- ************************************************/
 
-////////////////////////////////////////
-//importing whatever we need
 import java.util.*;
 import java.io.Serializable;
 import processing.core.PApplet;
 import soundengine.SoundEngine;
-import soundengine.augmenters.IntervalAugmenter;
-import soundengine.effects.AdsrEffect;
-import soundengine.generators.FMGenerator;
 import controlP5.*;
 import frontend.Main;
 import frontend.tasks.Task;
@@ -37,15 +26,16 @@ import frontend.tasks.meta.DMXTask;
 import frontend.tasks.meta.OSCTask;
 import frontend.tasks.meta.ScriptingTask;
 import frontend.ui.visuals.MultiLevelPieMenu;
-
 import java.util.UUID;
 
-////////////////////////////////////////
-//the state class
+/**
+ * Class representing a state in the HFSM
+ * @author jeronimo
+ * @date Sep. 30 2016
+ *
+ */
 public class State implements Serializable {
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	private Vector<Connection> connections;
 	private Vector<Task> tasks;
@@ -63,16 +53,16 @@ public class State implements Serializable {
 	private final float arrow_scale_offset = 1.25f;
 	private String id;
 
-	private SoundEngine eng;
-	
 	// gui elements
-	// transient private PieMenu pie;
 	transient private MultiLevelPieMenu pie;
 	transient private Accordion accordion;
 	transient private Textfield label;
 	transient private PApplet p;
 	transient private ControlP5 cp5;
 
+	//sound
+	transient private SoundEngine eng;
+	
 	// constructor
 	public State(PApplet p, ControlP5 cp5, String name, SoundEngine eng) {
 		this.p = p;
@@ -89,7 +79,7 @@ public class State implements Serializable {
 		this.id = UUID.randomUUID().toString();
 		this.eng = eng;
 
-		init_gui();
+		initStateGuiWithTasksAndConnections();
 		hide_gui();
 
 		this.connect_anything_else_to_self();
@@ -108,26 +98,22 @@ public class State implements Serializable {
 	}
 
 	// @TODO IMMPLEMENT BUILD THAT LOADS THE UI ELEMENTS OF THE STATE
-	void build(PApplet p, ControlP5 cp5) {
+	void build(PApplet p, ControlP5 cp5, SoundEngine eng) {
 		this.p = p;
 		this.cp5 = cp5;
-		// this.id = UUID.randomUUID().toString();
+		this.eng = eng;
 
-		// builds the tasks
+		// builds the tasks and add them to gui
 		for (Connection c : connections)
 			c.build(p, cp5);
 
-		// builds the tasks
-		for (Task t : tasks) {
+		// builds the tasks and add them to gui
+		for (Task t : tasks) 
 			t.build(p, cp5);
-		}
-
+	
 		// loads the gui
-		init_gui();
+		initStateGuiWithoutTasksAndConnections();
 		hide_gui();
-
-		// add all tasks to gui
-		this.add_all_tasks_to_gui();
 	}
 
 	String get_name() {
@@ -209,13 +195,8 @@ public class State implements Serializable {
 		this.remove_all_tasks();
 		this.remove_all_tasks_from_gui();
 		this.remove_all_connections();
-		// ControlP5 cp5 = HFSMPrototype.instance().cp5();
-		// removes the old gui label
-		// cp5.remove(this.name);
 		cp5.remove(this.id + "/label");
-		// cp5.remove("/acc_"+this.name);
 		cp5.remove(this.id + "/acc");
-		// removes all tasks from the gui
 	}
 
 	// stops all tasks associated to this node
@@ -839,58 +820,41 @@ public class State implements Serializable {
 
 	}
 
-	// updates the name of this state
 	void update_name(String newName) {
-		// ControlP5 cp5 = HFSMPrototype.instance().cp5();
-		// removes the old gui label
-		cp5.remove(this.name);
-		// removes all tasks from the gui
-		this.remove_all_tasks_from_gui();
-		// remove all connections ui elements
-		this.remove_gui_connections_involving_this_state();
-		// updates the name
+		//cp5.remove(this.name);
+		//this.remove_all_tasks_from_gui();
+		//this.remove_gui_connections_involving_this_state();
 		this.name = newName.toUpperCase();
-		// creates a new gui element for it
-		this.init_state_name_gui();
-		// adds all tasks with the updated name
-		this.add_all_tasks_to_gui();
-		// add all connections ui elements
-		this.init_gui_connections_involving_this_state();
+		//this.init_state_name_gui();
+		//this.add_all_tasks_to_gui();
+		//this.init_gui_connections_involving_this_state();
 	}
 
 	// resets the name of this state
 	void reset_name() {
-		// iterates of all tasks related to this state
-		for (Task t : tasks)
-			t.reset_gui_fields();
-
-		// this.update_name(this.name);
-		// p.println("reseting name: " + this.label.getText());
+		//for (Task t : tasks)
+		//	t.reset_gui_fields();
 		this.update_name(this.label.getText());
 	}
 
 	// inits gui elements related to controlP5
-	void init_gui() {
-		// this.pie = new PieMenu(p, x, y, size);
+	void initStateGuiWithTasksAndConnections() {
+		initStateGuiWithoutTasksAndConnections();
+
+		add_all_tasks_to_gui();
+		for (Connection c : connections)
+			c.init_gui_items();
+	}
+
+	void initStateGuiWithoutTasksAndConnections() {
 		this.pie = new MultiLevelPieMenu(p);
 		this.pie.set_position(x, y);
 		this.pie.set_inner_circle_diam((float) size);
 
-		// this.animation = new CircleEffectUI((ZenStates)p, this, x, y);
-		// this.animation.set_position(x,y);
-
-		// ControlP5 cp5 = HFSMPrototype.instance().cp5();
-
-		p.textFont(cp5.getFont().getFont());
-		p.textSize(cp5.getFont().getSize());
+		p.textFont(Main.instance().get_font());
+		p.textSize(Main.instance().get_font_size());
 		init_state_name_gui();
 		init_accordion_gui();
-		// init_tasks_gui();
-
-		add_all_tasks_to_gui();
-
-		for (Connection c : connections)
-			c.init_gui_items();
 	}
 
 	void hide_gui() {

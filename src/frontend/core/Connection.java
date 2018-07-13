@@ -1,19 +1,18 @@
 package frontend.core;
-/************************************************
- ** Class representing a conection between two states in the HFSM
- ************************************************
- ** jeraman.info, Sep. 30 2016 ******************
- ************************************************
- ************************************************/
 
 import java.io.Serializable;
 import processing.core.PApplet;
-
-import javax.script.*;
 import controlP5.*;
 import frontend.Main;
 import frontend.ui.ConnectionPriorityDropdownUi;
 import frontend.ui.ConnectionTextfieldUi;
+
+/**
+ * Class representing a conection between two states in the HFSM
+ * @author jeraman.info
+ * @date Sep. 30 2016
+ *
+ */
 
 public class Connection implements Serializable {
 	private static final long serialVersionUID = 1L;

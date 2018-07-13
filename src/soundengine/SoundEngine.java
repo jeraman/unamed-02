@@ -1,5 +1,6 @@
 package soundengine;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 import ddf.minim.AudioOutput;
@@ -26,9 +27,9 @@ public class SoundEngine implements SoundEngineFacade {
 	private LinkedHashMap<String, AbstractEffect> activeEffects;
 	private LinkedHashMap<String, AbstractAugmenter> activeAugmenters;
 	
-	public static Minim minim;
-	public static AudioOutput out;
-	public static AudioStream in;
+	transient public static Minim minim;
+	transient public static AudioOutput out;
+	transient public static AudioStream in;
 	
 	public SoundEngine(Minim minim) {
 		this.memory 		  = new DecoratedNoteMemory();

@@ -1,11 +1,13 @@
 package soundengine.time;
 
+import java.io.Serializable;
+
 /**
  * Simple timer in seconds.
  * @author jeraman.info
  *
  */
-class Timer extends AbstractTimeMeter {
+class Timer extends AbstractTimeMeter implements Serializable {
 	private long startTime;
 	private float elapsedTime;
 	

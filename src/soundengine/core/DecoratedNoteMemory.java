@@ -1,5 +1,6 @@
 package soundengine.core;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import org.jfugue.theory.Chord;
 
@@ -7,6 +8,11 @@ import soundengine.generators.AbstractGenerator;
 import soundengine.generators.GeneratorFactory;
 import soundengine.util.MusicTheory;
 
+/**
+ * Stores all notes currently played on the MIDI input device,
+ * @author jeraman.info
+ *
+ */
 public class DecoratedNoteMemory {
 	private ArrayList<DecoratedNote> memory;
 	private ArrayList<Integer> removalLine;

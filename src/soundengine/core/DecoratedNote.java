@@ -1,5 +1,6 @@
 package soundengine.core;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import ddf.minim.UGen;

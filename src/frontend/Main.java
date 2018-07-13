@@ -41,11 +41,12 @@ public class Main extends PApplet {
 	public int OSC_RECV_PORT;
 	public int STATE_CIRCLE_SIZE;
 	public int FONT_SIZE;
+	public PFont FONT;
 
 	public boolean debug = false;
 	public boolean keyReleased = false;
 	public boolean mouseRightButtonReleased = false;
-	public boolean is_loading = false;
+	volatile public boolean is_loading = false;
 
 	public static void main(String[] args) {
 		PApplet.main("frontend.Main");
@@ -60,8 +61,6 @@ public class Main extends PApplet {
 	public void setup() {
 		inst = this;
 		setupUtil();
-		setupAudio();
-		AbstractElementUi.setup(cp5, this);
 		this.serializer = new Serializer(this);
 		is_loading = true;
 		background(0);
@@ -71,6 +70,39 @@ public class Main extends PApplet {
 
 		setup_expression_loading_bug();
 
+
+
+		// testing autodraw
+		// cp5.setAutoDraw(false);
+
+		is_loading = false;
+	}
+
+
+	// calls all other utils
+	void setupUtil() {
+		load_config();
+		setup_osc();
+		setup_controlP5_and_Font();
+		setupAudio();
+		AbstractElementUi.setup(cp5, this);
+	}
+
+	void setupAudio() {
+		this.minim = new Minim(this);
+		MidiIO.setup(this);
+	}
+
+	// function for setting up osc
+	void setup_osc() {
+		// start oscP5, listening for incoming messages.
+		oscP5 = new OscP5(this, OSC_RECV_PORT);
+	}
+
+	// function for setting up controlp5
+	void setup_controlP5_and_Font() {
+		cp5 = new ControlP5(this);
+		
 		// this link covers changing font size:
 		// https://www.kasperkamperman.com/blog/processing-code/controlp5-library-example2/
 		// also here for the origins of the bug
@@ -81,21 +113,14 @@ public class Main extends PApplet {
 		// ControlFont font = new ControlFont(pfont,12);
 		// cp5.setFont(font);
 		// textFont(pfont);
-
-		textFont(cp5.getFont().getFont());
+		
+		FONT = cp5.getFont().getFont();
+		cp5.setFont(FONT, FONT_SIZE);
+		
+		textFont(FONT);
 		textSize(FONT_SIZE);
-
-		// testing autodraw
-		// cp5.setAutoDraw(false);
-
-		is_loading = false;
 	}
-
-	void setupAudio() {
-		this.minim = new Minim(this);
-		MidiIO.setup(this);
-	}
-
+	
 	// solves the freezing problem when loading the first expression
 	void setup_expression_loading_bug() {
 		Expression test = new Expression("0");
@@ -105,7 +130,7 @@ public class Main extends PApplet {
 			System.out.println("ScriptExpression thrown, unhandled update.");
 		}
 	}
-
+	
 	public void draw() {
 		background(0);
 
@@ -134,7 +159,6 @@ public class Main extends PApplet {
 
 	public void noteOn(int channel, int pitch, int velocity) {
 		canvas.noteOn(channel, pitch, velocity);
-
 	}
 
 	public void noteOff(int channel, int pitch, int velocity) {
@@ -143,28 +167,6 @@ public class Main extends PApplet {
 	
 	public void controllerChange(int channel, int number, int value) {
 		MidiIO.inputControllerChange(channel, number, value);
-	}
-	
-	//////////////////////////////////////
-	// UTIL FUNCTIONS
-
-	// calls all other utils
-	void setupUtil() {
-		load_config();
-		setup_osc();
-		setup_control_p5();
-	}
-
-	// function for setting up osc
-	void setup_osc() {
-		// start oscP5, listening for incoming messages.
-		oscP5 = new OscP5(this, OSC_RECV_PORT);
-	}
-
-	// function for setting up controlp5
-	void setup_control_p5() {
-		cp5 = new ControlP5(this);
-		cp5.setFont(cp5.getFont().getFont(), FONT_SIZE);
 	}
 
 	void oscEvent(OscMessage msg) {
@@ -200,7 +202,6 @@ public class Main extends PApplet {
 		OSC_RECV_PORT = Integer.parseInt(params.get(2));
 		STATE_CIRCLE_SIZE = Integer.parseInt(params.get(3));
 		FONT_SIZE = Integer.parseInt(params.get(4));
-
 	}
 
 	///////////////////////////////////////
@@ -251,7 +252,6 @@ public class Main extends PApplet {
 	}
 
 	public void mousePressed() {
-		// if is loading an open patch, do not draw anything
 		if (is_loading)
 			return;
 
@@ -279,19 +279,28 @@ public class Main extends PApplet {
 	}
 
 	public void mouseDragged() {
+		if (is_loading)
+			return;
+		
 		if (mouseButton == RIGHT)
 			canvas.start_dragging_connection();
 	}
 
 	public void keyReleased() {
+		if (is_loading)
+			return;
+		
 		keyReleased = true;
 
-		// updating cmg_or_ctrl_pressed if contrll or command keys were pressed
+		// updating cmg_or_ctrl_pressed if control or command keys were pressed
 		if (keyCode == 17 || keyCode == 27 || keyCode == 157)
 			cmg_or_ctrl_pressed = false;
 	}
 
 	public void mouseReleased() {
+		if (is_loading)
+			return;
+		
 		if (mouseButton == RIGHT) {
 			mouseRightButtonReleased = true;
 			canvas.closeConnectionAttempt();
@@ -389,8 +398,6 @@ public class Main extends PApplet {
 			return -1;
 	}
 	
-	
-
 	///////////////////////////////////////////////////
 	// the following code was taken from Sofians' prototype
 	// the goal is to allow serialization
@@ -433,6 +440,10 @@ public class Main extends PApplet {
 
 	public int get_font_size() {
 		return FONT_SIZE;
+	}
+	
+	public PFont get_font() {
+		return FONT;
 	}
 
 	private static Main inst;

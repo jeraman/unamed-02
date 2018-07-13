@@ -35,11 +35,6 @@ public class MainCanvas {
 		is_running = false;
 		init_buttons();
 		setup();
-		this.timeCounter = new TempoControl();
-		this.timeCounter.createUi();
-		//Main.instance().board.createUi();
-		
-		this.isTryingToConnect = false;
 	}
 
 	public boolean is_running() {
@@ -57,28 +52,27 @@ public class MainCanvas {
 
 	// init my variables
 	void setup() {
-
-		// ControlP5 cp5 = HFSMPrototype.instance().cp5();
-
 		root = new StateMachine(this.p, cp5, "unsaved file");
-		sm_stack = new Vector<StateMachine>();
-		sm_stack.add(root);
-
-		root.show();
-
-		close_preview.hide();
+		setupVariables();
 	}
 
 	// initting a new root
 	void setup(StateMachine newsm) {
 		root = newsm;
 		root.build(p, cp5);
+		setupVariables();
+	}
+	
+	private void setupVariables() {
 		sm_stack = new Vector<StateMachine>();
-		sm_stack.add(newsm);
-
+		sm_stack.add(root);
 		root.show();
 		close_preview.hide();
+		this.timeCounter = new TempoControl();
+		this.timeCounter.createUi();
+		this.isTryingToConnect = false;
 	}
+
 
 	// draw method
 	public void draw() {
@@ -191,7 +185,7 @@ public class MainCanvas {
 	}
 
 	// clears the root (not the current exhibited sm)
-	void clear() {
+	synchronized void clear() {
 		// root.clear();
 		sm_stack.lastElement().clear();
 	}

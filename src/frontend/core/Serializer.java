@@ -6,6 +6,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import frontend.Main;
+import soundengine.util.Util;
 
 
 /******************************************************
@@ -170,19 +171,17 @@ public class Serializer {
 		
 		try {	
 			p.is_loading = true;
+			Util.delay(100);
 			p.canvas.hide();
 			Main.instance().cp5().setAutoDraw(false);
-
+			
+			p.canvas.clear();
+	
 			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
 			
-			//p.board.clear();
-			p.canvas.clear();
-
-			//p.board    = (Blackboard) ois.readObject();
-			//p.canvas   = (MainCanvas) ois.readObject();
 			p.canvas.setup((StateMachine) ois.readObject());
 			
-			p.print("loading any new substatemachine");
+			p.print("loading a new substatemachine");
 			p.canvas.root.check_if_any_substatemachine_needs_to_be_reloaded_from_file();
 			
 			//lastSaveFile = file;

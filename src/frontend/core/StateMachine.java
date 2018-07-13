@@ -29,7 +29,7 @@ public class StateMachine extends Task {
 	public boolean debug;
 	private boolean brandnew; //has the user added  any state or task added to this state machine?
 
-	private transient StateMachinePreview smp;
+	transient private StateMachinePreview smp;
 
 	//contructor
 	public StateMachine (PApplet p, ControlP5 cp5, String name) {
@@ -73,11 +73,12 @@ public class StateMachine extends Task {
 	public void build (PApplet p, ControlP5 cp5) {
 		this.p = p;
 		this.cp5 = cp5;
+		this.eng = new SoundEngine(Main.minim());
 
-		this.begin.build(p, cp5);
+		this.begin.build(p, cp5, eng);
 
 		for (State s : states)
-			s.build(p, cp5);
+			s.build(p, cp5, eng);
 	}
 	
 	StateMachine clone_state_machine_saved_in_file(String title) {
@@ -136,9 +137,9 @@ public class StateMachine extends Task {
 		for (State s : states) 
 			s.reinit_id();
 		
-		this.begin.init_gui();
+		this.begin.initStateGuiWithTasksAndConnections();
 		for (State s : states) 
-			s.init_gui();
+			s.initStateGuiWithTasksAndConnections();
 		
 		this.begin.hide_gui();
 		for (State s : states) 
@@ -193,11 +194,14 @@ public class StateMachine extends Task {
 			System.out.println("stopping State_Machine" + this.name);
 	}
 
-	void clear() {
+	synchronized void clear() {
 		this.stop();
 
+		
 		//stopping all states...
-		for (State s : states) {
+		//for (State s : states) {
+		for (int i = states.size()-1; i >= 0; i--) {
+			State s = states.get(i);
 			s.clear();
 			remove_state(s);
 		}
@@ -356,24 +360,17 @@ public class StateMachine extends Task {
 	//remove a state s from this State_Machine
 	void remove_state(State s) {
 		if (states.contains(s)) {
-			//remove all tasks associated with the deleted state
-			s.remove_all_tasks();
-
-			//remove all connection from this state
-			s.remove_all_connections();
-
-			//remove all connections to this state
 			this.remove_all_connections_to_a_state(s);
 
-			//removes its ui components
-			cp5.remove(s.get_id()+"/label");
-			cp5.remove(s.get_id()+"/acc");
-			//remove the state fmor the list
+			s.clear();
+			//s.remove_all_tasks();
+			//s.remove_all_connections();
+			//cp5.remove(s.get_id()+"/label");
+			//cp5.remove(s.get_id()+"/acc");
+			
 			this.states.removeElement(s);
 			
-			//if you're removing this state
 			if (s == actual) {
-				//stops
 				((Main)p).canvas.button_stop();
 				p.println("You're removing the state that is currently executing. Halting the state machine.");
 			}

@@ -1,11 +1,12 @@
 package soundengine.effects;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import ddf.minim.ugens.Delay;
 
-public class DelayEffect extends Delay implements AbstractEffect{
+public class DelayEffect extends Delay implements AbstractEffect {
 	private float maxDelayTime;
 	private float amplitudeFactor;
 	private boolean feedBackOn;
