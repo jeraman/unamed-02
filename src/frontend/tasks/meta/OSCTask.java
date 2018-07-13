@@ -40,7 +40,13 @@ public class OSCTask extends AbstractMetaTask {
 		
 		this.broadcast = new NetAddress(this.ip.getValue(), this.port.getValueAsInt());
 
-		this.build(p, cp5);
+		this.build(p, cp5, eng);
+	}
+	
+	public void build(PApplet p, ControlP5 cp5, SoundEngine eng) {
+		super.build(p, cp5, eng);
+		this.broadcast = new NetAddress(ip.getValue(), port.getValueAsInt());
+		this.oscP5 = Main.instance().oscP5();
 	}
 	
 	private void udpateBroadcast() {
@@ -63,12 +69,6 @@ public class OSCTask extends AbstractMetaTask {
 		processPortChange();
 		message.update();
 		parameters.update();
-	}
-
-	public void build(PApplet p, ControlP5 cp5) {
-		super.build(p, cp5);
-		this.broadcast = new NetAddress(ip.getValue(), port.getValueAsInt());
-		this.oscP5 = Main.instance().oscP5();
 	}
 
 	public void run() {

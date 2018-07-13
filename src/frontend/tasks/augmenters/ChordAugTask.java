@@ -29,8 +29,6 @@ public class ChordAugTask extends AbstractAugTask {
 		this.chordType = new ScrollableListUI(list, 0);
 		
 		this.musicActioner = new ChordActioner(this.root.getDefaultValueAsInt(), "maj", this.velocity.getDefaultValueAsInt(),(int) this.duration.getValue(), eng);
-
-//		addOnEngine();
 	}
 	
 	@Override
@@ -123,5 +121,4 @@ public class ChordAugTask extends AbstractAugTask {
 		clone.mode = this.mode;
 		return clone;
 	}
-
 }

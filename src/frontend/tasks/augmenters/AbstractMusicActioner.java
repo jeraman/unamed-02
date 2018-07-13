@@ -11,7 +11,7 @@ public abstract class AbstractMusicActioner implements Runnable, Serializable {
 	protected int duration;
 	protected int velocity;
 	protected boolean locked;
-	protected SoundEngine eng;
+	transient protected SoundEngine eng;
 	
 	protected volatile boolean needToTerminate;
 	
@@ -26,6 +26,10 @@ public abstract class AbstractMusicActioner implements Runnable, Serializable {
 		this.needToTerminate = false;
 		this.eng = eng;
 		myStopThread = null;
+	}
+	
+	protected void build (SoundEngine eng) {
+		this.eng = eng;
 	}
 	
 	protected int getDuration() {

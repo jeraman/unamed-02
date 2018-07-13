@@ -109,12 +109,16 @@ public class State implements Serializable {
 
 		// builds the tasks and add them to gui
 		for (Task t : tasks) 
-			t.build(p, cp5);
+			t.build(p, cp5, eng);
 	
+		add_all_tasks_to_gui();
+		
 		// loads the gui
 		initStateGuiWithoutTasksAndConnections();
 		hide_gui();
 	}
+	
+	
 
 	String get_name() {
 		return this.name;
@@ -511,6 +515,8 @@ public class State implements Serializable {
 		System.out.println("create bitchrush task!");
 		String taskname = generate_random_name();
 		BitChrushFxTask t = new BitChrushFxTask(p, cp5, taskname, this.eng);
+		if (this.status == Status.RUNNING)
+			t.start();
 		this.add_task(t);
 
 	}
@@ -854,7 +860,6 @@ public class State implements Serializable {
 		p.textFont(Main.instance().get_font());
 		p.textSize(Main.instance().get_font_size());
 		init_state_name_gui();
-		init_accordion_gui();
 	}
 
 	void hide_gui() {
@@ -1402,6 +1407,8 @@ public class State implements Serializable {
 
 	// adds all tasks to the gui (used whenever the state name needs to change)
 	void add_all_tasks_to_gui() {
+		init_accordion_gui();
+		
 		// iterates of all tasks related to this state
 		for (Task t : tasks)
 			add_task_in_accordion_gui(t);

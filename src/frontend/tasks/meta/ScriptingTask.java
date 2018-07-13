@@ -43,6 +43,13 @@ public class ScriptingTask extends AbstractMetaTask {
 		loadScript();
 		setContext();
 	}
+	
+	@Override
+	public void build(PApplet p, ControlP5 cp5, SoundEngine en) {
+		super.build(p, cp5, eng);
+		loadScript();
+		setContext();
+	}
 
 	public Task clone_it() {
 		return new ScriptingTask(p, cp5, this.name, this.eng);
@@ -54,13 +61,6 @@ public class ScriptingTask extends AbstractMetaTask {
 		super.run();
 		if (shouldRepeat.getValue() || wasFirstTime)
 			evaluateScript();
-	}
-
-	@Override
-	public void build(PApplet p, ControlP5 cp5) {
-		super.build(p, cp5);
-		loadScript();
-		setContext();
 	}
 
 	// loading the required engines

@@ -79,16 +79,17 @@ public class ScrollableListUI extends AbstractElementUi {
 				.align(ControlP5.CENTER, ControlP5.CENTER, ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE)
 				.setType(ControlP5.DROPDOWN)
 				.addItems(options)
-				.onClick(toFront)
+				.onClick(toFront())
 				.onChange(callback());
 	}
 	
-	CallbackListener toFront = new CallbackListener() {
-		public void controlEvent(CallbackEvent theEvent) {
-			theEvent.getController().bringToFront();
-			//((DropdownList)theEvent.getController()).open();
-		}
-	};
+	CallbackListener toFront() {
+		return new CallbackListener() {
+			public void controlEvent(CallbackEvent theEvent) {
+				theEvent.getController().bringToFront();
+			}
+		};
+	}
 	
 
 }

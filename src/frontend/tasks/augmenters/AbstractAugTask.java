@@ -43,6 +43,11 @@ public abstract class AbstractAugTask extends Task {
 		this.currentMode = AugmenterMode.USER_INPUT;
 		this.mode = new ScrollableListUI(list, this.currentMode.ordinal());
 	}
+	
+	public void build(PApplet p, ControlP5 cp5, SoundEngine eng) {
+		super.build(p, cp5, eng);
+		this.musicActioner.build(eng);
+	}
 
 	protected abstract String[] getDefaultParameters();
 

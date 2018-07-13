@@ -44,9 +44,7 @@ public abstract class Task implements Serializable {
 	public static int font_size;// = (int)(((ZenStates)p).get_font_size());
 
 	// transient variables
-	@Deprecated
 	transient protected PApplet p;
-	@Deprecated
 	transient protected ControlP5 cp5;
 
 	public Task(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
@@ -61,6 +59,12 @@ public abstract class Task implements Serializable {
 
 		if (((Main) p).debug())
 			System.out.println("task " + this.toString() + " created!");
+	}
+	
+	public void build(PApplet p, ControlP5 cp5, SoundEngine eng) {
+		this.p = p;
+		this.cp5 = cp5;
+		this.eng = eng;
 	}
 
 	public void set_name(String newname) {
@@ -193,10 +197,4 @@ public abstract class Task implements Serializable {
 	@Deprecated
 	public abstract void reset_gui_fields();
 
-	@Deprecated
-	public void build(PApplet p, ControlP5 cp5) {
-		// TODO Auto-generated method stub
-		this.p = p;
-		this.cp5 = cp5;
-	}
 }

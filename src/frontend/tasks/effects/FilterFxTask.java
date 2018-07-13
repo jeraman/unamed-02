@@ -28,8 +28,6 @@ public class FilterFxTask  extends AbstractFxTask {
 		this.centerFreq = new ComputableFloatTextfieldUI(300f);
 		this.resonance = new ComputableFloatTextfieldUI(150f);
 		this.type = new ScrollableListUI(list, 0);
-
-//		this.addToEngine();
 	}
 	
 	public void addToEngine() {
@@ -42,7 +40,7 @@ public class FilterFxTask  extends AbstractFxTask {
 		return new String[] { 
 				 this.centerFreq.getValue()+"", 
 				 this.resonance.getValue()+"", 
-				 this.type.getValue()+"" 
+				 convertTypeValue()+"" 
 				 };
 	}
 	
