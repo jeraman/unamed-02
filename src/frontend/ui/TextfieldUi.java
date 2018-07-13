@@ -116,6 +116,7 @@ public class TextfieldUi extends AbstractElementUi {
 		.setGroup(g)
 		.setAutoClear(false)
 		.setLabel(label)
+		.setValue(this.value)
 		.align(ControlP5.CENTER, ControlP5.CENTER, ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE)
 		.onClick(callbackEmptyWhenUsingUserInput())
 		.onChange(callbackPressEnterOrOutside())

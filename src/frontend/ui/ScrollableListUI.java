@@ -58,6 +58,13 @@ public class ScrollableListUI extends AbstractElementUi {
 		};
 	}
 	
+	private int getIndex (String name) {
+		for (int i = 0; i < options.size(); i++)
+			if (name.equals(options.get(i))) 
+				return i;
+		return 2; //default value
+	}
+	
 	public void createUI(String id, String name, int localx, int localy, int w, Group g) {
 		this.label = (cp5.addTextlabel(id+ "/" + name + "/label")
 				.setGroup(g)
@@ -73,7 +80,7 @@ public class ScrollableListUI extends AbstractElementUi {
 				.setGroup(g)
 				.setDefaultValue(2)
 				.close()
-				.setValue(1)
+				.setValue(getIndex(this.selection))
 				.setBarHeight(20)
 				.setItemHeight(20)
 				.align(ControlP5.CENTER, ControlP5.CENTER, ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE)

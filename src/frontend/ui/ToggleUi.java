@@ -56,7 +56,7 @@ public class ToggleUi extends AbstractElementUi {
 				// .setMode(ControlP5.DEFAULT)
 				.setMode(ControlP5.SWITCH)
 				.setLabel(label)
-				//.setValue(false)
+				.setValue(this.value)
 				.onChange(callback())
 				.onReleaseOutside(callback()));
 		//this.enable();
