@@ -35,11 +35,13 @@ public class TempoWindowUi extends AbstractElementUi {
 	private int bpm;
 	private int beats;
 	private int noteValue;
+	private boolean isSoundActivated;
 	
 	public TempoWindowUi(TimeManager tm) {
 		this.bpm = tm.getBpm();
 		this.beats = tm.getGlobalBeat();
 		this.noteValue = tm.getGlobalNoteValue();
+		this.isSoundActivated = tm.getMetronomeStatus();
 		this.parent = tm;
 	}
 	
@@ -94,12 +96,12 @@ public class TempoWindowUi extends AbstractElementUi {
 		g.getCaptionLabel().setColor(blackboardHeaderTextColor);
 
 		timerLabel = cp5.addTextlabel("tempo/timer/label").setText("Time: ").setPosition(xpos, ypos).setGroup(g);
-		timerContent = cp5.addTextlabel("tempo/timer/counter").setText("00 : 00 : 000")
+		timerContent = cp5.addTextlabel("tempo/timer/counter").setText(this.parent.getElapsedTime()+"")
 				.setPosition(xpos + xOffset, ypos).setGroup(g);
 		barLabel = cp5.addTextlabel("tempo/bars/label").setText("Bar: ")
 				.setPosition(xpos, 2 * ypos + 2)
 				.setGroup(g);
-		barContent = cp5.addTextlabel("tempo/bars/counter").setText("00 : 00 : 00")
+		barContent = cp5.addTextlabel("tempo/bars/counter").setText(this.parent.getMusicalTime())
 				.setPosition(xpos + xOffset, 2 * ypos + 2)
 				.setGroup(g);
 		
@@ -125,7 +127,8 @@ public class TempoWindowUi extends AbstractElementUi {
 				.setGroup(g);
 		signatureBeat = cp5.addNumberbox("tempo/signature/beat").setSize(xsize, ysize).setLabel("")
 				.setDecimalPrecision(0)
-				.setPosition(xpos + (3 * xOffset) + (2 * xSpecialOffset), (2 * ypos) + yOffset - 2).setValue(this.noteValue)
+				.setPosition(xpos + (3 * xOffset) + (2 * xSpecialOffset), (2 * ypos) + yOffset - 2)
+				.setValue(this.noteValue)
 				.setRange(1, 16).onChange(changeBeatCallback())
 				.setColorBackground(blackboardHeaderColor)
 				.setColorForeground(connectionBackgroundColor)
@@ -146,7 +149,9 @@ public class TempoWindowUi extends AbstractElementUi {
 				.setPosition(xpos, ypos + (4 * yOffset) - 4).setGroup(g);
 		metroContent = cp5.addToggle("toggleValue")
 				.setPosition(xpos + (2 * xOffset), ypos + (4 * yOffset) - 6)
-				.setSize(xsize, ysize).setGroup(g)
+				.setSize(xsize, ysize)
+				.setGroup(g)
+				.setValue(this.isSoundActivated)
 				.setColorBackground(connectionBackgroundColor)
 				.setColorForeground(blackboardForegroundColor)
 				.setColorActive(blackboardHeaderColor)
@@ -158,6 +163,21 @@ public class TempoWindowUi extends AbstractElementUi {
 		makeEditable(signatureBeat);
 		makeEditable(bpmContent);
 	}
+	
+	public void removeUi() {
+		timerLabel.remove();
+		timerContent.remove();
+		barLabel.remove();
+		barContent.remove();
+		signatureLabel.remove();
+		signatureBeat.remove();
+		bpmLabel.remove();
+		bpmContent.remove();
+		metroLabel.remove();
+		metroContent.remove();
+		g.remove();
+	}
+	
 
 	private void makeEditable(Numberbox n) {
 		// allows the user to click a numberbox and type in a number which is
@@ -226,10 +246,13 @@ public class TempoWindowUi extends AbstractElementUi {
 				int temp = (int) theEvent.getController().getValue();
 				System.out.println("metronome is: " + temp);
 				
-				if (temp == 1)
+				if (temp == 1) {
+					isSoundActivated = true;
 					parent.enableSound();
-				else
+				} else {
+					isSoundActivated = false;
 					parent.disableSound();
+				}
 			}
 		};
 	}

@@ -24,7 +24,7 @@ class Metro extends AbstractTimeMeter implements Serializable {
 	private int globalNoteValue;
 	private boolean shouldSound;
 
-	AudioSample sample;
+	transient AudioSample sample;
 	
 	public Metro() {
 		this(120);
@@ -41,9 +41,12 @@ class Metro extends AbstractTimeMeter implements Serializable {
 		this.globalNoteValue = globalNoteValue;
 		this.currentBar = 0;
 		this.currentBeat = 0;
-		
-		this.sample = SoundEngine.minim.loadSample("metronome.wav", 256);
+		this.loadSample();
 		this.shouldSound = false;
+	}
+	
+	public void loadSample() {
+		this.sample = SoundEngine.minim.loadSample("metronome.wav", 256);
 	}
 	
 	public void enableSound() {
@@ -52,6 +55,10 @@ class Metro extends AbstractTimeMeter implements Serializable {
 	
 	public void disableSound() {
 		this.shouldSound = false;
+	}
+	
+	public boolean getMetronomeStatus() {
+		return this.shouldSound;
 	}
 
 	public int getBpm() {

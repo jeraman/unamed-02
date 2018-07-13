@@ -9,8 +9,8 @@ import java.io.Serializable;
  */
 abstract class AbstractTimeMeter implements Runnable, Serializable {
 	
-	private Thread counter;
-	private boolean alive;
+	transient private Thread counter;
+	transient private boolean alive;
 
 	public AbstractTimeMeter() {
 		this.setAlive(false);

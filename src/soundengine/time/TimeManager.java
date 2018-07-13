@@ -2,6 +2,8 @@ package soundengine.time;
 
 import java.io.Serializable;
 
+import soundengine.SoundEngine;
+
 /**
  * Metronome that is able to display bars & beats, elapsed time, and to produce sound.
  * @author jeraman.info
@@ -15,6 +17,10 @@ public class TimeManager implements Serializable {
 	public TimeManager(int bpm, int globalBeat, int globalNoteValue) {
 		this.t = new Timer();
 		this.m = new Metro(bpm, globalBeat, globalNoteValue);
+	}
+	
+	public void loadMetroSample() {
+		this.m.loadSample();
 	}
 	
 	public void enableSound() {
@@ -71,6 +77,10 @@ public class TimeManager implements Serializable {
 	
 	public void setGlobalNoteValue(int globalNoteValue) {
 		m.setGlobalNoteValue(globalNoteValue);
+	}
+	
+	public boolean getMetronomeStatus() {
+		return this.m.getMetronomeStatus();
 	}
 	
 	public String getMusicalTime() {

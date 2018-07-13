@@ -29,6 +29,8 @@ public class StateMachine extends Task {
 	public boolean debug;
 	private boolean brandnew; //has the user added  any state or task added to this state machine?
 
+	private TempoControl timeCounter;
+	
 	transient private StateMachinePreview smp;
 
 	//contructor
@@ -42,6 +44,9 @@ public class StateMachine extends Task {
 		brandnew = true;
 		actual = begin;
 		
+		this.timeCounter = new TempoControl();
+		this.timeCounter.createUi();
+		
 		if (debug)
 			System.out.println("State_Machine " + this.name + " is inited!");
 	}
@@ -51,7 +56,10 @@ public class StateMachine extends Task {
 		this(p, cp5, name);
 		this.repeat = repeat;
 	}
-
+	
+	protected TempoControl getTempoControl() {
+		return this.timeCounter;
+	}
 
 	void check_if_any_substatemachine_needs_to_be_reloaded_from_file () {
 		this.begin.check_if_any_substatemachine_needs_to_be_reloaded_from_file();
@@ -79,6 +87,8 @@ public class StateMachine extends Task {
 
 		for (State s : states)
 			s.build(p, cp5, eng);
+		
+		this.timeCounter.createUi();
 	}
 	
 	StateMachine clone_state_machine_saved_in_file(String title) {
@@ -197,17 +207,15 @@ public class StateMachine extends Task {
 	synchronized void clear() {
 		this.stop();
 
-		
-		//stopping all states...
-		//for (State s : states) {
 		for (int i = states.size()-1; i >= 0; i--) {
 			State s = states.get(i);
 			s.clear();
 			remove_state(s);
 		}
 
-		//stop begin and end
 		begin.clear();
+		
+		this.timeCounter.removeUi();
 	}
 
 	//stops all tasks associated to this node

@@ -32,7 +32,12 @@ public class TempoControl implements Serializable {
 	}
 	
 	public void createUi() {
+		tm.loadMetroSample();
 		ui.createUi();
+	}
+	
+	public void removeUi() {
+		ui.removeUi();
 	}
 	
 	public float getTime() {
