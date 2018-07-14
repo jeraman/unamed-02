@@ -17,7 +17,7 @@ public abstract class AbstractMusicActioner implements Runnable, Serializable {
 	
 	private int timerMilestone;
 
-	private Thread myStopThread;
+	transient private Thread myStopThread;
 	
 	public AbstractMusicActioner(int velocity, int duration, SoundEngine eng) {
 		this.velocity = velocity;

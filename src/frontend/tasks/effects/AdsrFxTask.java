@@ -40,13 +40,13 @@ public class AdsrFxTask extends AbstractFxTask {
 	protected String[] getDefaultParameters(){
 		//return new String[] { "1.f", "0.1f", "0.5f", "0.5f", "1.f", "0.f", "0.f"};
 		return new String[] { 
-				 this.maxAmp.getValue()+"", 
-				 this.attTime.getValue()+"", 
-				 this.decTime.getValue()+"",
-				 this.susLvl.getValue()+"",
-				 this.relTime.getValue()+"", 
-				 this.befAmp.getValue()+"",
-				 this.aftAmp.getValue()+""
+				 this.maxAmp.getValue()+"f", 
+				 this.attTime.getValue()+"f", 
+				 this.decTime.getValue()+"f",
+				 this.susLvl.getValue()+"f",
+				 this.relTime.getValue()+"f", 
+				 this.befAmp.getValue()+"f",
+				 this.aftAmp.getValue()+"f"
 				 };
 	}
 	

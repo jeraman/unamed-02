@@ -169,7 +169,7 @@ public class DecoratedNote extends BasicNote implements Runnable {
 		return false;
 	}
 
-	private int getLongestReleaseTime() {
+	private float getLongestReleaseTime() {
 		float longestReleaseTime = 0;
 
 		// for (Effect e : clonedFxs)
@@ -178,12 +178,12 @@ public class DecoratedNote extends BasicNote implements Runnable {
 			if (e instanceof AdsrEffect && ((AdsrEffect)e).getRelTime() > longestReleaseTime)
 				longestReleaseTime = ((AdsrEffect) e).getRelTime();
 
-		return (int) longestReleaseTime * 1000;
+		return longestReleaseTime * 1000;
 	}
 
 	public void run() {
-		int longestReleaseTime = getLongestReleaseTime();
-		Util.delay(longestReleaseTime);
+		float longestReleaseTime = getLongestReleaseTime();
+		Util.delay((int)longestReleaseTime);
 		System.out.println("ok to fully note off: " + this);
 		this.defaultNoteOff();
 	}

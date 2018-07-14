@@ -24,7 +24,7 @@ public class AdsrEffect extends ADSR implements AbstractEffect {
 	
 	@Deprecated
 	public AdsrEffect() {
-		this(0, 0, 0, 0, 0, 0, 0);
+		this(0f, 0f, 0f, 0f, 0f, 0f, 0f);
 	}
 	
 	public AdsrEffect(float maxAmp, float attTime, float decTime, float susLvl, float relTime, float befAmp, float aftAmp) {
