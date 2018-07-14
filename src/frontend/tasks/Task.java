@@ -39,6 +39,7 @@ public abstract class Task implements Serializable {
 	protected int localy;// = (int)(font_size);
 	
 	transient public SoundEngine eng;
+	transient private Group group;
 
 	@Deprecated
 	public static int font_size;// = (int)(((ZenStates)p).get_font_size());
@@ -176,15 +177,15 @@ public abstract class Task implements Serializable {
 
 		String g_name = this.get_gui_id();
 
-		Group g = cp5.addGroup(g_name).setHeight((int) (font_size * 1.5f))
+		this.group = cp5.addGroup(g_name).setHeight((int) (font_size * 1.5f))
 				.setWidth(10 * font_size)
 				.setColorBackground(p.color(255, 50))
 				.setBackgroundColor(p.color(255, 25));
 
-		g.setLabel(textlabel);
-		g.getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER);
+		this.group.setLabel(textlabel);
+		this.group.getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER);
 	
-		return g;
+		return this.group;
 	}
 
 	private void setup_ui_variables() {

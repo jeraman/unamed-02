@@ -16,12 +16,13 @@ import frontend.tasks.Task;
 
 public class ComputableFloatTextfieldUI extends AbstractElementUi {
 	
-	private Object valueExpression;
+	private String valueExpression;
 	private float computedValue;
 	private String lastComputedValue;
 	
 	private float defaultValue;
 	private String defaultText;
+	
 	transient private Textfield textfield;
 	
 	public static final String classDefaultText = "CLICK TO CHANGE";
@@ -34,6 +35,7 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 		this.defaultValue = defaultValue;
 		this.defaultText = defaultText;
 		this.computedValue = this.defaultValue;
+		
 		this.setValueExpression(defaultText);
 	}
 	
@@ -62,7 +64,7 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 	}
 	
 	public void setValueExpression(String newValue) {
-		this.valueExpression = new Expression(newValue);
+		this.valueExpression = newValue;
 		this.lastComputedValue = "";
 	}
 	
@@ -95,14 +97,14 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 		return !this.lastComputedValue.trim().equalsIgnoreCase(this.computedValue+"");
 	}
 	
-	public void updateValueExpression() {
-		this.updateValueExpression(getTextFieldText());
-	}
+//	public void updateValueExpression() {
+//		this.updateValueExpression(getTextFieldText());
+//	}
 
 	public void updateValueExpression(String newValue) {
 		if (!isNecessaryToUpdateValueExpression(newValue))
 			return;
-		this.valueExpression = new Expression(newValue);
+		this.valueExpression = newValue;
 		computeValue();
 	}
 	
@@ -111,7 +113,7 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 	}
 	
 	public boolean isDefaultValue() {
-		return valueExpression.toString().trim().equalsIgnoreCase(defaultText);
+		return valueExpression.trim().equalsIgnoreCase(defaultText);
 	}
 	
 	public boolean update() {
@@ -144,10 +146,12 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 	}
 	
 	private float evaluate () throws ScriptException {
-		return evaluateAsFloat(this.valueExpression);
+		return evaluateAsFloat(new Expression(this.valueExpression));
 	}
 	
 	public void createUI(String id, String label, int localx, int localy, int w, Group g) { 
+		this.group = g;
+		
 		this.textfield = (cp5.addTextfield(id + "/" + label)
 		.setPosition(localx, localy)
 		.setSize(w, (int) (font_size * 1.25))
@@ -155,7 +159,7 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 		.setGroup(g)
 		.setAutoClear(false)
 		.setLabel(label)
-		.setValue(this.valueExpression.toString())
+		.setText(this.valueExpression)
 		.align(ControlP5.CENTER, ControlP5.CENTER, ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE)
 		.onClick(callbackEmptyWhenUsingUserInput())
 		.onChange(callbackPressEnterOrOutside())
@@ -178,14 +182,21 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 	public CallbackListener callbackPressEnterOrOutside() {
 		return new CallbackListener() {
 			public void controlEvent(CallbackEvent theEvent) {
-				String content = theEvent.getController().getValueLabel().getText();
+				
+//				if (!group.isOpen()) 
+//					return;
+//				
+				//String content = theEvent.getController().getValueLabel().getText();
+				String content = textfield.getText();
 				
 				//if there parameter should be controlled via user input, do nothing
 				if (content.trim().equals(defaultText))
 					return;
 				
+				//o bug 
 				//if user deleted the text, sets user input as default value
 				if (content.trim().equals("")) {
+					System.out.println("zerando...");
 					content = defaultText;
 					textfield.setText(content);
 				}

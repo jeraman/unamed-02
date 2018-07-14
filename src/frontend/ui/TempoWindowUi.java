@@ -230,7 +230,8 @@ public class TempoWindowUi extends AbstractElementUi {
 	private CallbackListener changeBarCallback() {
 		return new CallbackListener() {
 			public void controlEvent(CallbackEvent theEvent) {
-				String content = theEvent.getController().getValueLabel().getText();
+				String content = barContent.getValueLabel().getText();
+				//String content = theEvent.getController().getValueLabel().getText();
 				System.out.println("new beat: " + content);
 				if (!content.equals("")) {
 					beats = Integer.parseInt(content);
@@ -243,7 +244,9 @@ public class TempoWindowUi extends AbstractElementUi {
 	private CallbackListener changeMetronomeCallback() {
 		return new CallbackListener() {
 			public void controlEvent(CallbackEvent theEvent) {
-				int temp = (int) theEvent.getController().getValue();
+				int temp = (int) metroContent.getValue();
+				//int temp = (int) theEvent.getController().getValue();
+				
 				System.out.println("metronome is: " + temp);
 				
 				if (temp == 1) {

@@ -101,7 +101,7 @@ public class ConnectionPriorityDropdownUi extends AbstractElementUi  {
 	CallbackListener toFront() {
 		return new CallbackListener() {
 			public void controlEvent(CallbackEvent theEvent) {
-				theEvent.getController().bringToFront();
+				dropdownlist.bringToFront();
 			}
 		};
 	}
@@ -109,7 +109,7 @@ public class ConnectionPriorityDropdownUi extends AbstractElementUi  {
 	CallbackListener generate_callback_dropdown() {
 		return new CallbackListener() {
 			public void controlEvent(CallbackEvent theEvent) {
-				int newPriority = 1 + (int) theEvent.getController().getValue();
+				int newPriority = 1 + (int) dropdownlist.getValue();
 				parent.update_priority(value, newPriority);
 			}
 		};

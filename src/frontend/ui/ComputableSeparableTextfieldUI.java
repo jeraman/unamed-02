@@ -57,7 +57,12 @@ public class ComputableSeparableTextfieldUI extends TextfieldUi {
 	public CallbackListener callbackPressEnterOrOutside() {
 		return new CallbackListener() {
 			public void controlEvent(CallbackEvent theEvent) {
-				String content = theEvent.getController().getValueLabel().getText();
+				
+//				if (!group.isOpen()) 
+//					return;
+//				
+				String content = textfield.getText();
+//				String content = theEvent.getController().getValueLabel().getText();
 				
 				//if there parameter should be controlled via user input, do nothing
 				if (content.trim().equals(defaultText))

@@ -49,6 +49,7 @@ public class ToggleUi extends AbstractElementUi {
 
 	@Override
 	public void createUI(String id, String label, int localx, int localy, int w, Group g) {
+		this.group = g;
 		this.toggle = (cp5.addToggle(id + "/" + label)
 				.setPosition(localx, localy)
 				.setSize(w, (int) (font_size * 1.25))
@@ -61,14 +62,16 @@ public class ToggleUi extends AbstractElementUi {
 				.onReleaseOutside(callback()));
 		//this.enable();
 		this.toggle.getCaptionLabel().align(ControlP5.CENTER, ControlP5.BOTTOM_OUTSIDE);
-		
-
 	}
 
 	private CallbackListener callback() {
 		return new CallbackListener() {
 			public void controlEvent(CallbackEvent theEvent) {
-				float temp = theEvent.getController().getValue();
+				//if (!group.isOpen()) 
+				//	return;
+				
+				float temp = toggle.getValue();
+				//float temp = theEvent.getController().getValue();
 				if (temp == 0.0)
 					enable();
 				else

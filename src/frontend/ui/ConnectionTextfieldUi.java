@@ -9,6 +9,7 @@ import controlP5.Group;
 import controlP5.Textfield;
 import frontend.Main;
 import frontend.core.Expression;
+import frontend.core.MainCanvas;
 
 public class ConnectionTextfieldUi extends TextfieldUi {
 
@@ -49,12 +50,12 @@ public class ConnectionTextfieldUi extends TextfieldUi {
 	}
 
 	public void hide() {
-		if (textfield != null)
+		if (textfield != null) 
 			this.textfield.hide();
 	}
 
 	public void show() {
-		if (textfield != null)
+		if (textfield != null) 
 			this.textfield.show();
 	}
 
@@ -103,9 +104,9 @@ public class ConnectionTextfieldUi extends TextfieldUi {
 				.onLeave(generate_callback_textfield_leave())
 				.onClick(callbackEmptyWhenUsingUserInput())
 				.onChange(callbackPressEnterOrOutside())
-				.onReleaseOutside(callbackPressEnterOrOutside())
 				.setAutoClear(false)
 				.setLabel("");
+		this.textfield.onReleaseOutside(callbackPressEnterOrOutside());
 	}
 
 	CallbackListener generate_callback_textfield_enter() {
@@ -129,7 +130,8 @@ public class ConnectionTextfieldUi extends TextfieldUi {
 	protected CallbackListener callbackPressEnterOrOutside() {
 		return new CallbackListener() {
 			public void controlEvent(CallbackEvent theEvent) {
-				String content = theEvent.getController().getValueLabel().getText();
+				
+				String content = textfield.getText();
 
 				// if there parameter should be controlled via user input, do
 				// nothing
@@ -138,11 +140,12 @@ public class ConnectionTextfieldUi extends TextfieldUi {
 
 				// if user deleted the text, sets user input as default value
 				if (content.trim().equals("")) {
+					System.out.println("zerando");
 					content = defaultText;
 					textfield.setText(content);
 				}
 
-				System.out.println("getLabelWidth " + getLabelWidth());
+//				System.out.println("getLabelWidth " + getLabelWidth());
 				resizeTextfieldWidth();
 				setValue(content);
 				evaluateAsBoolean();

@@ -52,7 +52,8 @@ public class ScrollableListUI extends AbstractElementUi {
 	public CallbackListener callback() {
 		return new CallbackListener() {
 			public void controlEvent(CallbackEvent theEvent) {
-				int index = (int)theEvent.getController().getValue();
+				//int index = (int)theEvent.getController().getValue();
+				int index = (int) scrollableList.getValue();
 				setSelection(options.get(index));
 			}
 		};
@@ -93,7 +94,8 @@ public class ScrollableListUI extends AbstractElementUi {
 	CallbackListener toFront() {
 		return new CallbackListener() {
 			public void controlEvent(CallbackEvent theEvent) {
-				theEvent.getController().bringToFront();
+				//theEvent.getController().bringToFront();
+				scrollableList.bringToFront();
 			}
 		};
 	}

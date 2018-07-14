@@ -16,7 +16,6 @@ public abstract class AbstractElementUi implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
-	transient protected static ControlP5 cp5;
 	
 	protected static final String userInputAsDefault = "(USER INPUT)";
 	public static int defaultTaskColor;// = ControlP5Constants.THEME_CP52014.getBackground();
@@ -31,6 +30,9 @@ public abstract class AbstractElementUi implements Serializable {
 	protected static int errorColor;// = ControlP5Constants.THEME_RED.getBackground();
 	protected static int defaultHeight;// = 15;
 	protected static int font_size;
+	
+	transient protected static ControlP5 cp5;
+	transient protected Group group;
 	
 	public static void setup(ControlP5 cp5, PApplet p) {
 		AbstractElementUi.cp5 = cp5;

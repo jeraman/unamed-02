@@ -109,6 +109,8 @@ public class TextfieldUi extends AbstractElementUi {
 
 	@Override
 	public void createUI(String id, String label, int localx, int localy, int w, Group g) { 
+		this.group = g;
+		
 		this.textfield = (cp5.addTextfield(id + "/" + label)
 		.setPosition(localx, localy)
 		.setSize(w, (int) (font_size * 1.25))
@@ -139,7 +141,12 @@ public class TextfieldUi extends AbstractElementUi {
 	protected CallbackListener callbackPressEnterOrOutside() {
 		return new CallbackListener() {
 			public void controlEvent(CallbackEvent theEvent) {
-				String content = theEvent.getController().getValueLabel().getText();
+			
+				//if (!group.isOpen()) 
+				//	return;
+				
+				String content = textfield.getText();
+				//String content = theEvent.getController().getValueLabel().getText();
 				
 				//if there parameter should be controlled via user input, do nothing
 				if (content.trim().equals(defaultText))

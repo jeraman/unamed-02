@@ -198,9 +198,9 @@ public class Serializer {
 		}
 
 		p.board.reset();
+		p.canvas.show();
 		Main.instance().cp5().setAutoDraw(true);
 		p.is_loading = false;
-		p.canvas.show();
 		p.println("done loading!");
 	}
 	
