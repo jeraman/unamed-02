@@ -27,9 +27,12 @@ public class DecoratedNote extends BasicNote implements Runnable {
 	private ArrayList<AbstractEffect> effects;
 	private Summer mixer;
 	private UGen outputChain;
+	private AdsrEffect envelope; 
 
 	private boolean containsADSR;
 	private boolean closed;
+	
+	private static final float fadeOutTime = 0.01f;
 
 	public DecoratedNote(int channel, int pitch, int velocity) {
 		this(channel, pitch, velocity, new ArrayList<AbstractGenerator>());
@@ -51,6 +54,8 @@ public class DecoratedNote extends BasicNote implements Runnable {
 
 		this.containsADSR = this.checkIfContainsADSREffect();
 		this.closed = false;
+		
+		this.envelope = new AdsrEffect(1f, 0.001f, 1f, 1f, fadeOutTime, 0f, 0f);
 	}
 
 	public boolean isPitchEquals(int wantedPitch) {
@@ -109,18 +114,32 @@ public class DecoratedNote extends BasicNote implements Runnable {
 		}
 
 	}
+	
+	/*
+	public void removeGlitchKillerToEffects() {
+		this.effects.remove(this.envelope);
+	}
+	*/
+
 
 	public void noteOn() {
+		this.addGlitchKillerToEffects();
 		this.patchEffects();
 
 		if (!this.thereIsAGenerator()) {
 			this.artificialNotes.noteOn();
+			
 			MidiIO.outputNoteOn(this.getChannel(), this.getPitch(), this.getVelocity());
 		} else
 			this.outputChain.patch(SoundEngine.out);
 
 	}
-
+	
+	public void addGlitchKillerToEffects() {
+		if (!this.containsADSR)
+			this.addEffect(this.envelope);
+	}
+	
 	public void noteOff() {
 
 		if (this.containsADSR)
@@ -130,7 +149,7 @@ public class DecoratedNote extends BasicNote implements Runnable {
 			defaultNoteOff();
 	}
 
-	public void noteOffUsingADSR() {
+	public synchronized void noteOffUsingADSR() {
 		System.out.println("need to note off using ADSR!");
 
 		this.artificialNotes.noteOffUsingADSR();
@@ -177,7 +196,7 @@ public class DecoratedNote extends BasicNote implements Runnable {
 
 			if (e instanceof AdsrEffect && ((AdsrEffect)e).getRelTime() > longestReleaseTime)
 				longestReleaseTime = ((AdsrEffect) e).getRelTime();
-
+		
 		return longestReleaseTime * 1000;
 	}
 
@@ -282,13 +301,18 @@ public class DecoratedNote extends BasicNote implements Runnable {
 //		return gens;
 //	}
 
-	/////////////////////////////
-	// effects methods
-	/////////////////////////////
 	public void addEffect(AbstractEffect e) {
 		this.effects.add(e);
-		if (e instanceof AdsrEffect)
+		if (e instanceof AdsrEffect) {
 			this.containsADSR = true;
+			if (e != this.envelope)
+				this.removeEnvelope();
+		}
+	}
+	
+	private void removeEnvelope() {
+		System.out.println("removing envelope!");
+		this.effects.remove(this.envelope);
 	}
 
 	private ArrayList<AbstractEffect> cloneEffects() {

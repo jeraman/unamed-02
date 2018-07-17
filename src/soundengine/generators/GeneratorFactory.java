@@ -4,6 +4,7 @@ import ddf.minim.AudioOutput;
 import ddf.minim.Minim;
 import ddf.minim.MultiChannelBuffer;
 import ddf.minim.spi.AudioStream;
+import ddf.minim.ugens.ADSR;
 import javafx.util.Pair;
 import soundengine.SoundEngine;
 
@@ -23,7 +24,6 @@ public class GeneratorFactory {
 	public static AudioOutput out;
 	@Deprecated
 	public static AudioStream in;
-	
 	
 	/////////////////////////////////////////////////
 	//@TODO delete these @Deprecated methods. Used only in old tests.

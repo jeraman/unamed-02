@@ -6,6 +6,7 @@ import java.util.List;
 
 import ddf.minim.AudioOutput;
 import ddf.minim.UGen;
+import ddf.minim.ugens.ADSR;
 import ddf.minim.ugens.Oscil;
 import ddf.minim.ugens.Waveform;
 import ddf.minim.ugens.Waves;
@@ -19,6 +20,7 @@ public class OscillatorGenerator extends Oscil implements AbstractGenerator, Run
 	private int duration;
 	private String waveform;
 	private UGen patched;
+	
 	private List<OscillatorGeneratorObserver> observers;
 
 	private static final float amplitudeNormalizer = 5.0f;
@@ -38,6 +40,8 @@ public class OscillatorGenerator extends Oscil implements AbstractGenerator, Run
 		this.observers = new ArrayList<OscillatorGeneratorObserver>();
 
 		this.patched = this;
+		//this.envelope = new ADSR(1f, 0.3f, 1f, 1f, 0.0011f, 0f, 0f);
+		//this.patched = this.patch(envelope);
 
 		this.duration = duration;
 

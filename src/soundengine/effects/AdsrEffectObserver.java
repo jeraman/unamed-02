@@ -5,6 +5,11 @@ public class AdsrEffectObserver extends EffectObserver {
 	public AdsrEffectObserver(AbstractEffect original, AbstractEffect updatable) {
 		super(original, updatable);
 	}
+	
+	public void noteOffObservers () {
+		((AdsrEffect)updatable).noteOff();
+		((AdsrEffect)updatable).noteOffObservers();
+	}
 
 	@Override
 	public void update() {
@@ -19,7 +24,7 @@ public class AdsrEffectObserver extends EffectObserver {
 				|| original.getAftAmp() != updatable.getAftAmp())
 
 			updatable.setParameters(original.getMaxAmp(), original.getAttTime(), original.getDecTime(),
-					original.getSusLvl(), original.getRelTime(), original.getBefAmp(), original.getAftAmp());
+									original.getSusLvl(), original.getRelTime(), original.getBefAmp(), original.getAftAmp());
 
 		this.forwardUpdatesToUpdatable();
 	}

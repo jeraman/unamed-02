@@ -6,14 +6,17 @@ import java.util.Map.Entry;
 import ddf.minim.AudioOutput;
 import ddf.minim.Minim;
 import ddf.minim.spi.AudioStream;
+import ddf.minim.ugens.ADSR;
 import soundengine.augmenters.AbstractAugmenter;
 import soundengine.augmenters.AugmenterFactory;
 import soundengine.core.DecoratedNote;
 import soundengine.core.DecoratedNoteMemory;
 import soundengine.effects.AbstractEffect;
+import soundengine.effects.AdsrEffect;
 import soundengine.effects.EffectFactory;
 import soundengine.generators.AbstractGenerator;
 import soundengine.generators.GeneratorFactory;
+import soundengine.util.Util;
 
 /**
  * Implements sound-related services available to the UI as described on SoundEngineFacade interface
@@ -23,6 +26,7 @@ import soundengine.generators.GeneratorFactory;
 public class SoundEngine implements SoundEngineFacade {
 	
 	private DecoratedNoteMemory memory;
+//	private AdsrEffect envelope;
 	private LinkedHashMap<String, AbstractGenerator> activeGenerators;
 	private LinkedHashMap<String, AbstractEffect> activeEffects;
 	private LinkedHashMap<String, AbstractAugmenter> activeAugmenters;
@@ -37,12 +41,15 @@ public class SoundEngine implements SoundEngineFacade {
 		this.activeEffects 	  = new LinkedHashMap<String, AbstractEffect>();
 		this.activeAugmenters = new LinkedHashMap<String, AbstractAugmenter>();
 		
+		
 		SoundEngine.minim = minim;
 		SoundEngine.out = minim.getLineOut(Minim.MONO, 256);
 		SoundEngine.in  = minim.getInputStream(Minim.MONO, out.bufferSize(), out.sampleRate(),
 				out.getFormat().getSampleSizeInBits());
 		
 		in.open();
+		
+//		this.envelope = new AdsrEffect(1f, 0.001f, 1f, 1f, 0.001f, 0f, 0f);
 	}
 	
 	public void close() {
@@ -147,6 +154,8 @@ public class SoundEngine implements SoundEngineFacade {
 				targetNote.addEffect(cloned);
 			}
 		}
+		
+//		targetNote.addEffect(this.envelope.clone());
 	}
 	
 	private void attachAugmenters(DecoratedNote targetNote) {
@@ -210,6 +219,10 @@ public class SoundEngine implements SoundEngineFacade {
 		
 		if (n == null) 
 			return;
+		
+//		this.envelope.noteOff();
+//		this.envelope.noteOffObservers();
+//		Util.delay(10);
 		
 		n.noteOff();
 		this.cleanOldObservers();

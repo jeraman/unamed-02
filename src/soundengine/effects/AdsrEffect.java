@@ -166,6 +166,13 @@ public class AdsrEffect extends ADSR implements AbstractEffect {
 			observer.update(updatedParameter);
 		}
 	}
+	
+	public synchronized void noteOffObservers() {
+		synchronized (observers) {
+			for (AdsrEffectObserver observer : observers)
+				observer.noteOffObservers();
+			}
+	}
 
 	private void linkClonedObserver (AdsrEffect clone) {
 		new AdsrEffectObserver(this, clone);
