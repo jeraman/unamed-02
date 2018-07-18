@@ -7,7 +7,7 @@ public class HighPassFilterEffectObserver  extends EffectObserver {
 
 	@Override
 	public void update() {
-		System.out.println("observer " + this + " updating " + updatable + " based on " + original);
+//		System.out.println("observer " + this + " updating " + updatable + " based on " + original);
 
 		HighPassFilterEffect original = (HighPassFilterEffect) this.original;
 		HighPassFilterEffect updatable = (HighPassFilterEffect) this.updatable;

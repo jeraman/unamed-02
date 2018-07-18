@@ -8,8 +8,6 @@ public class SampleFileGeneratorObserver extends GeneratorObserver {
 
 	@Override
 	public void update() {		
-		System.out.println("observer " + this + " updating " + updatable +  " based on " + original);
-
 		SampleFileGenerator original = (SampleFileGenerator) this.original;
 		SampleFileGenerator updatable = (SampleFileGenerator) this.updatable;
 		

@@ -7,7 +7,7 @@ public class LowPassFilterEffectObserver extends EffectObserver {
 
 	@Override
 	public void update() {
-		System.out.println("observer " + this + " updating " + updatable + " based on " + original);
+//		System.out.println("observer " + this + " updating " + updatable + " based on " + original);
 
 		LowPassFilterEffect original = (LowPassFilterEffect) this.original;
 		LowPassFilterEffect updatable = (LowPassFilterEffect) this.updatable;

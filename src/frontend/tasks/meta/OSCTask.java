@@ -81,7 +81,8 @@ public class OSCTask extends AbstractMetaTask {
 	private void sendMessage() {
 		OscMessage msg = createMessage();
 		oscP5.send(msg, broadcast);
-		System.out.println("sending OSC message to: " + broadcast.toString() + ". content: " + msg.toString());
+		if(debug())
+			System.out.println("sending OSC message to: " + broadcast.toString() + ". content: " + msg.toString());
 	}
 	
 	private OscMessage createMessage() {

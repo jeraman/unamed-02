@@ -64,7 +64,8 @@ public class BlackboardWindowUi extends AbstractElementUi {
 	}
 	
 	public void build(PApplet p) {
-		System.out.println("@TODO [BLACKBOARD] verify what sorts of things needs to be initialize when loaded from file");
+		if(debug())
+			System.out.println("@TODO [BLACKBOARD] verify what sorts of things needs to be initialize when loaded from file");
 		this.p = p;
 		this.x = ((Main) p).width - (int) (mywidth * 2.8);
 		this.y = myheight;

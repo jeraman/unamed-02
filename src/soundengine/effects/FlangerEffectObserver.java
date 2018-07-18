@@ -7,7 +7,7 @@ public class FlangerEffectObserver extends EffectObserver {
 
 	@Override
 	public void update() {
-		System.out.println("observer " + this + " updating " + updatable + " based on " + original);
+//		System.out.println("observer " + this + " updating " + updatable + " based on " + original);
 
 		FlangerEffect original = (FlangerEffect) this.original;
 		FlangerEffect updatable = (FlangerEffect) this.updatable;

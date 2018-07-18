@@ -42,7 +42,6 @@ public class MainCanvas {
 	}
 
 	void build(Main p, ControlP5 cp5) {
-		System.out.println("@TODO [CANVAS] verify what sorts of things needs to be initialize when loaded from file");
 		this.p = p;
 		this.cp5 = cp5;
 		root.build(p, cp5);
@@ -158,7 +157,8 @@ public class MainCanvas {
 
 	// creates a new state and adds its to the root state machine
 	void create_state() {
-		System.out.println("creates a state");
+		if (debug())
+			System.out.println("creates a state");
 		State newState = new State(p, cp5, "NEW_STATE_" + ((int) p.random(0, 10)), this.sm_stack.lastElement().eng,
 				p.mouseX, p.mouseY);
 		// root.add_state(newState);
@@ -174,7 +174,8 @@ public class MainCanvas {
 	// gets the state where the mouse is hoving and removes it form the root
 	// state machine
 	void remove_state() {
-		System.out.println("remove a state");
+		if (debug())
+			System.out.println("remove a state");
 		// root.remove_state(p.mouseX, p.mouseY);
 		sm_stack.lastElement().remove_state(p.mouseX, p.mouseY);
 	}
@@ -216,7 +217,8 @@ public class MainCanvas {
 		OscMessage om = new OscMessage("/stop");
 		NetAddress na = new NetAddress(p.SERVER_IP, p.SERVER_PORT);
 		p.oscP5().send(om, na);
-		p.println("stopping every media in the server");
+		if (debug())
+			System.out.println("stopping every media in the server");
 	}
 
 	public void push_root(StateMachine new_sm) {
@@ -309,7 +311,8 @@ public class MainCanvas {
 	}
 
 	public void process_copy() {
-		p.println("copying!");
+		if (debug())
+			System.out.println("copying!");
 
 		// verifies if the mouse intersects a state
 		State result = sm_stack.lastElement().intersects_gui(p.mouseX, p.mouseY);
@@ -393,7 +396,6 @@ public class MainCanvas {
 	public void button_play() {
 		if (p.is_loading)
 			return;
-		p.println("b_play pressed");
 		this.start();
 		// p.canvas.run();
 	}
@@ -401,7 +403,6 @@ public class MainCanvas {
 	public void button_stop() {
 		if (p.is_loading)
 			return;
-		p.println("b_stop pressed");
 		stop();
 		// p.canvas.stop();
 	}
@@ -409,7 +410,6 @@ public class MainCanvas {
 	public void button_save() {
 		if (p.is_loading)
 			return;
-		p.println("b_save pressed");
 		stop();
 		save();
 	}
@@ -422,7 +422,6 @@ public class MainCanvas {
 	public void button_load() {
 		if (p.is_loading)
 			return;
-		p.println("b_load pressed");
 		load();
 	}
 
@@ -430,13 +429,18 @@ public class MainCanvas {
 		stop();
 		p.serializer.load();
 	}
+	
+	private boolean debug() {
+		return Main.instance().debug;
+	}
 
 	CallbackListener generate_callback_close() {
 		return new CallbackListener() {
 			public void controlEvent(CallbackEvent theEvent) {
 				// close the current open state machine
 				pop_root();
-				p.println("should close it!!!!");
+				if (debug())
+					System.out.println("should close it!!!!");
 			}
 		};
 	}

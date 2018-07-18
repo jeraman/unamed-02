@@ -61,7 +61,6 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 	}
 
 	public void build(PApplet p) {
-		System.out.println("@TODO [BLACKBOARD] verify what sorts of things needs to be initialize when loaded from file");
 		this.p = p;
 		init_global_variables();
 		this.ui.build(p);
@@ -250,9 +249,7 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 		// <-- this comment to avoid code-highlight issues in Atom
 
 		expr = _processPattern(pattern1, expr);
-		// println("Converted expression1: " +expr);
 		expr = _processPattern(pattern2, expr);
-		// println("Converted expression2: " +expr);
 		return expr;
 	}
 

@@ -9,7 +9,7 @@ public class FMGeneratorObserver extends GeneratorObserver {
 	
 	@Override
 	public void update() {
-		System.out.println("observer " + this + " updating " + updatable +  " based on " + original);
+//		System.out.println("observer " + this + " updating " + updatable +  " based on " + original);
 
 		FMGenerator original = (FMGenerator) this.original;
 		FMGenerator updatable = (FMGenerator) this.updatable;
@@ -35,10 +35,10 @@ public class FMGeneratorObserver extends GeneratorObserver {
 		if (original.getDuration() != updatable.getDuration())
 			updatable.setDuration(original.getDuration());
 		
-		System.out.println("Observser " + this +  " in action!");
-		System.out.println("Original " + original);
-		System.out.println("Updatable " + updatable);
-		System.out.println("Forwarding changes to children...");
+//		System.out.println("Observser " + this +  " in action!");
+//		System.out.println("Original " + original);
+//		System.out.println("Updatable " + updatable);
+//		System.out.println("Forwarding changes to children...");
 		
 		this.forwardUpdatesToUpdatable();
 	}

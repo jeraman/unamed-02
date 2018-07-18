@@ -91,6 +91,10 @@ public abstract class AbstractElementUi implements Serializable {
 		return ret;
 	}
 	
+	protected boolean debug() {
+		return Main.instance().debug;
+	}
+	
 	//public abstract Object getValue();
 	public abstract boolean hasChanged();
 	public abstract void setLastValue();

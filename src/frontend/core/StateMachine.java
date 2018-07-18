@@ -176,7 +176,8 @@ public class StateMachine extends Task {
 	}
 	
 	public void start() {
-		System.out.println("starting a statemachine " + this);
+		if (debug)
+			System.out.println("starting a statemachine " + this);
 		this.status = Status.RUNNING;
 		begin.start();
 	}
@@ -362,7 +363,8 @@ public class StateMachine extends Task {
 	void add_state(State s) {
 		brandnew = false; //this sm is no longer brandnew
 		states.addElement(s);
-		System.out.println("State " + s.get_name() + " added to State_Machine " + this.name);
+		if (debug)
+			System.out.println("State " + s.get_name() + " added to State_Machine " + this.name);
 	}
 
 	//remove a state s from this State_Machine
@@ -380,10 +382,11 @@ public class StateMachine extends Task {
 			
 			if (s == actual) {
 				((Main)p).canvas.button_stop();
-				p.println("You're removing the state that is currently executing. Halting the state machine.");
+				if (debug)
+					System.out.println("You're removing the state that is currently executing. Halting the state machine.");
 			}
 			
-		} else
+		} else if (debug)
 			System.out.println("Unable to remove state " + s.get_name() + " from State_Machine " + this.name);
 	}
 
@@ -435,10 +438,12 @@ public class StateMachine extends Task {
 		for (State s : states)
 			if (s.get_id().equalsIgnoreCase(id)) result=s;
 
-		if (result!=null)
-			System.out.println("found! " + result.toString());
-		else
-			System.out.println("problem!");
+		if (debug) {
+			if (result != null)
+				System.out.println("found! " + result.toString());
+			else
+				System.out.println("problem!");
+		}
 
 		//returns the proper result
 		return result;
@@ -447,13 +452,15 @@ public class StateMachine extends Task {
 	//add a task t to the initialization of this State_Machine
 	void add_initialization_task (Task t) {
 		begin.add_task(t);
-		System.out.println("Task " + t.name + " added to the initialization of State_Machine " + this.name);
+		if (debug)
+			System.out.println("Task " + t.name + " added to the initialization of State_Machine " + this.name);
 	}
 
 	//remove a task t to the initialization of this State_Machine
 	void remove_initialization_task (Task t) {
 		begin.remove_task(t);
-		System.out.println("Task " + t.name + " removed from the initialization of State_Machine " + this.name);
+		if (debug)
+			System.out.println("Task " + t.name + " removed from the initialization of State_Machine " + this.name);
 	}
 
 	//formats the title for the blackboard
@@ -543,8 +550,6 @@ public class StateMachine extends Task {
 	State intersects_gui(int test_x, int test_y) {
 		State result = null;
 
-		//println("testing intersection... " + test_x + " " + test_y);
-
 		//testing the begin & end states
 		if (this.begin.intersects_gui(test_x, test_y))  return this.begin;
 
@@ -552,7 +557,8 @@ public class StateMachine extends Task {
 		for (State s : states)
 			//if intersects...
 			if (s.intersects_gui(test_x, test_y)) {
-				System.out.println("i found someone to be intersected");
+				if (debug)
+					System.out.println("i found someone to be intersected");
 				//updates the result
 				result = s;
 				break;
@@ -631,14 +637,12 @@ public class StateMachine extends Task {
 						}
 					
 					//if there is no file named newtitle
-					} else {		  
-						p.println("no " + newtitle + " was found in sketchpath");
-						//delete the old
+					} else {	
 						((Main)p).serializer.delete(oldtitle);
-						//update title
 						update_title(newtitle);
-						//save new
 						((Main)p).serializer._saveAs(newtitle, getReferenceForThisStateMachine());
+						if (debug)
+							System.out.println("no " + newtitle + " was found in sketchpath");
 					}
 					
 				//if it does not finish with .zen, just update the name
@@ -654,8 +658,9 @@ public class StateMachine extends Task {
 			public void controlEvent(CallbackEvent theEvent) {
 
 				String s = theEvent.getController().getName();
-				System.out.println("open substate " + s);
 				smp.open();
+				if (debug)
+					System.out.println("open substate " + s);
 			}
 		};
 	}
@@ -708,9 +713,6 @@ public class StateMachine extends Task {
 	}
 
 	void connect_state_if_demanded_by_user (State s) {
-		//println("verify: mouse is hiting a new state or not?");
-
-		//unfreezes state s
 		s.unfreeze_movement_and_untrigger_connection();
 
 		State intersected = this.intersects_gui(p.mouseX, p.mouseY);

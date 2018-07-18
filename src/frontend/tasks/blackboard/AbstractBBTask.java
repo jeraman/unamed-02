@@ -33,15 +33,21 @@ abstract class AbstractBBTask extends Task {
 	
 	protected abstract boolean isFirstCycle();
 	
+	protected boolean debug() {
+		return Main.instance().debug;
+	}
+	
 	
 	public void start() {
 //		this.status = Status.RUNNING;
-		System.out.println("starting the following AbstractBBTask: " + this);
+		if(debug())
+			System.out.println("starting the following AbstractBBTask: " + this);
 	}
 	
 	public void stop() {
 //		this.status = Status.DONE;
-		System.out.println("stopping the following AbstractBBTask: " + this);
+		if(debug())
+			System.out.println("stopping the following AbstractBBTask: " + this);
 	}
 
 	
@@ -84,7 +90,6 @@ abstract class AbstractBBTask extends Task {
 	}
 
 	public void updateVariable() {
-		//System.out.println("updating variable: " + value.evaluate());
 		Blackboard board = Main.instance().board();
 		board.put(variableName.getValue(), value.evaluateAsFloat());
 	}

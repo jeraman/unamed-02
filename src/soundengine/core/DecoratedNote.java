@@ -27,11 +27,11 @@ public class DecoratedNote extends BasicNote implements Runnable {
 	private ArrayList<AbstractEffect> effects;
 	private Summer mixer;
 	private UGen outputChain;
-	private AdsrEffect envelope; 
+	private AdsrEffect envelope;
 
 	private boolean containsADSR;
 	private boolean closed;
-	
+
 	private static final float fadeOutTime = 0.01f;
 
 	public DecoratedNote(int channel, int pitch, int velocity) {
@@ -54,7 +54,7 @@ public class DecoratedNote extends BasicNote implements Runnable {
 
 		this.containsADSR = this.checkIfContainsADSREffect();
 		this.closed = false;
-		
+
 		this.envelope = new AdsrEffect(1f, 0.001f, 1f, 1f, fadeOutTime, 0f, 0f);
 	}
 
@@ -90,23 +90,23 @@ public class DecoratedNote extends BasicNote implements Runnable {
 		this.loadUpAllGenerators();
 
 		if (thereIsAEffect())
-			for (AbstractEffect e : effects) 
+			for (AbstractEffect e : effects)
 				this.outputChain = this.outputChain.patch((UGen) e);
 	}
-	
+
 	public synchronized void unpatchEffects() {
-		if(this.closed)
+		if (this.closed)
 			return;
-		
-		synchronized(effects) {
-		if (thereIsAEffect())
-			for (AbstractEffect e : effects) {
-				outputChain.unpatch((UGen) e);
-				mixer.unpatch((UGen) e);
-			}
+
+		synchronized (effects) {
+			if (thereIsAEffect())
+				for (AbstractEffect e : effects) {
+					outputChain.unpatch((UGen) e);
+					mixer.unpatch((UGen) e);
+				}
 		}
 
-		synchronized(generators) {
+		synchronized (generators) {
 			if (thereIsAGenerator()) {
 				for (AbstractGenerator g : generators)
 					g.unpatchEffect(mixer);
@@ -114,13 +114,11 @@ public class DecoratedNote extends BasicNote implements Runnable {
 		}
 
 	}
-	
-	/*
-	public void removeGlitchKillerToEffects() {
-		this.effects.remove(this.envelope);
-	}
-	*/
 
+	/*
+	 * public void removeGlitchKillerToEffects() {
+	 * this.effects.remove(this.envelope); }
+	 */
 
 	public void noteOn() {
 		this.addGlitchKillerToEffects();
@@ -128,18 +126,18 @@ public class DecoratedNote extends BasicNote implements Runnable {
 
 		if (!this.thereIsAGenerator()) {
 			this.artificialNotes.noteOn();
-			
+
 			MidiIO.outputNoteOn(this.getChannel(), this.getPitch(), this.getVelocity());
 		} else
 			this.outputChain.patch(SoundEngine.out);
 
 	}
-	
+
 	public void addGlitchKillerToEffects() {
 		if (!this.containsADSR)
 			this.addEffect(this.envelope);
 	}
-	
+
 	public void noteOff() {
 
 		if (this.containsADSR)
@@ -150,7 +148,7 @@ public class DecoratedNote extends BasicNote implements Runnable {
 	}
 
 	public synchronized void noteOffUsingADSR() {
-		System.out.println("need to note off using ADSR!");
+		// System.out.println("need to note off using ADSR!");
 
 		this.artificialNotes.noteOffUsingADSR();
 
@@ -162,13 +160,13 @@ public class DecoratedNote extends BasicNote implements Runnable {
 		Runnable r = this;
 		new Thread(r).start();
 	}
-	
+
 	public synchronized void defaultNoteOff() {
-		if (this.closed) 
+		if (this.closed)
 			return;
-		
+
 		this.unpatchEffects();
-		
+
 		if (!this.thereIsAGenerator()) {
 			if (this.artificialNotes != null)
 				this.artificialNotes.noteOff();
@@ -177,7 +175,7 @@ public class DecoratedNote extends BasicNote implements Runnable {
 			this.outputChain.unpatch(SoundEngine.out);
 			this.mixer.unpatch(SoundEngine.out);
 		}
-		
+
 		this.close();
 	}
 
@@ -188,42 +186,45 @@ public class DecoratedNote extends BasicNote implements Runnable {
 		return false;
 	}
 
-	private float getLongestReleaseTime() {
+	private synchronized float getLongestReleaseTime() {
 		float longestReleaseTime = 0;
 
 		// for (Effect e : clonedFxs)
 		for (AbstractEffect e : effects)
 
-			if (e instanceof AdsrEffect && ((AdsrEffect)e).getRelTime() > longestReleaseTime)
+			if (e instanceof AdsrEffect && ((AdsrEffect) e).getRelTime() > longestReleaseTime)
 				longestReleaseTime = ((AdsrEffect) e).getRelTime();
-		
+
 		return longestReleaseTime * 1000;
 	}
 
 	public void run() {
 		float longestReleaseTime = getLongestReleaseTime();
-		Util.delay((int)longestReleaseTime);
-		System.out.println("ok to fully note off: " + this);
+		Util.delay((int) longestReleaseTime);
+//		System.out.println("ok to fully note off: " + this);
 		this.defaultNoteOff();
 	}
 
-	
-//	@Deprecated
-//	public DecoratedNote cloneInADifferentPitchAndVelocity(int newNotePitch, int newVelocity) {
-//		return new DecoratedNote(this.getChannel(), newNotePitch, newVelocity, this.cloneGenerators(newNotePitch, newVelocity),
-//				this.cloneEffects());
-//	}
-	
-	public DecoratedNote cloneInADifferentPitchAndVelocityAndDuration(int newNotePitch, int newVelocity, int newDuration) {
-		return new DecoratedNote(this.getChannel(), newNotePitch, newVelocity, this.cloneGenerators(newNotePitch, newVelocity, newDuration),
-				this.cloneEffects());
+	// @Deprecated
+	// public DecoratedNote cloneInADifferentPitchAndVelocity(int newNotePitch,
+	// int newVelocity) {
+	// return new DecoratedNote(this.getChannel(), newNotePitch, newVelocity,
+	// this.cloneGenerators(newNotePitch, newVelocity),
+	// this.cloneEffects());
+	// }
+
+	public DecoratedNote cloneInADifferentPitchAndVelocityAndDuration(int newNotePitch, int newVelocity,
+			int newDuration) {
+		return new DecoratedNote(this.getChannel(), newNotePitch, newVelocity,
+				this.cloneGenerators(newNotePitch, newVelocity, newDuration), this.cloneEffects());
 	}
-	
-//	@Deprecated
-//	protected DecoratedNote cloneInADifferentPitch(int newNotePitch) {
-//		return new DecoratedNote(this.getChannel(), newNotePitch, this.getVelocity(), this.cloneGenerators(newNotePitch),
-//				this.cloneEffects());
-//	}
+
+	// @Deprecated
+	// protected DecoratedNote cloneInADifferentPitch(int newNotePitch) {
+	// return new DecoratedNote(this.getChannel(), newNotePitch,
+	// this.getVelocity(), this.cloneGenerators(newNotePitch),
+	// this.cloneEffects());
+	// }
 
 	public ArrayList<AbstractGenerator> getGenerators() {
 		return generators;
@@ -241,14 +242,14 @@ public class DecoratedNote extends BasicNote implements Runnable {
 			this.generators.clear();
 			this.generators = null;
 		}
-		
+
 		synchronized (effects) {
 			for (AbstractEffect e : effects)
 				e.close();
 			this.effects.clear();
 			this.effects = null;
 		}
-		
+
 		synchronized (artificialNotes) {
 			this.artificialNotes.close();
 			this.artificialNotes = null;
@@ -270,36 +271,37 @@ public class DecoratedNote extends BasicNote implements Runnable {
 		this.generators.add(g);
 	}
 
-//	@Deprecated
-//	private ArrayList<AbstractGenerator> cloneGenerators(int newNotePitch, int newVelocity) {
-//		ArrayList<AbstractGenerator> gens = new ArrayList<AbstractGenerator>();
-//		
-//		if (this.thereIsAGenerator())
-//			for (AbstractGenerator g : generators)
-//				gens.add(g.clone(newNotePitch, newVelocity));
-//		
-//		//		gens.add(g.cloneWithPitchAndVelocity(newNotePitch, newVelocity));
-//		return gens;
-//	}
-	
+	// @Deprecated
+	// private ArrayList<AbstractGenerator> cloneGenerators(int newNotePitch,
+	// int newVelocity) {
+	// ArrayList<AbstractGenerator> gens = new ArrayList<AbstractGenerator>();
+	//
+	// if (this.thereIsAGenerator())
+	// for (AbstractGenerator g : generators)
+	// gens.add(g.clone(newNotePitch, newVelocity));
+	//
+	// // gens.add(g.cloneWithPitchAndVelocity(newNotePitch, newVelocity));
+	// return gens;
+	// }
+
 	private ArrayList<AbstractGenerator> cloneGenerators(int newNotePitch, int newVelocity, int newDuration) {
 		ArrayList<AbstractGenerator> gens = new ArrayList<AbstractGenerator>();
-		
+
 		if (this.thereIsAGenerator())
 			for (AbstractGenerator g : generators)
 				gens.add(g.cloneWithNewPitchVelocityAndDuration(newNotePitch, newVelocity, newDuration));
 		return gens;
 	}
-	
-//	@Deprecated
-//	private ArrayList<AbstractGenerator> cloneGenerators(int newNotePitch) {
-//		ArrayList<AbstractGenerator> gens = new ArrayList<AbstractGenerator>();
-//
-//		if (this.thereIsAGenerator())
-//			for (AbstractGenerator g : generators)
-//				gens.add(g.cloneWithPitch(newNotePitch));
-//		return gens;
-//	}
+
+	// @Deprecated
+	// private ArrayList<AbstractGenerator> cloneGenerators(int newNotePitch) {
+	// ArrayList<AbstractGenerator> gens = new ArrayList<AbstractGenerator>();
+	//
+	// if (this.thereIsAGenerator())
+	// for (AbstractGenerator g : generators)
+	// gens.add(g.cloneWithPitch(newNotePitch));
+	// return gens;
+	// }
 
 	public void addEffect(AbstractEffect e) {
 		this.effects.add(e);
@@ -309,9 +311,8 @@ public class DecoratedNote extends BasicNote implements Runnable {
 				this.removeEnvelope();
 		}
 	}
-	
+
 	private void removeEnvelope() {
-		System.out.println("removing envelope!");
 		this.effects.remove(this.envelope);
 	}
 

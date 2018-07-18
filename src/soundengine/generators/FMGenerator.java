@@ -207,7 +207,7 @@ public class FMGenerator extends Oscil implements AbstractGenerator, Runnable {
 
 	public void noteOffAfterDuration(int duration) {
 		this.duration = duration;
-		System.out.println("waiting! " + duration);
+//		System.out.println("waiting! " + duration);
 		Runnable r = this;
 		new Thread(r).start();
 	}
@@ -215,10 +215,7 @@ public class FMGenerator extends Oscil implements AbstractGenerator, Runnable {
 	@Override
 	public void run() {
 		Util.delay(this.duration);
-		// stop playing!
-		System.out.println("stop playing!");
-		// GeneratorFactory.unpatch(this);
-		// this.noteOff();
+//		System.out.println("stop playing!");
 		this.mute();
 	}
 

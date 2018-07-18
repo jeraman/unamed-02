@@ -53,8 +53,8 @@ public class FileOpenerWithButtonUi extends FileOpenerTextfieldUI {
 				f.createNewFile();
 				write_in_new_file();
 			}
-			
-			System.out.println("opening js file " + f);
+			if(debug())
+				System.out.println("opening js file " + f);
 			java.awt.Desktop.getDesktop().edit(f);
 		} catch (IOException e) {
 			e.printStackTrace();

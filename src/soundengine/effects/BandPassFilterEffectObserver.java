@@ -7,7 +7,7 @@ public class BandPassFilterEffectObserver extends EffectObserver {
 
 	@Override
 	public void update() {
-		System.out.println("observer " + this + " updating " + updatable +  " based on " + original);
+//		System.out.println("observer " + this + " updating " + updatable +  " based on " + original);
 		
 		BandPassFilterEffect original = (BandPassFilterEffect) this.original;
 		BandPassFilterEffect updatable = (BandPassFilterEffect) this.updatable;

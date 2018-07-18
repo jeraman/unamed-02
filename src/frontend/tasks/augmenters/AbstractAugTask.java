@@ -140,8 +140,13 @@ public abstract class AbstractAugTask extends Task {
 	public void stop() {
 //		this.status = Status.DONE;
 		this.removeFromEngine();
-		System.out.println("calling terminate!");
 		this.musicActioner.terminate();
+		if(debug())
+			System.out.println("calling terminate!");
+	}
+	
+	protected boolean debug() {
+		return Main.instance().debug;
 	}
 	
 	protected void processModes() {

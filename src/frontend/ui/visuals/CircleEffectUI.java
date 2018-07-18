@@ -46,7 +46,6 @@ public class CircleEffectUI {
 
 		update_timer();
 
-		//p.println(size);
 		p.strokeWeight(25);
 		p.stroke(150);
 		p.fill(0);
@@ -78,7 +77,6 @@ public class CircleEffectUI {
 		if (is_opening()) {
 			int time_elapsed = p.abs(p.millis()-timestamp);
 			if (time_elapsed > duration) { //if reached the end, stops counter
-				//p.println("Open!");
 				circle_status = CircleStatus.OPEN;
 				size = 1;
 				p.canvas.push_root(parent);
@@ -90,7 +88,6 @@ public class CircleEffectUI {
 		if (is_closing()) {
 			int time_elapsed = p.abs(p.millis()-timestamp);
 			if (time_elapsed > duration) { //if reached the end, stops counter
-				p.println("Closed!");
 				circle_status = CircleStatus.CLOSED;
 				size = 0;
 				//does not need to pop, because, the root was already popped

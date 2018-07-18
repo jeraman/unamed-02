@@ -58,8 +58,12 @@ public abstract class Task implements Serializable {
 		this.first_time = true;
 		this.eng = eng;
 
-		if (((Main) p).debug())
+		if (debug())
 			System.out.println("task " + this.toString() + " created!");
+	}
+	
+	protected boolean debug() {
+		return Main.instance().debug;
 	}
 	
 	public void build(PApplet p, ControlP5 cp5, SoundEngine eng) {
@@ -160,7 +164,8 @@ public abstract class Task implements Serializable {
 	public abstract Task clone_it();
 	
 	public void removeElementUi() {
-		System.out.println("removing task " + get_gui_id());
+		if(debug())
+			System.out.println("removing task " + get_gui_id());
 		cp5.getGroup(get_gui_id()).remove();
 	}
 

@@ -7,7 +7,7 @@ public class DelayEffectObserver extends EffectObserver {
 
 	@Override
 	public void update() {
-		System.out.println("observer " + this + " updating " + updatable + " based on " + original);
+//		System.out.println("observer " + this + " updating " + updatable + " based on " + original);
 
 		DelayEffect original = (DelayEffect) this.original;
 		DelayEffect updatable = (DelayEffect) this.updatable;

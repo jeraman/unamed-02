@@ -67,12 +67,14 @@ public class FileOpenerTextfieldUI extends AbstractElementUi {
 		if (selection == null) 
 			System.out.println("Window was closed or the user hit cancel.");
 		else if (!this.hasCorrectExtension(selection.getName())) {
-			System.out.println("Bad data file...");
+			if (debug())
+				System.out.println("Bad data file...");
 			this.textfield.setText(selection.getName());
 			textfield.setColorBackground(errorColor); 
 		} else  {
+			if(debug())
+				System.out.println("User selected " + "\n name: " + selection.getName()+ "\n path: " + selection.getAbsolutePath());
 			this.textfield.clear();
-			System.out.println("User selected " + "\n name: " + selection.getName()+ "\n path: " + selection.getAbsolutePath());
 			this.setFilename(selection.getName());
 			this.textfield.setText(selection.getName());
 			textfield.setColorBackground(defaultTaskColor); 
@@ -88,7 +90,6 @@ public class FileOpenerTextfieldUI extends AbstractElementUi {
 		return new CallbackListener() {
 			public void controlEvent(CallbackEvent theEvent) {
 				theEvent.getController().bringToFront();
-				System.out.println("open file!");
 				openFileDialog();
 			}
 		};

@@ -31,21 +31,25 @@ public class DMXTask extends AbstractMetaTask {
 		this.shouldRepeat = new ToggleUi();
 
 	}
+	
+	protected boolean debug() {
+		return Main.instance().debug;
+	}
 
 	private void processChannelChange() {
-		if (channel.update())
+		if (channel.update() && debug())
 			System.out.println(this.get_gui_id() + " changes channel " + channel.getValueAsInt());
 	}
 	private void processIntensityChange() {
-		if (intensity.update())
+		if (intensity.update() && debug())
 			System.out.println(this.get_gui_id() + " changes intensity " + intensity.getValueAsInt());
 	}
 	private void processRateChange() {
-		if (rate.update())
+		if (rate.update() && debug())
 			System.out.println(this.get_gui_id() + " changes rate " + rate.getValueAsInt());
 	}
 	private void processDurationChange() {
-		if (duration.update())
+		if (duration.update() && debug())
 			System.out.println(this.get_gui_id() + " changes duration " + duration.getValueAsInt());
 	}
 
@@ -64,7 +68,6 @@ public class DMXTask extends AbstractMetaTask {
 	}
 
 	private void sendDmxMessage() {
-		// TODO Auto-generated method stub
 		System.out.println("stub sendDmxMessage method");
 	}
 

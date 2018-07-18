@@ -196,7 +196,6 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 				//o bug 
 				//if user deleted the text, sets user input as default value
 				if (content.trim().equals("")) {
-					System.out.println("zerando...");
 					content = defaultText;
 					textfield.setText(content);
 				}

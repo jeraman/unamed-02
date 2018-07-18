@@ -189,12 +189,11 @@ public class Main extends PApplet {
 				params.add((String) lines[i]);
 
 		if (debug) {
-			println("SERVER IP: " + params.get(0));
-			println("SERVER PORT: " + params.get(1));
-			println("INCOMING OSC PORT: " + params.get(2));
-			// println("FULLSCREEN: " + params.get(3));
-			println("STATE CIRCLE SIZE: " + params.get(3));
-			println("FONT SIZE: " + params.get(4));
+			System.out.println("SERVER IP: " + params.get(0));
+			System.out.println("SERVER PORT: " + params.get(1));
+			System.out.println("INCOMING OSC PORT: " + params.get(2));
+			System.out.println("STATE CIRCLE SIZE: " + params.get(3));
+			System.out.println("FONT SIZE: " + params.get(4));
 		}
 
 		SERVER_IP = params.get(0);
@@ -212,7 +211,7 @@ public class Main extends PApplet {
 
 	public void keyPressed() {
 		if (debug)
-			println("keyCode: " + keyCode + " key: " + key);
+			System.out.println("keyCode: " + keyCode + " key: " + key);
 
 		// if is loading an open patch, do not draw anything
 		if (is_loading)

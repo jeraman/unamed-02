@@ -64,10 +64,16 @@ public class Serializer {
 		return f;
 	}
 	
+	private boolean debug() {
+		return Main.instance().debug;
+	}
+	
 	void setup_autosave() {
 		timestamp     = p.minute();
 		autosave_file = new File(p.sketchPath() + "/data/patches/_temp.zen");
-		p.println(p.sketchPath());
+		
+		if (debug())
+			System.out.println(p.sketchPath());
 	}
 
 	public void autosave() {
@@ -75,8 +81,9 @@ public class Serializer {
 
 		if (time_elapsed > autosavetime) {
 			_saveAs(autosave_file, p.canvas.root, false);
-			p.println("saving!");
 			timestamp = p.minute();
+			if (debug())
+				System.out.println("saving!");
 		}
 	}
 	
@@ -108,7 +115,7 @@ public class Serializer {
 			oos.writeObject(sm);
 			oos.close();
 		} catch (Exception e) {
-			p.println("ERROR saving to file: " + file + " [exception: " + e.toString() + "].");
+			System.out.println("ERROR saving to file: " + file + " [exception: " + e.toString() + "].");
 			e.printStackTrace();
 		}
 	}
@@ -144,12 +151,13 @@ public class Serializer {
 			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
 			result = (StateMachine) ois.readObject();
 			result.build(p, Main.instance().cp5());
-			p.println("loading any new substatemachine");
+			if (debug())
+				System.out.println("loading any new substatemachine");
 			result.check_if_any_substatemachine_needs_to_be_reloaded_from_file();
 			ois.close();
 			
 		} catch (Exception e) {
-			p.println("ERROR loading sub-statemachine: " + file + " [exception: " + e.toString() + "].");
+			System.out.println("ERROR loading sub-statemachine: " + file + " [exception: " + e.toString() + "].");
 			e.printStackTrace();
 			//p.board  = new Blackboard(p);
 			//p.canvas = new MainCanvas(p, p.cp5);
@@ -159,7 +167,8 @@ public class Serializer {
 		//p.cp5.setAutoDraw(true);
 		//p.is_loading = false;
 		//p.canvas.show();
-		p.println("done loading subpatch!");
+		if (debug())
+			System.out.println("done loading subpatch!");
 		return result;
 	}
 	
@@ -190,7 +199,7 @@ public class Serializer {
 			ois.close();
 
 		} catch (Exception e) {
-			p.println("ERROR loading file: " + file + " [exception: " + e.toString() + "].");
+			System.out.println("ERROR loading file: " + file + " [exception: " + e.toString() + "].");
 			e.printStackTrace();
 			//p.board  = new Blackboard(p);
 			//p.canvas = new MainCanvas(p, p.cp5);
@@ -201,7 +210,8 @@ public class Serializer {
 		p.canvas.show();
 		Main.instance().cp5().setAutoDraw(true);
 		p.is_loading = false;
-		p.println("done loading!");
+		if (debug())
+			System.out.println("done loading!");
 	}
 	
 	

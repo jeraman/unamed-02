@@ -410,7 +410,8 @@ public class State implements Serializable {
 		connections.remove(oldPriority - 1);
 		connections.add(newPriority - 1, item);
 
-		System.out.println("updating priority. was" + oldPriority + " now is " + newPriority);
+		if (debug)
+			System.out.println("updating priority. was" + oldPriority + " now is " + newPriority);
 
 		update_all_priorities();
 		reload_connections_gui();
@@ -470,7 +471,8 @@ public class State implements Serializable {
 	// tasks
 	
 	private void init_sample_task() {
-		System.out.println("create sample task!");
+		if (debug)
+			System.out.println("create sample task!");
 		String taskname = generate_random_name();
 		SampleGenTask t = new SampleGenTask(p, cp5, taskname, this.eng);
 		if (this.status == Status.RUNNING)
@@ -485,7 +487,8 @@ public class State implements Serializable {
 	}
 
 	private void init_fm_synth_task() {
-		System.out.println("create fm synth task!");
+		if (debug)
+			System.out.println("create fm synth task!");
 		String taskname = generate_random_name();
 		FMGenTask t = new FMGenTask(p, cp5, taskname, this.eng);
 		if (this.status == Status.RUNNING)
@@ -494,7 +497,8 @@ public class State implements Serializable {
 	}
 
 	private void init_oscillator_task() {
-		System.out.println("create oscillator task!");
+		if (debug)
+			System.out.println("create oscillator task!");
 		String taskname = generate_random_name();
 		OscillatorGenTask t = new OscillatorGenTask(p, cp5, taskname, this.eng);
 		if (this.status == Status.RUNNING)
@@ -503,7 +507,8 @@ public class State implements Serializable {
 	}
 	
 	private void init_filter_task() {
-		System.out.println("create filter task!");
+		if (debug)
+			System.out.println("create filter task!");
 		String taskname = generate_random_name();
 		FilterFxTask t = new FilterFxTask(p, cp5, taskname, this.eng);
 		if (this.status == Status.RUNNING)
@@ -512,7 +517,8 @@ public class State implements Serializable {
 	}
 
 	private void init_bitchrush_task() {
-		System.out.println("create bitchrush task!");
+		if (debug)
+			System.out.println("create bitchrush task!");
 		String taskname = generate_random_name();
 		BitChrushFxTask t = new BitChrushFxTask(p, cp5, taskname, this.eng);
 		if (this.status == Status.RUNNING)
@@ -522,7 +528,8 @@ public class State implements Serializable {
 	}
 
 	private void init_adsr_task() {
-		System.out.println("create adsr task!");
+		if (debug)
+			System.out.println("create adsr task!");
 		String taskname = generate_random_name();
 		AdsrFxTask t = new AdsrFxTask(p, cp5, taskname, this.eng);
 		if (this.status == Status.RUNNING)
@@ -531,7 +538,8 @@ public class State implements Serializable {
 	}
 
 	private void init_flanger_task() {
-		System.out.println("create flanger task!");
+		if (debug)
+			System.out.println("create flanger task!");
 		String taskname = generate_random_name();
 		FlangerFxTask t = new FlangerFxTask(p, cp5, taskname, this.eng);
 		if (this.status == Status.RUNNING)
@@ -540,7 +548,8 @@ public class State implements Serializable {
 	}
 
 	private void init_delay_task() {
-		System.out.println("create delay task!");
+		if (debug)
+			System.out.println("create delay task!");
 		String taskname = generate_random_name();
 		DelayFxTask t = new DelayFxTask(p, cp5, taskname, this.eng);
 		if (this.status == Status.RUNNING)
@@ -549,7 +558,8 @@ public class State implements Serializable {
 	}
 
 	private void init_chord_task() {
-		System.out.println("create chord task!");
+		if (debug)
+			System.out.println("create chord task!");
 		String taskname = generate_random_name();
 		ChordAugTask t = new ChordAugTask(p, cp5, taskname, this.eng);
 		if (this.status == Status.RUNNING)
@@ -558,7 +568,8 @@ public class State implements Serializable {
 	}
 
 	private void init_interval_task() {
-		System.out.println("create interval task!");
+		if (debug)
+			System.out.println("create interval task!");
 		String taskname = generate_random_name();
 		IntervalAugTask t = new IntervalAugTask(p, cp5, taskname, this.eng);
 		if (this.status == Status.RUNNING)
@@ -567,7 +578,8 @@ public class State implements Serializable {
 	}
 
 	private void init_note_task() {
-		System.out.println("create note task!");
+		if (debug)
+			System.out.println("create note task!");
 		String taskname = generate_random_name();
 		NoteAugTask t = new NoteAugTask(p, cp5, taskname, this.eng);
 		if (this.status == Status.RUNNING)
@@ -577,6 +589,8 @@ public class State implements Serializable {
 	}
 
 	void init_control_dmx_task() {
+		if (debug)
+			System.out.println("create dmx task!");
 		String taskname = generate_random_name();
 		DMXTask t = new DMXTask(p, cp5, taskname, this.eng);
 		if (this.status == Status.RUNNING)
@@ -585,12 +599,16 @@ public class State implements Serializable {
 	}
 
 	void init_osc_task() {
+		if (debug)
+			System.out.println("create osc task!");
 		String taskname = generate_random_name();
 		OSCTask t = new OSCTask(p, cp5, taskname, this.eng);
 		this.add_task(t);
 	}
 
 	void init_state_machine_task() {
+		if (debug)
+			System.out.println("create sub sm task!");
 		String taskname = generate_random_name();
 		StateMachine t = new StateMachine(p, cp5, taskname);
 		if (this.status == Status.RUNNING)
@@ -599,12 +617,16 @@ public class State implements Serializable {
 	}
 
 	void init_scripting_task() {
+		if (debug)
+			System.out.println("create js script task!");
 		String taskname = generate_random_name();
 		ScriptingTask t = new ScriptingTask(p, cp5, "example.js", this.eng);
 		this.add_task(t);
 	}
 
 	void init_set_blackboard_task() {
+		if (debug)
+			System.out.println("create bb task!");
 		String taskname = generate_random_name();
 		DefaultBBTask t = new DefaultBBTask(p, cp5, taskname, this.eng);
 		this.add_task(t);
@@ -612,6 +634,8 @@ public class State implements Serializable {
 	
 
 	void init_bb_rand_task() {
+		if (debug)
+			System.out.println("create random bb task!");
 		String taskname = generate_random_name();
 		RandomBBTask t = new RandomBBTask(p, cp5, taskname, this.eng);
 		if (this.status == Status.RUNNING)
@@ -621,6 +645,8 @@ public class State implements Serializable {
 
 	// method that initializes a random osc balckboard var
 	void init_bb_osc_task() {
+		if (debug)
+			System.out.println("create oscilator bb task!");
 		String taskname = generate_random_name();
 		OscillatorBBTask t = new OscillatorBBTask(p, cp5, taskname, this.eng);
 		if (this.status == Status.RUNNING)
@@ -632,12 +658,13 @@ public class State implements Serializable {
 
 	// method that initializes a ramp balckboard var
 	void init_bb_ramp_task() {
+		if (debug)
+			System.out.println("create ramping bb task!");
 		String taskname = generate_random_name();
 		RampBBTask t = new RampBBTask(p, cp5, taskname, this.eng);
 		if (this.status == Status.RUNNING)
 			t.start();
 		this.add_task(t);
-		// println(selected + " " + pie.options[selected]);
 	}
 
 	public int get_number_of_connections() {
@@ -818,7 +845,8 @@ public class State implements Serializable {
 		for (int i = connections.size() - 1; i >= 0; i--) {
 			Connection c = connections.get(i);
 			if (c.should_be_removed()) {
-				System.out.println("remove " + c.toString());
+				if (debug)
+					System.out.println("remove " + c.toString());
 				this.disconnect(c);
 				this.reload_connections_gui();
 			}
@@ -948,7 +976,7 @@ public class State implements Serializable {
 	 * CallbackListener generate_callback_double_press() { return new
 	 * CallbackListener() { public void controlEvent(CallbackEvent theEvent) {
 	 * 
-	 * p.println("double clicked on " + name); } }; }
+	 * System.out.println("double clicked on " + name); } }; }
 	 */
 
 	// inits the label with the name of the state
@@ -1007,10 +1035,8 @@ public class State implements Serializable {
 		// looks for the group
 		// Group g = cp5.get(Group.class, this.name + " " + t.get_name());
 		// removes this task from the accordion
-		if (t == null || cp5 == null) {
-			p.println("OPPPAAAAAAA!!!! NULL POINTER!!!! WTF!!!!");
+		if (t == null || cp5 == null)
 			return;
-		}
 		
 		t.closeTask();
 		//t.removeElementUi();
@@ -1260,7 +1286,8 @@ public class State implements Serializable {
 		// if the mouse is pressed & the button is over a option & is not
 		// dragging
 		if (p.mousePressed && selected > -1 && !is_dragging_someone) {
-			p.println("state receive " + selected + " as a result");
+			if (debug)
+				System.out.println("state receive " + selected + " as a result");
 
 			switch (selected) {
 
@@ -1365,7 +1392,8 @@ public class State implements Serializable {
 			Group g = cp5.get(Group.class, t.get_gui_id());
 
 			if (g == null) {
-				p.println("g==null");
+				if (debug)
+					System.out.println("g==null");
 				return null;
 			}
 

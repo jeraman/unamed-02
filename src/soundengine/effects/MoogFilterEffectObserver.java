@@ -7,7 +7,7 @@ public class MoogFilterEffectObserver extends EffectObserver {
 
 	@Override
 	public void update() {
-		System.out.println("observer " + this + " updating " + updatable + " based on " + original);
+//		System.out.println("observer " + this + " updating " + updatable + " based on " + original);
 
 		MoogFilterEffect original = (MoogFilterEffect) this.original;
 		MoogFilterEffect updatable = (MoogFilterEffect) this.updatable;

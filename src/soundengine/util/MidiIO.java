@@ -38,22 +38,22 @@ public class MidiIO {
 	}
 
 	public static void inputNoteOn(int channel, int pitch, int velocity) {
-		System.out.println();
-		System.out.println("Note On:");
-		System.out.println("--------");
-		System.out.println("Channel:" + channel);
-		System.out.println("Pitch:" + pitch);
-		System.out.println("Velocity:" + velocity);
+//		System.out.println();
+//		System.out.println("Note On:");
+//		System.out.println("--------");
+//		System.out.println("Channel:" + channel);
+//		System.out.println("Pitch:" + pitch);
+//		System.out.println("Velocity:" + velocity);
 
 	}
 
 	public static void inputNoteOff(int channel, int pitch, int velocity) {
-		System.out.println();
-		System.out.println("Note Off:");
-		System.out.println("--------");
-		System.out.println("Channel:" + channel);
-		System.out.println("Pitch:" + pitch);
-		System.out.println("Velocity:" + velocity);
+//		System.out.println();
+//		System.out.println("Note Off:");
+//		System.out.println("--------");
+//		System.out.println("Channel:" + channel);
+//		System.out.println("Pitch:" + pitch);
+//		System.out.println("Velocity:" + velocity);
 
 	}
 

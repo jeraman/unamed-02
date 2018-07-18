@@ -13,7 +13,7 @@ public class AdsrEffectObserver extends EffectObserver {
 
 	@Override
 	public void update() {
-		System.out.println("observer " + this + " updating " + updatable + " based on " + original);
+//		System.out.println("observer " + this + " updating " + updatable + " based on " + original);
 
 		AdsrEffect original = (AdsrEffect) this.original;
 		AdsrEffect updatable = (AdsrEffect) this.updatable;

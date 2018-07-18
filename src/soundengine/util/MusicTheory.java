@@ -44,15 +44,15 @@ public class MusicTheory {
 	// details on: http://www.jfugue.org/doc/org/jfugue/theory/Chord.html
 	private static Chord identifyChordFromMIDI(String[] individualNotes) {
 
-		System.out.println("Incoming notes are: ");
-		System.out.println(individualNotes);
+		//System.out.println("Incoming notes are: ");
+		//System.out.println(individualNotes);
 
 		Chord result = null;
 		try {
 			// this method can return null if no chord is detected
 			result = Chord.fromNotes(individualNotes);
-			System.out.print("Chord detected: ");
-			System.out.println(result);
+			//System.out.print("Chord detected: ");
+			//System.out.println(result);
 		} catch (Exception e) {
 			System.out.println("Unable to detect this chord");
 		}
@@ -88,11 +88,11 @@ public class MusicTheory {
 	}
 
 	private static Intervals identifyIntervalFromMIDI(Note[] notes) {
-		System.out.println("Incoming notes are: ");
-		System.out.println(notes);
+//		System.out.println("Incoming notes are: ");
+//		System.out.println(notes);
 
-		System.out.println("Interval detected: ");
-		System.out.println(Intervals.createIntervalsFromNotes(notes));
+//		System.out.println("Interval detected: ");
+//		System.out.println(Intervals.createIntervalsFromNotes(notes));
 
 		return Intervals.createIntervalsFromNotes(notes);
 	}
@@ -113,33 +113,23 @@ public class MusicTheory {
 	public static Note[] generateChordFromMIDI(int rootMIDI, int velocity, String chordType) {
 		String note = MusicTheory.noteFromMIDI(rootMIDI);
 
-		System.out.println("The chord to be generated is:");
+//		System.out.println("The chord to be generated is:");
 		String resultingChord = note + chordType;
-		System.out.println(resultingChord);
+//		System.out.println(resultingChord);
 
 		Chord chord = new Chord(resultingChord);
 		Note[] notes = chord.getNotes();
 		
-		System.out.println("Notes from this chord are:");
+//		System.out.println("Notes from this chord are:");
 		for (Note n : notes) {
 			n.setOnVelocity(Util.parseIntToByte(velocity));
-			System.out.print(n + " ");
+//			System.out.print(n + " ");
 		}
 		
-		System.out.println();
+//		System.out.println();
 		return notes;
 	}
 
-//	protected static Chord generateRandomChordFromMIDI(int rootMIDI, int velocity) {
-//		String[] names = Chord.getChordNames();
-//
-//		System.out.println("All possible chord types are:");
-//		System.out.println(names);
-//
-//		Random rand = new Random();
-//		int randomIndex = rand.nextInt(names.length);
-//		return generateChordFromMIDI(rootMIDI, velocity, names[randomIndex]);
-//	}
 
 	// details on: http://www.jfugue.org/doc/index.html?org/jfugue/theory/ChordProgression.html
 	protected static ChordProgression generateChordProgression(int rootMIDI, String chordProgression) {
@@ -156,17 +146,14 @@ public class MusicTheory {
 		String myKey = Note.getToneString((byte) rootMIDI);
 
 		ChordProgression cp = new ChordProgression(chordProgression);
-		Chord[] chords = cp.setKey(myKey).getChords();
-
-		for (Chord chord : chords) {
-			System.out.print("Chord " + chord + " has these notes: ");
-			Note[] notes = chord.getNotes();
-
-			for (Note n : notes)
-				System.out.print(n + " ");
-
-			System.out.println();
-		}
+//		Chord[] chords = cp.setKey(myKey).getChords();
+//		for (Chord chord : chords) {
+//			System.out.print("Chord " + chord + " has these notes: ");
+//			Note[] notes = chord.getNotes();
+//			for (Note n : notes)
+//				System.out.print(n + " ");
+//			System.out.println();
+//		}
 
 		return cp;
 	}

@@ -95,7 +95,8 @@ public class ScriptingTask extends AbstractMetaTask {
 		try {
 			loadScript();
 			updateContext();
-			System.out.println("evaluating script " + name);
+			if(debug())
+				System.out.println("evaluating script " + name);
 			engine.eval(script, context);
 
 		} catch (ScriptException e) {
@@ -104,7 +105,7 @@ public class ScriptingTask extends AbstractMetaTask {
 	}
 	
 	private void processRepeatChange() {
-		if (shouldRepeat.update())
+		if (shouldRepeat.update() && debug())
 			System.out.println("update loop " + shouldRepeat.getValue());
 	}
 	

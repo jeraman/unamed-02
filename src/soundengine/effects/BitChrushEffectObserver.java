@@ -7,7 +7,7 @@ public class BitChrushEffectObserver extends EffectObserver {
 
 	@Override
 	public void update() {
-		System.out.println("observer " + this + " updating " + updatable + " based on " + original);
+//		System.out.println("observer " + this + " updating " + updatable + " based on " + original);
 
 		BitChrushEffect original = (BitChrushEffect) this.original;
 		BitChrushEffect updatable = (BitChrushEffect) this.updatable;

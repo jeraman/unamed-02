@@ -52,13 +52,11 @@ public class SampleGenTask extends AbstractGenTask {
 	
 	private void processFilenameChange() {
 		if (filename.update()) {
-			System.out.println("update filename " + filename.getValue());
 			this.eng.updateGenerator(this.get_gui_id(), "filename : " + filename.getValue());
 		}
 	}
 	private void processPitchChange() {
 		if (pitch.update()) {
-			System.out.println("update pitch " + pitch.getValueAsInt());
 			this.eng.updateGenerator(this.get_gui_id(), "pitch : " + pitch.getValueAsInt());
 		}
 	}
@@ -70,14 +68,12 @@ public class SampleGenTask extends AbstractGenTask {
 	
 	private void processDurationChange() {
 		if (duration.update()) {
-			System.out.println("update duration " + duration.getValueAsInt());
 			this.eng.updateGenerator(this.get_gui_id(), "duration : " + duration.getValueAsInt());
 		}
 	}
 	
 	private void processLoopChange() {
 		if (loopStatus.update()) {
-			System.out.println("update loop " + loopStatus.getValue());
 			this.eng.updateGenerator(this.get_gui_id(), "loop : " + loopStatus.getValue());
 		}
 	}

@@ -19,48 +19,47 @@ import soundengine.generators.GeneratorFactory;
 import soundengine.util.Util;
 
 /**
- * Implements sound-related services available to the UI as described on SoundEngineFacade interface
+ * Implements sound-related services available to the UI as described on
+ * SoundEngineFacade interface
+ * 
  * @author jeraman.info
  *
  */
 public class SoundEngine implements SoundEngineFacade {
-	
+
 	private DecoratedNoteMemory memory;
-//	private AdsrEffect envelope;
 	private LinkedHashMap<String, AbstractGenerator> activeGenerators;
 	private LinkedHashMap<String, AbstractEffect> activeEffects;
 	private LinkedHashMap<String, AbstractAugmenter> activeAugmenters;
-	
+
 	transient public static Minim minim;
 	transient public static AudioOutput out;
 	transient public static AudioStream in;
-	
+
 	public SoundEngine(Minim minim) {
-		this.memory 		  = new DecoratedNoteMemory();
+		this.memory = new DecoratedNoteMemory();
 		this.activeGenerators = new LinkedHashMap<String, AbstractGenerator>();
-		this.activeEffects 	  = new LinkedHashMap<String, AbstractEffect>();
+		this.activeEffects = new LinkedHashMap<String, AbstractEffect>();
 		this.activeAugmenters = new LinkedHashMap<String, AbstractAugmenter>();
-		
-		
+
 		SoundEngine.minim = minim;
 		SoundEngine.out = minim.getLineOut(Minim.MONO, 256);
-		SoundEngine.in  = minim.getInputStream(Minim.MONO, out.bufferSize(), out.sampleRate(),
+		SoundEngine.in = minim.getInputStream(Minim.MONO, out.bufferSize(), out.sampleRate(),
 				out.getFormat().getSampleSizeInBits());
-		
+
 		in.open();
-		
-//		this.envelope = new AdsrEffect(1f, 0.001f, 1f, 1f, 0.001f, 0f, 0f);
 	}
-	
+
 	public void close() {
 		out.close();
 		in.close();
 		minim.stop();
 	}
-	
+
 	public void addGenerator(String id, String type, String[] parameters) {
 		AbstractGenerator gen = GeneratorFactory.createGenerator(type, parameters);
-		System.out.println("inserting " + id + ","  + type + " as generator " + gen);
+		// System.out.println("inserting " + id + "," + type + " as generator "
+		// + gen);
 		this.activeGenerators.put(id, gen);
 	}
 
@@ -68,25 +67,27 @@ public class SoundEngine implements SoundEngineFacade {
 	public void updateGenerator(String id, String[] parameters) {
 		AbstractGenerator gen = this.activeGenerators.get(id);
 		GeneratorFactory.updateGenerator(gen, parameters);
-		System.out.println("updating generator " + gen + " (id: "+  id + ") with the following parameters: "  + parameters.toString());
+		// System.out.println("updating generator " + gen + " (id: "+ id + ")
+		// with the following parameters: " + parameters.toString());
 	}
-	
+
 	public void updateGenerator(String id, String singleParameter) {
 		AbstractGenerator gen = this.activeGenerators.get(id);
 		GeneratorFactory.updateGenerator(gen, singleParameter.trim());
-		System.out.println("updating generator " + gen + " (id: "+  id + ") with "  + singleParameter);
+		// System.out.println("updating generator " + gen + " (id: "+ id + ")
+		// with " + singleParameter);
 	}
 
 	@Override
 	public void removeGenerator(String id) {
 		AbstractGenerator gen = this.activeGenerators.remove(id);
-		System.out.println("removing generator " + gen + " (id: "+  id + ")");
+		// System.out.println("removing generator " + gen + " (id: "+ id + ")");
 	}
 
 	@Override
 	public void addEffect(String id, String type, String[] parameters) {
 		AbstractEffect fx = EffectFactory.createEffect(type, parameters);
-		System.out.println("inserting " + id + ","  + type + " as effect " + fx);
+		System.out.println("inserting " + id + "," + type + " as effect " + fx);
 		this.activeEffects.put(id, fx);
 	}
 
@@ -94,25 +95,28 @@ public class SoundEngine implements SoundEngineFacade {
 	public void updateEffect(String id, String[] parameters) {
 		AbstractEffect fx = this.activeEffects.get(id);
 		EffectFactory.updateEffect(fx, parameters);
-		System.out.println("updating effect " + fx + " (id: "+  id + ") with the following parameters: "  + parameters.toString());
+		// System.out.println("updating effect " + fx + " (id: "+ id + ") with
+		// the following parameters: " + parameters.toString());
 	}
-	
+
 	public void updateEffect(String id, String singleParameter) {
 		AbstractEffect fx = this.activeEffects.get(id);
 		EffectFactory.updateEffect(fx, singleParameter);
-		System.out.println("updating effect " + fx +  " (id: "+  id + ") with "  + singleParameter);
+		// System.out.println("updating effect " + fx + " (id: "+ id + ") with "
+		// + singleParameter);
 	}
 
 	@Override
 	public void removeEffect(String id) {
 		AbstractEffect fx = this.activeEffects.remove(id);
-		System.out.println("removing effect " + fx + " (id: "+  id + ")");
+		// System.out.println("removing effect " + fx + " (id: "+ id + ")");
 	}
-	
+
 	@Override
 	public void addAugmenter(String id, String type, String[] parameters) {
 		AbstractAugmenter aug = AugmenterFactory.createAugmenter(type, parameters);
-		System.out.println("inserting " + id + ","  + type + " as augmenter " + aug);
+		// System.out.println("inserting " + id + "," + type + " as augmenter "
+		// + aug);
 		this.activeAugmenters.put(id, aug);
 	}
 
@@ -120,32 +124,35 @@ public class SoundEngine implements SoundEngineFacade {
 	public void updateAugmenter(String id, String[] parameters) {
 		AbstractAugmenter aug = this.activeAugmenters.get(id);
 		AugmenterFactory.updateAugmenter(aug, parameters);
-		System.out.println("updating augmenter " + aug + " (id: "+  id + ") with the following parameters: "  + parameters.toString());
+		// System.out.println("updating augmenter " + aug + " (id: "+ id + ")
+		// with the following parameters: " + parameters.toString());
 	}
-	
+
 	@Override
 	public void updateAugmenter(String id, String singleParameter) {
 		AbstractAugmenter aug = this.activeAugmenters.get(id);
 		AugmenterFactory.updateAugmenter(aug, singleParameter);
-		System.out.println("updating augmenter " + aug + " (id: "+  id + ") with "  + singleParameter);
+		// System.out.println("updating augmenter " + aug + " (id: "+ id + ")
+		// with " + singleParameter);
 	}
 
 	@Override
 	public void removeAugmenter(String id) {
 		AbstractAugmenter aug = this.activeAugmenters.remove(id);
-		System.out.println("removing augmenter " + aug + " (id: "+  id + ")");		
+		// System.out.println("removing augmenter " + aug + " (id: "+ id + ")");
 	}
-	
+
 	private void attachGenerators(DecoratedNote targetNote) {
 		synchronized (activeGenerators) {
 			for (Entry<String, AbstractGenerator> pair : activeGenerators.entrySet()) {
 				AbstractGenerator gen = pair.getValue();
-				AbstractGenerator cloned = gen.cloneWithNewPitchVelocityIfUnlocked(targetNote.getPitch(), targetNote.getVelocity());
+				AbstractGenerator cloned = gen.cloneWithNewPitchVelocityIfUnlocked(targetNote.getPitch(),
+						targetNote.getVelocity());
 				targetNote.addGenerator(cloned);
 			}
 		}
 	}
-	
+
 	private void attachEffects(DecoratedNote targetNote) {
 		synchronized (activeEffects) {
 			for (Entry<String, AbstractEffect> pair : activeEffects.entrySet()) {
@@ -154,25 +161,22 @@ public class SoundEngine implements SoundEngineFacade {
 				targetNote.addEffect(cloned);
 			}
 		}
-		
-//		targetNote.addEffect(this.envelope.clone());
 	}
-	
+
 	private void attachAugmenters(DecoratedNote targetNote) {
 		synchronized (activeAugmenters) {
 			for (Entry<String, AbstractAugmenter> pair : activeAugmenters.entrySet()) {
 				AbstractAugmenter aug = pair.getValue();
 				targetNote.addAugmenter(aug);
-				System.out.println("add " + aug);
 			}
 		}
 	}
-	
+
 	private void cleanOldObservers() {
 		cleanOldGeneratorObservers();
 		cleanOldEffectObservers();
 	}
-	
+
 	private void cleanOldGeneratorObservers() {
 		synchronized (activeGenerators) {
 			for (Entry<String, AbstractGenerator> pair : activeGenerators.entrySet()) {
@@ -181,7 +185,7 @@ public class SoundEngine implements SoundEngineFacade {
 			}
 		}
 	}
-	
+
 	private void cleanOldEffectObservers() {
 		synchronized (activeEffects) {
 			for (Entry<String, AbstractEffect> pair : activeEffects.entrySet()) {
@@ -190,25 +194,25 @@ public class SoundEngine implements SoundEngineFacade {
 			}
 		}
 	}
-	
+
 	@Override
 	public void noteOnWithoutAugmenters(int channel, int pitch, int velocity) {
 		DecoratedNote newNote = new DecoratedNote(channel, pitch, velocity);
-		
+
 		this.attachGenerators(newNote);
 		this.attachEffects(newNote);
-		
+
 		newNote.noteOn();
 		memory.put(newNote);
 	}
-	
+
 	public void noteOn(int channel, int pitch, int velocity) {
 		DecoratedNote newNote = new DecoratedNote(channel, pitch, velocity);
-		
+
 		this.attachGenerators(newNote);
 		this.attachEffects(newNote);
 		this.attachAugmenters(newNote);
-		
+
 		newNote.noteOn();
 		memory.put(newNote);
 	}
@@ -216,34 +220,30 @@ public class SoundEngine implements SoundEngineFacade {
 	@Override
 	public void noteOff(int channel, int pitch, int velocity) {
 		DecoratedNote n = memory.remove(pitch);
-		
-		if (n == null) 
+
+		if (n == null)
 			return;
-		
-//		this.envelope.noteOff();
-//		this.envelope.noteOffObservers();
-//		Util.delay(10);
-		
+
 		n.noteOff();
 		this.cleanOldObservers();
 	}
-	
+
 	public String whatUserIsPlaying() {
 		return this.memory.identifyWhatUserIsPlaying();
 	}
-	
+
 	public String getLastPlayedNote() {
 		return this.memory.getLastPlayedNote();
 	}
-	
+
 	public boolean thereIsKeyDown() {
 		return this.memory.thereIsKeyDown();
 	}
-	
+
 	public boolean thereIsKeyReleased() {
 		return this.memory.thereIsKeyReleased();
 	}
-	
+
 	public int numberOfKeyPressed() {
 		return this.memory.size();
 	}

@@ -124,12 +124,6 @@ public class GeneratorFactory {
 		String waveform = parameters[2];
 		int duration = Integer.parseInt(parameters[3]);
 		
-		System.out.println("updateOscillatorGen " + gen);
-		System.out.println("pitch " + pitch);
-		System.out.println("velocity " + velocity);
-		System.out.println("waveform " + waveform);
-		System.out.println("duration " + duration);
-		
 		gen.setFrequencyFromPitch(pitch);
 		gen.setAmplitudeFromVelocity(velocity);
 		gen.setWaveform(waveform);

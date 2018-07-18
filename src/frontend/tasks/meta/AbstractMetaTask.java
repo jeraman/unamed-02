@@ -19,12 +19,14 @@ abstract class AbstractMetaTask extends Task {
 
 	public void start() {
 		this.status = Status.RUNNING;
-		System.out.println("starting the following MetaTask: " + this);
+		if(debug())
+			System.out.println("starting the following MetaTask: " + this);
 	}
 
 	public void stop() {
 		this.status = Status.DONE;
-		System.out.println("stopping the following DMX task " + this);
+		if(debug())
+			System.out.println("stopping the following DMX task " + this);
 	}
 	
 	@Override

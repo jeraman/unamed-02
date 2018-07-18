@@ -205,7 +205,6 @@ public class TempoWindowUi extends AbstractElementUi {
 		return new CallbackListener() {
 			public void controlEvent(CallbackEvent theEvent) {
 				String content = theEvent.getController().getValueLabel().getText();
-				System.out.println("new BPM: " + content);
 				if (!content.equals("")) {
 					bpm = Integer.parseInt(content);
 					parent.setBpm(bpm);
@@ -218,7 +217,6 @@ public class TempoWindowUi extends AbstractElementUi {
 		return new CallbackListener() {
 			public void controlEvent(CallbackEvent theEvent) {
 				String content = theEvent.getController().getValueLabel().getText();
-				System.out.println("new note value: " + content);
 				if (!content.equals("")) {
 					noteValue = Integer.parseInt(content);
 					parent.setGlobalNoteValue(noteValue);
@@ -232,7 +230,6 @@ public class TempoWindowUi extends AbstractElementUi {
 			public void controlEvent(CallbackEvent theEvent) {
 				String content = barContent.getValueLabel().getText();
 				//String content = theEvent.getController().getValueLabel().getText();
-				System.out.println("new beat: " + content);
 				if (!content.equals("")) {
 					beats = Integer.parseInt(content);
 					parent.setGlobalBeat(beats);
@@ -246,8 +243,6 @@ public class TempoWindowUi extends AbstractElementUi {
 			public void controlEvent(CallbackEvent theEvent) {
 				int temp = (int) metroContent.getValue();
 				//int temp = (int) theEvent.getController().getValue();
-				
-				System.out.println("metronome is: " + temp);
 				
 				if (temp == 1) {
 					isSoundActivated = true;

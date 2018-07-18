@@ -30,10 +30,10 @@ public abstract class EffectObserver extends Observer{
 	}
 	
 	public void update(String singleParameter) {
-		System.out.println("observer " + this + " updating " + updatable + " based on " + original);
 		updatable.updateParameterFromString(singleParameter);
-		System.out.println("Forwarding changes to children...");
 		this.forwardUpdatesToUpdatable(singleParameter);
+//		System.out.println("observer " + this + " updating " + updatable + " based on " + original);
+//		System.out.println("Forwarding changes to children...");
 	}
 
 }

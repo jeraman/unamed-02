@@ -86,7 +86,6 @@ public abstract class AbstractMusicActioner implements Runnable, Serializable {
 	@Override
 	public void run() {
 		waitForDurationOrStop();
-		System.out.println("stop playing!");
 		noteOffInSoundEngine();
 		this.locked = false;
 		this.needToTerminate = false;

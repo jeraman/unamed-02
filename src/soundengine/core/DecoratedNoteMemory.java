@@ -48,10 +48,11 @@ public class DecoratedNoteMemory {
 		this.updateLastNote();
 		
 		if (noteIndex < 0) {
-			System.out.println("adding: " + note +  " to the removal line");
-			System.out.println("memory.size(): " + memory.size());
-			System.out.println("memory: " + memory);
 			
+//			System.out.println("adding: " + note +  " to the removal line");
+//			System.out.println("memory.size(): " + memory.size());
+//			System.out.println("memory: " + memory);
+
 			if (!isQueuedToBeDeleted(note))
 				removalLine.add(note);
 			return null;
@@ -77,7 +78,7 @@ public class DecoratedNoteMemory {
 		DecoratedNote n = this.remove(note);
 		n.noteOff();
 		n.close();
-		System.out.println("removing and killing note " + note);
+//		System.out.println("removing and killing note " + note);
 		return n;
 	}
 	

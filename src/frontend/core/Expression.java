@@ -18,7 +18,7 @@ import processing.core.PApplet;
 public class Expression implements Serializable {
 
   // Static components.
-  static transient ScriptEngineManager manager;
+  //static transient ScriptEngineManager manager;
   static transient ScriptEngine engine;
 
   String expression;
@@ -31,14 +31,11 @@ public class Expression implements Serializable {
 
   void build(PApplet p) {
 
-    if (this.manager == null || this.engine == null) {
-      this.manager = new ScriptEngineManager();
+    if (this.engine == null) {
+      ScriptEngineManager manager = new ScriptEngineManager();
       this.engine = manager.getEngineByName("js");
 
-      System.out.println("building an expression " + toString());
-      System.out.println("engine is " + engine.toString() + "manager is" + manager.toString());
       try {
-        // Load library for math operations.
         java.util.Scanner s = new java.util.Scanner(new java.net.URL("file://" + p.dataPath("math.js")).openStream()).useDelimiter("\\A");
         engine.eval(s.hasNext() ? s.next() : "");
       }
@@ -76,15 +73,6 @@ public class Expression implements Serializable {
 
 	/// Computes expression using blackboard and returns result.
 	public Object eval(Blackboard agent) throws ScriptException {
-		// System.out.println("eval an expression " + toString());
-		// @TODO DEBUGGING INFO
-		if (agent == null)
-			System.out.println("agent " + agent);
-		if (expression == null)
-			System.out.println("expression " + expression);
-		if (engine == null)
-			System.out.println("engine " + engine);
-		
 //		Bindings b = engine.getBindings(ScriptContext.ENGINE_SCOPE);
 //		System.out.println(b.size());
 //		System.out.println(engine.getBindings(ScriptContext.ENGINE_SCOPE));
