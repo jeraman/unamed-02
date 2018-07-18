@@ -67,7 +67,9 @@ public class MainCanvas {
 		sm_stack.add(root);
 		root.show();
 		close_preview.hide();
-		this.timeCounter = root.getTempoControl();
+//		this.timeCounter = root.getTempoControl();
+		this.timeCounter = new TempoControl();
+		this.timeCounter.createUi();
 		this.isTryingToConnect = false;
 	}
 
