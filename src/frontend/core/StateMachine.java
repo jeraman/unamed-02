@@ -719,7 +719,7 @@ public class StateMachine extends Task {
 		//if there is someone to connect to
 		if (intersected!=null) {
 			//connects
-			s.connect(new Expression ("true"), intersected);
+			s.connectWithDefaultCondition(intersected);
 			//s.connect_anything_else_to_self();
 			brandnew = false; //this statemachine is no longer brandnew
 		}

@@ -63,6 +63,8 @@ public class State implements Serializable {
 	//sound
 	transient private SoundEngine eng;
 	
+	private static final String defaultCondition = "true"; 
+	
 	// constructor
 	public State(PApplet p, ControlP5 cp5, String name, SoundEngine eng) {
 		this.p = p;
@@ -367,8 +369,12 @@ public class State implements Serializable {
 		for (Connection c : connections)
 			c.reload_gui_items();
 	}
+	
+	
+	void connectWithDefaultCondition(State next_state) { 
+		this.connect(new Expression(defaultCondition), next_state);
+	}
 
-	// add a connection to this state
 	void connect(Expression expression, State next_state) {
 		// if there is already a connection next_state, do nothing
 		if (there_is_already_a_connection_to_state(next_state))
