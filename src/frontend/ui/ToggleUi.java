@@ -54,10 +54,9 @@ public class ToggleUi extends AbstractElementUi {
 				.setPosition(localx, localy)
 				.setSize(w, (int) (font_size * 1.25))
 				.setGroup(g)
-				// .setMode(ControlP5.DEFAULT)
 				.setMode(ControlP5.SWITCH)
 				.setLabel(label)
-				.setValue(false)
+				.setValue(!this.value)
 				.onChange(callback())
 				.onReleaseOutside(callback()));
 		//this.enable();
@@ -69,7 +68,7 @@ public class ToggleUi extends AbstractElementUi {
 			public void controlEvent(CallbackEvent theEvent) {
 				//if (!group.isOpen()) 
 				//	return;
-				
+				System.out.println("callback");
 				float temp = toggle.getValue();
 				if (temp == 0.0)
 					enable();

@@ -62,18 +62,21 @@ public class OSCTask extends AbstractMetaTask {
 		if (port.update())
 			udpateBroadcast();
 	}
-
+	
 	@Override
 	protected void processAllParameters() {
 		processIpChange();
 		processPortChange();
 		message.update();
 		parameters.update();
+//		shouldRepeat.update();
 	}
 
 	public void run() {
 		boolean wasFirstTime = first_time;
+		
 		super.run();
+		
 		if (shouldRepeat.getValue() || wasFirstTime)
 			sendMessage();
 	}
@@ -81,8 +84,8 @@ public class OSCTask extends AbstractMetaTask {
 	private void sendMessage() {
 		OscMessage msg = createMessage();
 		oscP5.send(msg, broadcast);
-		if(debug())
-			System.out.println("sending OSC message to: " + broadcast.toString() + ". content: " + msg.toString());
+		//if(debug())
+		System.out.println("sending OSC message to: " + broadcast.toString() + ". content: " + msg.toString());
 	}
 	
 	private OscMessage createMessage() {
