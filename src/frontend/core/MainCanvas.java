@@ -11,14 +11,14 @@ import frontend.Main;
 import netP5.NetAddress;
 import oscP5.OscMessage;
 
+import java.io.Serializable;
 import java.util.Vector;
 
-public class MainCanvas {
+public class MainCanvas implements Serializable { 
 
 	public StateMachine root; // my basic state machine
 	Vector<StateMachine> sm_stack; // a stack of sm used for allowing hierarchy
-
-	private TempoControl timeCounter;
+	public TempoControl timeCounter;
 
 	transient private Main p;
 	transient private ControlP5 cp5;
@@ -49,16 +49,16 @@ public class MainCanvas {
 		// root.show();
 	}
 
-	// init my variables
 	void setup() {
 		root = new StateMachine(this.p, cp5, "unsaved file");
+		timeCounter = new TempoControl();
 		setupVariables();
 	}
 
-	// initting a new root
-	void setup(StateMachine newsm) {
+	void setup(StateMachine newsm, TempoControl newTimer) {
 		root = newsm;
 		root.build(p, cp5);
+		this.timeCounter = newTimer;
 		setupVariables();
 	}
 	
@@ -67,8 +67,6 @@ public class MainCanvas {
 		sm_stack.add(root);
 		root.show();
 		close_preview.hide();
-//		this.timeCounter = root.getTempoControl();
-		this.timeCounter = new TempoControl();
 		this.timeCounter.createUi();
 		this.isTryingToConnect = false;
 	}
@@ -192,8 +190,8 @@ public class MainCanvas {
 
 	// clears the root (not the current exhibited sm)
 	synchronized void clear() {
-		// root.clear();
 		sm_stack.lastElement().clear();
+		timeCounter.removeUi();
 	}
 
 	// runs the root (not the current exhibited sm)

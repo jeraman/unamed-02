@@ -228,8 +228,8 @@ public class TempoWindowUi extends AbstractElementUi {
 	private CallbackListener changeBarCallback() {
 		return new CallbackListener() {
 			public void controlEvent(CallbackEvent theEvent) {
-				String content = barContent.getValueLabel().getText();
-				//String content = theEvent.getController().getValueLabel().getText();
+				//String content = barContent.getValueLabel().getText();
+				String content = theEvent.getController().getValueLabel().getText();
 				if (!content.equals("")) {
 					beats = Integer.parseInt(content);
 					parent.setGlobalBeat(beats);
