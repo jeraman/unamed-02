@@ -21,10 +21,7 @@ public class IntervalAugTask extends AbstractAugTask {
 
 		this.root = new ComputableIntegerTextfieldUI(ComputableIntegerTextfieldUIWithUserInput.userInputAsDefault,-1);
 		this.interval = new ComputableIntegerTextfieldUI(5);
-		
 		this.musicActioner = new IntervalActioner(this.root.getDefaultValueAsInt(), 5, this.velocity.getDefaultValueAsInt(),(int) this.duration.getValue(), eng);
-
-//		addOnEngine();
 	}
 	
 	@Override
@@ -69,7 +66,8 @@ public class IntervalAugTask extends AbstractAugTask {
 			if (isModeUserInput())
 				this.eng.updateAugmenter(this.get_gui_id(), "type : " + interval.getValueAsInt());
 			if (isModePlayOnce() || isModeRepeat())
-				((IntervalActioner)this.musicActioner).setInterval(root.getValueAsInt()+interval.getValueAsInt());
+//				((IntervalActioner)this.musicActioner).setInterval(root.getValueAsInt()+interval.getValueAsInt());
+				((IntervalActioner)this.musicActioner).setInterval(interval.getValueAsInt());
 		}
 	}
 	

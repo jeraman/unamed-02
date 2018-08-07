@@ -27,7 +27,6 @@ public class ChordAugTask extends AbstractAugTask {
 
 		this.root = new ComputableIntegerTextfieldUI(ComputableIntegerTextfieldUIWithUserInput.userInputAsDefault,-1);
 		this.chordType = new ScrollableListUI(list, 0);
-		
 		this.musicActioner = new ChordActioner(this.root.getDefaultValueAsInt(), "maj", this.velocity.getDefaultValueAsInt(),(int) this.duration.getValue(), eng);
 	}
 	
@@ -102,6 +101,7 @@ public class ChordAugTask extends AbstractAugTask {
 		this.backgroundheight = (int) (localoffset * 5.5);
 		g.setBackgroundHeight(backgroundheight);
 		int miniOffsetDueToScrollList = 5;
+		
 		mode.createUI(id, "          mode", localx, localy + (0 * localoffset), width, g);
 		root.createUI(id, "root", localx, localy + miniOffsetDueToScrollList+ (1 * localoffset), width, g);
 		chordType.createUI(id, "type", localx, localy + miniOffsetDueToScrollList + (2 * localoffset), width, g);
