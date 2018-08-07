@@ -4,6 +4,7 @@ import java.util.*;
 import java.io.Serializable;
 import processing.core.PApplet;
 import soundengine.SoundEngine;
+import soundengine.util.Util;
 import controlP5.*;
 import frontend.Main;
 import frontend.tasks.Task;
@@ -1507,5 +1508,9 @@ public class State implements Serializable {
 			if (c.get_next_state() == dest)
 				c.init_gui_items();
 		}
+	}
+	
+	public static String generateRandomName() {
+		return "NEW_STATE_" + ((int) Main.instance().random(0, 10));
 	}
 }

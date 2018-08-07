@@ -165,7 +165,7 @@ public class MainCanvas {
 	void create_state() {
 		if (debug())
 			System.out.println("creates a state");
-		State newState = new State(p, cp5, "NEW_STATE_" + ((int) p.random(0, 10)), this.sm_stack.lastElement().eng,
+		State newState = new State(p, cp5, State.generateRandomName(), this.sm_stack.lastElement().eng,
 				p.mouseX, p.mouseY);
 		// root.add_state(newState);
 		this.add_state(newState);

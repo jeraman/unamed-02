@@ -37,7 +37,7 @@ public class StateMachine extends Task {
 	public StateMachine (PApplet p, ControlP5 cp5, String name) {
 		super (p, cp5, name, new SoundEngine(Main.minim()));
 		title   = name;
-		begin   = new State(p, cp5, "BEGIN", this.eng);
+		begin   = new State(p, cp5, State.generateRandomName(), this.eng);
 		states  = new Vector<State>();
 		debug = Main.instance().debug();
 		
