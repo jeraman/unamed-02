@@ -190,11 +190,12 @@ public class DecoratedNote extends BasicNote implements Runnable {
 		float longestReleaseTime = 0;
 
 		// for (Effect e : clonedFxs)
+		synchronized (effects) {
 		for (AbstractEffect e : effects)
-
 			if (e instanceof AdsrEffect && ((AdsrEffect) e).getRelTime() > longestReleaseTime)
 				longestReleaseTime = ((AdsrEffect) e).getRelTime();
-
+		}
+		
 		return longestReleaseTime * 1000;
 	}
 

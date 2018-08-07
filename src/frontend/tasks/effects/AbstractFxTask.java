@@ -32,7 +32,7 @@ abstract class AbstractFxTask extends Task {
 	@Override
 	public void stop() {
 //		this.status = Status.DONE;
-		removeFromEngine();
+		this.removeFromEngine();
 	}
 	
 	@Override

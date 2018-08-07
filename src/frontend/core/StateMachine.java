@@ -356,7 +356,14 @@ public class StateMachine extends Task {
 
 	public void noteOff(int channel, int pitch, int velocity) {
 		this.eng.noteOff(channel, pitch, velocity);
-		this.actual.forwardNoteOffToSubStateMachines(channel, pitch, velocity);
+		this.forwardNoteOffToSubStateMachines(channel, pitch, velocity);
+		//this.actual.forwardNoteOffToSubStateMachines(channel, pitch, velocity);
+	}
+	
+	public void forwardNoteOffToSubStateMachines(int channel, int pitch, int velocity) {
+		for (State s : states)
+			s.forwardNoteOffToSubStateMachines(channel, pitch, velocity);
+		begin.forwardNoteOffToSubStateMachines(channel, pitch, velocity);
 	}
 
 	//add a state s to this State_Machine

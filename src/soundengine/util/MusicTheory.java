@@ -54,7 +54,7 @@ public class MusicTheory {
 			//System.out.print("Chord detected: ");
 			//System.out.println(result);
 		} catch (Exception e) {
-			System.out.println("Unable to detect this chord");
+//			System.out.println("Unable to detect this chord");
 		}
 
 		return result;

@@ -210,7 +210,7 @@ public class Main extends PApplet {
 	public boolean should_copy = false;
 
 	public void keyPressed() {
-		if (debug)
+//		if (debug)
 			System.out.println("keyCode: " + keyCode + " key: " + key);
 
 		// if is loading an open patch, do not draw anything
@@ -247,7 +247,6 @@ public class Main extends PApplet {
 			canvas.button_load();
 			break;
 		}
-		// println(keyCode);
 	}
 
 	public void mousePressed() {

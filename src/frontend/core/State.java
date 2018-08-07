@@ -30,12 +30,13 @@ import java.util.UUID;
 
 /**
  * Class representing a state in the HFSM
+ * 
  * @author jeronimo
  * @date Sep. 30 2016
  *
  */
 public class State implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 	private Vector<Connection> connections;
 	private Vector<Task> tasks;
@@ -60,11 +61,11 @@ public class State implements Serializable {
 	transient private PApplet p;
 	transient private ControlP5 cp5;
 
-	//sound
+	// sound
 	transient private SoundEngine eng;
-	
-	private static final String defaultCondition = "true"; 
-	
+
+	private static final String defaultCondition = "true";
+
 	// constructor
 	public State(PApplet p, ControlP5 cp5, String name, SoundEngine eng) {
 		this.p = p;
@@ -110,17 +111,15 @@ public class State implements Serializable {
 			c.build(p, cp5);
 
 		// builds the tasks and add them to gui
-		for (Task t : tasks) 
+		for (Task t : tasks)
 			t.build(p, cp5, eng);
-	
+
 		add_all_tasks_to_gui();
-		
+
 		// loads the gui
 		initStateGuiWithoutTasksAndConnections();
 		hide_gui();
 	}
-	
-	
 
 	String get_name() {
 		return this.name;
@@ -170,11 +169,10 @@ public class State implements Serializable {
 				((StateMachine) t).reload_from_file();
 	}
 
-	
 	void start() {
 		for (Task t : tasks)
 			t.start();
-		
+
 		this.status = Status.RUNNING;
 
 		if (debug)
@@ -216,7 +214,6 @@ public class State implements Serializable {
 			System.out.println("interrupting all tasks from state " + this.name);
 	}
 
-
 	// in case there are statemachine inside this state, this machine should be
 	// saved to file
 	void save() {
@@ -235,7 +232,6 @@ public class State implements Serializable {
 	Status get_status() {
 		return this.status;
 	}
-
 
 	// function called everytime there is a new input
 	State tick() {
@@ -272,7 +268,7 @@ public class State implements Serializable {
 					// interrupts current activities that are still going on
 					this.interrupt();
 					// refresh the next state
-					//next_state.refresh();
+					// next_state.refresh();
 					next_state.start();
 					// reset_first_time
 					next_state.reset_first_time();
@@ -369,9 +365,8 @@ public class State implements Serializable {
 		for (Connection c : connections)
 			c.reload_gui_items();
 	}
-	
-	
-	void connectWithDefaultCondition(State next_state) { 
+
+	void connectWithDefaultCondition(State next_state) {
 		this.connect(new Expression(defaultCondition), next_state);
 	}
 
@@ -475,7 +470,7 @@ public class State implements Serializable {
 
 	/////////////////////////////
 	// tasks
-	
+
 	private void init_sample_task() {
 		if (debug)
 			System.out.println("create sample task!");
@@ -511,7 +506,7 @@ public class State implements Serializable {
 			t.start();
 		this.add_task(t);
 	}
-	
+
 	private void init_filter_task() {
 		if (debug)
 			System.out.println("create filter task!");
@@ -637,7 +632,6 @@ public class State implements Serializable {
 		DefaultBBTask t = new DefaultBBTask(p, cp5, taskname, this.eng);
 		this.add_task(t);
 	}
-	
 
 	void init_bb_rand_task() {
 		if (debug)
@@ -661,7 +655,6 @@ public class State implements Serializable {
 		// println(selected + " " + pie.options[selected]);
 	}
 
-
 	// method that initializes a ramp balckboard var
 	void init_bb_ramp_task() {
 		if (debug)
@@ -676,7 +669,6 @@ public class State implements Serializable {
 	public int get_number_of_connections() {
 		return connections.size();
 	}
-	
 
 	@Deprecated
 	// if it's entering a state, you need to refresh it
@@ -684,37 +676,38 @@ public class State implements Serializable {
 		for (Task t : tasks)
 			t.refresh();
 	}
-	
+
 	// updates the status of this state
 	@Deprecated
 	void update_status() {
 
 		// if there are no tasks, the state is done
-//		if (tasks.size() == 0)
-//			this.status = Status.DONE;
+		// if (tasks.size() == 0)
+		// this.status = Status.DONE;
 
-		// gets the status of the tasks associated to this state and updates accordingly
-//		for (Task t : tasks) {
-//			Status temporary_status = t.get_status();
-//			// updates accordingly
-//			if (temporary_status == Status.INACTIVE) {
-//				this.status = Status.INACTIVE;
-//				break;
-//			}
-//
-//			if (temporary_status == Status.RUNNING) {
-//				this.status = Status.RUNNING;
-//				// if this is a State_Machine
-//				// if (t instanceof State_Machine)
-//
-//				break;
-//			}
-//
-//			if (temporary_status == Status.DONE)
-//				this.status = Status.DONE;
-//		}
+		// gets the status of the tasks associated to this state and updates
+		// accordingly
+		// for (Task t : tasks) {
+		// Status temporary_status = t.get_status();
+		// // updates accordingly
+		// if (temporary_status == Status.INACTIVE) {
+		// this.status = Status.INACTIVE;
+		// break;
+		// }
+		//
+		// if (temporary_status == Status.RUNNING) {
+		// this.status = Status.RUNNING;
+		// // if this is a State_Machine
+		// // if (t instanceof State_Machine)
+		//
+		// break;
+		// }
+		//
+		// if (temporary_status == Status.DONE)
+		// this.status = Status.DONE;
+		// }
 	}
-	
+
 	@Deprecated
 	// only refreshes and reruns completed tasks
 	void refresh_and_run_completed_tasks() {
@@ -724,17 +717,17 @@ public class State implements Serializable {
 				t.run();
 			}
 	}
-	
+
 	public void forwardNoteOnToSubStateMachines(int channel, int pitch, int velocity) {
 		for (Task t : tasks)
 			if (t instanceof StateMachine)
-				((StateMachine)t).noteOn(channel, pitch, velocity);
+				((StateMachine) t).noteOn(channel, pitch, velocity);
 	}
 
 	public void forwardNoteOffToSubStateMachines(int channel, int pitch, int velocity) {
 		for (Task t : tasks)
 			if (t instanceof StateMachine)
-				((StateMachine)t).noteOff(channel, pitch, velocity);
+				((StateMachine) t).noteOff(channel, pitch, velocity);
 	}
 
 	/*******************************************
@@ -861,19 +854,27 @@ public class State implements Serializable {
 	}
 
 	void update_name(String newName) {
-		//cp5.remove(this.name);
-		//this.remove_all_tasks_from_gui();
-		//this.remove_gui_connections_involving_this_state();
+		// cp5.remove(this.name);
+		// this.remove_all_tasks_from_gui();
+		// this.remove_gui_connections_involving_this_state();
 		this.name = newName.toUpperCase();
-		//this.init_state_name_gui();
-		//this.add_all_tasks_to_gui();
-		//this.init_gui_connections_involving_this_state();
+		label.setText(name);
+		// this.init_state_name_gui();
+		// this.add_all_tasks_to_gui();
+		// this.init_gui_connections_involving_this_state();
+		updateLabelWidth();
+	}
+
+	private void updateLabelWidth() {
+		int textwidth = (int) (p.textWidth(this.name)*1.05);
+		label.setWidth(textwidth);
+		//label.setWidth((int)(p.textWidth(this.name)*1.5));
 	}
 
 	// resets the name of this state
 	void reset_name() {
-		//for (Task t : tasks)
-		//	t.reset_gui_fields();
+		// for (Task t : tasks)
+		// t.reset_gui_fields();
 		this.update_name(this.label.getText());
 	}
 
@@ -924,7 +925,6 @@ public class State implements Serializable {
 	CallbackListener generate_callback_enter() {
 		return new CallbackListener() {
 			public void controlEvent(CallbackEvent theEvent) {
-
 				// if this textfield is not selected, returns...
 				// if (label.getText().equalsIgnoreCase(newName))
 				// if (!label.isFocus()) return;
@@ -935,11 +935,12 @@ public class State implements Serializable {
 				// if the name didn't change, no need to continue
 				if (label.getText().equalsIgnoreCase(name))
 					return;
-
+			
 				String newName = theEvent.getController().getValueLabel().getText();
 				String oldName = name;
-
+				
 				update_name(newName);
+				
 				/*
 				 * MainCanvas canvas = HFSMPrototype.instance().canvas;
 				 * 
@@ -1003,7 +1004,6 @@ public class State implements Serializable {
 				.align(ControlP5.CENTER, ControlP5.CENTER, ControlP5.CENTER, ControlP5.CENTER)
 				// .setWidth((int)(p.textWidth(this.name)*1.25))
 				.setWidth((int) (p.textWidth(this.name)))
-				// .setWidth((int)(p.textWidth(this.name)*1.5))
 				.setFocus(false).setAutoClear(false).setLabel("").onChange(cb_enter).onReleaseOutside(cb_enter)
 		// .onDoublePress(generate_callback_double_press())
 		// .onDrag(cb)
@@ -1043,10 +1043,10 @@ public class State implements Serializable {
 		// removes this task from the accordion
 		if (t == null || cp5 == null)
 			return;
-		
+
 		t.closeTask();
-		//t.removeElementUi();
-		//cp5.getGroup(t.get_gui_id()).remove();
+		// t.removeElementUi();
+		// cp5.getGroup(t.get_gui_id()).remove();
 		// cp5.getGroup(this.name + " " + t.get_name()).remove();
 	}
 
@@ -1105,8 +1105,8 @@ public class State implements Serializable {
 		label.align(ControlP5.CENTER, ControlP5.CENTER, ControlP5.CENTER, ControlP5.CENTER);
 		float textwidth = p.textWidth(name);
 		textwidth = textwidth / 2;
-		// label.setPosition(x-textwidth-(textwidth/5), y-7);
-		label.setPosition(x - textwidth, y - 7);
+		label.setPosition(x-textwidth+(textwidth/10), y-7);
+		//label.setPosition(x - textwidth, y - 7);
 
 		// moving the tasks
 		// accordion.setPosition(x-(accordion.getWidth()/2),
@@ -1248,7 +1248,6 @@ public class State implements Serializable {
 		c.set_gui_position((int) newx, (int) newy);
 	}
 
-
 	void draw_pie() {
 		pie.draw();
 	}
@@ -1385,8 +1384,6 @@ public class State implements Serializable {
 		}
 	}
 
-
-
 	// verifies if the mouse is over a certain task, returning this task
 	Task verifies_if_mouse_is_over_a_task() {
 		Task to_be_removed = null;
@@ -1442,7 +1439,7 @@ public class State implements Serializable {
 	// adds all tasks to the gui (used whenever the state name needs to change)
 	void add_all_tasks_to_gui() {
 		init_accordion_gui();
-		
+
 		// iterates of all tasks related to this state
 		for (Task t : tasks)
 			add_task_in_accordion_gui(t);
