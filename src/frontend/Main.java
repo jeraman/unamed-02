@@ -221,6 +221,11 @@ public class Main extends PApplet {
 		if (keyCode == 17 || keyCode == 27 || keyCode == 157)
 			cmg_or_ctrl_pressed = true;
 
+		if (key == 'b') {
+			System.out.println("changing begin");
+			this.canvas.nextBegin();
+		}		
+		
 		// if control or command key are not pressed, ignore
 		if (!cmg_or_ctrl_pressed)
 			return;

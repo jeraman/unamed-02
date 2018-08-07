@@ -89,6 +89,10 @@ public class MainCanvas {
 		sm_stack.lastElement().draw();
 		draw_names();
 	}
+	
+	public void nextBegin() {
+		sm_stack.lastElement().nextBegin();
+	}
 
 	public void noteOn(int channel, int pitch, int velocity) {
 		this.root.noteOn(channel, pitch, velocity);

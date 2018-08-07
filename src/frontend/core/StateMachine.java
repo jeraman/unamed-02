@@ -28,7 +28,7 @@ public class StateMachine extends Task {
 	private float stateTimer          = 0;
 	public boolean debug;
 	private boolean brandnew; //has the user added  any state or task added to this state machine?
-
+	
 	//private TempoControl timeCounter;
 	
 	transient private StateMachinePreview smp;
@@ -89,6 +89,16 @@ public class StateMachine extends Task {
 			s.build(p, cp5, eng);
 		
 //		this.timeCounter.createUi();
+	}
+	
+	public void nextBegin() {
+		if (states.size() < 1) 
+			return;
+
+		State temp = this.states.firstElement();
+		this.states.remove(0);
+		this.add_state(this.begin);
+		this.begin = temp;
 	}
 	
 	StateMachine clone_state_machine_saved_in_file(String title) {
@@ -758,7 +768,7 @@ public class StateMachine extends Task {
 		for (State s : states)
 			s.remove_all_gui_connections_to_a_state(dest);
 	}
-
+	
 	void init_all_gui_connections_to_a_state (State dest) {
 
 		//removing all connection to a state in the begin and in the end
