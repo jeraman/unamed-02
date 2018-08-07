@@ -130,10 +130,19 @@ public abstract class AbstractAugTask extends Task {
 		super.run();
 		processModes();
 	}
+	
+	private void initMode() {
+		if (isModeUserInput())
+			setModeUserInput();
+		if (isModePlayOnce())
+			setModePlayOnce();
+		if (isModeRepeat())
+			setModeRepeat();
+	}
 
 	public void start() {
 //		this.status = Status.RUNNING;
-		this.addOnEngine();
+		this.initMode();
 		this.musicActioner.start();
 	}
 	

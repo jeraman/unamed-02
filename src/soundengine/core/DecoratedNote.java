@@ -189,7 +189,6 @@ public class DecoratedNote extends BasicNote implements Runnable {
 	private synchronized float getLongestReleaseTime() {
 		float longestReleaseTime = 0;
 
-		// for (Effect e : clonedFxs)
 		synchronized (effects) {
 		for (AbstractEffect e : effects)
 			if (e instanceof AdsrEffect && ((AdsrEffect) e).getRelTime() > longestReleaseTime)

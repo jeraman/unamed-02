@@ -187,7 +187,7 @@ public class Serializer {
 
 			p.canvas.setup((StateMachine) ois.readObject(), (TempoControl) ois.readObject());
 
-			p.print("loading a new substatemachine");
+			// p.print("loading a new substatemachine");
 			p.canvas.root.check_if_any_substatemachine_needs_to_be_reloaded_from_file();
 
 			// lastSaveFile = file;
