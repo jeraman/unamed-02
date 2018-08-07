@@ -859,6 +859,7 @@ public class State implements Serializable {
 		// this.remove_gui_connections_involving_this_state();
 		this.name = newName.toUpperCase();
 		label.setText(name);
+		label.setFocus(false);
 		// this.init_state_name_gui();
 		// this.add_all_tasks_to_gui();
 		// this.init_gui_connections_involving_this_state();
