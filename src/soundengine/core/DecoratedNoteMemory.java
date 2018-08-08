@@ -18,7 +18,7 @@ public class DecoratedNoteMemory {
 	private ArrayList<Integer> removalLine;
 	private String lastNote;
 	
-	private static final int CONCURRENT_NOTES_LIMIT = 5;
+	private static final int CONCURRENT_NOTES_LIMIT = 20;
 
 	public DecoratedNoteMemory() {
 		memory = new ArrayList<DecoratedNote>();

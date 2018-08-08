@@ -23,9 +23,9 @@ public abstract class AbstractMusicActioner implements Runnable, Serializable {
 		this.velocity = velocity;
 		this.duration = duration;
 		this.locked = false;
-		this.needToTerminate = false;
 		this.eng = eng;
-		myStopThread = null;
+		this.needToTerminate = false;
+		this.myStopThread = null;
 	}
 	
 	protected void build (SoundEngine eng) {
@@ -73,8 +73,10 @@ public abstract class AbstractMusicActioner implements Runnable, Serializable {
 	private void scheduleNoteKiller() {
 		Runnable r = this;
 		this.resetTimer();
-		myStopThread = new Thread(r);
-		myStopThread.start();
+		if (myStopThread == null) {
+			myStopThread = new Thread(r);
+			myStopThread.start();
+		}
 	}
 	
 	private void waitForDurationOrStop() {
@@ -89,13 +91,18 @@ public abstract class AbstractMusicActioner implements Runnable, Serializable {
 		noteOffInSoundEngine();
 		this.locked = false;
 		this.needToTerminate = false;
-		
-		try {
-			myStopThread.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		
+		killRunThread();
+	}
+	
+	private void killRunThread() {
+		//this.myStopThread.interrupt();
+		this.myStopThread = null;
+//		try {
+//			this.myStopThread.join();
+//			this.myStopThread = null;
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	protected abstract void noteOnInSoundEngine();

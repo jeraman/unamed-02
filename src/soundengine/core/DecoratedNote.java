@@ -33,6 +33,8 @@ public class DecoratedNote extends BasicNote implements Runnable {
 	private boolean closed;
 
 	private static final float fadeOutTime = 0.01f;
+	
+	transient private Thread myStopThread;
 
 	public DecoratedNote(int channel, int pitch, int velocity) {
 		this(channel, pitch, velocity, new ArrayList<AbstractGenerator>());
@@ -56,6 +58,7 @@ public class DecoratedNote extends BasicNote implements Runnable {
 		this.closed = false;
 
 		this.envelope = new AdsrEffect(1f, 0.001f, 1f, 1f, fadeOutTime, 0f, 0f);
+		this.myStopThread = null;
 	}
 
 	public boolean isPitchEquals(int wantedPitch) {
@@ -156,14 +159,23 @@ public class DecoratedNote extends BasicNote implements Runnable {
 			if (e instanceof AdsrEffect)
 				((AdsrEffect) e).noteOff();
 
+		this.startThread();
+	}
+
+	private void startThread() {
 		// setting a time to note off everything!
 		Runnable r = this;
-		new Thread(r).start();
+		if (myStopThread == null) {
+			this.myStopThread = new Thread(r);
+			this.myStopThread.start();
+		}
 	}
 
 	public synchronized void defaultNoteOff() {
-		if (this.closed)
+		if (this.closed) {
+			System.out.println("already closed...");
 			return;
+		}
 
 		this.unpatchEffects();
 
@@ -189,20 +201,37 @@ public class DecoratedNote extends BasicNote implements Runnable {
 	private synchronized float getLongestReleaseTime() {
 		float longestReleaseTime = 0;
 
-		synchronized (effects) {
-		for (AbstractEffect e : effects)
-			if (e instanceof AdsrEffect && ((AdsrEffect) e).getRelTime() > longestReleaseTime)
-				longestReleaseTime = ((AdsrEffect) e).getRelTime();
+		try {
+			synchronized (effects) {
+			for (AbstractEffect e : effects)
+				if (e instanceof AdsrEffect && ((AdsrEffect) e).getRelTime() > longestReleaseTime)
+					longestReleaseTime = ((AdsrEffect) e).getRelTime();
+			}
+		} catch(java.lang.NullPointerException e) {
+			System.out.println("Null pointer on getLongestReleaseTime!");
+			e.printStackTrace();
 		}
 		
 		return longestReleaseTime * 1000;
+		
 	}
 
 	public void run() {
 		float longestReleaseTime = getLongestReleaseTime();
 		Util.delay((int) longestReleaseTime);
-//		System.out.println("ok to fully note off: " + this);
 		this.defaultNoteOff();
+		killRunThread();
+	}
+
+	private void killRunThread() {
+		//this.myStopThread.interrupt();
+		this.myStopThread = null;
+//		try {
+//			this.myStopThread.join();
+//			this.myStopThread = null;
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	// @Deprecated
