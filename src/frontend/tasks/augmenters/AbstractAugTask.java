@@ -118,6 +118,7 @@ public abstract class AbstractAugTask extends Task {
 			if (isModePlayOnce() || isModeRepeat())
 				this.musicActioner.setDuration((int) duration.getValue());
 		} else
+		if (duration.isDefaultValue())
 			this.musicActioner.setDuration((int) computeDurationBasedOnBPM());
 			
 	}

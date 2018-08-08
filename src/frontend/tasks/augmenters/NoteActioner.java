@@ -20,8 +20,11 @@ public class NoteActioner extends AbstractMusicActioner {
 	}
 
 	protected void setPitch(int pitch) {
-		if (!this.locked)
+		//if (!this.locked)
+		if (this.pitch != pitch) {
+			this.noteOffInSoundEngine();
 			this.pitch = pitch;
+		}
 	}
 	
 	protected void noteOnInSoundEngine() {

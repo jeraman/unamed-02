@@ -30,6 +30,10 @@ public class NoteAugTask extends AbstractAugTask {
 		this.eng.addAugmenter(this.get_gui_id(), "NOTE", getDefaultParameters());
 	}
 	
+	protected void resetMusicActioner() {
+		((NoteActioner)musicActioner).setPitch(this.pitch.getValueAsInt());
+		super.resetMusicActioner();
+	}
 
 	private void processPitchChange() {
 		if (pitch.update()) {
