@@ -27,7 +27,7 @@ public class Serializer {
 
 	public Serializer(Main zenStates) {
 		this.p = zenStates;
-		setup_autosave();
+		//setup_autosave();
 	}
 
 	// public Serializer(ZenStates zenStates) {

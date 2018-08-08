@@ -148,6 +148,7 @@ public class ConnectionTextfieldUi extends TextfieldUi {
 				resizeTextfieldWidth();
 				setValue(content);
 				evaluateAsBoolean();
+				textfield.setFocus(false);
 			}
 		};
 	}

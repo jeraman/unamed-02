@@ -134,6 +134,8 @@ public class TextfieldUi extends AbstractElementUi {
 
 				if (content.trim().equals(defaultText))
 					textfield.setText("");
+				
+				textfield.setFocus(true);
 			}
 		};
 	}
@@ -159,7 +161,7 @@ public class TextfieldUi extends AbstractElementUi {
 				}
 				
 				setValue(content);
-				
+				textfield.setFocus(false);
 			}
 		};
 	}

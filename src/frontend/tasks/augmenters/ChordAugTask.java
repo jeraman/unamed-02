@@ -36,7 +36,8 @@ public class ChordAugTask extends AbstractAugTask {
 	}
 	
 	protected void resetMusicActioner() {
-		((ChordActioner)musicActioner).setRoot(this.root.getDefaultValueAsInt());
+		// ((ChordActioner)musicActioner).setRoot(this.root.getDefaultValueAsInt());
+		((ChordActioner)musicActioner).setRoot(this.root.getValueAsInt());
 		super.resetMusicActioner();
 	}
 	

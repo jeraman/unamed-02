@@ -72,8 +72,10 @@ public abstract class AbstractAugTask extends Task {
 	}
 	
 	protected void resetMusicActioner() {
-		musicActioner.setVelocity(this.velocity.getDefaultValueAsInt());
-		musicActioner.setDuration((int)this.duration.getDefaultValue());
+		//musicActioner.setVelocity(this.velocity.getDefaultValueAsInt());
+		//musicActioner.setDuration((int)this.duration.getDefaultValue());
+		musicActioner.setVelocity(this.velocity.getValueAsInt());
+		musicActioner.setDuration((int)this.duration.getValue());
 	}
 
 	protected void setModeUserInput() {
@@ -87,9 +89,13 @@ public abstract class AbstractAugTask extends Task {
 	protected void setModePlayOnce() {
 		this.currentMode = AugmenterMode.PLAY_ONCE;
 		this.velocity.resetDefaults(ComputableFloatTextfieldUI.classDefaultText, 100);
-		this.duration.resetDefaults(ComputableFloatTextfieldUI.classDefaultText, 1000);
+		this.duration.resetDefaults(ComputableFloatTextfieldUI.classDefaultText, computeDurationBasedOnBPM());
 		resetMusicActioner();
 		removeFromEngine();
+	}
+
+	private int computeDurationBasedOnBPM() {
+		return (int)((60f/Main.instance().canvas.getBPM())*1000);
 	}
 
 	protected void setModeRepeat() {
@@ -111,7 +117,9 @@ public abstract class AbstractAugTask extends Task {
 				this.eng.updateAugmenter(this.get_gui_id(), "duration : " + duration.getValue());
 			if (isModePlayOnce() || isModeRepeat())
 				this.musicActioner.setDuration((int) duration.getValue());
-		}
+		} else
+			this.musicActioner.setDuration((int) computeDurationBasedOnBPM());
+			
 	}
 
 	protected void processModeChange() {

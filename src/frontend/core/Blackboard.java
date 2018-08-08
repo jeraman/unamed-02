@@ -92,6 +92,10 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 		if (p == null)
 			return;
 		
+		//int test = p.mouseX + p.mouseY;
+		//if (p.mousePressed)
+		//	test *= 2;
+		
 		this.updatePcVariables();
 		this.updateKeyboardVariables();
 		this.updateTempoVariables();

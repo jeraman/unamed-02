@@ -59,7 +59,8 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 		
 		if (wasDefaultValue) {
 			this.setValueExpression(this.defaultText);
-			this.textfield.setText(this.defaultText);
+			if (this.textfield != null)
+				this.textfield.setText(this.defaultText);
 		}
 	}
 	
@@ -175,6 +176,7 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 
 				if (content.trim().equals(defaultText))
 					textfield.setText("");
+				textfield.setFocus(true);
 			}
 		};
 	}
@@ -201,6 +203,7 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 				}
 				
 				updateValueExpression(content);
+				textfield.setFocus(false);
 			}
 		};
 	}

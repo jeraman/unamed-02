@@ -70,8 +70,6 @@ public class Main extends PApplet {
 
 		setup_expression_loading_bug();
 
-
-
 		// testing autodraw
 		// cp5.setAutoDraw(false);
 
@@ -144,17 +142,17 @@ public class Main extends PApplet {
 
 		// updates global variables in the bb
 		board.update_global_variables();
+		// draws the blackboard
+		board.draw();		
 		// draws the scenario
 		canvas.draw();
-		// draws the blackboard
-		board.draw();
 
 		if (keyReleased)
 			keyReleased = false;
 		if (mouseRightButtonReleased)
 			mouseRightButtonReleased = false;
 
-		serializer.autosave();
+		//serializer.autosave();
 	}
 
 	public void noteOn(int channel, int pitch, int velocity) {
@@ -210,7 +208,7 @@ public class Main extends PApplet {
 	public boolean should_copy = false;
 
 	public void keyPressed() {
-//		if (debug)
+		if (debug)
 			System.out.println("keyCode: " + keyCode + " key: " + key);
 
 		// if is loading an open patch, do not draw anything
@@ -280,13 +278,23 @@ public class Main extends PApplet {
 
 		}
 	}
-
+	
 	public void mouseDragged() {
 		if (is_loading)
 			return;
 		
 		if (mouseButton == RIGHT)
 			canvas.start_dragging_connection();
+	}
+	
+	public void mouseReleased() {
+		if (is_loading)
+			return;
+		
+		if (mouseButton == RIGHT) {
+			mouseRightButtonReleased = true;
+			canvas.closeConnectionAttempt();
+		}
 	}
 
 	public void keyReleased() {
@@ -298,16 +306,6 @@ public class Main extends PApplet {
 		// updating cmg_or_ctrl_pressed if control or command keys were pressed
 		if (keyCode == 17 || keyCode == 27 || keyCode == 157)
 			cmg_or_ctrl_pressed = false;
-	}
-
-	public void mouseReleased() {
-		if (is_loading)
-			return;
-		
-		if (mouseButton == RIGHT) {
-			mouseRightButtonReleased = true;
-			canvas.closeConnectionAttempt();
-		}
 	}
 
 	// checks if the user released the key minus
