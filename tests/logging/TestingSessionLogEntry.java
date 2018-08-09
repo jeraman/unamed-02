@@ -2,12 +2,12 @@ package logging;
 
 import processing.core.PApplet;
 
-public class TestingLogging extends PApplet {
+public class TestingSessionLogEntry extends PApplet {
 
-	static SessionLog log = new SessionLog("User 1");
+	static SessionLogEntry log = new SessionLogEntry("User 1");
 
 	public static void main(String[] args) {
-		PApplet.main("logging.TestingLogging");
+		PApplet.main("logging.TestingSessionLogEntry");
 	}
 
 	public void settings() {
