@@ -102,9 +102,9 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 	}
 	
 	private void initPcVariables() {
+		this.put("mousePressed", p.mousePressed);
 		this.put("mouseX", (float) p.mouseX / p.width);
 		this.put("mouseY", (float) p.mouseY / p.height);
-		this.put("mousePressed", p.mousePressed);
 		this.put("pcKey", "\""+p.key+"\"");
 		this.put("pcKeyPressed", p.keyPressed);
 		
@@ -116,9 +116,9 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 	}
 	
 	private void updatePcVariables() {
+		this.replace("mousePressed", p.mousePressed);
 		this.replace("mouseX", (float) p.mouseX / p.width);
 		this.replace("mouseY", (float) p.mouseY / p.height);
-		this.replace("mousePressed", p.mousePressed);
 		this.replace("pcKey", "\""+p.key+"\"");
 		this.replace("pcKeyPressed", p.keyPressed);
 	}

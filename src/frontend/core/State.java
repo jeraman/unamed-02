@@ -797,6 +797,7 @@ public class State implements Serializable {
 
 	// updates the coords of the state in the screen in case mouse drags it
 	void update_cordinates_gui() {
+		
 		// if mouse if moving
 		if (p.mousePressed && p.mouseButton == p.LEFT) {
 			// if intersects for the first time
