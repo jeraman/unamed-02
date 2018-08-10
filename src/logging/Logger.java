@@ -28,7 +28,7 @@ public class Logger {
 
 	transient private static final Charset encoding = StandardCharsets.UTF_8;
 
-	protected Logger(String userID) {
+	public Logger(String userID) {
 		this.userID = userID;
 		this.currentLog = new SessionLogEntry(userID);
 		this.loadOldLogs();

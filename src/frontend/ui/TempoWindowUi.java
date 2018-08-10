@@ -78,10 +78,10 @@ public class TempoWindowUi extends AbstractElementUi {
 		return Main.instance().board().getY() + Main.instance().board().getHeight();
 	}
 	
-	public void createUi() {
-		int width = Main.instance().board().getWidth();
-		int x = this.getX();
-		int y = Main.instance().board().getY() + Main.instance().board().getHeight() + 20;
+	public void createUi(int x, int y, int width, int height) {
+//		int width = Main.instance().board().getWidth();
+//		int x = this.getX();
+//		int y = Main.instance().board().getY() + Main.instance().board().getHeight() + 20;
 		
 		g = cp5.addGroup("tempo")
 				.setPosition(250, 100).setWidth(width)
@@ -269,6 +269,6 @@ public class TempoWindowUi extends AbstractElementUi {
 	@Deprecated
 	@Override
 	public void createUI(String id, String label, int localx, int localy, int w, Group g) {
-		this.createUi();
+		this.createUi(localx, localy, w, localy);
 	}
 }

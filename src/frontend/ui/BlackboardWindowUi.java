@@ -19,8 +19,8 @@ public class BlackboardWindowUi extends AbstractElementUi {
 	
 	private transient Group g;
 	
-	private int mywidth;
-	private int myheight;
+	private static int mywidth = 6 * font_size;
+	private static int myheight = 2 * font_size;
 	private int x;
 	private int y;
 	private int numberOfItems;
@@ -30,8 +30,6 @@ public class BlackboardWindowUi extends AbstractElementUi {
 	transient private PApplet p;
 	
 	public BlackboardWindowUi (Blackboard bb, PApplet p) {
-		this.mywidth = 6 * font_size;
-		this.myheight = 2 * font_size;
 		this.numberOfItems = 0;
 		this.bb = bb;
 		this.build(p);

@@ -32,8 +32,19 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 	transient private PApplet p;
 	
 	public Blackboard(PApplet p) {
+		this.setup_expression_loading_bug();
 		this.ui = new BlackboardWindowUi(this, p);
 		this.build(p);
+	}
+	
+	// solves the freezing problem when loading the first expression
+	private void setup_expression_loading_bug() {
+		Expression test = new Expression("0");
+		try {
+			((Expression) test).eval(this);
+		} catch (ScriptException e) {
+			System.out.println("ScriptExpression thrown, unhandled update.");
+		}
 	}
 
 	public int getWidth() {

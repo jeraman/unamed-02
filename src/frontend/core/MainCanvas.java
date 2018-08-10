@@ -14,13 +14,14 @@ import oscP5.OscMessage;
 import java.io.Serializable;
 import java.util.Vector;
 
+import javax.script.ScriptException;
+
 public class MainCanvas implements Serializable { 
 
 	public StateMachine root; // my basic state machine
 	Vector<StateMachine> sm_stack; // a stack of sm used for allowing hierarchy
 	public TempoControl timeCounter;
-	
-	
+	public Blackboard board;
 
 	transient private Main p;
 	transient private ControlP5 cp5;
@@ -33,7 +34,7 @@ public class MainCanvas implements Serializable {
 	public MainCanvas(Main p, ControlP5 cp5) {
 		this.p = p;
 		this.cp5 = cp5;
-
+		board = new Blackboard(p);
 		is_running = false;
 		init_buttons();
 		setup();
@@ -69,14 +70,19 @@ public class MainCanvas implements Serializable {
 		sm_stack.add(root);
 		root.show();
 		close_preview.hide();
-		this.timeCounter.createUi();
+		this.timeCounter.createUi(board.getX(), board.getY()+board.getHeight()+20, board.getWidth(), board.getHeight());
 		this.isTryingToConnect = false;
 	}
-
+	
 
 	// draw method
 	public void draw() {
 
+		// updates global variables in the bb
+		board.update_global_variables();
+		// draws the blackboard
+		board.draw();
+		
 		this.updateTime();
 		// executes the hfsm
 		root.tick();
@@ -92,6 +98,10 @@ public class MainCanvas implements Serializable {
 	
 	public void nextBegin() {
 		sm_stack.lastElement().nextBegin();
+	}
+	
+	public void oscEvent(OscMessage msg) {
+		board.oscEvent(msg);
 	}
 
 	public void noteOn(int channel, int pitch, int velocity) {

@@ -31,9 +31,9 @@ public class TempoControl implements Serializable {
 		this.shouldUpdate = false;
 	}
 	
-	public void createUi() {
+	public void createUi(int x, int y, int width, int height) {
 		tm.loadMetroSample();
-		ui.createUi();
+		ui.createUi(x, y, width, height);
 	}
 	
 	public void removeUi() {

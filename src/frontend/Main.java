@@ -24,12 +24,13 @@ import frontend.core.Expression;
 import frontend.core.MainCanvas;
 import frontend.core.Serializer;
 import frontend.ui.*;
+import logging.Logger;
 
 public class Main extends PApplet {
 
 	public MainCanvas canvas;
-	public Blackboard board;
-	public Serializer serializer;
+	public static Serializer serializer;
+	public static Logger log;
 
 	private static OscP5 oscP5; // my osc variables
 	private static ControlP5 cp5; // my controlP5 variable for gui
@@ -42,6 +43,7 @@ public class Main extends PApplet {
 	public int STATE_CIRCLE_SIZE;
 	public int FONT_SIZE;
 	public PFont FONT;
+	public String USER_ID;
 
 	public boolean debug = false;
 	public boolean keyReleased = false;
@@ -60,19 +62,13 @@ public class Main extends PApplet {
 
 	public void setup() {
 		inst = this;
-		setupUtil();
-		serializer = new Serializer(this);
 		is_loading = true;
 		background(0);
 		smooth();
-		board = new Blackboard(this);
+		setupUtil();
+		log = new Logger(USER_ID);
+		serializer = new Serializer(this);
 		canvas = new MainCanvas(this, cp5);
-
-		setup_expression_loading_bug();
-
-		// testing autodraw
-		// cp5.setAutoDraw(false);
-
 		is_loading = false;
 	}
 
@@ -119,15 +115,6 @@ public class Main extends PApplet {
 		textSize(FONT_SIZE);
 	}
 	
-	// solves the freezing problem when loading the first expression
-	void setup_expression_loading_bug() {
-		Expression test = new Expression("0");
-		try {
-			((Expression) test).eval(board);
-		} catch (ScriptException e) {
-			System.out.println("ScriptExpression thrown, unhandled update.");
-		}
-	}
 	
 	public void draw() {
 		background(0);
@@ -139,11 +126,7 @@ public class Main extends PApplet {
 			text("loading... please, wait.", width / 2, height / 2);
 			return;
 		}
-
-		// updates global variables in the bb
-		board.update_global_variables();
-		// draws the blackboard
-		board.draw();		
+			
 		// draws the scenario
 		canvas.draw();
 
@@ -153,6 +136,12 @@ public class Main extends PApplet {
 			mouseRightButtonReleased = false;
 
 		//serializer.autosave();
+	}
+	
+	public void exit() {
+		System.out.println("app stopped");
+		log.close();
+		super.exit();
 	}
 
 	public void noteOn(int channel, int pitch, int velocity) {
@@ -174,7 +163,7 @@ public class Main extends PApplet {
 			System.out.println(" typetag: " + msg.typetag());
 		}
 
-		board.oscEvent(msg);
+		canvas.oscEvent(msg);
 	}
 
 	void load_config() {
@@ -192,6 +181,7 @@ public class Main extends PApplet {
 			System.out.println("INCOMING OSC PORT: " + params.get(2));
 			System.out.println("STATE CIRCLE SIZE: " + params.get(3));
 			System.out.println("FONT SIZE: " + params.get(4));
+			System.out.println("USER ID: " + params.get(5));
 		}
 
 		SERVER_IP = params.get(0);
@@ -199,6 +189,7 @@ public class Main extends PApplet {
 		OSC_RECV_PORT = Integer.parseInt(params.get(2));
 		STATE_CIRCLE_SIZE = Integer.parseInt(params.get(3));
 		FONT_SIZE = Integer.parseInt(params.get(4));
+		USER_ID = params.get(5);
 	}
 
 	///////////////////////////////////////
@@ -416,7 +407,7 @@ public class Main extends PApplet {
 	}
 
 	public Blackboard board() {
-		return board;
+		return canvas.board;
 	}
 
 	public MainCanvas canvas() {

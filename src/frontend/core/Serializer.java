@@ -203,7 +203,7 @@ public class Serializer {
 			p.canvas.setup();
 		}
 
-		p.board.reset();
+		p.board().reset();
 		p.canvas.show();
 		Main.instance().cp5().setAutoDraw(true);
 		p.is_loading = false;
