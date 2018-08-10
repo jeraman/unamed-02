@@ -50,6 +50,9 @@ public class StateMachine extends Task {
 		
 		if (debug)
 			System.out.println("State_Machine " + this.name + " is inited!");
+		
+		if (Main.log != null) 
+			Main.log.countCreatedSM();
 	}
 	
 	//contructor
@@ -100,6 +103,8 @@ public class StateMachine extends Task {
 		this.states.remove(0);
 		this.add_state(this.begin);
 		this.begin = temp;
+		
+		Main.log.countChangedBegin();
 	}
 	
 	StateMachine clone_state_machine_saved_in_file(String title) {
@@ -679,6 +684,7 @@ public class StateMachine extends Task {
 				smp.open();
 				if (debug)
 					System.out.println("open substate " + s);
+				Main.log.countSmZoomIn();
 			}
 		};
 	}

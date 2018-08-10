@@ -28,6 +28,8 @@ public class ChordAugTask extends AbstractAugTask {
 		this.root = new ComputableIntegerTextfieldUI(ComputableIntegerTextfieldUIWithUserInput.userInputAsDefault,-1);
 		this.chordType = new ScrollableListUI(list, 0);
 		this.musicActioner = new ChordActioner(this.root.getDefaultValueAsInt(), "maj", this.velocity.getDefaultValueAsInt(),(int) this.duration.getValue(), eng);
+		
+		Main.log.countChordAugTask();
 	}
 	
 	@Override

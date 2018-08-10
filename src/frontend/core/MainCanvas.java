@@ -180,6 +180,8 @@ public class MainCanvas implements Serializable {
 				p.mouseX, p.mouseY);
 		// root.add_state(newState);
 		this.add_state(newState);
+		
+		Main.log.countCreatedState();
 	}
 
 	void add_state(State newState) {
@@ -195,6 +197,8 @@ public class MainCanvas implements Serializable {
 			System.out.println("remove a state");
 		// root.remove_state(p.mouseX, p.mouseY);
 		sm_stack.lastElement().remove_state(p.mouseX, p.mouseY);
+		
+		Main.log.countRemovedState();
 	}
 
 	StateMachine get_actual_statemachine() {
@@ -213,6 +217,7 @@ public class MainCanvas implements Serializable {
 		root.start();
 		root.run();
 		timeCounter.start();
+		Main.log.countPlayBtn();
 	}
 
 	// stops the root (not the current exhibited sm)
@@ -223,6 +228,7 @@ public class MainCanvas implements Serializable {
 		Blackboard board = ZenStates.board();
 		board.reset();
 		timeCounter.stop();
+		Main.log.countStopBtn();
 	}
 	
 	private void updateTime() {
@@ -429,6 +435,7 @@ public class MainCanvas implements Serializable {
 			return;
 		stop();
 		save();
+		Main.log.countSaveBtn();
 	}
 
 	public void save() {
@@ -440,6 +447,7 @@ public class MainCanvas implements Serializable {
 		if (ZenStates.is_loading)
 			return;
 		load();
+		Main.log.countLoadBtn();
 	}
 
 	void load() {
@@ -458,6 +466,7 @@ public class MainCanvas implements Serializable {
 				pop_root();
 				if (debug())
 					System.out.println("should close it!!!!");
+				Main.log.countSmZoomOut();
 			}
 		};
 	}

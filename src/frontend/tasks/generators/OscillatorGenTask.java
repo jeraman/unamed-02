@@ -34,7 +34,7 @@ public class OscillatorGenTask extends AbstractGenTask {
 		this.duration = new ComputableIntegerTextfieldUIWithUserInput();
 		this.wavetype = new ScrollableListUI(list, 3);
 
-//		this.addToEngine();
+		Main.log.countOscGenTask();
 	}
 	
 	public void addToEngine() {

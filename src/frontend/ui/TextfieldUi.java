@@ -7,6 +7,7 @@ import controlP5.CallbackListener;
 import controlP5.ControlP5;
 import controlP5.Group;
 import controlP5.Textfield;
+import frontend.Main;
 import frontend.core.Expression;
 
 public class TextfieldUi extends AbstractElementUi {
@@ -65,6 +66,10 @@ public class TextfieldUi extends AbstractElementUi {
 		try {
 			result = this.evaluateAsBoolean(new Expression(this.value));
 			setDefaultColorOnTextfield();
+			
+			if (!this.value.equals(defaultText))
+				Main.log.countBbVarInTransitions();
+				
 		} catch (ScriptException e) {
 			System.out.println("ScrriptExpression-related error thrown, unhandled update.");
 			this.value = this.getDefaultText();

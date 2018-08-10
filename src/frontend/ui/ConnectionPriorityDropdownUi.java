@@ -6,6 +6,7 @@ import controlP5.CallbackEvent;
 import controlP5.CallbackListener;
 import controlP5.DropdownList;
 import controlP5.Group;
+import frontend.Main;
 import frontend.core.State;
 
 /**
@@ -111,6 +112,7 @@ public class ConnectionPriorityDropdownUi extends AbstractElementUi  {
 			public void controlEvent(CallbackEvent theEvent) {
 				int newPriority = 1 + (int) dropdownlist.getValue();
 				parent.update_priority(value, newPriority);
+				Main.log.countChangedPriority();
 			}
 		};
 	}

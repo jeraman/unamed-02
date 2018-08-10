@@ -60,7 +60,7 @@ class SessionLogEntry {
 		this.createdState++;
 	}
 
-	public void countCreatedTask() {
+	private void countCreatedTask() {
 		this.createdTask++;
 	}
 
@@ -88,8 +88,7 @@ class SessionLogEntry {
 	private int bbVarInTaskParameters = 0;
 	private int bbVarInTransitions = 0;
 	private int createdbbVars = 0;
-	private int pulledUserPushedBBVar = 0;
-	private int multiBBVarExpression = 0;
+//	private int pulledUserPushedBBVar = 0;
 
 	public void countBbVarInTaskParameters() {
 		this.bbVarInTaskParameters++;
@@ -99,17 +98,13 @@ class SessionLogEntry {
 		this.bbVarInTransitions++;
 	}
 
-	public void countCreatedbbVars() {
+	private void countCreatedbbVars() {
 		this.createdbbVars++;
 	}
 
-	public void countPulledUserPushedBBVar() {
-		this.pulledUserPushedBBVar++;
-	}
-
-	public void countMultiBBVarExpression() {
-		this.multiBBVarExpression++;
-	}
+//	public void countPulledUserPushedBBVar() {
+//		this.pulledUserPushedBBVar++;
+//	}
 
 	// tasks (explorability metrics)
 	private int oscGenTask = 0;
@@ -130,74 +125,93 @@ class SessionLogEntry {
 
 	public void countOscGenTask() {
 		this.oscGenTask++;
+		this.countCreatedTask();
 	}
 
 	public void countFMGenTask() {
 		this.fMGenTask++;
+		this.countCreatedTask();
 	}
 
 	public void countSamplerGenTask() {
 		this.samplerGenTask++;
+		this.countCreatedTask();
 	}
 
 	public void countDelayFxTask() {
 		this.delayFxTask++;
+		this.countCreatedTask();
 	}
 
 	public void countFlangerFxTask() {
 		this.flangerFxTask++;
+		this.countCreatedTask();
 	}
 
 	public void countAdsrFxTask() {
 		this.adsrFxTask++;
+		this.countCreatedTask();
 	}
 
 	public void countBitchrushFxTask() {
 		this.bitchrushFxTask++;
+		this.countCreatedTask();
 	}
 
 	public void countFilterFxTask() {
 		this.filterFxTask++;
+		this.countCreatedTask();
 	}
 
 	public void countNoteAugTask() {
 		this.noteAugTask++;
+		this.countCreatedTask();
 	}
 
 	public void countIntervalAugTask() {
 		this.intervalAugTask++;
+		this.countCreatedTask();
 	}
 
 	public void countChordAugTask() {
 		this.chordAugTask++;
+		this.countCreatedTask();
 	}
 
 	public void countRandomBBTask() {
 		this.randomBBTask++;
+		this.countCreatedTask();
+		this.countCreatedbbVars();
 	}
 
 	public void countOscBBTask() {
 		this.oscBBTask++;
+		this.countCreatedTask();
+		this.countCreatedbbVars();
 	}
 
 	public void countRampBBTask() {
 		this.rampBBTask++;
+		this.countCreatedTask();
+		this.countCreatedbbVars();
 	}
 
 	public void countDefaultBBTask() {
 		this.defaultBBTask++;
+		this.countCreatedTask();
+		this.countCreatedbbVars();
 	}
 
 	// meta (explorability metrics)
-	private int subSM = 0;
+	private int createdSMTasks = 0;
 	private int smZoomIn = 0;
 	private int smZoomOut = 0;
 	private int loadedExistingSM = 0;
 	private int jsScript = 0;
 	private int oscMessages = 0;
 
-	public void countSubSM() {
-		this.subSM++;
+	public void countCreatedSM() {
+		this.createdSMTasks++;
 	}
 
 	public void countSmZoomIn() {

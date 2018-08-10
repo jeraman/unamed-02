@@ -316,6 +316,8 @@ public class State implements Serializable {
 			this.tasks.removeElement(t);
 			// removes the task in gui
 			this.remove_task_in_accordion_gui(t);
+			Main.log.countRemovedTask();
+			
 		} else if (debug)
 			System.out.println("Unable to remove task " + t.name + " from state " + this.name);
 
@@ -395,6 +397,12 @@ public class State implements Serializable {
 		if (debug)
 			System.out.println("Connection created. If " + this.name + " receives " + expression.toString()
 					+ ", it goes to state " + next_state.name);
+		
+		if (Main.log != null) 
+			Main.log.countCreatedTransition();
+		
+		if (connections.size() == 2)
+			Main.log.countOneToManyTransitions();
 	}
 
 	void update_all_priorities() {
@@ -457,6 +465,8 @@ public class State implements Serializable {
 
 			// updates priorities of connections
 			this.update_all_priorities();
+			
+			Main.log.countRemovedTransition();
 		} else if (debug)
 			System.out.println("Unable to remove connection " + c.toString() + " from state " + this.name);
 	}
@@ -1298,6 +1308,8 @@ public class State implements Serializable {
 			if (debug)
 				System.out.println("state receive " + selected + " as a result");
 
+			
+			
 			switch (selected) {
 
 			case 13: // gen > oscillator

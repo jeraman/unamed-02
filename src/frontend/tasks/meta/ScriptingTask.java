@@ -43,6 +43,8 @@ public class ScriptingTask extends AbstractMetaTask {
 		
 		loadScript();
 		setContext();
+		
+		Main.log.countJsScript();
 	}
 	
 	@Override

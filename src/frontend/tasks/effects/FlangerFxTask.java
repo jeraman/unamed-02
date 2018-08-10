@@ -36,8 +36,8 @@ public class FlangerFxTask extends AbstractFxTask {
 		this.feedbackAmplitude = new ComputableFloatTextfieldUI(0.5f);
 		this.dryAmplitude = new ComputableFloatTextfieldUI(0.5f);
 		this.wetAmplitude = new ComputableFloatTextfieldUI(0.5f);
-
-//		this.addToEngine();
+		
+		Main.log.countFlangerFxTask();
 	}
 	
 	public void addToEngine() {

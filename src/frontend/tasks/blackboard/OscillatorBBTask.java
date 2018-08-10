@@ -23,6 +23,8 @@ public class OscillatorBBTask extends AbstractBBTask {
 		this.frequency = new ComputableFloatTextfieldUI(01);
 		this.amplitude = new ComputableFloatTextfieldUI(1f);
 		this.value = new TextfieldUi("0");
+		
+		Main.log.countOscBBTask();
 	}
 
 	private float getSinValue() {

@@ -18,6 +18,8 @@ public class NoteAugTask extends AbstractAugTask {
 
 		this.pitch = new ComputableIntegerTextfieldUI(60.0f);
 		this.musicActioner = new NoteActioner(this.pitch.getDefaultValueAsInt(), this.velocity.getDefaultValueAsInt(),(int) this.duration.getValue(), eng);
+		
+		Main.log.countNoteAugTask();
 	}
 
 	@Override

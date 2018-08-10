@@ -209,6 +209,7 @@ public class TempoWindowUi extends AbstractElementUi {
 				if (!content.equals("")) {
 					bpm = Integer.parseInt(content);
 					parent.setBpm(bpm);
+					Main.log.countChangedBPM();
 				}
 			}
 		};
@@ -221,6 +222,7 @@ public class TempoWindowUi extends AbstractElementUi {
 				if (!content.equals("")) {
 					noteValue = Integer.parseInt(content);
 					parent.setGlobalNoteValue(noteValue);
+					Main.log.countChangedSignature();
 				}
 			}
 		};
@@ -234,6 +236,7 @@ public class TempoWindowUi extends AbstractElementUi {
 				if (!content.equals("")) {
 					beats = Integer.parseInt(content);
 					parent.setGlobalBeat(beats);
+					Main.log.countChangedSignature();
 				}
 			}
 		};
@@ -252,6 +255,7 @@ public class TempoWindowUi extends AbstractElementUi {
 					isSoundActivated = false;
 					parent.disableSound();
 				}
+				Main.log.countChangedMetro();
 			}
 		};
 	}

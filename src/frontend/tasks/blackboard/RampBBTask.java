@@ -25,6 +25,7 @@ public class RampBBTask extends AbstractBBTask {
 		this.duration = new ComputableFloatTextfieldUI(1f);
 		this.value = new TextfieldUi("0");
 		
+		Main.log.countRampBBTask();
 	}
 	
 	private void updateValue() {

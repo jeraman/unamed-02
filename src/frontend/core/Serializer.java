@@ -160,6 +160,8 @@ public class Serializer {
 				System.out.println("loading any new substatemachine");
 			result.check_if_any_substatemachine_needs_to_be_reloaded_from_file();
 			ois.close();
+			
+			Main.log.countLoadedExistingSM();
 
 		} catch (Exception e) {
 			System.out.println("ERROR loading sub-statemachine: " + file + " [exception: " + e.toString() + "].");

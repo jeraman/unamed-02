@@ -23,6 +23,8 @@ public class DefaultBBTask extends AbstractBBTask {
 	public DefaultBBTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
 		super(p, cp5, taskname, eng);
 		this.value = new TextfieldUi("0");
+		
+		Main.log.countDefaultBBTask();
 	}
 	
 	@Override

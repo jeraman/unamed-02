@@ -22,6 +22,8 @@ public class IntervalAugTask extends AbstractAugTask {
 		this.root = new ComputableIntegerTextfieldUI(ComputableIntegerTextfieldUIWithUserInput.userInputAsDefault,-1);
 		this.interval = new ComputableIntegerTextfieldUI(5);
 		this.musicActioner = new IntervalActioner(this.root.getDefaultValueAsInt(), 5, this.velocity.getDefaultValueAsInt(),(int) this.duration.getValue(), eng);
+		
+		Main.log.countIntervalAugTask();
 	}
 	
 	@Override

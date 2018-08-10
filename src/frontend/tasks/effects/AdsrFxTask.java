@@ -29,8 +29,8 @@ public class AdsrFxTask extends AbstractFxTask {
 		this.relTime = new ComputableFloatTextfieldUI(1f);;
 		this.befAmp = new ComputableFloatTextfieldUI(0f);;
 		this.aftAmp = new ComputableFloatTextfieldUI(0f);;
-		
-//		this.addToEngine();
+
+		Main.log.countAdsrFxTask();
 	}
 	
 	public void addToEngine() {

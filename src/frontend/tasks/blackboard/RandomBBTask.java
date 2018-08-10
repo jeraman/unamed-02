@@ -3,6 +3,7 @@ package frontend.tasks.blackboard;
 
 
 import controlP5.*;
+import frontend.Main;
 import frontend.core.State;
 import frontend.ui.ComputableFloatTextfieldUI;
 import frontend.ui.TextfieldUi;
@@ -20,6 +21,7 @@ public class RandomBBTask extends AbstractBBTask {
 		this.min = new ComputableFloatTextfieldUI(0f);
 		this.max = new ComputableFloatTextfieldUI(1f);
 		this.value = new TextfieldUi("math.random()");
+		Main.log.countRandomBBTask();
 	}
 	
 	private void updateValue() {

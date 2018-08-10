@@ -139,6 +139,8 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 			try {
 				computedValue = this.evaluate();
 				setDefaultColorOnTextfield();
+				Main.log.countBbVarInTaskParameters();
+				
 			} catch (ScriptException | NumberFormatException e) {
 				System.out.println("ScrriptExpression-related error thrown, unhandled update.");
 				computedValue = defaultValue;

@@ -23,7 +23,7 @@ public class DelayFxTask extends AbstractFxTask {
 		this.delayTime = new ComputableFloatTextfieldUI(0.02f);
 		this.amplitudeFactor = new ComputableFloatTextfieldUI(1f);
 
-//		this.addToEngine();
+		Main.log.countDelayFxTask();
 	}
 	
 	public void addToEngine() {

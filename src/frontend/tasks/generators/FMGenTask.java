@@ -35,8 +35,8 @@ public class FMGenTask extends AbstractGenTask {
 		this.modAmp = new ComputableFloatTextfieldUI(75f);
 		this.modWavetype = new ScrollableListUI(OscillatorGenTask.list, 2);
 		this.duration = new ComputableIntegerTextfieldUIWithUserInput();
-		
-//		this.addToEngine();
+
+		Main.log.countFMGenTask();
 	}
 	
 	public void addToEngine() {

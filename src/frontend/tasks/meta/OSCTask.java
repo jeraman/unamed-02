@@ -42,6 +42,8 @@ public class OSCTask extends AbstractMetaTask {
 		this.broadcast = new NetAddress(this.ip.getValue(), this.port.getValueAsInt());
 
 		this.build(p, cp5, eng);
+		
+		Main.log.countOscMessages();
 	}
 	
 	public void build(PApplet p, ControlP5 cp5, SoundEngine eng) {

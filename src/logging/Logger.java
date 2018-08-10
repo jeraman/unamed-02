@@ -19,13 +19,11 @@ import com.google.gson.reflect.TypeToken;
 public class Logger {
 
 	private Vector<SessionLogEntry> allLogs;
-	// private SessionLogEntry[] oldLogs;
 
 	transient private String userID;
 	transient private SessionLogEntry currentLog;
 	transient private File file;
 	transient private static Gson gson = new Gson();
-
 	transient private static final Charset encoding = StandardCharsets.UTF_8;
 
 	public Logger(String userID) {
@@ -40,10 +38,8 @@ public class Logger {
 
 		if (json == "")
 			allLogs = new Vector<SessionLogEntry>();
-		// oldLogs = new SessionLogEntry[1];
 		else
 			allLogs = gson.fromJson(json, getOldLogType());
-		// oldLogs = gson.fromJson(json, SessionLogEntry[].class);
 	}
 
 	private Type getOldLogType() {
@@ -80,17 +76,9 @@ public class Logger {
 	}
 
 	private void saveCurrentLogWithOldLogs() {
-		// copyingArray();
 		allLogs.add(currentLog);
 		writeJsonToFile();
 	}
-
-	// private void copyingArray() {
-	// SessionLogEntry[] updated = new SessionLogEntry[oldLogs.length+1];
-	// java.lang.System.arraycopy(oldLogs, 0, updated, 0, oldLogs.length);;
-	// this.oldLogs = updated;
-	// oldLogs[oldLogs.length-1] = currentLog;
-	// }
 
 	private void writeJsonToFile() {
 		try {
@@ -109,4 +97,168 @@ public class Logger {
 		return json;
 	}
 
+	
+	public void addPlayingTime(int newValue) {
+		currentLog.addPlayingTime(newValue);
+	}
+	
+	public void addProgrammingTime(int newValue) {
+		currentLog.addProgrammingTime(newValue);
+	}
+	
+	public void countCreatedState() {
+		currentLog.countCreatedState();
+	}
+	
+	public void countCreatedTransition() {
+		currentLog.countStopBtn();
+	}
+	
+	public void countRemovedState() {
+		currentLog.countStopBtn();
+	}
+	
+	public void countRemovedTask() {
+		currentLog.countStopBtn();
+	}
+	
+	public void countRemovedTransition() {
+		currentLog.countStopBtn();
+	}
+	
+	public void countChangedBegin() {
+		currentLog.countChangedBegin();
+	}
+	
+	public void countBbVarInTaskParameters() {
+		currentLog.countBbVarInTaskParameters();
+	}
+
+	public void countBbVarInTransitions() {
+		currentLog.countBbVarInTransitions();
+	}
+
+//	public void countPulledUserPushedBBVar() {
+//		currentLog.countPulledUserPushedBBVar();
+//	}
+
+	public void countOscGenTask() {
+		currentLog.countOscGenTask();
+	}
+
+	public void countFMGenTask() {
+		currentLog.countFMGenTask();
+	}
+
+	public void countSamplerGenTask() {
+		currentLog.countSamplerGenTask();
+	}
+
+	public void countDelayFxTask() {
+		currentLog.countDelayFxTask();
+	}
+
+	public void countFlangerFxTask() {
+		currentLog.countFlangerFxTask();
+	}
+
+	public void countAdsrFxTask() {
+		currentLog.countAdsrFxTask();
+	}
+
+	public void countBitchrushFxTask() {
+		currentLog.countBitchrushFxTask();
+	}
+
+	public void countFilterFxTask() {
+		currentLog.countFilterFxTask();
+	}
+
+	public void countNoteAugTask() {
+		currentLog.countNoteAugTask();
+	}
+
+	public void countIntervalAugTask() {
+		currentLog.countIntervalAugTask();
+	}
+
+	public void countChordAugTask() {
+		currentLog.countChordAugTask();
+	}
+
+	public void countRandomBBTask() {
+		currentLog.countRandomBBTask();
+	}
+
+	public void countOscBBTask() {
+		currentLog.countOscBBTask();
+	}
+
+	public void countRampBBTask() {
+		currentLog.countRampBBTask();
+	}
+
+	public void countDefaultBBTask() {
+		currentLog.countDefaultBBTask();
+	}
+	
+	public void countCreatedSM() {
+		currentLog.countCreatedSM();
+	}
+
+	public void countSmZoomIn() {
+		currentLog.countSmZoomIn();
+	}
+
+	public void countSmZoomOut() {
+		currentLog.countSmZoomOut();
+	}
+
+	public void countLoadedExistingSM() {
+		currentLog.countLoadedExistingSM();
+	}
+
+	public void countJsScript() {
+		currentLog.countJsScript();
+	}
+
+	public void countOscMessages() {
+		currentLog.countOscMessages();
+	}
+	
+	public void countOneToManyTransitions() {
+		currentLog.countOneToManyTransitions();
+	}
+
+	public void countChangedPriority() {
+		currentLog.countChangedPriority();
+	}
+	
+	public void countChangedSignature() {
+		currentLog.countChangedSignature();
+	}
+
+	public void countChangedBPM() {
+		currentLog.countChangedBPM();
+	}
+
+	public void countChangedMetro() {
+		currentLog.countChangedMetro();
+	}
+	
+	public void countStopBtn() {
+		currentLog.countStopBtn();
+	}
+
+	public void countPlayBtn() {
+		currentLog.countPlayBtn();
+	}
+
+	public void countLoadBtn() {
+		currentLog.countLoadBtn();
+	}
+	
+	public void countSaveBtn() {
+		currentLog.countSaveBtn();
+	}
 }

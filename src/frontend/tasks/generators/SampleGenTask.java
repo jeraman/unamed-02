@@ -32,7 +32,7 @@ public class SampleGenTask extends AbstractGenTask {
 		this.duration = new ComputableIntegerTextfieldUIWithUserInput();
 		this.loopStatus = new ToggleUi();
 		
-//		this.addToEngine();
+		Main.log.countSamplerGenTask();
 	}
 	
 	public void addToEngine() {
