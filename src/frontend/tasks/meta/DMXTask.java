@@ -4,6 +4,7 @@ package frontend.tasks.meta;
 
 import controlP5.*;
 import frontend.Main;
+import frontend.ZenStates;
 import frontend.core.Expression;
 import frontend.core.State;
 import frontend.tasks.Task;
@@ -33,7 +34,7 @@ public class DMXTask extends AbstractMetaTask {
 	}
 	
 	protected boolean debug() {
-		return Main.instance().debug;
+		return ZenStates.debug;
 	}
 
 	private void processChannelChange() {

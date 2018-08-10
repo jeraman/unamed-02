@@ -4,6 +4,7 @@ import javax.script.ScriptException;
 
 import controlP5.*;
 import frontend.Main;
+import frontend.ZenStates;
 import frontend.core.Blackboard;
 import frontend.core.Expression;
 import frontend.core.State;
@@ -35,7 +36,7 @@ public class DefaultBBTask extends AbstractBBTask {
 	}
 	
 	public void updateVariable() {
-		Blackboard board = Main.instance().board();
+		Blackboard board = ZenStates.board();
 		board.put(variableName.getValue(), value.evaluate());
 	}
 	

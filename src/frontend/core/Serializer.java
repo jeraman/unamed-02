@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import frontend.Main;
+import frontend.ZenStates;
 import soundengine.util.Util;
 
 /******************************************************
@@ -67,7 +68,7 @@ public class Serializer {
 	}
 
 	private boolean debug() {
-		return Main.instance().debug;
+		return ZenStates.debug;
 	}
 
 	void setup_autosave() {
@@ -82,7 +83,7 @@ public class Serializer {
 		int time_elapsed = p.abs(p.minute() - timestamp);
 
 		if (time_elapsed > autosavetime) {
-			_saveAs(autosave_file, p.canvas.root, p.canvas.timeCounter, false);
+			_saveAs(autosave_file, ZenStates.canvas.root, ZenStates.canvas.timeCounter, false);
 			timestamp = p.minute();
 			if (debug())
 				System.out.println("saving!");
@@ -96,14 +97,14 @@ public class Serializer {
 
 	public void _saveAs(File file) {
 		// _saveAs(file, p.canvas.root, true);
-		_saveAs(file, p.canvas.root, p.canvas.timeCounter, true);
+		_saveAs(file, ZenStates.canvas.root, ZenStates.canvas.timeCounter, true);
 		update_last_saved(file);
 	}
 
 	// public void _saveAs (String filename, StateMachine sm) {
 	public void _saveAs(String filename, StateMachine sm) {
 		File f = new File(p.sketchPath() + "/data/patches/" + filename);
-		_saveAs(f, sm, p.canvas.timeCounter, true);
+		_saveAs(f, sm, ZenStates.canvas.timeCounter, true);
 	}
 
 	// public void _saveAs(File file, StateMachine sm, boolean should_rename) {
@@ -154,7 +155,7 @@ public class Serializer {
 
 			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
 			result = (StateMachine) ois.readObject();
-			result.build(p, Main.instance().cp5());
+			result.build(p, ZenStates.cp5);
 			if (debug())
 				System.out.println("loading any new substatemachine");
 			result.check_if_any_substatemachine_needs_to_be_reloaded_from_file();
@@ -177,18 +178,18 @@ public class Serializer {
 			return;
 
 		try {
-			p.is_loading = true;
+			ZenStates.is_loading = true;
 			Util.delay(100);
-			p.canvas.hide();
-			Main.instance().cp5().setAutoDraw(false);
+			ZenStates.canvas.hide();
+			ZenStates.cp5.setAutoDraw(false);
 
-			p.canvas.clear();
+			ZenStates.canvas.clear();
 			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
 
-			p.canvas.setup((StateMachine) ois.readObject(), (TempoControl) ois.readObject());
+			ZenStates.canvas.setup((StateMachine) ois.readObject(), (TempoControl) ois.readObject());
 
 			// p.print("loading a new substatemachine");
-			p.canvas.root.check_if_any_substatemachine_needs_to_be_reloaded_from_file();
+			ZenStates.canvas.root.check_if_any_substatemachine_needs_to_be_reloaded_from_file();
 
 			// lastSaveFile = file;
 			update_last_saved(file);
@@ -200,13 +201,13 @@ public class Serializer {
 			e.printStackTrace();
 			// p.board = new Blackboard(p);
 			// p.canvas = new MainCanvas(p, p.cp5);
-			p.canvas.setup();
+			ZenStates.canvas.setup();
 		}
 
-		p.board().reset();
-		p.canvas.show();
-		Main.instance().cp5().setAutoDraw(true);
-		p.is_loading = false;
+		ZenStates.canvas.board.reset();
+		ZenStates.canvas.show();
+		ZenStates.cp5.setAutoDraw(true);
+		ZenStates.is_loading = false;
 		if (debug())
 			System.out.println("done loading!");
 	}

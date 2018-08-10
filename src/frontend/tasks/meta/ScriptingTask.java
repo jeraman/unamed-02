@@ -13,6 +13,7 @@ import javax.script.ScriptException;
 import controlP5.ControlP5;
 import controlP5.Group;
 import frontend.Main;
+import frontend.ZenStates;
 import frontend.core.Blackboard;
 import frontend.core.State;
 import frontend.tasks.Task;
@@ -82,7 +83,7 @@ public class ScriptingTask extends AbstractMetaTask {
 	}
 
 	void updateContext() {
-		Blackboard b = ((Main) p).board();
+		Blackboard b = ZenStates.board();
 		List<String> ordered = new ArrayList<String>(b.keySet());
 
 		for (String val : ordered) 

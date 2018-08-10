@@ -2,6 +2,7 @@ package frontend.tasks.blackboard;
 
 import controlP5.ControlP5;
 import frontend.Main;
+import frontend.ZenStates;
 import frontend.core.Blackboard;
 import frontend.core.Status;
 import frontend.tasks.Task;
@@ -34,7 +35,7 @@ abstract class AbstractBBTask extends Task {
 	protected abstract boolean isFirstCycle();
 	
 	protected boolean debug() {
-		return Main.instance().debug;
+		return ZenStates.debug;
 	}
 	
 	
@@ -90,7 +91,7 @@ abstract class AbstractBBTask extends Task {
 	}
 
 	public void updateVariable() {
-		Blackboard board = Main.instance().board();
+		Blackboard board = ZenStates.board();
 		board.put(variableName.getValue(), value.evaluateAsFloat());
 	}
 	

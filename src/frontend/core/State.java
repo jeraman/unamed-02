@@ -7,6 +7,7 @@ import soundengine.SoundEngine;
 import soundengine.util.Util;
 import controlP5.*;
 import frontend.Main;
+import frontend.ZenStates;
 import frontend.tasks.Task;
 import frontend.tasks.augmenters.ChordAugTask;
 import frontend.tasks.augmenters.IntervalAugTask;
@@ -71,7 +72,7 @@ public class State implements Serializable {
 	public State(PApplet p, ControlP5 cp5, String name, SoundEngine eng) {
 		this.p = p;
 		this.cp5 = cp5;
-		this.size = ((Main) p).get_state_circle_size();
+		this.size = ZenStates.STATE_CIRCLE_SIZE;
 		this.name = name.toUpperCase();
 		this.status = Status.INACTIVE;
 		this.tasks = new Vector<Task>();
@@ -79,7 +80,7 @@ public class State implements Serializable {
 		this.x = (int) p.random(10, p.width - size);
 		this.y = (int) p.random(10, p.height - size);
 		this.movement_status = MovementStatus.FREE;
-		this.debug = Main.instance().debug();
+		this.debug = ZenStates.debug;
 		this.id = UUID.randomUUID().toString();
 		this.eng = eng;
 
@@ -895,8 +896,8 @@ public class State implements Serializable {
 		this.pie.set_position(x, y);
 		this.pie.set_inner_circle_diam((float) size);
 
-		p.textFont(Main.instance().get_font());
-		p.textSize(Main.instance().get_font_size());
+		p.textFont(ZenStates.FONT);
+		p.textSize(ZenStates.FONT_SIZE);
 		init_state_name_gui();
 	}
 
@@ -1020,7 +1021,7 @@ public class State implements Serializable {
 		// accordion = cp5.addAccordion("acc_"+this.name)
 		accordion = cp5.addAccordion(this.id + "/acc")
 				// .setWidth(150)
-				.setWidth(10 * ((Main) p).FONT_SIZE).setVisible(true)
+				.setWidth(10 * ZenStates.FONT_SIZE).setVisible(true)
 		// .hide()
 		;
 	}
@@ -1182,7 +1183,7 @@ public class State implements Serializable {
 	}
 
 	boolean verify_if_user_released_mouse_while_temporary_connecting() {
-		return (hasTemporaryConnectionOnGui() && Main.instance().mouseRightButtonReleased);
+		return (hasTemporaryConnectionOnGui() && ZenStates.mouseRightButtonReleased);
 	}
 
 	void draw_temp_connection() {
@@ -1468,7 +1469,7 @@ public class State implements Serializable {
 		for (Connection c : connections)
 			c.remove_gui_items();
 
-		Main.instance().canvas().root.remove_all_gui_connections_to_a_state(this);
+		ZenStates.canvas.root.remove_all_gui_connections_to_a_state(this);
 	}
 
 	void remove_all_gui_connections_to_a_state(State dest) {
@@ -1499,7 +1500,7 @@ public class State implements Serializable {
 		for (Connection c : connections)
 			c.init_gui_items();
 
-		Main.instance().canvas().root.init_all_gui_connections_to_a_state(this);
+		ZenStates.canvas.root.init_all_gui_connections_to_a_state(this);
 	}
 
 	void init_all_gui_connections_to_a_state(State dest) {

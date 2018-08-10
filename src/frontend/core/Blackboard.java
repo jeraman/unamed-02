@@ -9,6 +9,7 @@ import soundengine.util.Util;
 import java.util.regex.*;
 import javax.script.ScriptException;
 import frontend.Main;
+import frontend.ZenStates;
 import frontend.ui.AbstractElementUi;
 import frontend.ui.BlackboardWindowUi;
 
@@ -94,8 +95,10 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 
 	private void init_global_variables() {
 		this.initPcVariables();
-		this.initKeyboardVariables();
-		this.initTempoVariables();
+//		if (!ZenStates.is_loading) {
+			this.initKeyboardVariables();
+			this.initTempoVariables();
+//		}
 	}
 
 	public void update_global_variables() {
@@ -135,13 +138,13 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 	}
 	
 	private void initTempoVariables() {
-		this.put("beat", Main.instance().getBeat());
-		this.put("bar", Main.instance().getBar());
-		this.put("noteCount", Main.instance().getNoteCount());
-		this.put("bpm", Main.instance().getBPM());
-		this.put("time", Main.instance().getTime());
-		this.put("seconds", Main.instance().getSeconds());
-		this.put("minutes", Main.instance().getMinutes());
+		this.put("beat", ZenStates.getBeat());
+		this.put("bar", ZenStates.getBar());
+		this.put("noteCount", ZenStates.getNoteCount());
+		this.put("bpm", ZenStates.getBPM());
+		this.put("time", ZenStates.getTime());
+		this.put("seconds", ZenStates.getSeconds());
+		this.put("minutes", ZenStates.getMinutes());
 		
 		this.ui.addToBlacklist("bpm");
 		this.ui.addToBlacklist("seconds");
@@ -149,26 +152,26 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 	}
 	
 	private void updateTempoVariables() {
-		this.replace("beat", Main.instance().getBeat());
-		this.replace("bar", Main.instance().getBar());
-		this.replace("bpm", Main.instance().getBPM());
-		this.replace("noteCount", Main.instance().getNoteCount());
-		this.replace("time", Main.instance().getTime());
-		this.replace("seconds", Main.instance().getSeconds());
-		this.replace("minutes", Main.instance().getMinutes());
+		this.replace("beat", ZenStates.getBeat());
+		this.replace("bar", ZenStates.getBar());
+		this.replace("bpm", ZenStates.getBPM());
+		this.replace("noteCount", ZenStates.getNoteCount());
+		this.replace("time", ZenStates.getTime());
+		this.replace("seconds", ZenStates.getSeconds());
+		this.replace("minutes", ZenStates.getMinutes());
 	}
 	
 	private void initKeyboardVariables() {
-		String playing = Main.instance().whatUserIsPlaying();
+		String playing = ZenStates.whatUserIsPlaying();
 		this.put("playing", playing);
 		String[] details = processPlaying(playing);
 		this.put("note", details[0]);
 		this.put("interval", details[1]);
 		this.put("chord", details[2]);
-		this.put("key", Main.instance().getLastPlayedNote());
-		this.put("keyPressed", Main.instance().thereIsKeyDown());
-		this.put("keyReleased", Main.instance().thereIsKeyReleased());
-		this.put("numKeyPresses", Main.instance().numberOfKeyPressed());
+		this.put("key", ZenStates.getLastPlayedNote());
+		this.put("keyPressed", ZenStates.thereIsKeyDown());
+		this.put("keyReleased", ZenStates.thereIsKeyReleased());
+		this.put("numKeyPresses", ZenStates.numberOfKeyPressed());
 		initKeyboardCC();
 		
 		this.ui.addToBlacklist("note");
@@ -186,17 +189,17 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 	}
 	
 	private void updateKeyboardVariables() {
-		String playing = Main.instance().whatUserIsPlaying();
+		String playing = ZenStates.whatUserIsPlaying();
 		this.replace("playing", playing);
 		String[] details = processPlaying(playing);
 		this.replace("note", details[0]);
 		this.replace("interval", details[1]);
 		this.replace("chord", details[2]);
-		String lastNote =  "\"" + Main.instance().getLastPlayedNote() + "\"";
+		String lastNote =  "\"" + ZenStates.getLastPlayedNote() + "\"";
 		this.replace("key", lastNote);
-		this.replace("keyPressed", Main.instance().thereIsKeyDown());
-		this.replace("keyReleased", Main.instance().thereIsKeyReleased());
-		this.replace("numKeyPresses", Main.instance().numberOfKeyPressed());
+		this.replace("keyPressed", ZenStates.thereIsKeyDown());
+		this.replace("keyReleased", ZenStates.thereIsKeyReleased());
+		this.replace("numKeyPresses", ZenStates.numberOfKeyPressed());
 		updateKeyboardCC();
 	}
 	

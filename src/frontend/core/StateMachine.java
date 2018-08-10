@@ -10,6 +10,7 @@ import java.util.Vector;
 
 import controlP5.*;
 import frontend.Main;
+import frontend.ZenStates;
 import frontend.tasks.Task;
 import frontend.ui.visuals.StateMachinePreview;
 
@@ -35,11 +36,11 @@ public class StateMachine extends Task {
 
 	//contructor
 	public StateMachine (PApplet p, ControlP5 cp5, String name) {
-		super (p, cp5, name, new SoundEngine(Main.minim()));
+		super (p, cp5, name, new SoundEngine(ZenStates.minim));
 		title   = name;
 		begin   = new State(p, cp5, State.generateRandomName(), this.eng);
 		states  = new Vector<State>();
-		debug = Main.instance().debug();
+		debug = ZenStates.debug;
 		
 		brandnew = true;
 		actual = begin;
@@ -81,7 +82,7 @@ public class StateMachine extends Task {
 	public void build (PApplet p, ControlP5 cp5) {
 		this.p = p;
 		this.cp5 = cp5;
-		this.eng = new SoundEngine(Main.minim());
+		this.eng = new SoundEngine(ZenStates.minim);
 
 		this.begin.build(p, cp5, eng);
 
@@ -398,7 +399,7 @@ public class StateMachine extends Task {
 			this.states.removeElement(s);
 			
 			if (s == actual) {
-				((Main)p).canvas.button_stop();
+				ZenStates.canvas.button_stop();
 				if (debug)
 					System.out.println("You're removing the state that is currently executing. Halting the state machine.");
 			}
@@ -633,13 +634,13 @@ public class StateMachine extends Task {
 						if (brandnew) {
 							
 							//p.print("we jsut loaded a sm from file! name: " + loaded.title);
-							((Main)p).is_loading = true;
+							ZenStates.is_loading = true;
 							cp5.setAutoDraw(false);
 							//load newtile from file
 							StateMachine loaded = ((Main)p).serializer.loadSubStateMachine(newtitle);
 							//next step is to copy all parameters of loaded to this state machine
 							mirror(loaded);
-							((Main)p).is_loading = false;
+							ZenStates.is_loading = false;
 							cp5.setAutoDraw(true);
 						
 						//if the current machine isn't brandnew

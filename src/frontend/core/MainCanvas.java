@@ -8,6 +8,7 @@ package frontend.core;
 
 import controlP5.*;
 import frontend.Main;
+import frontend.ZenStates;
 import netP5.NetAddress;
 import oscP5.OscMessage;
 
@@ -219,7 +220,7 @@ public class MainCanvas implements Serializable {
 		is_running = false;
 		stop_server();
 		root.stop();
-		Blackboard board = Main.instance().board();
+		Blackboard board = ZenStates.board();
 		board.reset();
 		timeCounter.stop();
 	}
@@ -231,8 +232,8 @@ public class MainCanvas implements Serializable {
 	// sends a osc message to stop all media in the server
 	void stop_server() {
 		OscMessage om = new OscMessage("/stop");
-		NetAddress na = new NetAddress(p.SERVER_IP, p.SERVER_PORT);
-		p.oscP5().send(om, na);
+		NetAddress na = new NetAddress(ZenStates.SERVER_IP, ZenStates.SERVER_PORT);
+		ZenStates.oscP5.send(om, na);
 		if (debug())
 			System.out.println("stopping every media in the server");
 	}
@@ -374,7 +375,7 @@ public class MainCanvas implements Serializable {
 	}
 
 	void init_buttons() {
-		int w = 4 * p.FONT_SIZE;
+		int w = 4 * ZenStates.FONT_SIZE;
 		int h = w;
 		int offset = 5;
 		// int x = 20; //p.width/2;
@@ -410,44 +411,44 @@ public class MainCanvas implements Serializable {
 
 	// callback functions
 	public void button_play() {
-		if (p.is_loading)
+		if (ZenStates.is_loading)
 			return;
 		this.start();
 		// p.canvas.run();
 	}
 
 	public void button_stop() {
-		if (p.is_loading)
+		if (ZenStates.is_loading)
 			return;
 		stop();
 		// p.canvas.stop();
 	}
 
 	public void button_save() {
-		if (p.is_loading)
+		if (ZenStates.is_loading)
 			return;
 		stop();
 		save();
 	}
 
 	public void save() {
-		p.serializer.save();
+		Main.serializer.save();
 		root.save();
 	}
 
 	public void button_load() {
-		if (p.is_loading)
+		if (ZenStates.is_loading)
 			return;
 		load();
 	}
 
 	void load() {
 		stop();
-		p.serializer.load();
+		Main.serializer.load();
 	}
 	
 	private boolean debug() {
-		return Main.instance().debug;
+		return ZenStates.debug;
 	}
 
 	CallbackListener generate_callback_close() {

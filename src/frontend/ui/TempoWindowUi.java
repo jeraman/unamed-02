@@ -7,6 +7,7 @@ import controlP5.Numberbox;
 import controlP5.Textlabel;
 import controlP5.Toggle;
 import frontend.Main;
+import frontend.ZenStates;
 import soundengine.time.TimeManager;
 
 
@@ -71,11 +72,11 @@ public class TempoWindowUi extends AbstractElementUi {
 	}
 	
 	public int getX() {
-		return Main.instance().board().getX()-30;
+		return ZenStates.board().getX()-30;
 	}
 	
 	public int getY() {
-		return Main.instance().board().getY() + Main.instance().board().getHeight();
+		return ZenStates.board().getY() + ZenStates.board().getHeight();
 	}
 	
 	public void createUi(int x, int y, int width, int height) {

@@ -6,6 +6,7 @@ import java.util.List;
 import controlP5.ControlP5;
 import controlP5.Group;
 import frontend.Main;
+import frontend.ZenStates;
 import frontend.core.State;
 import frontend.core.Status;
 import frontend.tasks.Task;
@@ -95,7 +96,7 @@ public abstract class AbstractAugTask extends Task {
 	}
 
 	private int computeDurationBasedOnBPM() {
-		return (int)((60f/Main.instance().canvas.getBPM())*1000);
+		return (int)((60f/ZenStates.getBPM())*1000);
 	}
 
 	protected void setModeRepeat() {
@@ -164,7 +165,7 @@ public abstract class AbstractAugTask extends Task {
 	}
 	
 	protected boolean debug() {
-		return Main.instance().debug;
+		return ZenStates.debug;
 	}
 	
 	protected void processModes() {

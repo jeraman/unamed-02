@@ -1,6 +1,7 @@
 package frontend.ui.visuals;
 
 import frontend.Main;
+import frontend.ZenStates;
 import frontend.core.StateMachine;
 
 /************************************************
@@ -79,7 +80,7 @@ public class CircleEffectUI {
 			if (time_elapsed > duration) { //if reached the end, stops counter
 				circle_status = CircleStatus.OPEN;
 				size = 1;
-				p.canvas.push_root(parent);
+				ZenStates.canvas.push_root(parent);
 			} else  //otherwise, keep updating size
 				size = (time_elapsed*1f/duration)*2*p.width;
 		}

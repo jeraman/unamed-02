@@ -2,6 +2,7 @@ package frontend.ui.visuals;
 
 
 import frontend.Main;
+import frontend.ZenStates;
 
 /******************************************************************************
  ******************************************************************************
@@ -50,7 +51,7 @@ class PieMenu {
     this.x                = (int)p.width/2;
     this.y                = (int)p.height/2;
     //this.set_diam(200);
-    this.set_diam(((Main)p).get_state_circle_size()*4);
+    this.set_diam(ZenStates.STATE_CIRCLE_SIZE*4);
 
     this.is_showing       = false;
     this.up               = false;

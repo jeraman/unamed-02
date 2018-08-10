@@ -5,6 +5,7 @@ import processing.core.PApplet;
 import soundengine.SoundEngine;
 import controlP5.*;
 import frontend.Main;
+import frontend.ZenStates;
 import frontend.core.Blackboard;
 import frontend.core.Expression;
 import frontend.core.State;
@@ -63,7 +64,7 @@ public abstract class Task implements Serializable {
 	}
 	
 	protected boolean debug() {
-		return Main.instance().debug;
+		return ZenStates.debug;
 	}
 	
 	public void build(PApplet p, ControlP5 cp5, SoundEngine eng) {
@@ -194,7 +195,7 @@ public abstract class Task implements Serializable {
 	}
 
 	private void setup_ui_variables() {
-		font_size = (int) (((Main) p).get_font_size());
+		font_size = (int) (ZenStates.FONT_SIZE);
 		localoffset = (int) (4 * font_size);
 		localx = 10;
 		localy = (int) (font_size);

@@ -1,6 +1,7 @@
 package frontend.ui.visuals;
 import controlP5.Canvas;
 import frontend.Main;
+import frontend.ZenStates;
 import frontend.core.StateMachine;
 import processing.core.PGraphics;
 
@@ -48,7 +49,7 @@ public class StateMachinePreview extends Canvas {
 	public void draw(PGraphics pg) {
 		p.pushMatrix();
 		//for 20
-		int fontsize = (int) ((Main)p).get_font_size();
+		int fontsize = ZenStates.FONT_SIZE;
 		//int transx = (int)(4.5*fontsize);
 		int transx = (int)(4.25*fontsize);
 		int transy = (int)(3*fontsize);

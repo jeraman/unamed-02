@@ -4,6 +4,7 @@ import oscP5.*;
 import netP5.*;
 import controlP5.*;
 import frontend.Main;
+import frontend.ZenStates;
 import frontend.core.Expression;
 import frontend.core.State;
 import frontend.core.Status;
@@ -46,7 +47,7 @@ public class OSCTask extends AbstractMetaTask {
 	public void build(PApplet p, ControlP5 cp5, SoundEngine eng) {
 		super.build(p, cp5, eng);
 		this.broadcast = new NetAddress(ip.getValue(), port.getValueAsInt());
-		this.oscP5 = Main.instance().oscP5();
+		this.oscP5 = ZenStates.oscP5;
 	}
 	
 	private void udpateBroadcast() {

@@ -8,6 +8,7 @@ import controlP5.ControlP5;
 import controlP5.ControlP5Constants;
 import controlP5.Group;
 import frontend.Main;
+import frontend.ZenStates;
 import frontend.core.Blackboard;
 import frontend.core.Expression;
 import processing.core.PApplet;
@@ -51,7 +52,7 @@ public abstract class AbstractElementUi implements Serializable {
 		errorColor = ControlP5Constants.THEME_RED.getBackground();
 		defaultHeight = 15;
 		
-		font_size = Main.instance().get_font_size();
+		font_size = ZenStates.FONT_SIZE;
 	}
 	
 	public boolean update() {
@@ -82,7 +83,7 @@ public abstract class AbstractElementUi implements Serializable {
 	// function that tries to evaluates the value (if necessary) and returns the real value
 	public Object evaluate(Object o) throws ScriptException {
 		Object ret = o;
-		Blackboard board = Main.instance().board();
+		Blackboard board = ZenStates.board();
 
 		// If added an expression, process it and save result in blackboard.
 		if (o instanceof Expression)
@@ -92,7 +93,7 @@ public abstract class AbstractElementUi implements Serializable {
 	}
 	
 	protected boolean debug() {
-		return Main.instance().debug;
+		return ZenStates.debug;
 	}
 	
 	//public abstract Object getValue();
