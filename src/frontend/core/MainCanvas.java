@@ -19,6 +19,8 @@ public class MainCanvas implements Serializable {
 	public StateMachine root; // my basic state machine
 	Vector<StateMachine> sm_stack; // a stack of sm used for allowing hierarchy
 	public TempoControl timeCounter;
+	
+	
 
 	transient private Main p;
 	transient private ControlP5 cp5;

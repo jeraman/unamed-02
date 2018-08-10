@@ -17,9 +17,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 public class Logger {
-	
-	private Vector<SessionLogEntry> oldLogs;
-//	private SessionLogEntry[] oldLogs;
+
+	private Vector<SessionLogEntry> allLogs;
+	// private SessionLogEntry[] oldLogs;
 
 	transient private String userID;
 	transient private SessionLogEntry currentLog;
@@ -27,40 +27,39 @@ public class Logger {
 	transient private static Gson gson = new Gson();
 
 	transient private static final Charset encoding = StandardCharsets.UTF_8;
-	
 
 	protected Logger(String userID) {
 		this.userID = userID;
 		this.currentLog = new SessionLogEntry(userID);
 		this.loadOldLogs();
 	}
-	
-	
+
 	private void loadOldLogs() {
 		String filename = "./data/logs/" + userID + ".json";
 		String json = readJson(filename);
-		
+
 		if (json == "")
-			oldLogs = new Vector<SessionLogEntry>();
-			//oldLogs = new SessionLogEntry[1]; 
+			allLogs = new Vector<SessionLogEntry>();
+		// oldLogs = new SessionLogEntry[1];
 		else
-			oldLogs = gson.fromJson(json, getOldLogType()); 
-//			oldLogs = gson.fromJson(json, SessionLogEntry[].class); 
+			allLogs = gson.fromJson(json, getOldLogType());
+		// oldLogs = gson.fromJson(json, SessionLogEntry[].class);
 	}
-	
-	private Type getOldLogType () {
-		return new TypeToken<Vector<SessionLogEntry>>(){}.getType();
+
+	private Type getOldLogType() {
+		return new TypeToken<Vector<SessionLogEntry>>() {
+		}.getType();
 	}
-	
-	private String readJson(String filename)  {
+
+	private String readJson(String filename) {
 		String result = "";
-		this.file = new File(filename);		
+		this.file = new File(filename);
 		if (this.file.exists())
 			result = readTextFromFile(filename);
 		return result;
 	}
-	
-	private String readTextFromFile(String path)  {
+
+	private String readTextFromFile(String path) {
 		byte[] encoded = null;
 		try {
 			encoded = Files.readAllBytes(Paths.get(path));
@@ -69,30 +68,30 @@ public class Logger {
 		}
 		return new String(encoded, encoding);
 	}
-	
+
 	public void close() {
 		currentLog.close();
 		saveCurrentLogWithOldLogs();
 	}
-	
+
 	public void close(Exception e) {
 		currentLog.close(e);
 		saveCurrentLogWithOldLogs();
 	}
 
 	private void saveCurrentLogWithOldLogs() {
-//		copyingArray();
-		oldLogs.add(currentLog);
+		// copyingArray();
+		allLogs.add(currentLog);
 		writeJsonToFile();
 	}
 
-//	private void copyingArray() {
-//		SessionLogEntry[] updated = new SessionLogEntry[oldLogs.length+1];
-//		java.lang.System.arraycopy(oldLogs, 0, updated, 0, oldLogs.length);;
-//		this.oldLogs = updated;
-//		oldLogs[oldLogs.length-1] = currentLog;
-//	}
-	
+	// private void copyingArray() {
+	// SessionLogEntry[] updated = new SessionLogEntry[oldLogs.length+1];
+	// java.lang.System.arraycopy(oldLogs, 0, updated, 0, oldLogs.length);;
+	// this.oldLogs = updated;
+	// oldLogs[oldLogs.length-1] = currentLog;
+	// }
+
 	private void writeJsonToFile() {
 		try {
 			PrintWriter printer;
@@ -103,11 +102,11 @@ public class Logger {
 			e1.printStackTrace();
 		}
 	}
-	
+
 	private String toJson() {
-		String json = gson.toJson(oldLogs);
+		String json = gson.toJson(allLogs);
 		System.out.println(json);
 		return json;
 	}
-	
+
 }

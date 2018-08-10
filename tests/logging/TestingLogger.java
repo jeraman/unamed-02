@@ -18,7 +18,6 @@ public class TestingLogger extends PApplet {
 
 	public void setup() {
 		System.out.println("app started");
-		test();
 	}
 	
 
@@ -26,17 +25,21 @@ public class TestingLogger extends PApplet {
 		background(0);
 	}
 	
-	public void test() {
-		Gson gson = new Gson();
-		int[] ints = {1, 2, 3, 4, 5};
-		String[] strings = {"abc", "def", "ghi"};
+	public void mousePressed() {
+		try {
+			System.out.println("generating exception...");
+			generateException();
+		} catch (Exception e) {
+			System.out.println("exception generated!");
+			System.out.println("app stopped");
+			log.close(e);
+			super.exit();
+		}
+	}
 
-		// Serialization
-		System.out.println(gson.toJson(ints));     // ==> [1,2,3,4,5]
-		System.out.println(gson.toJson(strings));  // ==> ["abc", "def", "ghi"]
-
-		// Deserialization
-		int[] ints2 = gson.fromJson("[1,2,3,4,5]", int[].class); 
+	public void generateException() {
+		int array[] = new int[2];
+		array[3] = 0; // error
 	}
 
 	public void exit() {

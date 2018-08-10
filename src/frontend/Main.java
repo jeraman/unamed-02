@@ -28,7 +28,7 @@ import frontend.ui.*;
 public class Main extends PApplet {
 
 	public MainCanvas canvas;
-	public Blackboard board;
+//	public Blackboard board;
 	public Serializer serializer;
 
 	private static OscP5 oscP5; // my osc variables
@@ -61,7 +61,7 @@ public class Main extends PApplet {
 	public void setup() {
 		inst = this;
 		setupUtil();
-		this.serializer = new Serializer(this);
+		serializer = new Serializer(this);
 		is_loading = true;
 		background(0);
 		smooth();
