@@ -401,7 +401,7 @@ public class State implements Serializable {
 		if (Main.log != null) 
 			Main.log.countCreatedTransition();
 		
-		if (connections.size() == 2)
+		if (connections.size() == 3)
 			Main.log.countOneToManyTransitions();
 	}
 
