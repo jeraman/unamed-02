@@ -4,6 +4,9 @@ import java.sql.Timestamp;
 
 import com.google.gson.*;
 
+import frontend.ZenStates;
+import soundengine.util.Util;
+
 /**
  * Logs usage sessions in a JSON file, where each entry is an individual session.
  * @author jeraman.info
@@ -25,6 +28,7 @@ class SessionLogEntry {
 
 	protected void close() {
 		this.end = new Timestamp(System.currentTimeMillis());
+		this.programmingTime = ((this.end.getTime() - this.begin.getTime())/1000) - this.playingTime;
 		this.closingInfo = "Ordinary closing";
 		this.detailedClosingInfo = null;// "No errors occurred";
 	}
@@ -37,15 +41,35 @@ class SessionLogEntry {
 
 	// time metrics
 	private float playingTime = 0;
-	private float programmingTime = 0;
+	private float programmingTime = 0;	
 
-	public void addPlayingTime(int newValue) {
+	transient private int beginPlayingTime;
+	transient private boolean isCountingPayingTime = false;
+	
+	public void updatePlayingStatus() {
+		if (ZenStates.thereIsKeyDown() && !isCountingPayingTime)
+			this.startCountingPlayingTime();
+		if (ZenStates.thereIsKeyReleased() && isCountingPayingTime)
+			this.stopCountingPlayingTime();
+	}
+	
+	private void startCountingPlayingTime() {
+		this.beginPlayingTime = Util.millis();
+		this.isCountingPayingTime = true;
+	}
+	
+	private void stopCountingPlayingTime() {
+		this.addPlayingTime((Util.millis() - this.beginPlayingTime)/1000f);
+		this.isCountingPayingTime = false;
+	}
+	
+	public void addPlayingTime(float newValue) {
 		this.playingTime += newValue;
 	}
 
-	public void addProgrammingTime(int newValue) {
-		this.programmingTime += newValue;
-	}
+//	public void addProgrammingTime(int newValue) {
+//		this.programmingTime += newValue;
+//	}
 
 	// basics (explorability metrics)
 	private int createdState = 0;

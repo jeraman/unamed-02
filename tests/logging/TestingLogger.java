@@ -6,7 +6,7 @@ import processing.core.PApplet;
 
 public class TestingLogger extends PApplet {
 
-	static Logger log = new Logger("User 1");
+	static Logger log;
 
 	public static void main(String[] args) {
 		PApplet.main("logging.TestingLogger");
@@ -17,6 +17,7 @@ public class TestingLogger extends PApplet {
 	}
 
 	public void setup() {
+		log = new Logger((PApplet)this, "User 1");
 		System.out.println("app started");
 	}
 	

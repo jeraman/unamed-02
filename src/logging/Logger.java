@@ -16,21 +16,33 @@ import java.util.Vector;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import frontend.Main;
+import processing.core.PApplet;
+
 public class Logger {
 
 	private Vector<SessionLogEntry> allLogs;
 
 	transient private String userID;
 	transient private SessionLogEntry currentLog;
+	transient private ScreenShooter screenshooter;
 	transient private File file;
 	transient private static Gson gson = new Gson();
 	transient private static final Charset encoding = StandardCharsets.UTF_8;
 
-	public Logger(String userID) {
+	public Logger(PApplet p, String userID) {
 		this.userID = userID;
+		this.screenshooter = new ScreenShooter(p, userID);
 		this.currentLog = new SessionLogEntry(userID);
 		this.loadOldLogs();
 	}
+	
+	public void update() {
+		this.currentLog.updatePlayingStatus();
+		this.screenshooter.updateCountdown();
+	}
+	
+	
 
 	private void loadOldLogs() {
 		String filename = "./data/logs/" + userID + ".json";
@@ -102,28 +114,28 @@ public class Logger {
 		currentLog.addPlayingTime(newValue);
 	}
 	
-	public void addProgrammingTime(int newValue) {
-		currentLog.addProgrammingTime(newValue);
-	}
+//	public void addProgrammingTime(int newValue) {
+//		currentLog.addProgrammingTime(newValue);
+//	}
 	
 	public void countCreatedState() {
 		currentLog.countCreatedState();
 	}
 	
 	public void countCreatedTransition() {
-		currentLog.countStopBtn();
+		currentLog.countCreatedTransition();
 	}
 	
 	public void countRemovedState() {
-		currentLog.countStopBtn();
+		currentLog.countRemovedState();
 	}
 	
 	public void countRemovedTask() {
-		currentLog.countStopBtn();
+		currentLog.countRemovedTask();
 	}
 	
 	public void countRemovedTransition() {
-		currentLog.countStopBtn();
+		currentLog.countRemovedTransition();
 	}
 	
 	public void countChangedBegin() {

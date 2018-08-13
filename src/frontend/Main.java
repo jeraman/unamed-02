@@ -56,11 +56,12 @@ public class Main extends PApplet {
 		inst = this;
 		zenstates = new ZenStates(this);
 		serializer = new Serializer(this);
-		log = new Logger(ZenStates.USER_ID);
+		log = new Logger(this, ZenStates.USER_ID);
 	}
 
 	public void draw() {
 		try {
+			log.update();
 			zenstates.draw();
 		} catch (Exception e) {
 			e.printStackTrace();
