@@ -61,14 +61,19 @@ public class TextfieldUi extends AbstractElementUi {
 		return result;
 	}
 	
+	
+	private boolean alreadyEvaluated = false;
+	
 	public boolean evaluateAsBoolean() {
 		boolean result = false;
 		try {
 			result = this.evaluateAsBoolean(new Expression(this.value));
 			setDefaultColorOnTextfield();
 			
-			if (!this.value.equals(defaultText))
+			if (hasChanged() && this.value.contains("$") && !alreadyEvaluated) {
 				Main.log.countBbVarInTransitions();
+				alreadyEvaluated = true;
+			}
 				
 		} catch (ScriptException e) {
 			System.out.println("ScrriptExpression-related error thrown, unhandled update.");
@@ -167,6 +172,7 @@ public class TextfieldUi extends AbstractElementUi {
 				
 				setValue(content);
 				textfield.setFocus(false);
+				alreadyEvaluated = false;
 			}
 		};
 	}

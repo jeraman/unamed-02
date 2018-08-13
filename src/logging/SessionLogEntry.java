@@ -29,6 +29,8 @@ class SessionLogEntry {
 	protected void close() {
 		this.end = new Timestamp(System.currentTimeMillis());
 		this.programmingTime = ((this.end.getTime() - this.begin.getTime())/1000) - this.playingTime;
+		this.createdTransition -= (this.createdState + this.createdSMTasks);
+		this.removedTransition -= this.removedState;
 		this.closingInfo = "Ordinary closing";
 		this.detailedClosingInfo = null;// "No errors occurred";
 	}
@@ -89,7 +91,7 @@ class SessionLogEntry {
 	}
 
 	public void countCreatedTransition() {
-		this.createdTask++;
+		this.createdTransition++;
 	}
 
 	public void countRemovedState() {

@@ -19,6 +19,7 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 	private String valueExpression;
 	private float computedValue;
 	private String lastComputedValue;
+	private String lastValueExpression;
 	
 	private float defaultValue;
 	private String defaultText;
@@ -107,6 +108,7 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 			return;
 		this.valueExpression = newValue;
 		computeValue();
+		this.lastValueExpression = this.valueExpression;
 	}
 	
 	public float getValue() {
@@ -132,6 +134,8 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 			textfield.setColorBackground(errorColor); 
 	}
 	
+	private boolean alreadyEvaluated = false;
+	
 	public void computeValue() {
 		if (this.isValueExpressionEquals(defaultText)) {
 			computedValue = defaultValue;
@@ -139,7 +143,11 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 			try {
 				computedValue = this.evaluate();
 				setDefaultColorOnTextfield();
-				Main.log.countBbVarInTaskParameters();
+				
+				if (!this.valueExpression.equals(lastValueExpression) && this.valueExpression.contains("$") && !alreadyEvaluated) {
+					Main.log.countBbVarInTaskParameters();
+					alreadyEvaluated = true;
+				}
 				
 			} catch (ScriptException | NumberFormatException e) {
 				System.out.println("ScrriptExpression-related error thrown, unhandled update.");
@@ -206,6 +214,7 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 				
 				updateValueExpression(content);
 				textfield.setFocus(false);
+				alreadyEvaluated = false;
 			}
 		};
 	}

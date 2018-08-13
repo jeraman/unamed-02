@@ -82,6 +82,7 @@ public class TempoControl implements Serializable {
 
 	public void update() {
 		this.updatePosition();
+		this.ui.update();
 		if(this.shouldUpdate) {
 			this.updateElapsedTime();
 			this.updateMusicalTime();		

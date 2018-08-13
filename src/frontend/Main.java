@@ -70,12 +70,14 @@ public class Main extends PApplet {
 	}
 	
 	public void exit() {
-		log.close();
+		if (log != null)
+			log.close();
 		super.exit();
 	}
 
 	public void exit(Exception e) {
-		log.close(e);
+		if (log != null)
+			log.close(e);
 		super.exit();
 	}
 

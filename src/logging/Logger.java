@@ -41,8 +41,6 @@ public class Logger {
 		this.currentLog.updatePlayingStatus();
 		this.screenshooter.updateCountdown();
 	}
-	
-	
 
 	private void loadOldLogs() {
 		String filename = "./data/logs/" + userID + ".json";

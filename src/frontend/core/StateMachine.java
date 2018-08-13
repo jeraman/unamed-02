@@ -647,6 +647,7 @@ public class StateMachine extends Task {
 							mirror(loaded);
 							ZenStates.is_loading = false;
 							cp5.setAutoDraw(true);
+							Main.log.countLoadedExistingSM();
 						
 						//if the current machine isn't brandnew
 						} else {
