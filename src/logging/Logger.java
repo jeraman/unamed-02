@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import frontend.Main;
+import frontend.ZenStates;
 import processing.core.PApplet;
 
 public class Logger {
@@ -38,6 +39,8 @@ public class Logger {
 	}
 	
 	public void update() {
+		if (ZenStates.is_loading)
+			return;
 		this.currentLog.updatePlayingStatus();
 		this.screenshooter.updateCountdown();
 	}

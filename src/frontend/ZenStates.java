@@ -279,84 +279,84 @@ public class ZenStates {
 	}
 	
 	public static String whatUserIsPlaying() {
-		if (canvas != null)
+		if (canvas != null && !ZenStates.is_loading)
 			return canvas.whatUserIsPlaying();
 		else
 			return "";
 	}
 	
 	public static boolean thereIsKeyDown() {
-		if (canvas != null)
+		if (canvas != null && !ZenStates.is_loading)
 			return canvas.thereIsKeyDown();
 		else
 			return false;
 	}
 	
 	public static boolean thereIsKeyReleased() {
-		if (canvas != null)
+		if (canvas != null && !ZenStates.is_loading)
 			return canvas.thereIsKeyReleased();
 		else
 			return false;
 	}
 	
 	public static int numberOfKeyPressed() {
-		if (canvas != null)
+		if (canvas != null && !ZenStates.is_loading)
 			return canvas.numberOfKeyPressed();
 		else
 			return 0;
 	}
 	
 	public static String getLastPlayedNote() {
-		if (canvas != null)
+		if (canvas != null && !ZenStates.is_loading)
 			return canvas.getLastPlayedNote();
 		else
 			return "";
 	}
 
 	public static int getBeat() {
-		if (canvas != null)
+		if (canvas != null && !ZenStates.is_loading)
 			return canvas.getBeat();
 		else
 			return -1;
 	}
 
 	public static int getBar() {
-		if (canvas != null)
+		if (canvas != null && !ZenStates.is_loading)
 			return canvas.getBar();
 		else
 			return -1;
 	}
 
 	public static int getNoteCount() {
-		if (canvas != null)
+		if (canvas != null && !ZenStates.is_loading)
 			return canvas.getNoteCount();
 		else
 			return -1;
 	}
 
 	public static int getBPM() {
-		if (canvas != null)
+		if (canvas != null && !ZenStates.is_loading)
 			return canvas.getBPM();
 		else
 			return -1;
 	}
 	
 	public static float getTime() {
-		if (canvas != null)
+		if (canvas != null && !ZenStates.is_loading)
 			return canvas.getTime();
 		else
 			return -1;
 	}
 	
 	public static float getSeconds() {
-		if (canvas != null)
+		if (canvas != null && !ZenStates.is_loading)
 			return canvas.getSeconds();
 		else
 			return -1;
 	}
 	
 	public static int getMinutes() {
-		if (canvas != null)
+		if (canvas != null && !ZenStates.is_loading)
 			return canvas.getMinutes();
 		else
 			return -1;
