@@ -96,6 +96,9 @@ public class SampleFileGenerator extends ModifiedSampler implements AbstractGene
 	public void updateParameterFromString(String singleParameter) {
 		String[] parts = singleParameter.trim().split(":");
 		
+		if (this.isClosed())
+			return;
+		
 		if (parts[0].trim().equalsIgnoreCase("filename"))
 			this.setFilename(parts[1].trim());
 		if (parts[0].trim().equalsIgnoreCase("pitch"))

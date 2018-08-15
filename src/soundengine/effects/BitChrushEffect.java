@@ -33,6 +33,9 @@ public class BitChrushEffect extends BitCrush implements AbstractEffect {
 	@Override
 	public void updateParameterFromString(String singleParameter) {
 		String[] parts = singleParameter.split(":");
+		
+		if (this.isClosed())
+			return;
 
 		if (parts[0].trim().equalsIgnoreCase("resolution"))
 			this.setBitResolution(Integer.parseInt(parts[1].trim()));

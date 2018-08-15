@@ -40,7 +40,7 @@ public class Main extends PApplet {
 	public void settings() {
 		// fullScreen(1);
 		// size(800, 600);
-		size(1024, 768);
+		size(1280, 720);
 	}
 
 	public void setup() {

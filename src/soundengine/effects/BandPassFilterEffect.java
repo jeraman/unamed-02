@@ -32,6 +32,9 @@ public class BandPassFilterEffect extends BandPass implements AbstractEffect {
 	@Override
 	public void updateParameterFromString(String singleParameter) {
 		String[] parts = singleParameter.split(":");
+		
+		if (this.isClosed())
+			return;
 
 		if (parts[0].trim().equalsIgnoreCase("centerFreq"))
 			this.setCenterFreq(Float.parseFloat(parts[1].trim()));

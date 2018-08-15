@@ -37,16 +37,15 @@ public class FMGenerator extends Oscil implements AbstractGenerator, Runnable {
 		super(carrierFreq, carrierAmp, getWaveformType(carrierWave));
 
 		this.carrierFreq = carrierFreq;
-		// this.carrierAmp = carrierAmp;
 		this.setCarrierAmp(carrierAmp);
 		this.carrierWave = carrierWave;
 		this.modFreq = modFreq;
 		this.modAmp = modAmp;
 		this.modWave = modWave;
 
-		fm = new Oscil(this.modFreq, this.modAmp, getWaveformType(this.modWave));
-		fm.offset.setLastValue(carrierFreq);
-		fm.patch(this.frequency);
+		this.fm = new Oscil(this.modFreq, this.modAmp, getWaveformType(this.modWave));
+		this.fm.offset.setLastValue(carrierFreq);
+		this.fm.patch(this.frequency);
 
 		this.observers = new ArrayList<FMGeneratorObserver>();
 
@@ -64,6 +63,9 @@ public class FMGenerator extends Oscil implements AbstractGenerator, Runnable {
 	@Override
 	public void updateParameterFromString(String singleParameter) {
 		String[] parts = singleParameter.split(":");
+		
+		if (this.isClosed())
+			return;
 
 		if (parts[0].trim().equalsIgnoreCase("carrierFreq"))
 			this.setCarrierFreq(Float.parseFloat(parts[1].trim()));
@@ -147,6 +149,8 @@ public class FMGenerator extends Oscil implements AbstractGenerator, Runnable {
 
 	protected void setModAmp(float modAmp) {
 		this.modAmp = modAmp;
+		if (this.fm == null)
+			System.out.println("eita!");
 		this.fm.setAmplitude(modAmp);
 	}
 
@@ -292,12 +296,20 @@ public class FMGenerator extends Oscil implements AbstractGenerator, Runnable {
 		new FMGeneratorObserver(this, clone);
 	}
 
-	public synchronized void unlinkOldObservers() {
-		synchronized (observers) {
-		for (int i = observers.size() - 1; i >= 0; i--)
-			if (observers.get(i).isClosed())
-				this.observers.remove(i);
-		}
+//	public synchronized void unlinkOldObservers() {
+//		synchronized (observers) {
+//		for (int i = observers.size() - 1; i >= 0; i--)
+//			if (observers.get(i).isClosed())
+//				this.observers.remove(i);
+//		}
+//	}
+//	
+	public  void unlinkOldObservers() {
+		//synchronized (observers) {
+			for (int i = observers.size() - 1; i >= 0; i--)
+				if (observers.get(i).isClosed())
+					this.observers.remove(i);
+		//}
 	}
 
 	public boolean isClosed() {

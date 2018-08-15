@@ -4,6 +4,9 @@ public class FMGeneratorObserver extends GeneratorObserver {
 
 	public FMGeneratorObserver(FMGenerator original, FMGenerator updatable) {
 		super(original, updatable);
+		
+		if (updatable.getCarrierWave() == null)
+			System.out.println("why null?");
 	}
 
 	
