@@ -384,8 +384,9 @@ public class MainCanvas implements Serializable {
 		int w = 4 * ZenStates.FONT_SIZE;
 		int h = w;
 		int offset = 5;
+		
 		// int x = 20; //p.width/2;
-		int x = (p.width / 2) - 2 * (w + offset);
+		int x = (p.width / 2) - 3 * (w + offset);
 		int y = p.height - (h) - (h / 4);
 
 		int back = p.color(255, 255, 255, 50);
@@ -406,6 +407,9 @@ public class MainCanvas implements Serializable {
 
 		cp5.addButton("button_load").setValue(128).setPosition(x + (3 * w) + (3 * offset), y).setColorBackground(back)
 				.setWidth(w).setHeight(h).onPress(cb_click).setLabel("load");
+
+		cp5.addButton("button_help").setValue(128).setPosition(x + (4 * w) + (4 * offset), y).setColorBackground(back)
+			.setWidth(w).setHeight(h).onPress(cb_click).setLabel("help");
 
 		close_preview = new Button(cp5, "close_preview");
 		close_preview.setValue(128);
@@ -455,6 +459,17 @@ public class MainCanvas implements Serializable {
 		Main.serializer.load();
 	}
 	
+	public void button_help() {
+		if (ZenStates.is_loading)
+			return;
+		help();
+	}
+	
+
+	void help() {
+		p.link("file://" + p.sketchPath() + "/data/cheatsheet/index.html");
+	}
+	
 	private boolean debug() {
 		return ZenStates.debug;
 	}
@@ -485,6 +500,8 @@ public class MainCanvas implements Serializable {
 					button_save();
 				if (s.equals("button_load"))
 					button_load();
+				if (s.equals("button_help"))
+					button_help();
 			}
 		};
 	}
