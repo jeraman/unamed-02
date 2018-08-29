@@ -26,6 +26,8 @@ public class ZenStates {
 	public static int OSC_RECV_PORT;
 	public static int STATE_CIRCLE_SIZE;
 	public static int FONT_SIZE;
+	public static int MIDI_IN = 2;
+	public static int MIDI_OUT = 1;
 	public static PFont FONT;
 	public static String USER_ID;
 	public static boolean debug = false;
@@ -153,6 +155,8 @@ public class ZenStates {
 			System.out.println("STATE CIRCLE SIZE: " + params.get(3));
 			System.out.println("FONT SIZE: " + params.get(4));
 			System.out.println("USER ID: " + params.get(5));
+			System.out.println("MIDI IN PORT: " + params.get(6));
+			System.out.println("MIDI OUT PORT: " + params.get(7));
 		}
 
 		SERVER_IP = params.get(0);
@@ -161,6 +165,8 @@ public class ZenStates {
 		STATE_CIRCLE_SIZE = Integer.parseInt(params.get(3));
 		FONT_SIZE = Integer.parseInt(params.get(4));
 		USER_ID = params.get(5);
+		MIDI_IN = Integer.parseInt(params.get(6));
+		MIDI_OUT = Integer.parseInt(params.get(7));
 	}
 
 	///////////////////////////////////////

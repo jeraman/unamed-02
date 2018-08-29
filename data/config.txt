@@ -3,7 +3,6 @@
 ##############################################
 #set the ip of the media server in the local network (i.e. where the max patch runs)
 localhost
-#192.168.1.100
 #set the port of the media server in the local network
 12000
 #set the port that will listen to incoming OSC messages
@@ -14,8 +13,9 @@ localhost
 50
 #font size
 10
-#12
-#15
-#20
 #user id
 User1
+#midi in port
+5
+#midi out port
+1

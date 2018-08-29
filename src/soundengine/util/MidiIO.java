@@ -1,5 +1,6 @@
 package soundengine.util;
 
+import frontend.ZenStates;
 import processing.core.PApplet;
 import themidibus.MidiBus;
 
@@ -11,7 +12,8 @@ public class MidiIO {
 	public static void setup(PApplet p) {
 		MidiBus.list();
 		// myBus = new MidiBus(p, 0, 1);
-		myBus = new MidiBus(p, 2, 1);
+		// myBus = new MidiBus(p, 2, 1);
+		myBus = new MidiBus(p, ZenStates.MIDI_IN, ZenStates.MIDI_OUT);
 		myBus.sendTimestamps(false);
 		ccValues = new int[16];
 	}
