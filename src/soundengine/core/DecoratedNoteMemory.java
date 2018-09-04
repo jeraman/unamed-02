@@ -7,6 +7,7 @@ import org.jfugue.theory.Chord;
 import soundengine.generators.AbstractGenerator;
 import soundengine.generators.GeneratorFactory;
 import soundengine.util.MusicTheory;
+import soundengine.util.Util;
 
 /**
  * Stores all notes currently played on the MIDI input device,
@@ -17,6 +18,7 @@ public class DecoratedNoteMemory {
 	private ArrayList<DecoratedNote> memory;
 	private ArrayList<Integer> removalLine;
 	private String lastNote;
+	private String lastVelocity;
 	
 	private static final int CONCURRENT_NOTES_LIMIT = 20;
 
@@ -24,6 +26,7 @@ public class DecoratedNoteMemory {
 		memory = new ArrayList<DecoratedNote>();
 		removalLine = new ArrayList<Integer>();
 		lastNote = "";
+		lastVelocity = "";
 	}
 	
 //	public synchronized void put(int channel, int note, int velocity) {
@@ -38,14 +41,14 @@ public class DecoratedNoteMemory {
 	public synchronized void put (DecoratedNote aug) {		
 		controlsNumberOfConcurrentNotes();
 		memory.add(aug);
-		this.updateLastNote();
+		this.updateLastNoteAndVelocity();
 	}
 
 	public synchronized DecoratedNote remove(int note) {
 		int noteIndex = getElementIndex(note);
 		DecoratedNote result = null;
 
-		this.updateLastNote();
+		this.updateLastNoteAndVelocity();
 		
 		if (noteIndex < 0) {
 			
@@ -143,13 +146,19 @@ public class DecoratedNoteMemory {
 			return memory.get(noteIndex);
 	}
 
-	private synchronized void updateLastNote() {
-		if (memory.size() > 0)
+	private synchronized void updateLastNoteAndVelocity() {
+		if (memory.size() > 0) {
 			this.lastNote = MusicTheory.noteFromMIDI(memory.get(memory.size()-1).getPitch());
+			this.lastVelocity = Util.round(memory.get(memory.size()-1).getVelocity()/127f, 2)+"";
+		}
 	}
 	
 	public String getLastPlayedNote() {
 		return this.lastNote;
+	}
+	
+	public String getLastVelocity() {
+		return this.lastVelocity;
 	}
 	
 	public boolean thereIsKeyDown() {

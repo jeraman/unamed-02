@@ -16,6 +16,6 @@ localhost
 #user id
 User1
 #midi in port
-5
+3
 #midi out port
 1

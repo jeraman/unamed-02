@@ -261,6 +261,10 @@ public class StateMachine extends Task {
 		return this.eng.getLastPlayedNote();
 	}
 	
+	public String getLastVelocity() {
+		return this.eng.getLastVelocity();
+	}
+	
 	public boolean thereIsKeyDown() {
 		return this.eng.thereIsKeyDown();
 	}

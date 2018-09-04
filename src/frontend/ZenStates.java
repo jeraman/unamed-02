@@ -318,6 +318,13 @@ public class ZenStates {
 		else
 			return "";
 	}
+	
+	public static String getLastVelocity() {
+		if (canvas != null && !ZenStates.is_loading)
+			return canvas.getLastVelocity();
+		else
+			return "";
+	}
 
 	public static int getBeat() {
 		if (canvas != null && !ZenStates.is_loading)

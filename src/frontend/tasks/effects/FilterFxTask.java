@@ -25,8 +25,8 @@ public class FilterFxTask  extends AbstractFxTask {
 	
 	public FilterFxTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
 		super(p, cp5, taskname, eng);
-		this.centerFreq = new ComputableFloatTextfieldUI(300f);
-		this.resonance = new ComputableFloatTextfieldUI(150f);
+		this.centerFreq = new ComputableFloatTextfieldUI(800f);
+		this.resonance = new ComputableFloatTextfieldUI(0f);
 		this.type = new ScrollableListUI(list, 0);
 		
 		Main.log.countFilterFxTask();

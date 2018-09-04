@@ -235,6 +235,10 @@ public class SoundEngine implements SoundEngineFacade {
 	public String getLastPlayedNote() {
 		return this.memory.getLastPlayedNote();
 	}
+	
+	public String getLastVelocity() {
+		return this.memory.getLastVelocity();
+	}
 
 	public boolean thereIsKeyDown() {
 		return this.memory.thereIsKeyDown();

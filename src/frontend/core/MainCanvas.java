@@ -121,6 +121,10 @@ public class MainCanvas implements Serializable {
 		return this.root.getLastPlayedNote();
 	}
 	
+	public String getLastVelocity() {
+		return this.root.getLastVelocity();
+	}
+	
 	public boolean thereIsKeyDown() {
 		return this.root.thereIsKeyDown();
 	}

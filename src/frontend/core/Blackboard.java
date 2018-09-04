@@ -169,6 +169,7 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 		this.put("interval", details[1]);
 		this.put("chord", details[2]);
 		this.put("key", ZenStates.getLastPlayedNote());
+		this.put("pressure", ZenStates.getLastVelocity());
 		this.put("keyPressed", ZenStates.thereIsKeyDown());
 		this.put("keyReleased", ZenStates.thereIsKeyReleased());
 		this.put("numKeyPresses", ZenStates.numberOfKeyPressed());
@@ -197,6 +198,7 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 		this.replace("chord", details[2]);
 		String lastNote =  "\"" + ZenStates.getLastPlayedNote() + "\"";
 		this.replace("key", lastNote);
+		this.replace("pressure", ZenStates.getLastVelocity());
 		this.replace("keyPressed", ZenStates.thereIsKeyDown());
 		this.replace("keyReleased", ZenStates.thereIsKeyReleased());
 		this.replace("numKeyPresses", ZenStates.numberOfKeyPressed());
