@@ -9,6 +9,7 @@ import controlP5.Group;
 import frontend.Main;
 import frontend.core.State;
 import frontend.tasks.Task;
+import frontend.ui.ComputableDurationTextfieldUIWithUserInput;
 import frontend.ui.ComputableFloatTextfieldUI;
 import frontend.ui.ComputableFloatTextfieldUIWithUserInput;
 import frontend.ui.ComputableIntegerTextfieldUIWithUserInput;
@@ -23,15 +24,15 @@ public class OscillatorGenTask extends AbstractGenTask {
 
 	private ComputableFloatTextfieldUIWithUserInput frequency;
 	private ComputableFloatTextfieldUIWithUserInput amplitude;
-	private ComputableIntegerTextfieldUIWithUserInput duration;
+	private ComputableDurationTextfieldUIWithUserInput duration;
 	private ScrollableListUI wavetype;
 	
 	public OscillatorGenTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
 		super(p, cp5, taskname, eng);
 		
-		this.frequency = new ComputableFloatTextfieldUIWithUserInput();
-		this.amplitude = new ComputableFloatTextfieldUIWithUserInput();
-		this.duration = new ComputableIntegerTextfieldUIWithUserInput();
+		this.frequency = new ComputableFloatTextfieldUIWithUserInput(50f, 10000f);
+		this.amplitude = new ComputableFloatTextfieldUIWithUserInput(0f, 1f);
+		this.duration = new ComputableDurationTextfieldUIWithUserInput();
 		this.wavetype = new ScrollableListUI(list, 3);
 
 		Main.log.countOscGenTask();

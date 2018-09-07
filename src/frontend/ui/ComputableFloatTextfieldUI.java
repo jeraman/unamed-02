@@ -26,8 +26,12 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 	
 	transient private Textfield textfield;
 	
+	private float min = Float.MIN_VALUE;
+	private float max = Float.MAX_VALUE;
+	
 	public static final String classDefaultText = "CLICK TO CHANGE";
 
+	
 	public ComputableFloatTextfieldUI(float defaultValue) {
 		this(classDefaultText, defaultValue);
 	}
@@ -38,6 +42,12 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 		this.computedValue = this.defaultValue;
 		
 		this.setValueExpression(defaultText);
+	}
+	
+	public ComputableFloatTextfieldUI(float defaultValue, float min, float max) {
+		this("from " + ((int)min) + " to " + ((int)max) + "...", defaultValue);
+		this.min = min;
+		this.max = max;
 	}
 	
 	public float getDefaultValue( ) {
@@ -106,6 +116,7 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 	public void updateValueExpression(String newValue) {
 		if (!isNecessaryToUpdateValueExpression(newValue))
 			return;
+		
 		this.valueExpression = newValue;
 		computeValue();
 		this.lastValueExpression = this.valueExpression;

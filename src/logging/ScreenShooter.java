@@ -16,7 +16,7 @@ public class ScreenShooter {
 	private int beginTimestamp;
 	private String filename;
 	private int savingTimeInMinutes;
-	private static int SAVING_TIME = 10; //in minutes
+	private static int SAVING_TIME = 5; //in minutes
 	
 	public ScreenShooter (PApplet p, String userId) {
 		this.p = p;

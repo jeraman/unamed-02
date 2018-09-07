@@ -10,5 +10,11 @@ public class ComputableFloatTextfieldUIWithUserInput extends ComputableFloatText
 		super(userInputAsDefault, -1);
 	}
 	
+	public ComputableFloatTextfieldUIWithUserInput(String defaultText, float defaultValue) {
+		super(defaultText, defaultValue);
+	}
 	
+	public ComputableFloatTextfieldUIWithUserInput(float min, float max) {
+		super(-1, min, max);
+	}
 }

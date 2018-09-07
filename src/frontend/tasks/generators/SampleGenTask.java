@@ -6,8 +6,10 @@ import controlP5.Group;
 import frontend.Main;
 import frontend.core.State;
 import frontend.tasks.Task;
+import frontend.ui.ComputableDurationTextfieldUIWithUserInput;
 import frontend.ui.ComputableIntegerTextfieldUI;
 import frontend.ui.ComputableIntegerTextfieldUIWithUserInput;
+import frontend.ui.ComputableMIDITextfieldUIWithUserInput;
 import frontend.ui.FileOpenerTextfieldUI;
 import frontend.ui.ToggleUi;
 import processing.core.PApplet;
@@ -16,9 +18,9 @@ import soundengine.SoundEngine;
 public class SampleGenTask extends AbstractGenTask {
 	
 	private FileOpenerTextfieldUI filename;
-	private ComputableIntegerTextfieldUIWithUserInput pitch;
-	private ComputableIntegerTextfieldUIWithUserInput velocity;
-	private ComputableIntegerTextfieldUIWithUserInput duration;
+	private ComputableMIDITextfieldUIWithUserInput pitch;
+	private ComputableMIDITextfieldUIWithUserInput velocity;
+	private ComputableDurationTextfieldUIWithUserInput duration;
 	private ToggleUi loopStatus;
 	
 	private static final String defaultSoundFile = "123go.mp3";
@@ -27,9 +29,9 @@ public class SampleGenTask extends AbstractGenTask {
 		super(p, cp5, taskname, eng);
 		
 		this.filename = new FileOpenerTextfieldUI(defaultSoundFile);
-		this.pitch = new ComputableIntegerTextfieldUIWithUserInput();
-		this.velocity = new ComputableIntegerTextfieldUIWithUserInput();
-		this.duration = new ComputableIntegerTextfieldUIWithUserInput();
+		this.pitch = new ComputableMIDITextfieldUIWithUserInput();
+		this.velocity = new ComputableMIDITextfieldUIWithUserInput();
+		this.duration = new ComputableDurationTextfieldUIWithUserInput();
 		this.loopStatus = new ToggleUi();
 		
 		Main.log.countSamplerGenTask();

@@ -9,6 +9,7 @@ import controlP5.Group;
 import frontend.Main;
 import frontend.core.State;
 import frontend.tasks.Task;
+import frontend.ui.ComputableDurationTextfieldUIWithUserInput;
 import frontend.ui.ComputableFloatTextfieldUI;
 import frontend.ui.ComputableFloatTextfieldUIWithUserInput;
 import frontend.ui.ComputableIntegerTextfieldUIWithUserInput;
@@ -24,17 +25,17 @@ public class FMGenTask extends AbstractGenTask {
 	private ComputableFloatTextfieldUI modFreq;
 	private ComputableFloatTextfieldUI modAmp;
 	private ScrollableListUI modWavetype;
-	private ComputableIntegerTextfieldUIWithUserInput duration;
+	private ComputableDurationTextfieldUIWithUserInput duration;
 	
 	public FMGenTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
 		super(p, cp5, taskname, eng);
-		this.frequency = new ComputableFloatTextfieldUIWithUserInput();
-		this.amplitude = new ComputableFloatTextfieldUIWithUserInput();
+		this.frequency = new ComputableFloatTextfieldUIWithUserInput(50f, 10000f);
+		this.amplitude = new ComputableFloatTextfieldUIWithUserInput(0f, 1f);
 		this.carrierWavetype = new ScrollableListUI(OscillatorGenTask.list, 3);
-		this.modFreq = new ComputableFloatTextfieldUI(10f);
-		this.modAmp = new ComputableFloatTextfieldUI(75f);
+		this.modFreq = new ComputableFloatTextfieldUI(10f, 0.1f, 100f);
+		this.modAmp = new ComputableFloatTextfieldUI(75f, 0f, 1000f);
 		this.modWavetype = new ScrollableListUI(OscillatorGenTask.list, 2);
-		this.duration = new ComputableIntegerTextfieldUIWithUserInput();
+		this.duration = new ComputableDurationTextfieldUIWithUserInput();
 
 		Main.log.countFMGenTask();
 	}
