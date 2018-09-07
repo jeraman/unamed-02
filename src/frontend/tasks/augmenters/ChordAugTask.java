@@ -11,6 +11,7 @@ import frontend.tasks.Task;
 import frontend.ui.ComputableFloatTextfieldUI;
 import frontend.ui.ComputableIntegerTextfieldUI;
 import frontend.ui.ComputableIntegerTextfieldUIWithUserInput;
+import frontend.ui.ComputableMIDITextfieldUIWithUserInput;
 import frontend.ui.ScrollableListUI;
 import processing.core.PApplet;
 import soundengine.SoundEngine;
@@ -19,13 +20,13 @@ public class ChordAugTask extends AbstractAugTask {
 	
 	protected static final List<String> list = Arrays.asList("maj", "maj6", "maj7", "min", "min6", "min7", "aug", "dim");
 	
-	private ComputableIntegerTextfieldUI root;
+	private ComputableMIDITextfieldUIWithUserInput root;
 	private ScrollableListUI chordType;
 	
 	public ChordAugTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
 		super(p, cp5, taskname, eng);
 
-		this.root = new ComputableIntegerTextfieldUI(ComputableIntegerTextfieldUIWithUserInput.userInputAsDefault,-1);
+		this.root = new ComputableMIDITextfieldUIWithUserInput();
 		this.chordType = new ScrollableListUI(list, 0);
 		this.musicActioner = new ChordActioner(this.root.getDefaultValueAsInt(), "maj", this.velocity.getDefaultValueAsInt(),(int) this.duration.getValue(), eng);
 		
@@ -45,19 +46,22 @@ public class ChordAugTask extends AbstractAugTask {
 	
 	@Override
 	protected void setModeUserInput() {
-		this.root.resetDefaults(ComputableIntegerTextfieldUIWithUserInput.userInputAsDefault, -1);
+		this.root.resetDefaults(-1);
+//		this.root.resetDefaults(ComputableIntegerTextfieldUIWithUserInput.userInputAsDefault, -1);
 		super.setModeUserInput();
 	}
 
 	@Override
 	protected void setModePlayOnce() {
-		this.root.resetDefaults(ComputableFloatTextfieldUI.classDefaultText, 60);
+		this.root.resetDefaults( 60);
+//		this.root.resetDefaults(ComputableFloatTextfieldUI.classDefaultText, 60);
 		super.setModePlayOnce();
 	}
 	
 	@Override
 	protected void setModeRepeat() {
-		this.root.resetDefaults(ComputableFloatTextfieldUI.classDefaultText, 60);
+		this.root.resetDefaults(60);
+//		this.root.resetDefaults(ComputableFloatTextfieldUI.classDefaultText, 60);
 		super.setModeRepeat();
 	}
 

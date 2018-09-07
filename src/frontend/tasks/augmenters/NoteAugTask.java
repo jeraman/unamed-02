@@ -6,17 +6,18 @@ import frontend.Main;
 import frontend.core.State;
 import frontend.tasks.Task;
 import frontend.ui.ComputableIntegerTextfieldUI;
+import frontend.ui.ComputableMIDITextfieldUI;
 import processing.core.PApplet;
 import soundengine.SoundEngine;
 
 public class NoteAugTask extends AbstractAugTask {
 	
-	private ComputableIntegerTextfieldUI pitch;
+	private ComputableMIDITextfieldUI pitch;
 	
 	public NoteAugTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
 		super(p, cp5, taskname, eng);
 
-		this.pitch = new ComputableIntegerTextfieldUI(60.0f);
+		this.pitch = new ComputableMIDITextfieldUI(60.0f);
 		this.musicActioner = new NoteActioner(this.pitch.getDefaultValueAsInt(), this.velocity.getDefaultValueAsInt(),(int) this.duration.getValue(), eng);
 		
 		Main.log.countNoteAugTask();

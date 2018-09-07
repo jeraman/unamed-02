@@ -62,6 +62,19 @@ public class ComputableFloatTextfieldUI extends AbstractElementUi {
 		this.defaultText = newText;
 	}
 	
+	public void resetDefaults (float newDefaultValue) {
+		boolean wasDefaultValue = isDefaultValue();
+		
+		this.setDefaultValue(newDefaultValue);
+		
+		if (wasDefaultValue) {
+			this.setValueExpression(this.defaultText);
+			if (this.textfield != null)
+				this.textfield.setText(this.defaultText);
+		}
+	}
+	
+	@Deprecated
 	public void resetDefaults (String newDefaultText, float newDefaultValue) {
 		boolean wasDefaultValue = isDefaultValue();
 		

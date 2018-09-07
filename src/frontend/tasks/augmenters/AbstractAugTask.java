@@ -10,10 +10,12 @@ import frontend.ZenStates;
 import frontend.core.State;
 import frontend.core.Status;
 import frontend.tasks.Task;
+import frontend.ui.ComputableDurationTextfieldUIWithUserInput;
 import frontend.ui.ComputableFloatTextfieldUI;
 import frontend.ui.ComputableFloatTextfieldUIWithUserInput;
 import frontend.ui.ComputableIntegerTextfieldUI;
 import frontend.ui.ComputableIntegerTextfieldUIWithUserInput;
+import frontend.ui.ComputableMIDITextfieldUIWithUserInput;
 import frontend.ui.ScrollableListUI;
 import processing.core.PApplet;
 import soundengine.SoundEngine;
@@ -27,8 +29,8 @@ public abstract class AbstractAugTask extends Task {
 	
 	protected static final List<String> list = Arrays.asList("USER INPUT", "PLAY ONCE", "REPEAT");
 
-	protected ComputableIntegerTextfieldUI velocity;
-	protected ComputableFloatTextfieldUI duration;
+	protected ComputableMIDITextfieldUIWithUserInput velocity;
+	protected ComputableDurationTextfieldUIWithUserInput duration;
 	protected ScrollableListUI mode;
 	private AugmenterMode currentMode;
 	protected AbstractMusicActioner musicActioner;
@@ -38,8 +40,8 @@ public abstract class AbstractAugTask extends Task {
 	public AbstractAugTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
 		super(p, cp5, taskname, eng);
 
-		this.velocity = new ComputableIntegerTextfieldUI(ComputableIntegerTextfieldUIWithUserInput.userInputAsDefault,-1);
-		this.duration = new ComputableFloatTextfieldUI(ComputableFloatTextfieldUIWithUserInput.userInputAsDefault,-1.0f);
+		this.velocity = new ComputableMIDITextfieldUIWithUserInput();
+		this.duration = new ComputableDurationTextfieldUIWithUserInput();
 
 		this.currentMode = AugmenterMode.USER_INPUT;
 		this.mode = new ScrollableListUI(list, this.currentMode.ordinal());
@@ -81,16 +83,20 @@ public abstract class AbstractAugTask extends Task {
 
 	protected void setModeUserInput() {
 		this.currentMode = AugmenterMode.USER_INPUT;
-		this.velocity.resetDefaults(ComputableIntegerTextfieldUIWithUserInput.userInputAsDefault, -1);
-		this.duration.resetDefaults(ComputableIntegerTextfieldUIWithUserInput.userInputAsDefault, -1);
+		this.velocity.resetDefaults(-1);
+		this.duration.resetDefaults(-1);
+		//this.velocity.resetDefaults(ComputableIntegerTextfieldUIWithUserInput.userInputAsDefault, -1);
+		//this.duration.resetDefaults(ComputableIntegerTextfieldUIWithUserInput.userInputAsDefault, -1);
 		resetMusicActioner();
 		addOnEngine();
 	}
 
 	protected void setModePlayOnce() {
 		this.currentMode = AugmenterMode.PLAY_ONCE;
-		this.velocity.resetDefaults(ComputableFloatTextfieldUI.classDefaultText, 100);
-		this.duration.resetDefaults(ComputableFloatTextfieldUI.classDefaultText, computeDurationBasedOnBPM());
+		this.velocity.resetDefaults(100);
+		this.duration.resetDefaults(computeDurationBasedOnBPM());
+		//this.velocity.resetDefaults(ComputableFloatTextfieldUI.classDefaultText, 100);
+		//this.duration.resetDefaults(ComputableFloatTextfieldUI.classDefaultText, computeDurationBasedOnBPM());
 		resetMusicActioner();
 		removeFromEngine();
 	}
