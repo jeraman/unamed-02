@@ -9,18 +9,19 @@ import frontend.tasks.Task;
 import frontend.tasks.generators.FMGenTask;
 import frontend.ui.ComputableFloatTextfieldUI;
 import frontend.ui.ComputableFloatTextfieldUIWithUserInput;
+import frontend.ui.ComputableMillisDurationTextfieldUI;
 import processing.core.PApplet;
 import soundengine.SoundEngine;
 
 public class DelayFxTask extends AbstractFxTask {
 	
-	private ComputableFloatTextfieldUI delayTime;
+	private ComputableMillisDurationTextfieldUI delayTime;
 	private ComputableFloatTextfieldUI amplitudeFactor;
 	
 	public DelayFxTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
 		super(p, cp5, taskname, eng);
 		
-		this.delayTime = new ComputableFloatTextfieldUI(0.02f, 0, 10);
+		this.delayTime = new ComputableMillisDurationTextfieldUI(20);
 		this.amplitudeFactor = new ComputableFloatTextfieldUI(1f, 0, 1);
 
 		Main.log.countDelayFxTask();
@@ -33,7 +34,7 @@ public class DelayFxTask extends AbstractFxTask {
 	protected String[] getDefaultParameters(){
 		//return new String[] { "0.02", "1", "true", "true" };
 		return new String[] { 
-				 this.delayTime.getValue()+"", 
+				 this.delayTime.getValue()/1000f+"", 
 				 this.amplitudeFactor.getValue()+"", 
 				 "true",
 				 "true"
@@ -42,7 +43,7 @@ public class DelayFxTask extends AbstractFxTask {
 	
 	private void processDelayTimeChange() {
 		if (delayTime.update())
-			this.eng.updateEffect(this.get_gui_id(), "delayTime : " + delayTime.getValue());
+			this.eng.updateEffect(this.get_gui_id(), "delayTime : " + delayTime.getValue()/1000f);
 	}
 	private void processAmplitudeChange() {
 		if (amplitudeFactor.update())
