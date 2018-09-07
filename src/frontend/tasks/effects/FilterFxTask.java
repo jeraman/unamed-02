@@ -25,8 +25,8 @@ public class FilterFxTask  extends AbstractFxTask {
 	
 	public FilterFxTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
 		super(p, cp5, taskname, eng);
-		this.centerFreq = new ComputableFloatTextfieldUI(800f);
-		this.resonance = new ComputableFloatTextfieldUI(0f);
+		this.centerFreq = new ComputableFloatTextfieldUI(800f, 0, 20000);
+		this.resonance = new ComputableFloatTextfieldUI(0f, 0, 20000);
 		this.type = new ScrollableListUI(list, 0);
 		
 		Main.log.countFilterFxTask();
@@ -102,7 +102,7 @@ public class FilterFxTask  extends AbstractFxTask {
 		this.backgroundheight = (int) (localoffset * 3.5);
 		g.setBackgroundHeight(backgroundheight);
 		int miniOffsetDueToScrollList = 5;
-		centerFreq.createUI(id, "center freq.", localx, localy + miniOffsetDueToScrollList + (1 * localoffset), width, g);
+		centerFreq.createUI(id, "cutoff", localx, localy + miniOffsetDueToScrollList + (1 * localoffset), width, g);
 		resonance.createUI(id, "resonance freq.", localx, localy + miniOffsetDueToScrollList + (2 * localoffset), width, g);
 		type.createUI(id, "type", localx, localy + (0 * localoffset), width, g);
 

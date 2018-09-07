@@ -6,6 +6,7 @@ import controlP5.Group;
 import frontend.Main;
 import frontend.core.State;
 import frontend.tasks.Task;
+import frontend.ui.ComputableMillisDurationTextfieldUI;
 import frontend.ui.ComputableFloatTextfieldUI;
 import processing.core.PApplet;
 import soundengine.SoundEngine;
@@ -17,7 +18,7 @@ public class FlangerFxTask extends AbstractFxTask {
 													// [0,100] )
 	private ComputableFloatTextfieldUI lfoRate; // lfo rate in Hz ( clamped at
 												// low end to 0.001 )
-	private ComputableFloatTextfieldUI delayDepth; // delay depth in
+	private ComputableMillisDurationTextfieldUI delayDepth; // delay depth in
 													// milliseconds ( minimum of
 													// 0 )
 	private ComputableFloatTextfieldUI feedbackAmplitude; // amount of feedback
@@ -30,12 +31,12 @@ public class FlangerFxTask extends AbstractFxTask {
 
 	public FlangerFxTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
 		super(p, cp5, taskname, eng);
-		this.delayLength = new ComputableFloatTextfieldUI(1f);
-		this.lfoRate = new ComputableFloatTextfieldUI(0.5f);
-		this.delayDepth = new ComputableFloatTextfieldUI(1f);
-		this.feedbackAmplitude = new ComputableFloatTextfieldUI(0.5f);
-		this.dryAmplitude = new ComputableFloatTextfieldUI(0.5f);
-		this.wetAmplitude = new ComputableFloatTextfieldUI(0.5f);
+		this.delayLength = new ComputableFloatTextfieldUI(1f, 0, 100);
+		this.lfoRate = new ComputableFloatTextfieldUI(0.5f, 0, 30);
+		this.delayDepth = new ComputableMillisDurationTextfieldUI(1f);
+		this.feedbackAmplitude = new ComputableFloatTextfieldUI(0.5f, 0, 1);
+		this.dryAmplitude = new ComputableFloatTextfieldUI(0.5f, 0, 1);
+		this.wetAmplitude = new ComputableFloatTextfieldUI(0.5f, 0, 1);
 		
 		Main.log.countFlangerFxTask();
 	}

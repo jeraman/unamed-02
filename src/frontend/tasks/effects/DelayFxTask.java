@@ -20,8 +20,8 @@ public class DelayFxTask extends AbstractFxTask {
 	public DelayFxTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
 		super(p, cp5, taskname, eng);
 		
-		this.delayTime = new ComputableFloatTextfieldUI(0.02f);
-		this.amplitudeFactor = new ComputableFloatTextfieldUI(1f);
+		this.delayTime = new ComputableFloatTextfieldUI(0.02f, 0, 10);
+		this.amplitudeFactor = new ComputableFloatTextfieldUI(1f, 0, 1);
 
 		Main.log.countDelayFxTask();
 	}

@@ -16,7 +16,7 @@ public class BitChrushFxTask  extends AbstractFxTask {
 	
 	public BitChrushFxTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
 		super(p, cp5, taskname, eng);
-		this.resolution = new ComputableIntegerTextfieldUI(5);
+		this.resolution = new ComputableIntegerTextfieldUI(5, 4, 10);
 		
 		Main.log.countBitchrushFxTask();
 	}

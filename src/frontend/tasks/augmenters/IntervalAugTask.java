@@ -1,5 +1,8 @@
 package frontend.tasks.augmenters;
 
+import java.util.Arrays;
+import java.util.List;
+
 import controlP5.ControlP5;
 import controlP5.Group;
 import frontend.Main;
@@ -10,19 +13,34 @@ import frontend.ui.ComputableIntegerTextfieldUI;
 import frontend.ui.ComputableIntegerTextfieldUIWithUserInput;
 import frontend.ui.ComputableMIDITextfieldUI;
 import frontend.ui.ComputableMIDITextfieldUIWithUserInput;
+import frontend.ui.ScrollableListUI;
 import processing.core.PApplet;
 import soundengine.SoundEngine;
 
 public class IntervalAugTask extends AbstractAugTask {
 
+	protected static final List<String> list = Arrays.asList("minor second", 
+															 "major second", 
+															 "minor third", 
+															 "major third", 
+															 "perfect fourth", 
+															 "perfect fifth", 
+															 "minor sixth",
+															 "major sixth",
+															 "minor seventh",
+															 "major seventh",
+															 "perfect octave");
+	
 	private ComputableMIDITextfieldUIWithUserInput root;
 	private ComputableIntegerTextfieldUI interval;
+//	private ScrollableListUI interval;
 	
 	public IntervalAugTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
 		super(p, cp5, taskname, eng);
 
 		this.root = new ComputableMIDITextfieldUIWithUserInput();
 		this.interval = new ComputableIntegerTextfieldUI(5);
+//		this.interval = new ScrollableListUI(list, 5);
 		this.musicActioner = new IntervalActioner(this.root.getDefaultValueAsInt(), 5, this.velocity.getDefaultValueAsInt(),(int) this.duration.getValue(), eng);
 		
 		Main.log.countIntervalAugTask();
@@ -72,9 +90,10 @@ public class IntervalAugTask extends AbstractAugTask {
 		if (interval.update()) {
 			if (isModeUserInput())
 				this.eng.updateAugmenter(this.get_gui_id(), "type : " + interval.getValueAsInt());
+				//this.eng.updateAugmenter(this.get_gui_id(), "type : " + interval.getIndex());
 			if (isModePlayOnce() || isModeRepeat())
-//				((IntervalActioner)this.musicActioner).setInterval(root.getValueAsInt()+interval.getValueAsInt());
 				((IntervalActioner)this.musicActioner).setInterval(interval.getValueAsInt());
+				//((IntervalActioner)this.musicActioner).setInterval(interval.getIndex());
 		}
 	}
 	

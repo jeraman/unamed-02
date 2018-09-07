@@ -49,6 +49,10 @@ public class ScrollableListUI extends AbstractElementUi {
 		return this.selection;
 	}
 	
+	public int getIndex () {
+		return this.getIndex(this.selection);
+	}
+	
 	public CallbackListener callback() {
 		return new CallbackListener() {
 			public void controlEvent(CallbackEvent theEvent) {

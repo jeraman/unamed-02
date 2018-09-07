@@ -5,6 +5,7 @@ import controlP5.Group;
 import frontend.Main;
 import frontend.core.State;
 import frontend.tasks.Task;
+import frontend.ui.ComputableMillisDurationTextfieldUI;
 import frontend.ui.ComputableFloatTextfieldUI;
 import processing.core.PApplet;
 import soundengine.SoundEngine;
@@ -12,7 +13,7 @@ import soundengine.SoundEngine;
 public class AdsrFxTask extends AbstractFxTask {
 	
 	private ComputableFloatTextfieldUI maxAmp; 
-	private ComputableFloatTextfieldUI attTime; 
+	private ComputableMillisDurationTextfieldUI attTime; 
 	private ComputableFloatTextfieldUI decTime;
 	private ComputableFloatTextfieldUI susLvl;
 	private ComputableFloatTextfieldUI relTime;
@@ -22,13 +23,16 @@ public class AdsrFxTask extends AbstractFxTask {
 	
 	public AdsrFxTask(PApplet p, ControlP5 cp5, String taskname, SoundEngine eng) {
 		super(p, cp5, taskname, eng);
-		this.maxAmp = new ComputableFloatTextfieldUI(1f);
-		this.attTime = new ComputableFloatTextfieldUI(0.1f);;
-		this.decTime = new ComputableFloatTextfieldUI(0.5f);;
-		this.susLvl = new ComputableFloatTextfieldUI(0.5f);;
-		this.relTime = new ComputableFloatTextfieldUI(1f);;
-		this.befAmp = new ComputableFloatTextfieldUI(0f);;
-		this.aftAmp = new ComputableFloatTextfieldUI(0f);;
+		this.maxAmp = new ComputableFloatTextfieldUI(1f, 0, 1);
+		this.attTime = new ComputableMillisDurationTextfieldUI(100);
+		this.decTime = new ComputableMillisDurationTextfieldUI(500);
+//		this.attTime = new ComputableMillisDurationTextfieldUI(0.1f);
+//		this.decTime = new ComputableMillisDurationTextfieldUI(0.5f);
+		this.susLvl = new ComputableFloatTextfieldUI(0.5f, 0, 1);
+//		this.relTime = new ComputableMillisDurationTextfieldUI(1f);
+		this.relTime = new ComputableMillisDurationTextfieldUI(1000);
+		this.befAmp = new ComputableFloatTextfieldUI(0f, 0, 1);
+		this.aftAmp = new ComputableFloatTextfieldUI(0f, 0, 1);
 
 		Main.log.countAdsrFxTask();
 	}
@@ -41,10 +45,10 @@ public class AdsrFxTask extends AbstractFxTask {
 		//return new String[] { "1.f", "0.1f", "0.5f", "0.5f", "1.f", "0.f", "0.f"};
 		return new String[] { 
 				 this.maxAmp.getValue()+"f", 
-				 this.attTime.getValue()+"f", 
-				 this.decTime.getValue()+"f",
+				 this.attTime.getValue()/1000f+"f", 
+				 this.decTime.getValue()/1000f+"f",
 				 this.susLvl.getValue()+"f",
-				 this.relTime.getValue()+"f", 
+				 this.relTime.getValue()/1000f+"f", 
 				 this.befAmp.getValue()+"f",
 				 this.aftAmp.getValue()+"f"
 				 };
@@ -57,11 +61,11 @@ public class AdsrFxTask extends AbstractFxTask {
 	
 	private void processAttTimeChange() {
 		if (attTime.update())
-			this.eng.updateEffect(this.get_gui_id(), "attTime : " + attTime.getValue());
+			this.eng.updateEffect(this.get_gui_id(), "attTime : " + attTime.getValue()/1000f);
 	}
 	private void processDecTimeChange() {
 		if (decTime.update())
-			this.eng.updateEffect(this.get_gui_id(), "decTime : " + decTime.getValue());
+			this.eng.updateEffect(this.get_gui_id(), "decTime : " + decTime.getValue()/1000f);
 	}
 	private void processSusLvlChange() {
 		if (susLvl.update())
@@ -69,7 +73,7 @@ public class AdsrFxTask extends AbstractFxTask {
 	}
 	private void processRelTimeChange() {
 		if (relTime.update())
-			this.eng.updateEffect(this.get_gui_id(), "relTime : " + relTime.getValue());
+			this.eng.updateEffect(this.get_gui_id(), "relTime : " + relTime.getValue()/1000f);
 	}
 	private void processBefAmpChange() {
 		if (befAmp.update())
