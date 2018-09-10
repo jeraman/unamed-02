@@ -12,7 +12,7 @@ import frontend.tasks.Task;
 import frontend.tasks.augmenters.ChordAugTask;
 import frontend.tasks.augmenters.IntervalAugTask;
 import frontend.tasks.augmenters.NoteAugTask;
-import frontend.tasks.blackboard.OscillatorBBTask;
+import frontend.tasks.blackboard.LfoBBTask;
 import frontend.tasks.blackboard.RampBBTask;
 import frontend.tasks.blackboard.RandomBBTask;
 import frontend.tasks.blackboard.DefaultBBTask;
@@ -660,7 +660,7 @@ public class State implements Serializable {
 		if (debug)
 			System.out.println("create oscilator bb task!");
 		String taskname = generate_random_name();
-		OscillatorBBTask t = new OscillatorBBTask(p, cp5, taskname, this.eng);
+		LfoBBTask t = new LfoBBTask(p, cp5, taskname, this.eng);
 		if (this.status == Status.RUNNING)
 			t.start();
 		this.add_task(t);

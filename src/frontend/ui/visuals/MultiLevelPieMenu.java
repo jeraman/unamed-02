@@ -16,7 +16,7 @@ public class MultiLevelPieMenu {
 	private String[] generator_list = { "Sample", "", "", "Oscillator", "FM Synth", "Live Input" };
 	private String[] augmenter_list = { "Chord", "", "Note", "Interval" };
 	private String[] meta_list = { "OSC Message","", "", "State Mechine", "JS Script", "DMX Light" };
-	private String[] blackboard_list = { "Default", "", "", "Random", "Oscillator", "Ramp" };
+	private String[] blackboard_list = { "Default", "", "", "Random", "LFO", "Ramp" };
 
 	private PieMenu main;
 	private PieMenu effect;
