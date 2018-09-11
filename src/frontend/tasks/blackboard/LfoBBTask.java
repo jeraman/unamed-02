@@ -52,12 +52,15 @@ public class LfoBBTask extends AbstractBBTask {
 		step += freq_val;
 		step_size++;
 		this.value = new TextfieldUi(amp_val + " * (0.5 + (math.sin(" + form.format(timer)+ "*2*math.PI*" + (step/step_size) + ")/2))");
-//		System.out.println("freq_val: " + freq_val);
-//		System.out.println("exp: " + value.getValue());
-//		System.out.println("step: " + (timer * 2 * Math.PI * value.evaluateAsFloat()));
-//		System.out.println("result: " + value.evaluateAsFloat());
-//		float javaresult = (float) (amp_val*Math.sin(timer*2*Math.PI*freq_val));
-//		System.out.println("java result: " +  javaresult);
+
+		// System.out.println("freq_val: " + freq_val);
+		// System.out.println("exp: " + value.getValue());
+		// System.out.println("step: " + (timer * 2 * Math.PI *
+		// value.evaluateAsFloat()));
+		// System.out.println("result: " + value.evaluateAsFloat());
+		// float javaresult = (float)
+		// (amp_val*Math.sin(timer*2*Math.PI*freq_val));
+		// System.out.println("java result: " + javaresult);
 		
 		
 	}

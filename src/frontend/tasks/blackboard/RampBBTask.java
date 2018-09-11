@@ -42,12 +42,25 @@ public class RampBBTask extends AbstractBBTask {
 	}
 	
 	protected boolean isFirstCycle() {
-		boolean result =  ((this.destination.getValue() - this.value.evaluateAsFloat()) > (1f/(30f*duration.getValue())));
-//		System.out.println("value: " + this.value.evaluateAsFloat());
-//		System.out.println("duration: " + this.duration.getValue());
-//		System.out.println("1f/(10f*duration.getValue()): " + 1f/(10f*duration.getValue()));
-//		System.out.println("destination: " + this.destination.getValue());
-//		System.out.println("done? " + result);
+		float threshold;
+		boolean result;
+		float dest = destination.getValue();
+		float orig = origin.getValue();
+		
+		if (dest > orig) {
+			threshold = (dest/(30f*duration.getValue()));
+			result =  ((dest - this.value.evaluateAsFloat()) > threshold);
+		} else {
+			threshold = (orig/(30f*duration.getValue()));
+			result =  ((this.value.evaluateAsFloat() - dest) > threshold);
+		}
+		
+		System.out.println("value: " + this.value.evaluateAsFloat());
+		System.out.println("duration: " + this.duration.getValue());
+		System.out.println("dest - value: " + Math.abs(this.destination.getValue() - this.value.evaluateAsFloat()));
+		System.out.println("threshold: " + threshold);
+		System.out.println("destination: " + this.destination.getValue());
+		System.out.println("done? " + result);
 		return result || first_time;
 	}	
 	
