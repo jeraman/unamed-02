@@ -4,6 +4,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.io.Serializable;
 import processing.core.PApplet;
 import soundengine.util.MidiIO;
+import soundengine.util.MusicTheory;
 import soundengine.util.Util;
 
 import java.util.regex.*;
@@ -166,9 +167,13 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 		this.put("playing", playing);
 		String[] details = processPlaying(playing);
 		this.put("note", details[0]);
-		this.put("interval", details[1]);
+		this.put("intervals", details[1]);
+		int lastInterval = processLastInterval(details[1]);
+		this.put("lastInterval", lastInterval);
 		this.put("chord", details[2]);
 		this.put("key", ZenStates.getLastPlayedNote());
+		this.put("keyMidi",MusicTheory.midiFromNote(ZenStates.getLastPlayedNote()));
+		this.put("keyFreq",MusicTheory.freqFromNote(ZenStates.getLastPlayedNote()));
 		this.put("pressure", ZenStates.getLastVelocity());
 		this.put("keyPressed", ZenStates.thereIsKeyDown());
 		this.put("keyReleased", ZenStates.thereIsKeyReleased());
@@ -194,10 +199,14 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 		this.replace("playing", playing);
 		String[] details = processPlaying(playing);
 		this.replace("note", details[0]);
-		this.replace("interval", details[1]);
+		this.replace("intervals", details[1]);
+		int lastInterval = processLastInterval(details[1]);
+		this.replace("lastInterval", lastInterval);
 		this.replace("chord", details[2]);
 		String lastNote =  "\"" + ZenStates.getLastPlayedNote() + "\"";
 		this.replace("key", lastNote);
+		this.replace("keyMidi",MusicTheory.midiFromNote(ZenStates.getLastPlayedNote()));
+		this.replace("keyFreq",MusicTheory.freqFromNote(ZenStates.getLastPlayedNote()));
 		this.replace("pressure", ZenStates.getLastVelocity());
 		this.replace("keyPressed", ZenStates.thereIsKeyDown());
 		this.replace("keyReleased", ZenStates.thereIsKeyReleased());
@@ -223,6 +232,7 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 		else
 			return processNothing();
 	}
+	
 
 	private String[] processNote(String playing) {
 		playing = "\"" + playing + "\"";
@@ -232,6 +242,47 @@ public class Blackboard extends ConcurrentHashMap<String, Object> implements Ser
 	private String[] processInterval(String playing) {
 		playing = "\"" + playing + "\"";
 		return new String[]{"\"none\"", playing, "\"none\""};
+	}
+	
+	private int processLastInterval(String intervals) {
+		
+		if (intervals.contains("none"))
+			return 0;
+			
+		System.out.println("all:" + intervals);
+		String[] individualIntervals = intervals.split(" ");
+		String lastInterval = individualIntervals[individualIntervals.length-1];
+		System.out.println("last:" + lastInterval);
+		int result = 0;
+		
+		if (lastInterval.contains("1"))
+			result = 0;
+		else if (lastInterval.contains("b2"))
+			result = 1;
+		else if (lastInterval.contains("2"))
+			result = 2;
+		else if (lastInterval.contains("b3"))
+			result = 3;
+		else if (lastInterval.contains("3"))
+			result = 4;
+		else if (lastInterval.contains("4"))
+			result = 5;
+		else if (lastInterval.contains("b5") || lastInterval.contains("a4"))
+			result = 6;
+		else if (lastInterval.contains("5"))
+			result = 7;
+		else if (lastInterval.contains("b6"))
+			result = 8;
+		else if (lastInterval.contains("6"))
+			result = 9;
+		else if (lastInterval.contains("b7"))
+			result = 10;
+		else if (lastInterval.contains("7"))
+			result = 11;
+		
+		System.out.println("result:" + result);
+		
+		return result;
 	}
 	
 	private String[] processChord(String playing) {

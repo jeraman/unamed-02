@@ -17,7 +17,10 @@ public class MusicTheory {
 	}
 
 	public static int midiFromNote(String note) {
-		return (new Note(note)).getValue();
+		if (note.isEmpty()) 
+			return 0;
+		else
+			return (new Note(note)).getValue();
 	}
 
 	public static float freqFromMIDI(int note) {
@@ -28,7 +31,10 @@ public class MusicTheory {
 	}
 
 	public static float freqFromNote(String note) {
-		return (float) Note.getFrequencyForNote(note);
+		if (note.isEmpty()) 
+			return 0;
+		else
+			return (float) Note.getFrequencyForNote(note);
 	}
 
 	// details on: http://www.jfugue.org/doc/org/jfugue/theory/Chord.html
